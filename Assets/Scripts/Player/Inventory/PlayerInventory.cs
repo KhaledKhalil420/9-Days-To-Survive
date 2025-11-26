@@ -94,6 +94,24 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
+    public void TakeItem(Item item, int quantity, out bool wasTaken)
+    {
+        FindSlotWithItem(item, out SlotHolder slot);
+
+        if (slot != null && slot.HeldQuantity >= quantity)
+        {
+            slot.HeldQuantity -= quantity;
+            wasTaken = true;
+        }
+        else
+        {
+            wasTaken = false;
+        }
+
+
+        UpdateSlots();
+    }
+
     #endregion
 
     #region Inputs
@@ -115,25 +133,11 @@ public class PlayerInventory : MonoBehaviour
             {
                 if (hit.transform.TryGetComponent(out Item item))
                 {
-                    if (FindSameTypeSlot(item, out SlotHolder sameTypeSlot) != null)
+                    GiveItem(item, out bool wasGiven);
+                    
+                    if(wasGiven)
                     {
-                        sameTypeSlot.HeldQuantity += item.HeldQuantity; // Add the the already held quantity
-
-                        Destroy(item.gameObject);
-                        sameTypeSlot.UpdateSlot();
-
-                        AudioManager.instance?.PlaySound("Pickup", 1, 1.1f);
-                    }
-
-                    else if (FindNearestEmptySlot(out SlotHolder emptySlot) != null)
-                    {
-                        emptySlot.HeldItem = item; // Set Slot HeldItem to items item, very confusing I know
-                        emptySlot.HeldQuantity = item.HeldQuantity; // Also set the quantity
-
-                        item.SetItemParent(hand); // Hold item
-                        emptySlot.UpdateSlot();
-
-                        AudioManager.instance?.PlaySound("Pickup", 1, 1.1f);
+                        
                     }
                 }
             }
@@ -356,6 +360,19 @@ public class PlayerInventory : MonoBehaviour
         foreach (var slot in SlotHolders)
         {
             if (slot.HeldItem?.data == item.data)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool HasItem(Item item, int quantity)
+    {
+        foreach (var slot in SlotHolders)
+        {
+            if (slot.HeldItem?.data == item.data && slot.HeldItem.HeldQuantity >= quantity)
             {
                 return true;
             }
