@@ -15,3 +15,13 @@ MonoBehaviour:
   keyEntries:
   - Action: Crouch
     Key: 99
+  - Action: Interact
+    Key: 101
+  - Action: Throw
+    Key: 113
+  - Action: Use
+    Key: 48
+  - Action: Use Alt
+    Key: 49
+  - Action: Use Alt 2
+    Key: 50

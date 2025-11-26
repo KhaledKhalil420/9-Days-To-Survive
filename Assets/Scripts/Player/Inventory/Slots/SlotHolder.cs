@@ -1,0 +1,57 @@
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class SlotHolder : MonoBehaviour
+{
+    public Item HeldItem;
+    public int HeldQuantity;
+    public bool isSelected;
+
+    [SerializeField] private Image _itemIconImage;
+    [SerializeField] private Image _slotBorderImage;
+    [SerializeField] private TMP_Text _itemQuantityText;
+    [SerializeField] private Sprite _empty;
+    [SerializeField] private Color unselected, selected;
+
+    public void UpdateSlot()
+    {
+        if (HeldQuantity <= 0 && HeldItem != null)
+        {
+            _itemQuantityText.text = "";
+            HeldItem.OnChangingItems();
+            Destroy(HeldItem.gameObject);
+            HeldItem = null;
+        }
+
+        if (HeldItem != null)
+        {
+            HeldItem.OnSelect();
+            HeldItem.gameObject.SetActive(isSelected);
+        }
+
+        _slotBorderImage.color = Color.Lerp(_slotBorderImage.color, isSelected ? selected : unselected, Time.deltaTime * 10f);
+
+        _itemQuantityText.text = HeldItem != null ? HeldQuantity.ToString() : "";
+        _itemQuantityText.text = HeldQuantity > 1 ? HeldQuantity.ToString() : "";
+
+        _itemIconImage.sprite = HeldItem != null ? HeldItem.data.sprite : _empty;
+    }
+
+    public void ResetSlot()
+    {
+        HeldQuantity = 0;
+        HeldItem = null;
+        UpdateSlot();
+    }
+
+    public void RemoveSlotSprite()
+    {
+        _itemIconImage.sprite = _empty;
+    }
+
+    public void ResetSlotSprite()
+    {
+        _itemIconImage.sprite = HeldItem.data.sprite;
+    }
+}

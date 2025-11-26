@@ -14,7 +14,7 @@ public class PlayerLook : MonoBehaviour
     public static Camera mainCamera;
     public Camera _mainCamera;
 
-    public void Start()
+    public void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
