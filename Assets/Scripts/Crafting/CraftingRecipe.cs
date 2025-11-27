@@ -5,6 +5,7 @@ using UnityEngine;
 public class CraftingRecipe : ScriptableObject
 {
     public Item itemToGive;
+    public int givenQuantity = 1;
     public List<Ingredient> ingredients;
 }
 

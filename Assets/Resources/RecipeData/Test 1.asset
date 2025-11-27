@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Test 1
   m_EditorClassIdentifier: 
   itemToGive: {fileID: 789964070537936751, guid: fe9c3c058d529bd40b6baf028d26f683, type: 3}
+  givenQuantity: 15
   ingredients:
   - item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
-    quantity: 1
+    quantity: 15

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ef833ba548351d4f8c141687209bf97, type: 3}
-  m_Name: Test
+  m_Name: Axe
   m_EditorClassIdentifier: 
-  itemToGive: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
-  givenQuantity: 15
+  itemToGive: {fileID: 846111133623820169, guid: 2c1a2ec97fc8d5c448273e6ca4a410f8, type: 3}
+  givenQuantity: 1
   ingredients:
-  - item: {fileID: 789964070537936751, guid: fe9c3c058d529bd40b6baf028d26f683, type: 3}
-    quantity: 15
+  - item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
+    quantity: 5

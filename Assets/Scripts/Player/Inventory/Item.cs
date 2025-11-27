@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Item : MonoBehaviour, IHighlightable
 {
+    public GameObject heldby;
     public ItemData data;
 
     public bool isSingleQuantityItem = false;
@@ -18,6 +19,7 @@ public class Item : MonoBehaviour, IHighlightable
 
         GetComponent<Collider>().enabled = !isHolding;
         GetComponent<Rigidbody>().constraints = isHolding ? RigidbodyConstraints.FreezeAll : RigidbodyConstraints.None;
+        if(gameObject.TryGetComponent(out Animator animator)) animator.enabled = isHolding;
         gameObject.layer = targetLayer;
 
         foreach (Transform child in GetComponentsInChildren<Transform>(true))
@@ -27,6 +29,10 @@ public class Item : MonoBehaviour, IHighlightable
     }
 
     public virtual void OnUse()
+    {
+    }
+
+    public virtual void OnUsing()
     {
     }
 

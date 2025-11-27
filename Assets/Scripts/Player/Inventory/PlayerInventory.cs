@@ -62,6 +62,7 @@ public class PlayerInventory : MonoBehaviour
         {
             emptySlot.HeldItem = item;
             emptySlot.HeldQuantity = item.HeldQuantity;
+            item.heldby = gameObject;
             item.SetItemParent(hand);
             emptySlot.UpdateSlot();
         }
@@ -82,6 +83,7 @@ public class PlayerInventory : MonoBehaviour
         {
             emptySlot.HeldItem = item;
             emptySlot.HeldQuantity = item.HeldQuantity;
+            item.heldby = gameObject;
             item.SetItemParent(hand);
             emptySlot.UpdateSlot();
 
@@ -149,22 +151,24 @@ public class PlayerInventory : MonoBehaviour
         if (Input.GetKeyDown(Keybinds.Key("Throw")))
         {
             SlotHolder selectedSlot = SlotHolders[_currentSlotIndex];
+            Item heldItem = selectedSlot.HeldItem;
 
-            if (selectedSlot.HeldItem != null)
+            if (heldItem != null)
             {
-                selectedSlot.HeldItem.OnThrow();
+                heldItem.OnThrow();
 
-                selectedSlot.HeldItem.HeldQuantity = selectedSlot.HeldQuantity;
-                selectedSlot.HeldItem.SetItemParent(null);
-                selectedSlot.HeldItem.transform.position = _camera.position;
+                heldItem.HeldQuantity = selectedSlot.HeldQuantity;
+                heldItem.heldby = null;
+                heldItem.SetItemParent(null);
+                heldItem.transform.position = _camera.position;
 
-                if (selectedSlot.HeldItem.TryGetComponent(out Rigidbody rigidbody))
+                if (heldItem.TryGetComponent(out Rigidbody rigidbody))
                     rigidbody.AddForce(_camera.forward * 6, ForceMode.Impulse);
 
-                if (selectedSlot.HeldItem.TryGetComponent(out Animator animator))
+                if (heldItem.TryGetComponent(out Animator animator))
                     animator.enabled = false;
 
-                selectedSlot.HeldItem.OnChangingItems();
+                heldItem.OnChangingItems();
                 selectedSlot.ResetSlot();
             }
 
@@ -180,6 +184,14 @@ public class PlayerInventory : MonoBehaviour
 
             if (selectedSlot.HeldItem != null)
                 selectedSlot.HeldItem.OnUse();
+        }
+
+        if (Input.GetKey(Keybinds.Key("Use")))
+        {
+            SlotHolder selectedSlot = SlotHolders[_currentSlotIndex];
+
+            if (selectedSlot.HeldItem != null)
+                selectedSlot.HeldItem.OnUsing();
         }
 
         if (Input.GetKeyUp(Keybinds.Key("Use")))

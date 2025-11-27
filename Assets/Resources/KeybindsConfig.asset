@@ -20,8 +20,8 @@ MonoBehaviour:
   - Action: Throw
     Key: 113
   - Action: Use
-    Key: 48
+    Key: 323
   - Action: Use Alt
-    Key: 49
+    Key: 324
   - Action: Use Alt 2
-    Key: 50
+    Key: 325

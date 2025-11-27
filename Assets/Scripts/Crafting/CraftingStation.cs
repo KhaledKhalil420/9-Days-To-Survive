@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class CraftingStation : MonoBehaviour
 {
-    private int currentRecipe;
+    private int currentRecipe = 0;
     [SerializeField] private List<CraftingRecipe> availableRecipes;
     private List<GameObject> tempUI = new();
 
@@ -14,6 +14,11 @@ public class CraftingStation : MonoBehaviour
     [SerializeField] private Image recipeIcon_Image;
     [SerializeField] private TMP_Text recipeDiscreption_Text;
     [SerializeField] private Image ingredientPrefab;
+
+    private void Start()
+    {
+        InitializeUI();
+    }
 
     #region Ui
 
@@ -51,6 +56,9 @@ public class CraftingStation : MonoBehaviour
 
     private void InitializeUI()
     {
+        if(availableRecipes.Count == 0) 
+            return;
+
         //Update recipe
         recipeIcon_Image.sprite = availableRecipes[currentRecipe].itemToGive.data.sprite;
         recipeDiscreption_Text.text = availableRecipes[currentRecipe].itemToGive.data.discription;
@@ -84,6 +92,8 @@ public class CraftingStation : MonoBehaviour
         }
         
         Item item = Instantiate(availableRecipes[currentRecipe].itemToGive);
+        item.HeldQuantity = availableRecipes[currentRecipe].givenQuantity;
+        
         playerInventory.GiveItem(item, out bool wasGiven);
 
         if(wasGiven)

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffd50b6854d668d4497f11ffcca44bd4, type: 3}
+  m_Name: Axe
+  m_EditorClassIdentifier: 
+  Name: Axe
+  sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  prefab: {fileID: 6582095982051722072, guid: 2c1a2ec97fc8d5c448273e6ca4a410f8, type: 3}
+  discription: Axe, good for chopping trees
