@@ -32,14 +32,14 @@ public class PlayerBuilding : MonoBehaviour
     //Internal State
     private int currentRotation = 0;
     private bool canPlaceBuilding = false;
-    private Vector3 lastValidPosition;
+    private Vector3 lastValidPosition, lastRotation;
         
     private void Start()
     {
         mainCamera = PlayerLook.mainCamera.transform;
     }
     
-    private void Update()
+    private void LateUpdate()
     {
         HandleInputs();
         UpdateGhostBuildingPosition();
@@ -160,8 +160,8 @@ public class PlayerBuilding : MonoBehaviour
             return;
         
         //Apply current rotation
-        ghostBuilding.transform.rotation = Quaternion.Lerp(ghostBuilding.transform.rotation, Quaternion.Euler(0f, currentRotation, 0f), Time.deltaTime * 30f);  
-
+        
+        ghostBuilding.transform.rotation = Quaternion.Lerp(ghostBuilding.transform.rotation, Quaternion.Euler(0f, currentRotation, 0f), Time.deltaTime * 30f);        
         //Use SphereCast (I fucking used it to make it easier to snap to pivots)
         RaycastHit hitInfo;
         bool hitSomething = Physics.SphereCast(
@@ -191,8 +191,8 @@ public class PlayerBuilding : MonoBehaviour
         Vector3 targetPosition = CalculateBuildingPosition(hitInfo);
         
         //Move ghost to target position
-        ghostBuilding.transform.position = targetPosition;
         lastValidPosition = targetPosition;
+        ghostBuilding.transform.position = Vector3.Slerp(ghostBuilding.transform.position, lastValidPosition, Time.deltaTime * 60f);
         
         //Update visuals
         canPlaceBuilding = true;
