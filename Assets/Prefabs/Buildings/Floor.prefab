@@ -202,7 +202,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ae21c14b1fcbcd9479b50ae07fd917ce, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -226,6 +226,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ae21c14b1fcbcd9479b50ae07fd917ce, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3552079121617091838}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ae21c14b1fcbcd9479b50ae07fd917ce, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5178800837845617178}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ae21c14b1fcbcd9479b50ae07fd917ce, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1802257758617118508}
   m_SourcePrefab: {fileID: 100100000, guid: ae21c14b1fcbcd9479b50ae07fd917ce, type: 3}
 --- !u!1 &2711339298170863636 stripped
 GameObject:
@@ -271,6 +277,35 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.9999999, y: 0.049477957, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &5178800837845617178
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2711339298170863636}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1, y: 0.056, z: 1}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
+--- !u!114 &1802257758617118508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2711339298170863636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0e4354378b5bf439b8884546972fc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  priority: 1
 --- !u!4 &3380879600224066222 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ae21c14b1fcbcd9479b50ae07fd917ce, type: 3}

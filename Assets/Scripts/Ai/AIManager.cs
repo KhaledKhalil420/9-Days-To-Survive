@@ -17,11 +17,11 @@ public class AIManager : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-        if (timer < 0.05f) return;
+        if (timer < intreval) return;
         timer = 0f;
 
         foreach (var e in registeredEnemies)
-            e.OnUpdate(); 
+            e.UpdateBrain(); 
     }
 
     public static void Register(Enemy e) => instance.registeredEnemies.Add(e);
