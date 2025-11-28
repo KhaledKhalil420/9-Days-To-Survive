@@ -1,22 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//if this code was a woman I would've married it
 public class PlayerBuilding : MonoBehaviour
-{
-    #region Variables
-    
-    // References
+{    
+    //References
     private Transform mainCamera;
     private GameObject ghostBuilding;
     private Building currentBuildingComponent;
     private MeshFilter ghostMeshFilter;
     private Renderer ghostRenderer;
     
-    // Building Selection
+    //Building Selection
     private int selectedBuildingIndex;
     public List<Building> availableBuildings;
     
-    // Building Settings
     [Header("Building Settings")]
     public int gridSize = 2;
     public float maxBuildDistance = 12f;
@@ -24,23 +22,18 @@ public class PlayerBuilding : MonoBehaviour
     public int rotationAngle = 45;
     
     [Header("Snapping Settings")]
-    public float sphereCastRadius = 1.5f; // Bigger radius = easier snapping
-    public float snapDistance = 5f; // How far to search for pivots
+    public float sphereCastRadius = 1.5f; 
+    public float snapDistance = 5f;
     
-    // Demolish Settings
     [Header("Demolish Settings")]
     public LayerMask demolishLayers;
     public KeyCode demolishKey = KeyCode.X;
     
-    // Internal State
+    //Internal State
     private int currentRotation = 0;
     private bool canPlaceBuilding = false;
     private Vector3 lastValidPosition;
-    
-    #endregion
-
-    #region Unity Callbacks
-    
+        
     private void Start()
     {
         mainCamera = PlayerLook.mainCamera.transform;
@@ -52,28 +45,25 @@ public class PlayerBuilding : MonoBehaviour
         UpdateGhostBuildingPosition();
     }
     
-    #endregion
-
     #region Input Handling
     
     private void HandleInputs()
     {
-        // Change selected building with scroll wheel
         HandleBuildingSelection();
         
-        // Rotate building
+        //Rotate building
         if (Input.GetKeyDown(KeyCode.R))
         {
             RotateBuilding();
         }
         
-        // Place building
+        //Place building
         if (Input.GetMouseButtonDown(0))
         {
             PlaceBuilding();
         }
         
-        // Demolish building
+        //Demolish building
         if (Input.GetKeyDown(demolishKey))
         {
             DemolishBuilding();
@@ -84,11 +74,9 @@ public class PlayerBuilding : MonoBehaviour
     {
         float scrollInput = Input.GetAxis("Mouse ScrollWheel");
         
-        // Only process if scroll happened
         if (scrollInput == 0f)
             return;
         
-        // Scroll down = next building, scroll up = previous building
         if (scrollInput < 0f)
         {
             selectedBuildingIndex++;
@@ -98,7 +86,6 @@ public class PlayerBuilding : MonoBehaviour
             selectedBuildingIndex--;
         }
         
-        // Wrap around if out of bounds
         if (selectedBuildingIndex >= availableBuildings.Count)
         {
             selectedBuildingIndex = 0;
@@ -122,13 +109,12 @@ public class PlayerBuilding : MonoBehaviour
     
     private void SpawnNewGhostBuilding()
     {
-        // Destroy old ghost if it exists
+        //Destroy old ghost if it exists
         if (ghostBuilding != null)
         {
             Destroy(ghostBuilding);
         }
         
-        // Make sure we have a valid building selected
         if (availableBuildings[selectedBuildingIndex] == null)
             return;
         
@@ -141,21 +127,21 @@ public class PlayerBuilding : MonoBehaviour
     
     private void MakeGhostTransparent()
     {
-        // Get components
+        //Get components
         ghostMeshFilter = ghostBuilding.GetComponent<MeshFilter>();
         ghostRenderer = ghostBuilding.GetComponent<Renderer>();
         
-        // Make material semi-transparent
+        //Make material semi-transparent
         Material ghostMaterial = ghostRenderer.material;
         Color ghostColor = ghostMaterial.color;
         ghostColor.a = 0.5f; // 50% transparent
         ghostMaterial.color = ghostColor;
         ghostRenderer.material = ghostMaterial;
         
-        // Scale to grid size
+        //Scale to grid size
         ghostBuilding.transform.localScale = Vector3.one * gridSize;
         
-        // Turn off colliders so ghost doesn't block anything
+        //Turn off colliders
         Collider[] allColliders = ghostBuilding.GetComponentsInChildren<Collider>();
         foreach (Collider collider in allColliders)
         {
@@ -169,25 +155,25 @@ public class PlayerBuilding : MonoBehaviour
     
     private void UpdateGhostBuildingPosition()
     {
-        // Don't update if no ghost exists
+        //Don't update if no ghost exists
         if (ghostBuilding == null)
             return;
         
-        // Apply current rotation
+        //Apply current rotation
         ghostBuilding.transform.rotation = Quaternion.Euler(0f, currentRotation, 0f);
         
-        // Use SphereCast instead of Raycast for easier snapping
+        //Use SphereCast (I fucking used it to make it easier to snap to pivots)
         RaycastHit hitInfo;
         bool hitSomething = Physics.SphereCast(
             mainCamera.position,
-            sphereCastRadius, // This makes it way easier to hit stuff
+            sphereCastRadius,
             mainCamera.forward,
             out hitInfo,
             maxBuildDistance,
             buildableLayers
         );
         
-        // If spherecast missed, hide ghost and return
+        //If spherecast missed, hide ghost and return
         if (!hitSomething)
         {
             canPlaceBuilding = false;
@@ -195,24 +181,28 @@ public class PlayerBuilding : MonoBehaviour
             return;
         }
         
-        // Show ghost if it was hidden
+        //Show ghost if it was hidden
         if (!ghostBuilding.activeSelf)
         {
             ghostBuilding.SetActive(true);
         }
         
-        // Calculate position based on what we hit
+        //Calculate position based on what we hit
         Vector3 targetPosition = CalculateBuildingPosition(hitInfo);
         
-        // Move ghost to target position
+        //Move ghost to target position
         ghostBuilding.transform.position = targetPosition;
         lastValidPosition = targetPosition;
         
-        // Update visual feedback (green = can place, red = can't place)
+        //Update visuals
         canPlaceBuilding = true;
         UpdateGhostColor();
     }
     
+    #endregion
+
+    #region Pivot Snapping System //Mostly done by AI.. like 50% if the work was done by AI
+
     private Vector3 CalculateBuildingPosition(RaycastHit hitInfo)
     {
         // Get the size of the building mesh
@@ -234,11 +224,7 @@ public class PlayerBuilding : MonoBehaviour
         
         return position;
     }
-    
-    #endregion
 
-    #region Pivot Snapping System
-    
     private Vector3 FindBestSnapPosition(RaycastHit hitInfo, Building targetBuilding)
     {
         float closestDistance = float.PositiveInfinity;
@@ -313,7 +299,7 @@ public class PlayerBuilding : MonoBehaviour
     {
         Material ghostMaterial = ghostRenderer.material;
         Color newColor = canPlaceBuilding ? Color.green : Color.red;
-        newColor.a = 0.5f; // Keep it transparent
+        newColor.a = 0.5f;
         ghostMaterial.color = newColor;
         ghostRenderer.material = ghostMaterial;
     }
@@ -324,32 +310,31 @@ public class PlayerBuilding : MonoBehaviour
     
     private void PlaceBuilding()
     {
-        // Can't place if conditions aren't met
         if (!canPlaceBuilding || ghostBuilding == null)
             return;
         
         // TODO: Check if player has required materials
         // if (!PlayerHasRequiredMaterials()) return;
         
-        // Create the actual building
+        //Spawn building
         GameObject newBuilding = Instantiate(
             availableBuildings[selectedBuildingIndex].gameObject,
             lastValidPosition,
             Quaternion.Euler(0f, currentRotation, 0f)
         );
         
-        // Set correct scale and tag
+        //Set scale and tag
         newBuilding.transform.localScale = Vector3.one * gridSize;
         newBuilding.tag = "Build";
         
-        // Enable colliders on the placed building
+        //Enable colliders on the placed building
         Collider[] allColliders = newBuilding.GetComponentsInChildren<Collider>();
         foreach (Collider collider in allColliders)
         {
             collider.enabled = true;
         }
         
-        // Make the building fully opaque (not transparent)
+        //Materials
         Renderer buildingRenderer = newBuilding.GetComponent<Renderer>();
         if (buildingRenderer != null)
         {
@@ -359,20 +344,11 @@ public class PlayerBuilding : MonoBehaviour
             buildingMaterial.color = solidColor;
             buildingRenderer.material = buildingMaterial;
         }
-        
-        // TODO: Deduct materials from player inventory
-        // PlayerInventory.RemoveMaterials(buildingCost);
-        
-        Debug.Log("Building placed: " + availableBuildings[selectedBuildingIndex].data.buildingName);
     }
-    
-    #endregion
 
-    #region Building Demolition
-    
     private void DemolishBuilding()
     {
-        // Use SphereCast for demolishing too - easier to target small buildings
+        //Use SphereCast for demolishing too (I love it goddamn it)
         RaycastHit hitInfo;
         bool hitSomething = Physics.SphereCast(
             mainCamera.position,
@@ -383,24 +359,20 @@ public class PlayerBuilding : MonoBehaviour
             demolishLayers
         );
         
-        // Didn't hit anything
         if (!hitSomething)
             return;
         
-        // Hit something but it's not a building
         if (!hitInfo.collider.CompareTag("Build"))
             return;
         
-        // Get the building component
+        //Get the building component
         Building buildingToDemolish = hitInfo.collider.GetComponent<Building>();
         if (buildingToDemolish == null)
             return;
         
         // TODO: Refund materials to player
-        // PlayerInventory.AddMaterials(buildingRefund);
-        
-        Debug.Log("Demolishing: " + buildingToDemolish.data.buildingName);
-        
+        // PlayerInventory.GiveItem(buildingRefund);
+                
         // Destroy the building
         Destroy(hitInfo.collider.gameObject);
     }
