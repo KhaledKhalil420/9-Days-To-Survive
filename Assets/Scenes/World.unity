@@ -3021,14 +3021,14 @@ MonoBehaviour:
   - {fileID: 4672705758764423680, guid: eb5a1959518683b478e9404e4ad333dc, type: 3}
   - {fileID: 5240809725349178419, guid: 9c7d8e5ffbe09c84b9280a8727ff412a, type: 3}
   - {fileID: 7405853830563566866, guid: 0fb8f734329208243a18121d476bcfb5, type: 3}
-  gridSize: 1
-  maxBuildDistance: 12
+  gridSize: 2
+  maxBuildDistance: 4
   buildableLayers:
     serializedVersion: 2
     m_Bits: 9
   rotationAngle: 45
   sphereCastRadius: 0.1
-  snapDistance: 0.25
+  snapDistance: 1
   demolishLayers:
     serializedVersion: 2
     m_Bits: 265

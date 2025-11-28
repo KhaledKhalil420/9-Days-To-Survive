@@ -160,8 +160,8 @@ public class PlayerBuilding : MonoBehaviour
             return;
         
         //Apply current rotation
-        ghostBuilding.transform.rotation = Quaternion.Euler(0f, currentRotation, 0f);
-        
+        ghostBuilding.transform.rotation = Quaternion.Lerp(ghostBuilding.transform.rotation, Quaternion.Euler(0f, currentRotation, 0f), Time.deltaTime * 30f);  
+
         //Use SphereCast (I fucking used it to make it easier to snap to pivots)
         RaycastHit hitInfo;
         bool hitSomething = Physics.SphereCast(
