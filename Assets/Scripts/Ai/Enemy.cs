@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Transform target;
     [SerializeField] private float detectionSize;
     [SerializeField] private LayerMask unDetectableLayers;
-    [SerializeField] private int secondInterval = 0;
+    private int secondInterval = 0;
     private Collider[] results = new Collider[30];
 
     private void Start()
