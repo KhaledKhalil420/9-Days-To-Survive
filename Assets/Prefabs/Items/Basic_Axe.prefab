@@ -107,12 +107,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   heldby: {fileID: 0}
   data: {fileID: 11400000, guid: 6dbb5236fba8a8548b2e6d1265089462, type: 2}
-  isSingleQuantityItem: 0
+  isSingleQuantityItem: 1
   HeldQuantity: 1
   type: 1
   animator: {fileID: 1807523060306041998}
   range: 2
-  cooldown: 1
+  cooldown: 0.75
   damage: 1
   toughness: 1
 --- !u!95 &1807523060306041998

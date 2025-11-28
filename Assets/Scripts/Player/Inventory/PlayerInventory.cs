@@ -232,19 +232,19 @@ public class PlayerInventory : MonoBehaviour
 
     private void HandleSlotsSwitching()
     {
-        // Scroll wheel up/down
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-        if (scroll < 0f)
-        {
-            SlotHolders[_currentSlotIndex].HeldItem?.OnChangingItems();
-            _currentSlotIndex = (_currentSlotIndex + 1) % SlotHolders.Count;
-        }
+        // // Scroll wheel up/down
+        // float scroll = Input.GetAxis("Mouse ScrollWheel");
+        // if (scroll < 0f)
+        // {
+        //     SlotHolders[_currentSlotIndex].HeldItem?.OnChangingItems();
+        //     _currentSlotIndex = (_currentSlotIndex + 1) % SlotHolders.Count;
+        // }
 
-        else if (scroll > 0f)
-        {
-            SlotHolders[_currentSlotIndex].HeldItem?.OnChangingItems();
-            _currentSlotIndex = (_currentSlotIndex - 1 + SlotHolders.Count) % SlotHolders.Count;
-        }
+        // else if (scroll > 0f)
+        // {
+        //     SlotHolders[_currentSlotIndex].HeldItem?.OnChangingItems();
+        //     _currentSlotIndex = (_currentSlotIndex - 1 + SlotHolders.Count) % SlotHolders.Count;
+        // }
 
         // Number keys 1-9
         for (int i = 0; i < Mathf.Min(9, SlotHolders.Count); i++)

@@ -2360,6 +2360,7 @@ GameObject:
   - component: {fileID: 1220912757}
   - component: {fileID: 1220912756}
   - component: {fileID: 1220912758}
+  - component: {fileID: 1220912759}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -2583,6 +2584,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d61c408e15b5b449a7f34998ed321a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1220912759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1220912749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05ea151b5d3e6264886959c91fb8477f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  availableBuildings:
+  - {fileID: 4672705758764423680, guid: eb5a1959518683b478e9404e4ad333dc, type: 3}
+  - {fileID: 5240809725349178419, guid: 9c7d8e5ffbe09c84b9280a8727ff412a, type: 3}
+  - {fileID: 7405853830563566866, guid: 0fb8f734329208243a18121d476bcfb5, type: 3}
+  gridSize: 1
+  maxBuildDistance: 12
+  buildableLayers:
+    serializedVersion: 2
+    m_Bits: 9
+  rotationAngle: 45
+  sphereCastRadius: 0.1
+  snapDistance: 0.25
+  demolishLayers:
+    serializedVersion: 2
+    m_Bits: 265
+  demolishKey: 120
 --- !u!1 &1251166366
 GameObject:
   m_ObjectHideFlags: 0
