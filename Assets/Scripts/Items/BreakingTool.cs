@@ -6,11 +6,13 @@ public class BreakingTool : Item
 {
     [SerializeField] private BreakableType type;
     [SerializeField] private Animator animator;
+    [SerializeField] private int numberOfAnimations;
     [SerializeField] private float range = 2f, cooldown = 1f;
     [SerializeField] private int damage = 50;
     public int toughness = 1;
     private Transform cam;
     private bool canUse = true;
+    private int lastAnimationIndex = -1;
 
     void Start() 
     {
@@ -22,10 +24,28 @@ public class BreakingTool : Item
         if(!canUse)
             return;
 
-        //Play animation
+        int randomAnimation = GetRandomAnimationIndex();
+        animator.SetInteger("Numb", randomAnimation);
         animator.SetTrigger("Trigger");
+        
         canUse = false;
         DOVirtual.DelayedCall(cooldown, () => canUse = true);
+    }
+
+    private int GetRandomAnimationIndex()
+    {
+        if (numberOfAnimations <= 1)
+            return 1;
+
+        int randomIndex;
+        do
+        {
+            randomIndex = Random.Range(1, numberOfAnimations + 1);
+        }
+        while (randomIndex == lastAnimationIndex);
+
+        lastAnimationIndex = randomIndex;
+        return randomIndex;
     }
 
     public void Use()

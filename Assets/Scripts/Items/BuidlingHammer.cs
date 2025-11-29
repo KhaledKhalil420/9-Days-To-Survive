@@ -10,6 +10,7 @@ public class BuildingHammer : Item
     private Building currentBuildingComponent;
     private MeshFilter ghostMeshFilter;
     private Renderer ghostRenderer;
+    private Animator animator;
     
     //Building Selection
     private int selectedBuildingIndex;
@@ -37,6 +38,7 @@ public class BuildingHammer : Item
     private void Start()
     {
         mainCamera = PlayerLook.mainCamera.transform;
+        animator = GetComponent<Animator>();
     }
     
     private void LateUpdate()
@@ -63,12 +65,16 @@ public class BuildingHammer : Item
         if (Input.GetMouseButtonDown(0))
         {
             PlaceBuilding();
+
+            //Animation
+            animator.SetTrigger("Place");
         }
         
         //Demolish building
         if (Input.GetKeyDown(Keybinds.Key("Demolish")))
         {
             DemolishBuilding();
+            animator.SetTrigger("Demolish");
         }
     }
     
@@ -383,7 +389,6 @@ public class BuildingHammer : Item
 
     public override void OnChangingItems()
     {
-        Debug.Log("DDD");
         ghostRenderer = null;
         ghostMeshFilter = null;
         currentBuildingComponent = null;

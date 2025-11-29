@@ -111,8 +111,9 @@ MonoBehaviour:
   HeldQuantity: 1
   type: 1
   animator: {fileID: 1807523060306041998}
+  numberOfAnimations: 3
   range: 2
-  cooldown: 0.75
+  cooldown: 1
   damage: 1
   toughness: 1
 --- !u!95 &1807523060306041998
