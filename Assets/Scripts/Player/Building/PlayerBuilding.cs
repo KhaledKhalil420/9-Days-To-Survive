@@ -192,7 +192,7 @@ public class PlayerBuilding : MonoBehaviour
         
         //Move ghost to target position
         lastValidPosition = targetPosition;
-        ghostBuilding.transform.position = Vector3.Slerp(ghostBuilding.transform.position, lastValidPosition, Time.deltaTime * 60f);
+        ghostBuilding.transform.position = targetPosition;
         
         //Update visuals
         canPlaceBuilding = true;

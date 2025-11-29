@@ -2064,6 +2064,75 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 36c06f6c4b12faf41a645ee26575bc76, type: 2}
   m_BuildHeightMesh: 0
+--- !u!1001 &849146493
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: ec9199cf94111c44e9e986b85f699744, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ec9199cf94111c44e9e986b85f699744, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ec9199cf94111c44e9e986b85f699744, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ec9199cf94111c44e9e986b85f699744, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.9077296
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ec9199cf94111c44e9e986b85f699744, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.99
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ec9199cf94111c44e9e986b85f699744, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.31
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ec9199cf94111c44e9e986b85f699744, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071067
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ec9199cf94111c44e9e986b85f699744, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ec9199cf94111c44e9e986b85f699744, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ec9199cf94111c44e9e986b85f699744, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ec9199cf94111c44e9e986b85f699744, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ec9199cf94111c44e9e986b85f699744, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ec9199cf94111c44e9e986b85f699744, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ec9199cf94111c44e9e986b85f699744, type: 3}
+      propertyPath: m_Name
+      value: Wall_Door
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ec9199cf94111c44e9e986b85f699744, type: 3}
 --- !u!1 &854024631
 GameObject:
   m_ObjectHideFlags: 0
@@ -3021,6 +3090,7 @@ MonoBehaviour:
   - {fileID: 4672705758764423680, guid: eb5a1959518683b478e9404e4ad333dc, type: 3}
   - {fileID: 5240809725349178419, guid: 9c7d8e5ffbe09c84b9280a8727ff412a, type: 3}
   - {fileID: 7405853830563566866, guid: 0fb8f734329208243a18121d476bcfb5, type: 3}
+  - {fileID: 5240809725349178419, guid: 083f78e0846412a4587094eca104f2a3, type: 3}
   gridSize: 2
   maxBuildDistance: 4
   buildableLayers:
@@ -4691,3 +4761,4 @@ SceneRoots:
   - {fileID: 139603959}
   - {fileID: 751620327}
   - {fileID: 274035487}
+  - {fileID: 849146493}
