@@ -25,3 +25,7 @@ MonoBehaviour:
     Key: 324
   - Action: Use Alt 2
     Key: 325
+  - Action: Rotate
+    Key: 114
+  - Action: Demolish
+    Key: 324

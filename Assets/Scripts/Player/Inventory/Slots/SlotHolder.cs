@@ -7,6 +7,8 @@ public class SlotHolder : MonoBehaviour
     public Item HeldItem;
     public int HeldQuantity;
     public bool isSelected;
+    
+    private bool wasSelected;
 
     [SerializeField] private Image _itemIconImage;
     [SerializeField] private Image _slotBorderImage;
@@ -26,9 +28,16 @@ public class SlotHolder : MonoBehaviour
 
         if (HeldItem != null)
         {
-            HeldItem.OnSelect();
+            if (isSelected && !wasSelected)
+            {
+                HeldItem.OnSelect();
+                HeldItem.OnSelectOnce(); // I want it to update once unlike the one above that keeps updating
+            }
+            
             HeldItem.gameObject.SetActive(isSelected);
         }
+        
+        wasSelected = isSelected;
 
         _slotBorderImage.color = Color.Lerp(_slotBorderImage.color, isSelected ? selected : unselected, Time.deltaTime * 10f);
 
