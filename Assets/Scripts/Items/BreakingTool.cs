@@ -16,14 +16,16 @@ public class BreakingTool : Item
     private bool canUse = true;
     private int lastAnimationIndex = -1;
 
-    void Start() 
+    [SerializeField] private ParticleSystem hitParticlesPrefab;
+
+    void Start()
     {
         cam = PlayerLook.mainCamera.transform;
     }
 
     public override void OnUsing()
     {
-        if(!canUse)
+        if (!canUse)
             return;
 
         canUse = false;
@@ -31,7 +33,7 @@ public class BreakingTool : Item
         int randomAnimation = GetRandomAnimationIndex();
         animator.SetInteger("Numb", randomAnimation);
         animator.SetTrigger("Trigger");
-        
+
         Invoke(nameof(ResetCoolDown), cooldown);
     }
 
@@ -66,9 +68,37 @@ public class BreakingTool : Item
         if (!Physics.Raycast(cam.position, cam.forward, out var hit, range))
             return;
 
+        Renderer sourceRenderer = hit.transform.GetComponentInChildren<Renderer>();
+        Material sourceMat = sourceRenderer != null && sourceRenderer.sharedMaterial != null ? sourceRenderer.sharedMaterial : null;
+
         if (hit.transform.TryGetComponent<IBreakable>(out var damagable))
         {
             damagable.Damage(heldby, damage, type, toughness);
+
+            if (hitParticlesPrefab != null)
+                SpawnHitParticles(hit.point, hit.normal, sourceMat);
+        }
+    }
+
+    void SpawnHitParticles(Vector3 position, Vector3 normal, Material mat)
+    {
+        var go = Instantiate(hitParticlesPrefab.gameObject, position, Quaternion.LookRotation(normal));
+        var ps = go.GetComponent<ParticleSystem>();
+        var pr = go.GetComponent<ParticleSystemRenderer>();
+
+        if (mat != null && pr != null)
+            pr.material = mat;
+
+        if (ps != null)
+        {
+            var main = ps.main;
+            ps.Play();
+            float life = main.duration + (main.startLifetime.mode == ParticleSystemCurveMode.Constant ? main.startLifetime.constant : main.startLifetime.constantMax);
+            Destroy(go, life + 0.5f);
+        }
+        else
+        {
+            Destroy(go, 5f);
         }
     }
 
