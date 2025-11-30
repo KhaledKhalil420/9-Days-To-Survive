@@ -330,6 +330,7 @@ public class BuildingHammer : Item
         {
             if(!playerInventory.HasItem(ingredient.item, ingredient.quantity))
             {
+                Debug.Log("FALSE");
                 return false;
             }
         }

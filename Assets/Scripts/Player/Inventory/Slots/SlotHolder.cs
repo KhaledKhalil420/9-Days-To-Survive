@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +16,20 @@ public class SlotHolder : MonoBehaviour
     [SerializeField] private TMP_Text _itemQuantityText;
     [SerializeField] private Sprite _empty;
     [SerializeField] private Color unselected, selected;
+
+    private void Visuals()
+    {
+        if(isSelected)
+        {
+            transform.DOLocalRotate(new Vector3(0, 0, -2), 1);
+            transform.DOScale(new Vector3(1.15f, 1.15f, 1.15f), 1);
+        }
+        else
+        {
+            transform.DOLocalRotate(new Vector3(0, 0, 0), 1);
+            transform.DOScale(new Vector3(1, 1, 1), 1);
+        }
+    }
 
     public void UpdateSlot()
     {
@@ -45,6 +60,8 @@ public class SlotHolder : MonoBehaviour
         _itemQuantityText.text = HeldQuantity > 1 ? HeldQuantity.ToString() : "";
 
         _itemIconImage.sprite = HeldItem != null ? HeldItem.data.sprite : _empty;
+
+        Visuals();
     }
 
     public void ResetSlot()

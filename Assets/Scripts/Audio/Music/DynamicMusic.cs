@@ -3,7 +3,7 @@ using UnityEngine;
 public class DynamicMusic : MonoBehaviour
 {
     public static DynamicMusic instance;
-    public bool inDanger = false;
+    public bool toggle = false;
 
     [SerializeField] private AudioSource chillSource;
     [SerializeField] private AudioSource combatSource;
@@ -27,8 +27,8 @@ public class DynamicMusic : MonoBehaviour
     {
         if (chillSource == null || combatSource == null) return;
 
-        float chillTarget = inDanger ? 0f : 1f;
-        float combatTarget = inDanger ? 1f : 0f;
+        float chillTarget = toggle ? 0f : 1f;
+        float combatTarget = toggle ? 1f : 0f;
 
         chillSource.volume = Mathf.MoveTowards(chillSource.volume, chillTarget, fadeSpeed * Time.deltaTime);
         combatSource.volume = Mathf.MoveTowards(combatSource.volume, combatTarget, fadeSpeed * Time.deltaTime);
@@ -36,6 +36,6 @@ public class DynamicMusic : MonoBehaviour
 
     public static void InDanger(bool value)
     {
-        instance.inDanger = value;
+        instance.toggle = value;
     }
 }

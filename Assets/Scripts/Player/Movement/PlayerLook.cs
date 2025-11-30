@@ -13,6 +13,7 @@ public class PlayerLook : MonoBehaviour
 
     public static Camera mainCamera;
     public Camera _mainCamera;
+    [SerializeField] private LayerMask unRenderableLayers;
 
     public void Awake()
     {
@@ -24,6 +25,7 @@ public class PlayerLook : MonoBehaviour
 
         _mainCamera.enabled = true;
         _mainCamera.tag = "MainCamera";
+        _mainCamera.cullingMask = ~unRenderableLayers;
 
         mainCamera = _mainCamera;
 

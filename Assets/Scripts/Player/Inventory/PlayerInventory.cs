@@ -23,6 +23,11 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private int additionalSlots = 0;
     private PlayerInteract interact;
 
+    [Header("Pickup UI")]
+    public GameObject pickedUpUIPrefab;
+    public Transform pickedUpUIParent;
+    Dictionary<string, UiPickedUpItemInfo> activePickedUpUIs = new();
+
     void Awake()
     {
         instance = this;
@@ -54,8 +59,11 @@ public class PlayerInventory : MonoBehaviour
         if (FindSameTypeSlot(item, out SlotHolder sameTypeSlot) != null)
         {
             sameTypeSlot.HeldQuantity += item.HeldQuantity;
+            int added = item.HeldQuantity;
             Destroy(item.gameObject);
             sameTypeSlot.UpdateSlot();
+
+            SpawnPickedUpUI(item.data, added);
         }
 
         else if (FindNearestEmptySlot(out SlotHolder emptySlot) != null)
@@ -65,7 +73,11 @@ public class PlayerInventory : MonoBehaviour
             item.heldby = gameObject;
             item.SetItemParent(hand);
             emptySlot.UpdateSlot();
+
+            SpawnPickedUpUI(item.data, item.HeldQuantity);
         }
+
+        UpdateSlots();
     }
 
     public void GiveItem(Item item, out bool given)
@@ -73,8 +85,11 @@ public class PlayerInventory : MonoBehaviour
         if (FindSameTypeSlot(item, out SlotHolder sameTypeSlot) != null)
         {
             sameTypeSlot.HeldQuantity += item.HeldQuantity;
+            int added = item.HeldQuantity;
             Destroy(item.gameObject);
             sameTypeSlot.UpdateSlot();
+
+            SpawnPickedUpUI(item.data, added);
 
             given = true;
         }
@@ -86,6 +101,8 @@ public class PlayerInventory : MonoBehaviour
             item.heldby = gameObject;
             item.SetItemParent(hand);
             emptySlot.UpdateSlot();
+
+            SpawnPickedUpUI(item.data, item.HeldQuantity);
 
             given = true;
         }
@@ -94,6 +111,8 @@ public class PlayerInventory : MonoBehaviour
         {
             given = false;
         }
+
+        UpdateSlots();
     }
 
     public void TakeItem(Item item, int quantity, out bool wasTaken)
@@ -109,7 +128,6 @@ public class PlayerInventory : MonoBehaviour
         {
             wasTaken = false;
         }
-
 
         UpdateSlots();
     }
@@ -136,10 +154,10 @@ public class PlayerInventory : MonoBehaviour
                 if (hit.transform.TryGetComponent(out Item item))
                 {
                     GiveItem(item, out bool wasGiven);
-                    
-                    if(wasGiven)
+
+                    if (wasGiven)
                     {
-                        
+
                     }
                 }
             }
@@ -407,7 +425,7 @@ public class PlayerInventory : MonoBehaviour
         SlotHolders.Add(slot);
         UpdateSlots();
     }
-    
+
     public void AddInventorySlot()
     {
         SlotHolder slot = Instantiate(slotPrefab, slotParent).GetComponent<SlotHolder>();
@@ -418,4 +436,35 @@ public class PlayerInventory : MonoBehaviour
     }
 
     #endregion
+
+    void SpawnPickedUpUI(ItemData itemData, int amount)
+    {
+        if (pickedUpUIPrefab == null) return;
+        if (itemData == null) return;
+
+        string key = itemData.Name;
+
+        if (activePickedUpUIs.TryGetValue(key, out var existing))
+        {
+            existing.AddQuantity(amount);
+            return;
+        }
+
+        var go = Instantiate(pickedUpUIPrefab, pickedUpUIParent);
+        var info = go.GetComponent<UiPickedUpItemInfo>();
+        if (info == null)
+        {
+            Destroy(go);
+            return;
+        }
+
+        info.Init(itemData, amount);
+        info.onFinished = () =>
+        {
+            if (activePickedUpUIs.ContainsKey(key))
+                activePickedUpUIs.Remove(key);
+        };
+
+        activePickedUpUIs[key] = info;
+    }
 }
