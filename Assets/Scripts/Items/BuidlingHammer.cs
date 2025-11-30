@@ -200,7 +200,7 @@ public class BuildingHammer : Item
         
         //Move ghost to target position
         lastValidPosition = targetPosition;
-        ghostBuilding.transform.position = targetPosition;
+        ghostBuilding.transform.position = lastValidPosition;
         
         //Update visuals
         canPlaceBuilding = true;

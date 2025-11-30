@@ -1,3 +1,4 @@
+using EZCameraShake;
 using UnityEngine;
 
 public class Tree : Breakable
@@ -16,6 +17,8 @@ public class Tree : Breakable
 
         if(!wasGiven) 
             Destroy(gameObject);
+
+        CameraShaker.Instance?.ShakeOnce(6, 3, 0f, 1f);
     }
 
     public override void OnDestroyed()

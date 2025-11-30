@@ -24,12 +24,23 @@ public class BreakingTool : Item
         if(!canUse)
             return;
 
+        canUse = false;
+
         int randomAnimation = GetRandomAnimationIndex();
         animator.SetInteger("Numb", randomAnimation);
         animator.SetTrigger("Trigger");
         
-        canUse = false;
-        DOVirtual.DelayedCall(cooldown, () => canUse = true);
+        Invoke(nameof(ResetCoolDown), cooldown);
+    }
+
+    public void ResetCoolDown()
+    {
+        canUse = true;
+    }
+
+    public override void OnStoppingUse()
+    {
+        animator.ResetTrigger("Trigger");
     }
 
     private int GetRandomAnimationIndex()
