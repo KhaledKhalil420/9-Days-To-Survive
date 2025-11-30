@@ -1,9 +1,11 @@
 using DG.Tweening;
 using EZCameraShake;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class BreakingTool : Item
 {
+    [SerializeField] private AudioSource source;
     [SerializeField] private BreakableType type;
     [SerializeField] private Animator animator;
     [SerializeField] private int numberOfAnimations;
@@ -68,5 +70,10 @@ public class BreakingTool : Item
         {
             damagable.Damage(heldby, damage, type, toughness);
         }
+    }
+
+    public void Play()
+    {
+        source.Play();
     }
 }

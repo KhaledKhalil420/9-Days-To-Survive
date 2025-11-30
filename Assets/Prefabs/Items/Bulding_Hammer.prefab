@@ -116,7 +116,7 @@ MonoBehaviour:
   buildableLayers:
     serializedVersion: 2
     m_Bits: 9
-  rotationAngle: 45
+  rotationAngle: 45.05
   sphereCastRadius: 0.1
   snapDistance: 1
   demolishLayers:

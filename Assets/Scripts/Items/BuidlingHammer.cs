@@ -20,7 +20,7 @@ public class BuildingHammer : Item
     public int gridSize = 2;
     public float maxBuildDistance = 12f;
     public LayerMask buildableLayers;
-    public int rotationAngle = 45;
+    public float rotationAngle = 45;
     
     [Header("Snapping Settings")]
     public float sphereCastRadius = 1.5f; 
@@ -31,7 +31,7 @@ public class BuildingHammer : Item
     public KeyCode demolishKey = KeyCode.X;
     
     //Internal State
-    private int currentRotation = 0;
+    private float currentRotation = 0;
     private bool canPlaceBuilding = false;
     private Vector3 lastValidPosition;
         
@@ -109,6 +109,12 @@ public class BuildingHammer : Item
     private void RotateBuilding()
     {
         currentRotation -= rotationAngle;
+        
+        //Wrap rotation to stay between 0-360
+        if(currentRotation <= -360f)
+            currentRotation += 360f;
+        else if(currentRotation >= 360f)
+            currentRotation -= 360f;
     }
     
     #endregion
@@ -168,8 +174,8 @@ public class BuildingHammer : Item
             return;
         
         //Apply current rotation
-        
         ghostBuilding.transform.rotation = Quaternion.Lerp(ghostBuilding.transform.rotation, Quaternion.Euler(0f, currentRotation, 0f), Time.deltaTime * 30f);        
+        
         //Use SphereCast (I fucking used it to make it easier to snap to pivots)
         RaycastHit hitInfo;
         bool hitSomething = Physics.SphereCast(
@@ -315,14 +321,62 @@ public class BuildingHammer : Item
     #endregion
 
     #region Building Placement
+
+    private bool TakeResources()
+    {
+        PlayerInventory playerInventory = heldby.GetComponent<PlayerInventory>();
+
+        foreach (Ingredient ingredient in availableBuildings[selectedBuildingIndex].ingredient)
+        {
+            if(!playerInventory.HasItem(ingredient.item, ingredient.quantity))
+            {
+                return false;
+            }
+        }
+
+       foreach (Ingredient ingredient in availableBuildings[selectedBuildingIndex].ingredient)
+        {
+            playerInventory.TakeItem(ingredient.item, ingredient.quantity, out bool wasTaken);
+        }
+
+        return true;
+    }
+
+
+    private bool RefundResources()
+    {
+        PlayerInventory playerInventory = heldby.GetComponent<PlayerInventory>();
+
+        foreach (Ingredient ingredient in availableBuildings[selectedBuildingIndex].ingredient)
+        {
+            Item item = Instantiate(ingredient.item).GetComponent<Item>();
+            item.HeldQuantity = ingredient.quantity;
+
+            playerInventory.GiveItem(item, out bool wasTaken);
+            if(wasTaken)
+            {
+                return true;
+            }
+            else
+            {
+                Destroy(item);
+                return false;
+            }
+        }
+
+        return false;
+    }
     
     private void PlaceBuilding()
     {
         if (!canPlaceBuilding || ghostBuilding == null)
             return;
         
-        // TODO: Check if player has required materials
-        // if (!PlayerHasRequiredMaterials()) return;
+        if(!TakeResources())
+        {
+            return;
+        }
+        
         
         //Spawn building
         GameObject newBuilding = Instantiate(
@@ -356,6 +410,11 @@ public class BuildingHammer : Item
 
     private void DemolishBuilding()
     {
+        if(!RefundResources())
+        {
+            return;
+        }
+
         //Use SphereCast for demolishing too (I love it goddamn it)
         RaycastHit hitInfo;
         bool hitSomething = Physics.SphereCast(
@@ -366,6 +425,7 @@ public class BuildingHammer : Item
             maxBuildDistance,
             demolishLayers
         );
+
         
         if (!hitSomething)
             return;
@@ -377,9 +437,6 @@ public class BuildingHammer : Item
         Building buildingToDemolish = hitInfo.collider.GetComponent<Building>();
         if (buildingToDemolish == null)
             return;
-        
-        // TODO: Refund materials to player
-        // PlayerInventory.GiveItem(buildingRefund);
                 
         // Destroy the building
         Destroy(hitInfo.collider.gameObject);
