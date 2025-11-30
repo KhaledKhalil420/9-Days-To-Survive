@@ -157,7 +157,7 @@ public class PlayerInventory : MonoBehaviour
 
                     if (wasGiven)
                     {
-
+                        AudioManager.instance.PlaySound("Pickup", 0.9f, 1.1f);
                     }
                 }
             }
@@ -400,9 +400,12 @@ public class PlayerInventory : MonoBehaviour
 
     public bool HasItem(Item item, int quantity)
     {
+        UpdateSlots();
+
         foreach (var slot in SlotHolders)
         {
-            if (slot.HeldItem?.data == item.data && slot.HeldItem.HeldQuantity >= quantity)
+            if(slot.HeldItem != null)
+            if (slot.HeldItem.data == item.data && slot.HeldItem.HeldQuantity >= quantity)
             {
                 return true;
             }

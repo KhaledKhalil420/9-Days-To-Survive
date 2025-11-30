@@ -407,6 +407,9 @@ public class BuildingHammer : Item
             buildingMaterial.color = solidColor;
             buildingRenderer.material = buildingMaterial;
         }
+
+        //Sound
+        AudioManager.instance.PlaySound("Build", 0.9f, 1.25f);
     }
 
     private void DemolishBuilding()
@@ -440,8 +443,12 @@ public class BuildingHammer : Item
         {
             return;
         }
+
         // Destroy the building
         Destroy(hitInfo.collider.gameObject);
+
+        //Sound
+        AudioManager.instance.PlaySound("Demolish", 0.9f, 1.25f);
     }
 
     #endregion

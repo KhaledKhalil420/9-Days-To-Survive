@@ -43,6 +43,8 @@ public class SlotHolder : MonoBehaviour
 
         if (HeldItem != null)
         {
+            HeldItem.HeldQuantity = HeldQuantity;
+            
             if (isSelected && !wasSelected)
             {
                 HeldItem.OnSelect();
