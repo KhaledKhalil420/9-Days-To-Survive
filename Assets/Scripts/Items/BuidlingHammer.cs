@@ -410,10 +410,6 @@ public class BuildingHammer : Item
 
     private void DemolishBuilding()
     {
-        if(!RefundResources())
-        {
-            return;
-        }
 
         //Use SphereCast for demolishing too (I love it goddamn it)
         RaycastHit hitInfo;
@@ -438,6 +434,11 @@ public class BuildingHammer : Item
         if (buildingToDemolish == null)
             return;
                 
+        
+        if(!RefundResources())
+        {
+            return;
+        }
         // Destroy the building
         Destroy(hitInfo.collider.gameObject);
     }

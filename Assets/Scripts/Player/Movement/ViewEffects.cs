@@ -22,6 +22,7 @@ public struct BobSettings
     [Tooltip("Amount of vertical bob while walking")]
     public float walkBobAmount;
     [Tooltip("How much faster/stronger bobbing is while sprinting")]
+    public float walkBobAmountMultiplier;
     public float sprintMultiplier;
 
     [Header("Bob Smoothing")]
@@ -99,23 +100,37 @@ public class ViewEffects : MonoBehaviour
         if (movement.moveDir.magnitude > 0f && movement.IsGrounded())
         {
             float speedMultiplier = movement.isRunning ? Bob.sprintMultiplier : 1f;
+            float amountMultiplier = Bob.walkBobAmountMultiplier; // <— NEW
+    
             Bob.timer += Time.deltaTime * Bob.walkBobSpeed * speedMultiplier;
-            float targetBob = Mathf.Sin(Bob.timer) * Bob.walkBobAmount * speedMultiplier;
-            Bob.currentBob = Mathf.Lerp(Bob.currentBob, targetBob, Time.deltaTime * Bob.smoothSpeed);
+    
+            float targetBob =
+                Mathf.Sin(Bob.timer) *
+                Bob.walkBobAmount *
+                amountMultiplier *
+                speedMultiplier;
+    
+            Bob.currentBob = Mathf.Lerp(
+                Bob.currentBob,
+                targetBob,
+                Time.deltaTime * Bob.smoothSpeed
+            );
         }
         else
         {
             Bob.timer = 0f;
-            Bob.currentBob = Mathf.Lerp(Bob.currentBob, 0f, Time.deltaTime * Bob.smoothSpeed);
+            Bob.currentBob = Mathf.Lerp(
+                Bob.currentBob,
+                0f,
+                Time.deltaTime * Bob.smoothSpeed
+            );
         }
-
-        Vector3 newPosition = new Vector3(
+    
+        transform.localPosition = new Vector3(
             _startPos.x,
             _startPos.y + Bob.currentBob + _landingOffset,
             _startPos.z
         );
-
-        transform.localPosition = newPosition;
     }
 
     private float _targetLandingOffset;
