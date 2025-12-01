@@ -1,6 +1,3 @@
-using DG.Tweening;
-using EZCameraShake;
-using JetBrains.Annotations;
 using UnityEngine;
 
 public class BreakingTool : Item
@@ -11,6 +8,7 @@ public class BreakingTool : Item
     [SerializeField] private int numberOfAnimations;
     [SerializeField] private float range = 2f, cooldown = 1f;
     [SerializeField] private int damage = 50;
+    [SerializeField] private Texture sphereIcon;
     public int toughness = 1;
     private Transform cam;
     private bool canUse = true;
@@ -86,8 +84,11 @@ public class BreakingTool : Item
         var ps = go.GetComponent<ParticleSystem>();
         var pr = go.GetComponent<ParticleSystemRenderer>();
 
-        if (mat != null && pr != null)
-            pr.material = mat;
+        pr.material = mat;
+        pr.material.mainTexture = sphereIcon;
+        mat.EnableKeyword("_ALPHATEST_ON"); 
+        mat.SetFloat("_Cutoff", 0.805f); 
+
 
         if (ps != null)
         {

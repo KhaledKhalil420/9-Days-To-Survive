@@ -157,7 +157,7 @@ public class PlayerInventory : MonoBehaviour
 
                     if (wasGiven)
                     {
-                        AudioManager.instance.PlaySound("Pickup", 0.9f, 1.1f);
+                        AudioManager.Instance.PlaySound("Pickup", 0.9f, 1.1f);
                     }
                 }
             }
@@ -389,7 +389,7 @@ public class PlayerInventory : MonoBehaviour
     {
         foreach (var slot in SlotHolders)
         {
-            if (slot.HeldItem?.data == item.data)
+            if (slot.HeldItem != null ? slot.HeldItem.data : null == item.data)
             {
                 return true;
             }

@@ -71,8 +71,8 @@ MeshRenderer:
   m_Materials:
   - {fileID: 2100000, guid: 5eccb8fabc0ea9b43b6e564515e6bee1, type: 2}
   - {fileID: 2100000, guid: be76c53eef1cbef4c92d6709bcd43cb4, type: 2}
+  - {fileID: 2100000, guid: be76c53eef1cbef4c92d6709bcd43cb4, type: 2}
   - {fileID: 2100000, guid: c410222d190d3ca46b6995feb390a8a9, type: 2}
-  - {fileID: 2100000, guid: 5d13b59aa05d68b45a42bbb84f49fb0c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -117,7 +117,9 @@ MonoBehaviour:
   range: 2
   cooldown: 1
   damage: 1
+  sphereIcon: {fileID: 10912, guid: 0000000000000000f000000000000000, type: 0}
   toughness: 1
+  hitParticlesPrefab: {fileID: 0}
 --- !u!95 &3186081879522739102
 Animator:
   serializedVersion: 7

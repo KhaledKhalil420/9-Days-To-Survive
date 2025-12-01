@@ -28,7 +28,6 @@ public class BuildingHammer : Item
     
     [Header("Demolish Settings")]
     public LayerMask demolishLayers;
-    public KeyCode demolishKey = KeyCode.X;
     
     //Internal State
     private float currentRotation = 0;
@@ -145,12 +144,26 @@ public class BuildingHammer : Item
         ghostMeshFilter = ghostBuilding.GetComponent<MeshFilter>();
         ghostRenderer = ghostBuilding.GetComponent<Renderer>();
         
-        //Make material semi-transparent
-        Material ghostMaterial = ghostRenderer.material;
-        Color ghostColor = ghostMaterial.color;
-        ghostColor.a = 0.5f; // 50% transparent
-        ghostMaterial.color = ghostColor;
-        ghostRenderer.material = ghostMaterial;
+        //Make parent material semi-transparent
+        if(ghostRenderer != null)
+        {
+            Material ghostMaterial = ghostRenderer.material;
+            Color ghostColor = ghostMaterial.color;
+            ghostColor.a = 0.5f; // 50% transparent
+            ghostMaterial.color = ghostColor;
+            ghostRenderer.material = ghostMaterial;
+        }
+        
+        //Make all children materials semi-transparent too
+        Renderer[] allRenderers = ghostBuilding.GetComponentsInChildren<Renderer>();
+        foreach (Renderer renderer in allRenderers)
+        {
+            Material childMaterial = renderer.material;
+            Color childColor = childMaterial.color;
+            childColor.a = 0.5f; // 50% transparent
+            childMaterial.color = childColor;
+            renderer.material = childMaterial;
+        }
         
         //Scale to grid size
         ghostBuilding.transform.localScale = Vector3.one * gridSize;
@@ -311,11 +324,26 @@ public class BuildingHammer : Item
     
     private void UpdateGhostColor()
     {
-        Material ghostMaterial = ghostRenderer.material;
-        Color newColor = canPlaceBuilding ? Color.green : Color.red;
-        newColor.a = 0.5f;
-        ghostMaterial.color = newColor;
-        ghostRenderer.material = ghostMaterial;
+        //Update parent color
+        if(ghostRenderer != null)
+        {
+            Material ghostMaterial = ghostRenderer.material;
+            Color newColor = canPlaceBuilding ? Color.green : Color.red;
+            newColor.a = 0.5f;
+            ghostMaterial.color = newColor;
+            ghostRenderer.material = ghostMaterial;
+        }
+        
+        //Update all children colors
+        Renderer[] allRenderers = ghostBuilding.GetComponentsInChildren<Renderer>();
+        foreach (Renderer renderer in allRenderers)
+        {
+            Material childMaterial = renderer.material;
+            Color newColor = canPlaceBuilding ? Color.green : Color.red;
+            newColor.a = 0.5f;
+            childMaterial.color = newColor;
+            renderer.material = childMaterial;
+        }
     }
     
     #endregion
@@ -409,7 +437,7 @@ public class BuildingHammer : Item
         }
 
         //Sound
-        AudioManager.instance.PlaySound("Build", 0.9f, 1.25f);
+        AudioManager.Instance?.PlaySound("Build", 0.9f, 1.25f);
     }
 
     private void DemolishBuilding()
@@ -436,7 +464,13 @@ public class BuildingHammer : Item
         //Get the building component
         Building buildingToDemolish = hitInfo.collider.GetComponent<Building>();
         if (buildingToDemolish == null)
-            return;
+        {
+            Building buildingToDemolishParent = hitInfo.collider.GetComponentInParent<Building>();
+            if(buildingToDemolishParent == null)
+            {
+                return;
+            }
+        }
                 
         
         if(!RefundResources())
@@ -448,7 +482,7 @@ public class BuildingHammer : Item
         Destroy(hitInfo.collider.gameObject);
 
         //Sound
-        AudioManager.instance.PlaySound("Demolish", 0.9f, 1.25f);
+        AudioManager.Instance?.PlaySound("Demolish", 0.9f, 1.25f);
     }
 
     #endregion

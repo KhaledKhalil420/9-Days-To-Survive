@@ -13,7 +13,7 @@ public struct Sounds
 [System.Serializable]
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager instance { get; private set; }
+    public static AudioManager Instance { get; private set; }
     [SerializeField] private Sounds s;
     public bool startFadeIn;
     public AudioMixerGroup musicMixerGroup, soundEffectMixerGroup, masterMixerGroup;
@@ -26,9 +26,9 @@ public class AudioManager : MonoBehaviour
     {
         transform.parent = null;
         
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else

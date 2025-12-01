@@ -111,6 +111,7 @@ MonoBehaviour:
   - {fileID: 7405853830563566866, guid: 0fb8f734329208243a18121d476bcfb5, type: 3}
   - {fileID: 5240809725349178419, guid: 9c7d8e5ffbe09c84b9280a8727ff412a, type: 3}
   - {fileID: 5240809725349178419, guid: 083f78e0846412a4587094eca104f2a3, type: 3}
+  - {fileID: 5240809725349178419, guid: d36053dcc2757d44cb2ce8fc28553b16, type: 3}
   gridSize: 2
   maxBuildDistance: 4
   buildableLayers:
@@ -121,7 +122,7 @@ MonoBehaviour:
   snapDistance: 1
   demolishLayers:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 129
   demolishKey: 120
 --- !u!95 &1807523060306041998
 Animator:

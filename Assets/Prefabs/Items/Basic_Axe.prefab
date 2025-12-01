@@ -117,7 +117,9 @@ MonoBehaviour:
   range: 2
   cooldown: 1
   damage: 1
+  sphereIcon: {fileID: 10912, guid: 0000000000000000f000000000000000, type: 0}
   toughness: 1
+  hitParticlesPrefab: {fileID: 0}
 --- !u!95 &1807523060306041998
 Animator:
   serializedVersion: 7

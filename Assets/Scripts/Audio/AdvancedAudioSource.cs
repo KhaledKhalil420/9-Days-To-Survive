@@ -71,15 +71,15 @@ public class AdvancedAudioSource : MonoBehaviour
         switch (type)
         {
             case SourceType.SoundEffect:
-            audioSource.outputAudioMixerGroup = AudioManager.instance.soundEffectMixerGroup;
+            audioSource.outputAudioMixerGroup = AudioManager.Instance.soundEffectMixerGroup;
             break;
 
             case SourceType.Music:
-            audioSource.outputAudioMixerGroup = AudioManager.instance.musicMixerGroup;
+            audioSource.outputAudioMixerGroup = AudioManager.Instance.musicMixerGroup;
             break;
 
             case SourceType.Master:
-            audioSource.outputAudioMixerGroup = AudioManager.instance.masterMixerGroup;
+            audioSource.outputAudioMixerGroup = AudioManager.Instance.masterMixerGroup;
             break;
         }
     }

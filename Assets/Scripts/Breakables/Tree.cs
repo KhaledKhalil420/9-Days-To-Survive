@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Tree : Breakable
 {
-    [SerializeField] private int givenQuantityOnHit;
+    [SerializeField] private int givenQuantityOnHitMin, givenQuantityOnHitMax;
 
     public override void OnDamage(GameObject sender)
     {
@@ -11,7 +11,7 @@ public class Tree : Breakable
         PlayerInventory playerInventory = sender.GetComponent<PlayerInventory>();
 
         Item givenItem = Instantiate(item.gameObject).GetComponent<Item>();
-        givenItem.HeldQuantity = givenQuantityOnHit;
+        givenItem.HeldQuantity = Random.Range(givenQuantityOnHitMin, givenQuantityOnHitMax);
 
         playerInventory.GiveItem(givenItem, out bool wasGiven);
 
