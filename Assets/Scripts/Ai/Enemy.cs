@@ -1,12 +1,14 @@
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 
 public class Enemy : MonoBehaviour
 {
     [Header("Pathfinding")]
     [SerializeField] private NavMeshAgent agent;
-    [SerializeField] private Transform target;
+    [SerializeField] internal Transform target;
     [SerializeField] private float detectionSize;
     [SerializeField] private LayerMask unDetectableLayers;
     private int secondInterval = 0;
@@ -28,6 +30,7 @@ public class Enemy : MonoBehaviour
 
     private void UpdatePath()
     {
+        OnUpdate();
         //Try finding a target
         if (target == null) 
         DetectTargets();

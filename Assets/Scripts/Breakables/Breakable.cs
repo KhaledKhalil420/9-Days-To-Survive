@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum BreakableType {Pickaxe, Axe, Else}
+public enum BreakableType {Pickaxe, Axe, Else, Buildings}
 public class Breakable : MonoBehaviour, IBreakable
 {
     [SerializeField] private AudioSource source;

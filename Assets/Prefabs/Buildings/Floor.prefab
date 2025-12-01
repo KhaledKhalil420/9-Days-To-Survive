@@ -137,6 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c66d7b0a543924341978aa544ef271ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startingHealth: 5
   ingredient:
   - item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
     quantity: 5
