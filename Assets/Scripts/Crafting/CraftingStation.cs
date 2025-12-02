@@ -69,7 +69,7 @@ public class CraftingStation : MonoBehaviour
             
             IngredientUi ingredientUi = Instantiate(ingredientPrefab, uiHolder).GetComponent<IngredientUi>();
             ingredientUi.image.sprite = ingredient.item.data.sprite;
-            ingredientUi.text.text = ingredient.item.data.discription;
+            ingredientUi.text.text = ingredient.quantity.ToString();
 
             tempUI.Add(ingredientUi.gameObject);
         }

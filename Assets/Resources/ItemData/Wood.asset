@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffd50b6854d668d4497f11ffcca44bd4, type: 3}
-  m_Name: Test 1
+  m_Name: Wood
   m_EditorClassIdentifier: 
-  Name: Stone
-  sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
-  prefab: {fileID: 5291154456772646634, guid: fe9c3c058d529bd40b6baf028d26f683, type: 3}
-  discription: Duck You
+  Name: Wood
+  sprite: {fileID: 21300000, guid: eba10a10e9d1e374a8ff85deb368a76b, type: 3}
+  prefab: {fileID: 5291154456772646634, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
+  discription: It's Wood
