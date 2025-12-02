@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd50b6854d668d4497f11ffcca44bd4, type: 3}
   m_Name: Test
   m_EditorClassIdentifier: 
-  Name: Test
+  Name: Wood
   sprite: {fileID: 21300000, guid: ef28e052eb0cf2b4d83b29a1e058be08, type: 3}
   prefab: {fileID: 5291154456772646634, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
   discription: Fuck you

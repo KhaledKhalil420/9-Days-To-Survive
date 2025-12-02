@@ -10,6 +10,7 @@ public class AdvancedAudioSource : MonoBehaviour
 
     [Header("Source Data")]
     public AudioClip[] clipsOnAwake;
+    public AudioClip[] playClips;
     public enum SourceType {None, SoundEffect, Music, Master} public SourceType type;
 
     [Header("Source Effects")]
@@ -54,6 +55,22 @@ public class AdvancedAudioSource : MonoBehaviour
     #region AudioSource Methods
 
     public void Play() => audioSource.Play();
+    public void Play(bool useMultipleClips)
+    {
+        if(!useMultipleClips) return;
+
+        audioSource.clip = playClips[UnityEngine.Random.Range(0, playClips.Length)];
+        audioSource.Play();
+    }
+
+    public void Play(bool useMultipleClips, float pitchMin, float pitchMax)
+    {
+        if(!useMultipleClips) return;
+        
+        audioSource.pitch = UnityEngine.Random.Range(pitchMin, pitchMax);
+        audioSource.clip = playClips[UnityEngine.Random.Range(0, playClips.Length)];
+        audioSource.Play();
+    }
     public void Stop() => audioSource.Stop();
     public void Pause() => audioSource.Pause();
     public void UnPause() => audioSource.UnPause();

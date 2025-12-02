@@ -3,7 +3,7 @@ using UnityEngine;
 public enum BreakableType {Pickaxe, Axe, Else, Buildings}
 public class Breakable : MonoBehaviour, IBreakable
 {
-    [SerializeField] private AudioSource source;
+    [SerializeField] private AdvancedAudioSource source;
     [SerializeField] private BreakableType requiredTool;
     [SerializeField] private int toughness, health;
     [SerializeField] protected Item item;
@@ -11,7 +11,7 @@ public class Breakable : MonoBehaviour, IBreakable
 
     private void Start()
     {
-        source = GetComponent<AudioSource>();
+        source = GetComponent<AdvancedAudioSource>();
     }
 
     public void Damage(GameObject sender, int damage, BreakableType _type, int _toughness)
@@ -23,8 +23,7 @@ public class Breakable : MonoBehaviour, IBreakable
         
         OnDamage(sender);
 
-        source.pitch = Random.Range(0.85f, 1.25f);
-        source?.Play();
+        source.Play(true, 0.9f, 1.25f);
 
         if(health <= 0)
         {

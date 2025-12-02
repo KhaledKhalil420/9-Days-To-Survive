@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 86524081861036210}
   - component: {fileID: 789964070537936751}
   - component: {fileID: 1998692805790846681}
-  m_Layer: 0
-  m_Name: Test
+  m_Layer: 6
+  m_Name: Stone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 090bfbfe08aac1443b59e7650e30c214, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 392954726db508e498803a9b5979026f, type: 2}
+  data: {fileID: 11400000, guid: 186a097f348161a41b3df3d88653cc4a, type: 2}
   isSingleQuantityItem: 0
   HeldQuantity: 15
 --- !u!54 &1998692805790846681
