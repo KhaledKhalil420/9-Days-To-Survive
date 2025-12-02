@@ -9,6 +9,11 @@ public class Breakable : MonoBehaviour, IBreakable
     [SerializeField] protected Item item;
     private GameObject sender;
 
+    private void Start()
+    {
+        source = GetComponent<AudioSource>();
+    }
+
     public void Damage(GameObject sender, int damage, BreakableType _type, int _toughness)
     {
         if(requiredTool != _type) return;

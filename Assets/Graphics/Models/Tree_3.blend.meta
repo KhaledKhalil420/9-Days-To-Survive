@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b7e0365b1d83e604ab08b6bdbfb46c60
+guid: b1c586bccb5561343a95a178d446ee76
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -68,13 +68,13 @@ ModelImporter:
     useFileScale: 1
     strictVertexDataChecks: 0
   tangentSpace:
-    normalSmoothAngle: 180
-    normalImportMode: 1
-    tangentImportMode: 1
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 2
+    normalSmoothingSource: 0
   referencedClips: []
   importAnimation: 1
   humanDescription:
