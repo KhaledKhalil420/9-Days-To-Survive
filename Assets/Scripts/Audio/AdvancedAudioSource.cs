@@ -85,6 +85,9 @@ public class AdvancedAudioSource : MonoBehaviour
         if(audioSource.playOnAwake)
         audioSource.Play();
 
+        if(audioSource == null || AudioManager.Instance == null) 
+            return;
+            
         switch (type)
         {
             case SourceType.SoundEffect:

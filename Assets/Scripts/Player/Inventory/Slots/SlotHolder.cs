@@ -45,12 +45,17 @@ public class SlotHolder : MonoBehaviour
         {
             HeldItem.HeldQuantity = HeldQuantity;
             
-            if (isSelected && !wasSelected)
+            if (isSelected)
             {
                 HeldItem.OnSelect();
-                HeldItem.OnSelectOnce(); // I want it to update once unlike the one above that keeps updating
+
+                if(!wasSelected)
+                {
+                    HeldItem.OnSelectOnce();
+                }
             }
-            
+
+            HeldItem.isSelected = isSelected;
             HeldItem.gameObject.SetActive(isSelected);
         }
         
@@ -68,6 +73,7 @@ public class SlotHolder : MonoBehaviour
 
     public void ResetSlot()
     {
+        HeldItem.isSelected = false;
         HeldQuantity = 0;
         HeldItem = null;
         UpdateSlot();

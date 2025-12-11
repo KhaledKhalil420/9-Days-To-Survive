@@ -521,6 +521,7 @@ public class BuildingHammer : Item
     }
 
     #endregion
+
     public override void OnChangingItems()
     {
         canvasParent.gameObject.SetActive(false);
@@ -528,11 +529,17 @@ public class BuildingHammer : Item
         ghostMeshFilter = null;
         currentBuildingComponent = null;
         Destroy(ghostBuilding);
+
+        if(isSelected) OnSelect();
+    }
+
+    public override void OnSelect()
+    {
+        canvasParent.gameObject.SetActive(true);
     }
 
     public override void OnSelectOnce()
     {
-        canvasParent.gameObject.SetActive(true);
         SpawnNewGhostBuilding();
     }
 }

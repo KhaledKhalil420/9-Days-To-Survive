@@ -18,6 +18,7 @@ public class PlayerInventory : MonoBehaviour
     public TMP_Text heldItemDisplayText;
     internal SlotHolder selectedSlot;
     private Transform _camera;
+    private int lastSelectedSlot;
 
     [SerializeField] private Transform hand;
     [SerializeField] private int additionalSlots = 0;
@@ -157,7 +158,7 @@ public class PlayerInventory : MonoBehaviour
 
                     if (wasGiven)
                     {
-                        AudioManager.Instance.PlaySound("Pickup", 0.9f, 1.1f);
+                        AudioManager.Instance?.PlaySound("Pickup", 0.9f, 1.1f);
                     }
                 }
             }
@@ -186,8 +187,8 @@ public class PlayerInventory : MonoBehaviour
                 if (heldItem.TryGetComponent(out Animator animator))
                     animator.enabled = false;
 
-                heldItem.OnChangingItems();
                 selectedSlot.ResetSlot();
+                heldItem.OnChangingItems();
             }
 
             UpdateSlots();
@@ -269,6 +270,8 @@ public class PlayerInventory : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Alpha1 + i))
             {
+                if(i == lastSelectedSlot) 
+                return;
                 SlotHolders[_currentSlotIndex].HeldItem?.OnChangingItems();
 
                 //Visuals
@@ -279,7 +282,8 @@ public class PlayerInventory : MonoBehaviour
                     CancelInvoke(nameof(DecreaseAlpha));
                     Invoke(nameof(DecreaseAlpha), 4);
                 }
-
+                
+                lastSelectedSlot = i;
                 _currentSlotIndex = i;
                 break;
             }

@@ -10,6 +10,7 @@ public class Item : MonoBehaviour, IHighlightable
     public int HeldQuantity;
 
     internal bool isItemPickedUp;
+    internal bool isSelected = false;
 
 
     public void UpdateHoldingItem(bool isHolding)
