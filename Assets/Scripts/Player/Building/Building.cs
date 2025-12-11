@@ -5,7 +5,7 @@ using UnityEngine;
 public class Building : MonoBehaviour, IBreakable
 {
     public int currentHealth = 5;
-    public Ingredient[] ingredient;
+    public Ingredient[] ingredients;
     public BuildingData data;
     public List<Transform> pivots;
 

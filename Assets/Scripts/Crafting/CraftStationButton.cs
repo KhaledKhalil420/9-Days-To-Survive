@@ -32,6 +32,6 @@ public class CraftStationButton : MonoBehaviour, IInteractable
         }
 
         source.Play();
-        transform.DOLocalMoveY(initialY / 1.01f, 0.25f).OnComplete(() => transform.DOLocalMoveY(initialY, 0.25f));
+        transform.DOLocalMoveY(initialY / 1.04f, 0.05f).OnComplete(() => transform.DOLocalMoveY(initialY, 0.15f));
     }
 }

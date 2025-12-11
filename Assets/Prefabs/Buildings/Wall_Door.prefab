@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 5
-  ingredient:
+  ingredients:
   - item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
     quantity: 5
   data: {fileID: 11400000, guid: d18a7f9804c0a9048ab957966c3e70d0, type: 2}

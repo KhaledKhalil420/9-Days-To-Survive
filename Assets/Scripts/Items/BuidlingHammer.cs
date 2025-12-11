@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 //if this code was a woman I would've married it
 public class BuildingHammer : Item
@@ -17,17 +20,25 @@ public class BuildingHammer : Item
     public List<Building> availableBuildings;
     
     [Header("Building Settings")]
-    public int gridSize = 2;
-    public float maxBuildDistance = 12f;
-    public LayerMask buildableLayers;
-    public float rotationAngle = 45;
+    [SerializeField] private  int gridSize = 2;
+    [SerializeField] private  float maxBuildDistance = 12f;
+    [SerializeField] private  LayerMask buildableLayers;
+    [SerializeField] private  float rotationAngle = 45;
     
     [Header("Snapping Settings")]
-    public float sphereCastRadius = 1.5f; 
-    public float snapDistance = 5f;
+    [SerializeField] private  float sphereCastRadius = 1.5f; 
+    [SerializeField] private  float snapDistance = 5f;
     
     [Header("Demolish Settings")]
-    public LayerMask demolishLayers;
+    [SerializeField] private  LayerMask demolishLayers;
+
+    [Header("UserInterface")]
+    [SerializeField] private Transform canvasParent;
+    [SerializeField] private Image uiImage;
+    [SerializeField] private TMP_Text buildTitle;
+    private List<GameObject> uiRecipeElements = new();
+    [SerializeField] private Transform uiRecipeParent;
+    [SerializeField] private Image uiRecipePrefab;
     
     //Internal State
     private float currentRotation = 0;
@@ -101,7 +112,8 @@ public class BuildingHammer : Item
         {
             selectedBuildingIndex = availableBuildings.Count - 1;
         }
-        
+
+        InitializeUi();
         SpawnNewGhostBuilding();
     }
     
@@ -354,7 +366,7 @@ public class BuildingHammer : Item
     {
         PlayerInventory playerInventory = heldby.GetComponent<PlayerInventory>();
 
-        foreach (Ingredient ingredient in availableBuildings[selectedBuildingIndex].ingredient)
+        foreach (Ingredient ingredient in availableBuildings[selectedBuildingIndex].ingredients)
         {
             if(!playerInventory.HasItem(ingredient.item, ingredient.quantity))
             {
@@ -363,7 +375,7 @@ public class BuildingHammer : Item
             }
         }
 
-       foreach (Ingredient ingredient in availableBuildings[selectedBuildingIndex].ingredient)
+       foreach (Ingredient ingredient in availableBuildings[selectedBuildingIndex].ingredients)
         {
             playerInventory.TakeItem(ingredient.item, ingredient.quantity, out bool wasTaken);
         }
@@ -376,7 +388,7 @@ public class BuildingHammer : Item
     {
         PlayerInventory playerInventory = heldby.GetComponent<PlayerInventory>();
 
-        foreach (Ingredient ingredient in availableBuildings[selectedBuildingIndex].ingredient)
+        foreach (Ingredient ingredient in availableBuildings[selectedBuildingIndex].ingredients)
         {
             Item item = Instantiate(ingredient.item).GetComponent<Item>();
             item.HeldQuantity = ingredient.quantity;
@@ -487,8 +499,31 @@ public class BuildingHammer : Item
 
     #endregion
 
+    #region Ui
+
+    private void InitializeUi()
+    {
+        //Selection of builds
+        uiImage.sprite = availableBuildings[selectedBuildingIndex].data.sprite;
+        buildTitle.text = availableBuildings[selectedBuildingIndex].data.buildingName;
+
+        //Recipe for builds
+        if(uiRecipeElements.Count > 0)
+        Array.ForEach(uiRecipeElements.ToArray(), element => Destroy(element));
+
+        foreach (Ingredient ingredient in availableBuildings[selectedBuildingIndex].ingredients)
+        {
+            Image uiElement = Instantiate(uiRecipePrefab, uiRecipeParent).GetComponent<Image>();
+            uiElement.sprite = ingredient.item.data.sprite;
+            uiElement.GetComponentInChildren<TMP_Text>().text = ingredient.quantity.ToString();
+            uiRecipeElements.Add(uiElement.gameObject);
+        }
+    }
+
+    #endregion
     public override void OnChangingItems()
     {
+        canvasParent.gameObject.SetActive(false);
         ghostRenderer = null;
         ghostMeshFilter = null;
         currentBuildingComponent = null;
@@ -497,6 +532,7 @@ public class BuildingHammer : Item
 
     public override void OnSelectOnce()
     {
+        canvasParent.gameObject.SetActive(true);
         SpawnNewGhostBuilding();
     }
 }

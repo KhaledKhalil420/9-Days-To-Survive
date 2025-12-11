@@ -86,15 +86,11 @@ public class BreakingTool : Item
 
         pr.material = mat;
         pr.material.mainTexture = sphereIcon;
-        mat.EnableKeyword("_ALPHATEST_ON"); 
-        mat.SetFloat("_Cutoff", 0.705f); 
 
 
         if (ps != null)
         {
             var main = ps.main;
-            mat.EnableKeyword("_ALPHATEST_ON"); 
-            mat.SetFloat("_Cutoff", 0.705f); 
             ps.Play();
             float life = main.duration + (main.startLifetime.mode == ParticleSystemCurveMode.Constant ? main.startLifetime.constant : main.startLifetime.constantMax);
             Destroy(go, life + 0.5f);

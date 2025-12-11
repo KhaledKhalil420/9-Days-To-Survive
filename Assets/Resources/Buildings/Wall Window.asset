@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4122f037b00e8e64180c876bd90471a9, type: 3}
-  m_Name: DoorFrame
+  m_Name: Wall Window
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
-  buildingName: Door Frame
+  buildingName: Wall Window
