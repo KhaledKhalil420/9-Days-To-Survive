@@ -177,8 +177,11 @@ public class BuildingHammer : Item
             renderer.material = childMaterial;
         }
         
-        //Scale to grid size
-        ghostBuilding.transform.localScale = Vector3.one * gridSize;
+        //Scale to grid size only if building uses pivots
+        if (currentBuildingComponent != null && currentBuildingComponent.usesPivots)
+        {
+            ghostBuilding.transform.localScale = Vector3.one * gridSize;
+        }
         
         //Turn off colliders
         Collider[] allColliders = ghostBuilding.GetComponentsInChildren<Collider>();
@@ -244,6 +247,12 @@ public class BuildingHammer : Item
 
     private Vector3 CalculateBuildingPosition(RaycastHit hitInfo)
     {
+        // If building doesn't use pivots, just place at hit point
+        if (currentBuildingComponent == null || !currentBuildingComponent.usesPivots)
+        {
+            return hitInfo.point;
+        }
+
         // Get the size of the building mesh
         Vector3 meshSize = ghostMeshFilter.mesh.bounds.extents * gridSize;
         
@@ -426,8 +435,11 @@ public class BuildingHammer : Item
             Quaternion.Euler(0f, currentRotation, 0f)
         );
         
-        //Set scale and tag
-        newBuilding.transform.localScale = Vector3.one * gridSize;
+        //Set scale and tag (only apply gridSize if building uses pivots)
+        if (currentBuildingComponent != null && currentBuildingComponent.usesPivots)
+        {
+            newBuilding.transform.localScale = Vector3.one * gridSize;
+        }
         newBuilding.tag = "Build";
         
         //Enable colliders on the placed building

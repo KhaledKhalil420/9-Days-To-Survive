@@ -7,6 +7,7 @@ public class Building : MonoBehaviour, IBreakable
     public int currentHealth = 5;
     public Ingredient[] ingredients;
     public BuildingData data;
+    public bool usesPivots = true;
     public List<Transform> pivots;
 
     public void Damage(GameObject sender, int damage, BreakableType type, int toughness)
