@@ -498,6 +498,7 @@ MonoBehaviour:
   - {fileID: 5240809725349178419, guid: 9c7d8e5ffbe09c84b9280a8727ff412a, type: 3}
   - {fileID: 5240809725349178419, guid: 083f78e0846412a4587094eca104f2a3, type: 3}
   - {fileID: 5240809725349178419, guid: d36053dcc2757d44cb2ce8fc28553b16, type: 3}
+  - {fileID: -7787119701086866034, guid: 7d0819f1fa907564f99dd84bee58d5ad, type: 3}
   gridSize: 2
   maxBuildDistance: 4
   buildableLayers:
@@ -596,6 +597,8 @@ GameObject:
   - component: {fileID: 3934462964915986891}
   - component: {fileID: 7784980279205809653}
   - component: {fileID: 6570396334743433008}
+  - component: {fileID: 5480751981406876087}
+  - component: {fileID: 6975180984502752608}
   m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
@@ -686,3 +689,37 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &5480751981406876087
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8037356320950066396}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
+--- !u!95 &6975180984502752608
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8037356320950066396}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d6c5662dc5d3440479046215403f2453, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

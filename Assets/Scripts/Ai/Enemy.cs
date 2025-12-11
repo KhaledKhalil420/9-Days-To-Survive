@@ -1,10 +1,7 @@
-using System.Linq;
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Rendering;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IDamagable
 {
     [Header("Pathfinding")]
     [SerializeField] private NavMeshAgent agent;
@@ -13,6 +10,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] private LayerMask unDetectableLayers;
     private int secondInterval = 0;
     private Collider[] results = new Collider[30];
+
+    [Header("Health")]
+    [SerializeField] private int health = 1;
 
     private void Start()
     {
@@ -73,6 +73,35 @@ public class Enemy : MonoBehaviour
 
 
     public virtual void OnUpdate()
+    {
+        
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.collider.CompareTag("Spikes"))
+        {
+            if(collision.collider.TryGetComponent(out Building building))
+            {
+                building.currentHealth -= 1;
+            }
+
+            health--;
+        }
+    }
+
+    public void Damage(int damage)
+    {
+        health -= damage;
+        OnDamage();
+
+        if(health <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public virtual void OnDamage()
     {
         
     }

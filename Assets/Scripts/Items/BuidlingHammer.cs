@@ -156,25 +156,35 @@ public class BuildingHammer : Item
         ghostMeshFilter = ghostBuilding.GetComponent<MeshFilter>();
         ghostRenderer = ghostBuilding.GetComponent<Renderer>();
         
-        //Make parent material semi-transparent
+        //Make parent materials semi-transparent (handle ALL materials)
         if(ghostRenderer != null)
         {
-            Material ghostMaterial = ghostRenderer.material;
-            Color ghostColor = ghostMaterial.color;
-            ghostColor.a = 0.5f; // 50% transparent
-            ghostMaterial.color = ghostColor;
-            ghostRenderer.material = ghostMaterial;
+            Material[] materials = ghostRenderer.materials;
+            for (int i = 0; i < materials.Length; i++)
+            {
+                Material ghostMaterial = new Material(materials[i]);
+                Color ghostColor = ghostMaterial.color;
+                ghostColor.a = 0.5f; // 50% transparent
+                ghostMaterial.color = ghostColor;
+                materials[i] = ghostMaterial;
+            }
+            ghostRenderer.materials = materials;
         }
         
-        //Make all children materials semi-transparent too
+        //Make all children materials semi-transparent too (handle ALL materials)
         Renderer[] allRenderers = ghostBuilding.GetComponentsInChildren<Renderer>();
         foreach (Renderer renderer in allRenderers)
         {
-            Material childMaterial = renderer.material;
-            Color childColor = childMaterial.color;
-            childColor.a = 0.5f; // 50% transparent
-            childMaterial.color = childColor;
-            renderer.material = childMaterial;
+            Material[] childMaterials = renderer.materials;
+            for (int i = 0; i < childMaterials.Length; i++)
+            {
+                Material childMaterial = new Material(childMaterials[i]);
+                Color childColor = childMaterial.color;
+                childColor.a = 0.5f; // 50% transparent
+                childMaterial.color = childColor;
+                childMaterials[i] = childMaterial;
+            }
+            renderer.materials = childMaterials;
         }
         
         //Scale to grid size only if building uses pivots
@@ -345,25 +355,31 @@ public class BuildingHammer : Item
     
     private void UpdateGhostColor()
     {
-        //Update parent color
+        //Update parent color (handle ALL materials)
         if(ghostRenderer != null)
         {
-            Material ghostMaterial = ghostRenderer.material;
-            Color newColor = canPlaceBuilding ? Color.green : Color.red;
-            newColor.a = 0.5f;
-            ghostMaterial.color = newColor;
-            ghostRenderer.material = ghostMaterial;
+            Material[] materials = ghostRenderer.materials;
+            for (int i = 0; i < materials.Length; i++)
+            {
+                Color newColor = canPlaceBuilding ? Color.green : Color.red;
+                newColor.a = 0.5f;
+                materials[i].color = newColor;
+            }
+            ghostRenderer.materials = materials;
         }
         
-        //Update all children colors
+        //Update all children colors (handle ALL materials)
         Renderer[] allRenderers = ghostBuilding.GetComponentsInChildren<Renderer>();
         foreach (Renderer renderer in allRenderers)
         {
-            Material childMaterial = renderer.material;
-            Color newColor = canPlaceBuilding ? Color.green : Color.red;
-            newColor.a = 0.5f;
-            childMaterial.color = newColor;
-            renderer.material = childMaterial;
+            Material[] childMaterials = renderer.materials;
+            for (int i = 0; i < childMaterials.Length; i++)
+            {
+                Color newColor = canPlaceBuilding ? Color.green : Color.red;
+                newColor.a = 0.5f;
+                childMaterials[i].color = newColor;
+            }
+            renderer.materials = childMaterials;
         }
     }
     
@@ -403,18 +419,14 @@ public class BuildingHammer : Item
             item.HeldQuantity = ingredient.quantity;
 
             playerInventory.GiveItem(item, out bool wasTaken);
-            if(wasTaken)
-            {
-                return true;
-            }
-            else
+            if(!wasTaken)
             {
                 Destroy(item);
                 return false;
             }
         }
 
-        return false;
+        return true;
     }
     
     private void PlaceBuilding()
@@ -466,7 +478,6 @@ public class BuildingHammer : Item
 
     private void DemolishBuilding()
     {
-
         //Use SphereCast for demolishing too (I love it goddamn it)
         RaycastHit hitInfo;
         bool hitSomething = Physics.SphereCast(

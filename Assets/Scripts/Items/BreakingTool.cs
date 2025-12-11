@@ -69,12 +69,17 @@ public class BreakingTool : Item
         Renderer sourceRenderer = hit.transform.GetComponentInChildren<Renderer>();
         Material sourceMat = sourceRenderer != null && sourceRenderer.sharedMaterial != null ? sourceRenderer.sharedMaterial : null;
 
-        if (hit.transform.TryGetComponent<IBreakable>(out var damagable))
+        if (hit.transform.TryGetComponent<IBreakable>(out var breakable))
         {
-            damagable.Damage(heldby, damage, type, toughness);
+            breakable.Damage(heldby, damage, type, toughness);
 
             if (hitParticlesPrefab != null)
                 SpawnHitParticles(hit.point, hit.normal, sourceMat);
+        }
+
+        if (hit.transform.TryGetComponent<IDamagable>(out var damagable))
+        {
+            damagable.Damage(damage / 10); //small debuf for enemies
         }
     }
 

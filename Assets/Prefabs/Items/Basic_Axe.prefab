@@ -119,7 +119,7 @@ MonoBehaviour:
   damage: 1
   sphereIcon: {fileID: 10912, guid: 0000000000000000f000000000000000, type: 0}
   toughness: 1
-  hitParticlesPrefab: {fileID: 0}
+  hitParticlesPrefab: {fileID: 6874815317943588122, guid: eb4b09712adf2bb418e23e8f21a62163, type: 3}
 --- !u!95 &1807523060306041998
 Animator:
   serializedVersion: 7
