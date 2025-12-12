@@ -15,7 +15,7 @@ public class PlayerMovement : PlayerMovementVariables
     {
         ApplyCounterMovement();
         MovePlayer();
-        // HandleFootsteps();
+        HandleFootsteps();
         isJumpingThisFrame = false;
     }
 
@@ -169,45 +169,30 @@ public class PlayerMovement : PlayerMovementVariables
 
     #region Sounds
 
-    // private void HandleFootsteps()
-    // {
-    //     if (!IsGrounded() || moveDir.magnitude < 0.1f || isSliding)
-    //         return;
+    private void HandleFootsteps()
+    {
+        if (!IsGrounded() || moveDir.magnitude < 0.1f || isSliding)
+            return;
 
-    //     footstepTimer -= Time.fixedDeltaTime;
+        footstepTimer -= Time.fixedDeltaTime;
 
-    //     if (footstepTimer <= 0f)
-    //     {
-    //         footstepTimer = FootstepsCooldown();
-    //         SurfaceType surfaceType = SurfaceType.Grass; // default
+        if (footstepTimer <= 0f)
+        {
+            footstepTimer = FootstepsCooldown();
+            SurfaceType surfaceType = SurfaceType.Grass; // default
 
-    //         if (Physics.Raycast(feet.position, -feet.transform.up, out RaycastHit hit, 5f))
-    //         {
-    //             if (hit.transform.TryGetComponent(out SoundMap soundMap))
-    //             {
-    //                 surfaceType = soundMap.surfaceType;
-    //             }
-    //         }
+            if (Physics.Raycast(feet.position, -feet.transform.up, out RaycastHit hit, 5f))
+            {
+                if (hit.transform.TryGetComponent(out SoundMap soundMap))
+                {
+                    surfaceType = soundMap.surfaceType;
+                }
+            }
 
-    //         AudioClip[] clips = footstepSounds.GetClips(surfaceType);
-    //         footstepsSource.pitch = Random.Range(0.95f, 1.05f);
-    //         footstepsSource.PlayOneShot(clips[Random.Range(0, clips.Length)]);
-    //     }
-    // }
+            AudioClip[] clips = footstepSounds.GetClips(surfaceType);
+            footstepsSource.pitch = Random.Range(0.95f, 1.05f);
+            footstepsSource.PlayOneShot(clips[Random.Range(0, clips.Length)]);
+        }
+    }
     #endregion
-
-    // #region Animations
-
-    // private void HandleAnimations()
-    // {
-    //     animator.SetBool("IsGrounded", IsGrounded());
-    //     animator.SetBool("IsWalking", state == PlayerMovementState.Walking);
-    //     animator.SetBool("IsRunning", state == PlayerMovementState.Running);
-    //     animator.SetBool("IsCrouching", state == PlayerMovementState.Crouching);
-    //     animator.SetBool("IsCrouchMoving", state == PlayerMovementState.CrouchMoving);
-    //     animator.SetBool("IsSliding",  state == PlayerMovementState.Sliding);
-        
-    //  }
-
-    // #endregion
 }

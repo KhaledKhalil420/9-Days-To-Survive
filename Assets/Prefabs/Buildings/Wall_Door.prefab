@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 4918084418101607839}
   - component: {fileID: 4703511121998429057}
   - component: {fileID: 7916618858463392770}
+  - component: {fileID: 4470272745464252173}
   m_Layer: 0
   m_Name: Wall_Door
   m_TagString: Untagged
@@ -114,6 +115,7 @@ MonoBehaviour:
   - item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
     quantity: 5
   data: {fileID: 11400000, guid: d18a7f9804c0a9048ab957966c3e70d0, type: 2}
+  usesPivots: 1
   pivots:
   - {fileID: 6659904978529974676}
   - {fileID: 8772653582497692356}
@@ -211,6 +213,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.20000005, y: 0.42604852, z: 1}
   m_Center: {x: 0, y: 0.78697574, z: 0}
+--- !u!114 &4470272745464252173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242729870365620073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15dd5b13b87a11a458e4dbc46137ce8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surfaceType: 0
 --- !u!1 &1871156679037128218
 GameObject:
   m_ObjectHideFlags: 0

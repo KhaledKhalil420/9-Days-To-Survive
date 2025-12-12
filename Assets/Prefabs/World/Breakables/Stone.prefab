@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4274070192431741908}
   - component: {fileID: 1068580448057627305}
   - component: {fileID: 4281013464840019890}
+  - component: {fileID: 2039898754132160148}
   m_Layer: 0
   m_Name: Stone
   m_TagString: Untagged
@@ -249,3 +250,16 @@ MonoBehaviour:
   type: 1
   fadeOnAwake: 0
   fadeLowPassOnAwake: 0
+--- !u!114 &2039898754132160148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32916961726760097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15dd5b13b87a11a458e4dbc46137ce8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surfaceType: 1

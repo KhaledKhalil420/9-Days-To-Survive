@@ -92,10 +92,10 @@ public class PlayerMovementVariables : MonoBehaviour
     #region Sounds
 
     [Header("Sounds")]
-    // [SerializeField] protected FootstepSounds footstepSounds;
-    // [SerializeField] protected AudioSource footstepsSource;
-    // [SerializeField] protected float footstepsCoolDownWalking = 0.4f;
-    // [SerializeField] protected float footstepsCoolDownRunning = 0.15f;
+    [SerializeField] protected FootstepSounds footstepSounds;
+    [SerializeField] protected AudioSource footstepsSource;
+    [SerializeField] protected float footstepsCoolDownWalking = 0.4f;
+    [SerializeField] protected float footstepsCoolDownRunning = 0.15f;
 
     protected float footstepTimer;
 
@@ -358,34 +358,34 @@ public class PlayerMovementVariables : MonoBehaviour
 
     #endregion
 
-    // #region Footsteps
+    #region Footsteps
 
-    // public float FootstepsCooldown()
-    // {
-    //     float baseCooldown = isRunning ? footstepsCoolDownRunning : footstepsCoolDownWalking;
+    public float FootstepsCooldown()
+    {
+        float baseCooldown = isRunning ? footstepsCoolDownRunning : footstepsCoolDownWalking;
 
-    //     float speedFactor = moveDir.magnitude / maxSpeed;
-    //     float finalCooldown = baseCooldown / (1f + speedFactor * speedMultiplier);
+        float speedFactor = moveDir.magnitude / maxSpeed;
+        float finalCooldown = baseCooldown / (1f + speedFactor * speedMultiplier);
 
-    //     return finalCooldown;
-    // }
+        return finalCooldown;
+    }
      
-    // #endregion
+    #endregion
 }
 
-// [System.Serializable]
-// public class FootstepSounds
-// {
-//     public AudioClip[] grass, stone, wood;
+[System.Serializable]
+public class FootstepSounds
+{
+    public AudioClip[] grass, stone, wood;
 
-//     public AudioClip[] GetClips(SurfaceType surfaceType)
-//     {
-//         return surfaceType switch
-//         {
-//             SurfaceType.Grass => grass,
-//             SurfaceType.Stone => stone,
-//             SurfaceType.Wood => wood,
-//             _ => grass
-//         };
-//     }
-// }
+    public AudioClip[] GetClips(SurfaceType surfaceType)
+    {
+        return surfaceType switch
+        {
+            SurfaceType.Grass => grass,
+            SurfaceType.Stone => stone,
+            SurfaceType.Wood => wood,
+            _ => grass
+        };
+    }
+}

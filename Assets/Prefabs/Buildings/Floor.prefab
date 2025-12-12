@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 7405853830563566866}
   - component: {fileID: 3552079121617091838}
   - component: {fileID: 5178800837845617178}
+  - component: {fileID: 2688110552309863575}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -184,6 +185,19 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &2688110552309863575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2711339298170863636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15dd5b13b87a11a458e4dbc46137ce8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surfaceType: 0
 --- !u!1 &3772619073804681759
 GameObject:
   m_ObjectHideFlags: 0
