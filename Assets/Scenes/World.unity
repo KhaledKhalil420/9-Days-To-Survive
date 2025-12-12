@@ -7327,15 +7327,15 @@ MonoBehaviour:
   enableSliding: 0
   enableMaxSpeed: 1
   state: 0
-  walkingSpeed: 30
-  runSpeed: 70
+  walkingSpeed: 25
+  runSpeed: 50
   airSpeed: 69
   crouchSpeed: 10
   jumpForce: 1000
   slideForce: 0
   slideTime: 0
   speedMultiplier: 1
-  maxSpeed: 12
+  maxSpeed: 10
   bufferTime: 0.2
   cayoteTime: 0.1
   groundDrag: 6

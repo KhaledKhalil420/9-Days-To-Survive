@@ -499,11 +499,12 @@ MonoBehaviour:
   - {fileID: 5240809725349178419, guid: 083f78e0846412a4587094eca104f2a3, type: 3}
   - {fileID: 5240809725349178419, guid: d36053dcc2757d44cb2ce8fc28553b16, type: 3}
   - {fileID: -7787119701086866034, guid: 7d0819f1fa907564f99dd84bee58d5ad, type: 3}
+  - {fileID: 7405853830563566866, guid: 923ec0e0524a6ad4dbb0cfa209cca95f, type: 3}
   gridSize: 2
   maxBuildDistance: 4
   buildableLayers:
     serializedVersion: 2
-    m_Bits: 9
+    m_Bits: 521
   rotationAngle: 45.01
   sphereCastRadius: 0.1
   snapDistance: 1
