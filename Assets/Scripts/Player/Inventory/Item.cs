@@ -9,9 +9,8 @@ public class Item : MonoBehaviour, IHighlightable
     public bool isSingleQuantityItem = false;
     public int HeldQuantity;
 
-    internal bool isItemPickedUp;
+    [SerializeField] internal bool isItemPickedUp;
     internal bool isSelected = false;
-
 
     public void UpdateHoldingItem(bool isHolding)
     {

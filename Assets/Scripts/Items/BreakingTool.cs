@@ -29,6 +29,7 @@ public class BreakingTool : Item
         canUse = false;
 
         int randomAnimation = GetRandomAnimationIndex();
+        animator.speed = 1 / cooldown;
         animator.SetInteger("Numb", randomAnimation);
         animator.SetTrigger("Trigger");
 

@@ -16,9 +16,10 @@ public class WorldGenerator : MonoBehaviour
 
     private void Start()
     {
+        SpawnNextDay();
+        
         if (spawnGrassAtStart)
             SpawnGrass();
-        SpawnNextDay();
     }
 
     void SpawnGrass()
@@ -34,9 +35,11 @@ public class WorldGenerator : MonoBehaviour
                 Random.Range(mapMin.z, mapMax.z)
             );
             
-            if (Physics.Raycast(pos, Vector3.down, out RaycastHit hit, 200f, groundMask))
+            if (Physics.Raycast(pos, Vector3.down, out RaycastHit hit, 200f))
             {
                 // Use PaintGrassAtPosition to add grass without building mesh
+
+                if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
                 grassPainter.PaintGrassAtPosition(pos);
                 successfulSpawns++;
             }

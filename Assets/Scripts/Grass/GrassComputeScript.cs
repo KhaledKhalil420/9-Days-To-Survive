@@ -97,7 +97,10 @@ public class GrassComputeScript : MonoBehaviour
     // 3: and start instance location if using a Graphics Buffer
     private int[] argsBufferReset = new int[] { 0, 1, 0, 0 };
 
-
+    private void Start()
+    {
+        InvokeRepeating(nameof(Refresh), 15, 15);
+    }
 
     public void ReLoadGrass(object sender, EventArgs e)
     {

@@ -940,8 +940,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   availableRecipes:
-  - {fileID: 11400000, guid: b1abbf5d14220d34a8f9a0c6ac16ec26, type: 2}
-  - {fileID: 11400000, guid: d51fbc366e9254345bbd04a3a233ca26, type: 2}
+  - {fileID: 11400000, guid: e852869cfb4d799488b0e26ab1260f92, type: 2}
   - {fileID: 11400000, guid: 2050f6c64b1ae2b4fa9a0225ca1fa4e0, type: 2}
   uiHolder: {fileID: 8385736257927671490}
   recipeIcon_Image: {fileID: 2935601502420707642}

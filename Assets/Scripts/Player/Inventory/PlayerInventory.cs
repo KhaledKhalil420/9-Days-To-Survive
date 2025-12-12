@@ -18,7 +18,7 @@ public class PlayerInventory : MonoBehaviour
     public TMP_Text heldItemDisplayText;
     internal SlotHolder selectedSlot;
     private Transform _camera;
-    private int lastSelectedSlot;
+    private int lastSelectedSlot = 1;
 
     [SerializeField] private Transform hand;
     [SerializeField] private int additionalSlots = 0;
@@ -247,7 +247,7 @@ public class PlayerInventory : MonoBehaviour
     }
 
 
-    private int _currentSlotIndex = 0;
+    private int _currentSlotIndex = 1;
 
     private void HandleSlotsSwitching()
     {
