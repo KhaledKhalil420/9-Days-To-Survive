@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 86524081861036210}
   - component: {fileID: 789964070537936751}
   - component: {fileID: 1998692805790846681}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,6 +127,7 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 392954726db508e498803a9b5979026f, type: 2}
   isSingleQuantityItem: 0
   HeldQuantity: 1
+  isItemPickedUp: 0
 --- !u!54 &1998692805790846681
 Rigidbody:
   m_ObjectHideFlags: 0

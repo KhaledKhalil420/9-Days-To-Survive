@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffd50b6854d668d4497f11ffcca44bd4, type: 3}
-  m_Name: Flint
+  m_Name: Hammer
   m_EditorClassIdentifier: 
-  Name: Flint
-  sprite: {fileID: 21300000, guid: 6149c3f076fb047468b4ba67381d85b9, type: 3}
-  prefab: {fileID: 5291154456772646634, guid: b63aa8c0b6d33804cb8215f5585ba263, type: 3}
-  discription: Flint, Very Basic
+  Name: Hammer
+  sprite: {fileID: 21300000, guid: 9ae08f2021908c046b99bd836bdf2ec1, type: 3}
+  prefab: {fileID: 6582095982051722072, guid: 5de5143f8f794fd4a93084b343753514, type: 3}
+  discription: Hammer, For Basic Buidling

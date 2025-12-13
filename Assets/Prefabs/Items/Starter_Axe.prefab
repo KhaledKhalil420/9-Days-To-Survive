@@ -115,7 +115,7 @@ MonoBehaviour:
   range: 2
   cooldown: 1
   damage: 1
-  minimumDamage: 0
+  minimumDamage: 1
   maximumDamage: 1
   sphereIcon: {fileID: 10912, guid: 0000000000000000f000000000000000, type: 0}
   toughness: 1

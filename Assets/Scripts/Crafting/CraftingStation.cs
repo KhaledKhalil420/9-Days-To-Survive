@@ -14,6 +14,7 @@ public class CraftingStation : MonoBehaviour
     [SerializeField] private Image recipeIcon_Image;
     [SerializeField] private TMP_Text recipeDiscreption_Text;
     [SerializeField] private Image ingredientPrefab;
+    [SerializeField] private Transform craftingPoint;
 
     private void Start()
     {
@@ -91,23 +92,15 @@ public class CraftingStation : MonoBehaviour
             }
         }
         
-        Item item = Instantiate(availableRecipes[currentRecipe].itemToGive);
+        Item item = Instantiate(availableRecipes[currentRecipe].itemToGive, craftingPoint.position, craftingPoint.rotation);
         item.HeldQuantity = availableRecipes[currentRecipe].givenQuantity;
         
         playerInventory.GiveItem(item, out bool wasGiven);
-
-        if(wasGiven)
+        
+        foreach (Ingredient ingredient in availableRecipes[currentRecipe].ingredients)
         {
-            foreach (Ingredient ingredient in availableRecipes[currentRecipe].ingredients)
-            {
-                playerInventory.TakeItem(ingredient.item, ingredient.quantity, out bool _);
-            }   
-        }
-
-        else
-        {
-            Destroy(item);
-        }
+            playerInventory.TakeItem(ingredient.item, ingredient.quantity, out bool _);
+        }   
     }
 
     #endregion

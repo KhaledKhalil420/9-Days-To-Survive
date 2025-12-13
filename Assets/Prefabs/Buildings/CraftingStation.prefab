@@ -222,6 +222,37 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &438229664542306194
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7870662481514229778}
+  m_Layer: 0
+  m_Name: Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7870662481514229778
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438229664542306194}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.403, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3414269218047842628}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1478828486052895636
 GameObject:
   m_ObjectHideFlags: 0
@@ -900,6 +931,7 @@ GameObject:
   - component: {fileID: -7787119701086866034}
   - component: {fileID: 1907277935932853918}
   - component: {fileID: -830527960108696259}
+  - component: {fileID: 2184628641623760914}
   m_Layer: 0
   m_Name: CraftingStation
   m_TagString: Untagged
@@ -925,6 +957,7 @@ Transform:
   - {fileID: 2765191583447705290}
   - {fileID: 7285602753308118889}
   - {fileID: 3710739121661471719}
+  - {fileID: 7870662481514229778}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5926124917630625843
@@ -940,12 +973,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   availableRecipes:
-  - {fileID: 11400000, guid: e852869cfb4d799488b0e26ab1260f92, type: 2}
   - {fileID: 11400000, guid: 2050f6c64b1ae2b4fa9a0225ca1fa4e0, type: 2}
+  - {fileID: 11400000, guid: 2c4f86c1f4e87714fb070259c4999195, type: 2}
   uiHolder: {fileID: 8385736257927671490}
   recipeIcon_Image: {fileID: 2935601502420707642}
   recipeDiscreption_Text: {fileID: 5577177748774976853}
   ingredientPrefab: {fileID: 1762499198482534724, guid: 8aac1a363c7966142924d664d62d03fb, type: 3}
+  craftingPoint: {fileID: 7870662481514229778}
 --- !u!114 &-7787119701086866034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -984,8 +1018,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.108405, y: 3.9119964, z: 1.6601958}
-  m_Center: {x: 0, y: 1.807936, z: 0}
+  m_Size: {x: 4.108405, y: 1.618336, z: 1.6601958}
+  m_Center: {x: 0, y: 0.66110575, z: 0}
 --- !u!114 &-830527960108696259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -999,6 +1033,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   surfaceType: 0
+--- !u!65 &2184628641623760914
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5095320248276783499}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.108405, y: 3.9310405, z: 0.2274189}
+  m_Center: {x: 0, y: 1.817458, z: -0.6592798}
 --- !u!1 &5866284026013829549
 GameObject:
   m_ObjectHideFlags: 0

@@ -377,7 +377,7 @@ public class PlayerInventory : MonoBehaviour
     {
         foreach (var slot in SlotHolders)
         {
-            if (slot.HeldItem.data == item.data)
+            if (slot?.HeldItem.data == item.data)
             {
                 outSlot = slot;
                 return slot;

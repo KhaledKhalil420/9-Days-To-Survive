@@ -401,7 +401,7 @@ GameObject:
   - component: {fileID: 8636994686742305551}
   - component: {fileID: 6168554543999978063}
   m_Layer: 6
-  m_Name: Bulding_Hammer
+  m_Name: Flint_Hammer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -430,7 +430,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6582095982051722072}
-  m_Mesh: {fileID: -5495902117074765545, guid: 4d26cc8fba2618c4d9d15b4cf0698607, type: 3}
+  m_Mesh: {fileID: -5495902117074765545, guid: 5154b296347742b4b9da093d9c1c318c, type: 3}
 --- !u!23 &4800971629426781444
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -455,7 +455,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 5eccb8fabc0ea9b43b6e564515e6bee1, type: 2}
-  - {fileID: 2100000, guid: c410222d190d3ca46b6995feb390a8a9, type: 2}
+  - {fileID: 2100000, guid: 06db29c2e2d669147bb75123ed8872f0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -490,7 +490,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heldby: {fileID: 0}
-  data: {fileID: 11400000, guid: 55aa3c5f26a0fd64d802360e2e313add, type: 2}
+  data: {fileID: 11400000, guid: 0f5bf68b6395ef544ae77264f231b84c, type: 2}
   isSingleQuantityItem: 1
   HeldQuantity: 1
   isItemPickedUp: 0
@@ -585,8 +585,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.5041058, y: 1.5477344, z: 0.5843763}
-  m_Center: {x: 0, y: 0.51161766, z: -0.000000059604645}
+  m_Size: {x: 0.39096805, y: 1.2854748, z: 0.35298774}
+  m_Center: {x: 0.00060703617, y: 0.53336376, z: 0.008870542}
 --- !u!1 &8037356320950066396
 GameObject:
   m_ObjectHideFlags: 0

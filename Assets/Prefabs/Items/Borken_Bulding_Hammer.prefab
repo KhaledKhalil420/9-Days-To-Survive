@@ -259,7 +259,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heldby: {fileID: 0}
-  data: {fileID: 11400000, guid: 0f5bf68b6395ef544ae77264f231b84c, type: 2}
+  data: {fileID: 11400000, guid: bf79e3636b8394c449a05beabad9a1b6, type: 2}
   isSingleQuantityItem: 1
   HeldQuantity: 1
   isItemPickedUp: 0
