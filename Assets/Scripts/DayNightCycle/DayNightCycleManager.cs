@@ -52,7 +52,7 @@ public class DayNightCycleManager : MonoBehaviour
 
             OnDayChange?.Invoke(isDay);
 
-            DynamicMusic.InDanger(!isDay);
+            //DynamicMusic.InDanger(!isDay);
         }
 
         mainLight.transform.eulerAngles = new Vector3(45f, timeOfDay * 360f, -14f);

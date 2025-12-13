@@ -226,8 +226,8 @@ MonoBehaviour:
   toughness: 1
   health: 30
   item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
-  givenQuantityOnHitMin: 1
-  givenQuantityOnHitMax: 5
+  givenQuantityOnHitMin: 0
+  givenQuantityOnHitMax: 1
 --- !u!114 &5096120980787383518
 MonoBehaviour:
   m_ObjectHideFlags: 0

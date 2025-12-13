@@ -7,7 +7,7 @@ public class BreakingTool : Item
     [SerializeField] private Animator animator;
     [SerializeField] private int numberOfAnimations;
     [SerializeField] private float range = 2f, cooldown = 1f;
-    [SerializeField] private int damage = 50;
+    [SerializeField] private int damage = 50, minimumDamage = 1, maximumDamage = 1;
     [SerializeField] private Texture sphereIcon;
     public int toughness = 1;
     private Transform cam;
@@ -69,10 +69,11 @@ public class BreakingTool : Item
 
         Renderer sourceRenderer = hit.transform.GetComponentInChildren<Renderer>();
         Material sourceMat = sourceRenderer != null && sourceRenderer.sharedMaterial != null ? sourceRenderer.sharedMaterial : null;
+        int calculatedDamage = damage * Random.Range(minimumDamage, maximumDamage);
 
         if (hit.transform.TryGetComponent<IBreakable>(out var breakable))
         {
-            breakable.Damage(heldby, damage, type, toughness);
+            breakable.Damage(heldby, calculatedDamage, type, toughness);
 
             if (hitParticlesPrefab != null)
                 SpawnHitParticles(hit.point, hit.normal, sourceMat);
@@ -80,7 +81,7 @@ public class BreakingTool : Item
 
         if (hit.transform.TryGetComponent<IDamagable>(out var damagable))
         {
-            damagable.Damage(damage / 10); //small debuf for enemies
+            damagable.Damage(calculatedDamage / 10); //small debuf for enemies
         }
     }
 

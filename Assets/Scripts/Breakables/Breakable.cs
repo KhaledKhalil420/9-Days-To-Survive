@@ -19,9 +19,9 @@ public class Breakable : MonoBehaviour, IBreakable
         if(requiredTool != _type) return;
 
         if(_toughness >= toughness)
-        health -= damage;
+        health -= 1;
         
-        OnDamage(sender);
+        OnDamage(damage, sender);
 
         source.Play(true, 0.9f, 1.25f);
 
@@ -31,7 +31,7 @@ public class Breakable : MonoBehaviour, IBreakable
         }
     }
 
-    public virtual void OnDamage(GameObject sender)
+    public virtual void OnDamage(int damage, GameObject sender)
     {
         
     }
