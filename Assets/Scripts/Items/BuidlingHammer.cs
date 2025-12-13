@@ -20,17 +20,17 @@ public class BuildingHammer : Item
     public List<Building> availableBuildings;
     
     [Header("Building Settings")]
-    [SerializeField] private  int gridSize = 2;
-    [SerializeField] private  float maxBuildDistance = 12f;
-    [SerializeField] private  LayerMask buildableLayers;
-    [SerializeField] private  float rotationAngle = 45;
+    [SerializeField] private int gridSize = 2;
+    [SerializeField] private float maxBuildDistance = 12f;
+    [SerializeField] private LayerMask buildableLayers;
+    [SerializeField] private float rotationAngle = 45;
     
     [Header("Snapping Settings")]
-    [SerializeField] private  float sphereCastRadius = 1.5f; 
-    [SerializeField] private  float snapDistance = 5f;
+    [SerializeField] private float sphereCastRadius = 1.5f; 
+    [SerializeField] private float snapDistance = 5f;
     
     [Header("Demolish Settings")]
-    [SerializeField] private  LayerMask demolishLayers;
+    [SerializeField] private LayerMask demolishLayers;
 
     [Header("UserInterface")]
     [SerializeField] private Transform canvasParent;
@@ -264,7 +264,8 @@ public class BuildingHammer : Item
         }
 
         // Get the size of the building mesh
-        Vector3 meshSize = ghostMeshFilter.mesh.bounds.extents * gridSize;
+        float positionMultiplier = currentBuildingComponent.affectedByGridSizePosition ? gridSize : 1f;
+        Vector3 meshSize = ghostMeshFilter.mesh.bounds.extents * positionMultiplier;
         
         // Default: place on surface with correct height offset
         Vector3 position = hitInfo.point + Vector3.up * (meshSize.y - ghostMeshFilter.mesh.bounds.center.y);
@@ -289,6 +290,8 @@ public class BuildingHammer : Item
         Vector3 finalPosition = hitInfo.point;
         Vector3 bestOffset = Vector3.zero;
         
+        float snapMultiplier = currentBuildingComponent.affectedByGridSizePosition ? gridSize : 1f;
+        
         // Loop through all pivot points on the building we hit
         foreach (Transform targetPivot in targetBuilding.pivots)
         {
@@ -301,7 +304,7 @@ public class BuildingHammer : Item
             
             // Calculate direction for snapping
             Vector3 direction = (worldPivotPosition - hitInfo.collider.transform.position).normalized;
-            direction = (direction + hitInfo.normal).normalized * gridSize / 2f;
+            direction = (direction + hitInfo.normal).normalized * snapMultiplier / 2f;
             
             // Check if we're close enough to this pivot (using adjustable snapDistance)
             float distanceToPivot = Vector3.Distance(hitInfo.point, worldPivotPosition);
@@ -471,6 +474,8 @@ public class BuildingHammer : Item
             buildingMaterial.color = solidColor;
             buildingRenderer.material = buildingMaterial;
         }
+
+        newBuilding.GetComponent<Building>()?.OnPlace();
 
         //Sound
         AudioManager.Instance?.PlaySound("Build", 0.9f, 1.25f);

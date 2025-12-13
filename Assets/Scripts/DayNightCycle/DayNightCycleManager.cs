@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class DayNightCycleManager : MonoBehaviour
@@ -22,7 +23,7 @@ public class DayNightCycleManager : MonoBehaviour
 
     float timeOfDay;
 
-    void Start()
+    void Awake()
     {
         instance = this;
 
@@ -30,6 +31,17 @@ public class DayNightCycleManager : MonoBehaviour
 
         RenderSettings.skybox = skyboxMaterial;
         RenderSettings.skybox.SetFloat("_CubemapTransition", 1f);
+    }
+
+    private void Start()
+    {
+        StartCoroutine(nameof(LateStart));
+    }
+
+    private IEnumerator LateStart()
+    {
+        yield return new WaitForEndOfFrame();
+        OnDayChange?.Invoke(true);
     }
 
     void Update()

@@ -25,6 +25,8 @@ public class BreakingTool : Item
     {
         if (!canUse)
             return;
+        if(cam == null)
+            cam = PlayerLook.mainCamera.transform;
 
         canUse = false;
 

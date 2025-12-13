@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System.Collections.Generic;
 
 public class DayMusicSystem : MonoBehaviour
 {
@@ -12,11 +12,18 @@ public class DayMusicSystem : MonoBehaviour
 
     List<DayMusic> pool = new();
     Tween timer;
-    int currentDay;
+    int currentDay = 0;
 
-    public void StartDay(int day)
+    private void Start()
     {
-        currentDay = day;
+        DayNightCycleManager.OnDayChange += StartDay;
+    }
+    
+
+    public void StartDay(bool day)
+    {
+        if(day) currentDay++;
+
         RebuildPool();
         ScheduleNext();
     }
@@ -24,7 +31,7 @@ public class DayMusicSystem : MonoBehaviour
     void ScheduleNext()
     {
         timer?.Kill();
-
+        
         timer = DOVirtual.DelayedCall(
             Random.Range(minSilence, maxSilence),
             PlayNext
@@ -33,6 +40,14 @@ public class DayMusicSystem : MonoBehaviour
 
     void PlayNext()
     {
+        if(source.isPlaying)
+        {
+                    timer = DOVirtual.DelayedCall(
+            Random.Range(minSilence, maxSilence),
+            PlayNext
+        );
+            return;
+        }
         if (pool.Count == 0)
             RebuildPool();
 

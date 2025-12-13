@@ -33,7 +33,8 @@ public class PlayerLook : MonoBehaviour
     }
 
     public void Update()
-    {
+    {        
+        AutoFix();
         Inputs();
         Look();
     }
@@ -41,6 +42,12 @@ public class PlayerLook : MonoBehaviour
     public void LateUpdate()
     {
         Follow();
+    }
+
+    private void AutoFix()
+    {
+        if(mainCamera == null) 
+            mainCamera = _mainCamera;
     }
 
     private void Inputs()

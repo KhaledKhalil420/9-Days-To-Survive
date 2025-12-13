@@ -501,6 +501,9 @@ MonoBehaviour:
   - {fileID: 5240809725349178419, guid: d36053dcc2757d44cb2ce8fc28553b16, type: 3}
   - {fileID: -7787119701086866034, guid: 7d0819f1fa907564f99dd84bee58d5ad, type: 3}
   - {fileID: 7405853830563566866, guid: 923ec0e0524a6ad4dbb0cfa209cca95f, type: 3}
+  - {fileID: 7405853830563566866, guid: 3bca4a5805c585a40b1d8f12bfd989d4, type: 3}
+  - {fileID: 7405853830563566866, guid: bf4c704fa02df0d46b72f5aa2e52640f, type: 3}
+  - {fileID: 7405853830563566866, guid: 103116704c11f0b4aaddab3f013e1d3d, type: 3}
   gridSize: 2
   maxBuildDistance: 4
   buildableLayers:
