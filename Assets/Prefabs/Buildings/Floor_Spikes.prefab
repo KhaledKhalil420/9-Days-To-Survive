@@ -80,7 +80,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2711339298170863636}
-  m_Mesh: {fileID: -5495902117074765545, guid: ff50ffe4c3e067c4aad0b75bcb1996b1, type: 3}
+  m_Mesh: {fileID: -5495902117074765545, guid: 00f699c9b5477d141b1830ee408efe40, type: 3}
 --- !u!23 &4512713246312473025
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -147,11 +147,13 @@ MonoBehaviour:
     quantity: 5
   data: {fileID: 11400000, guid: c3dee9c04267bd3408a87c5cb7692ab9, type: 2}
   usesPivots: 1
+  affectedByGridSizePosition: 1
   pivots:
   - {fileID: 899104730165431269}
   - {fileID: 7551977574166450184}
   - {fileID: 6910941872516098785}
   - {fileID: 283616446916370393}
+  pivotsOnBuild: []
 --- !u!65 &3552079121617091838
 BoxCollider:
   m_ObjectHideFlags: 0

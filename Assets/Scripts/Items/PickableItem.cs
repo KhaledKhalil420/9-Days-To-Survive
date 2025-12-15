@@ -3,6 +3,7 @@ using UnityEngine;
 public class PickableItem : MonoBehaviour, IInteractable
 {
     [SerializeField] private Item item;
+    [SerializeField] private GameObject objectToDestroy; //Leave null for full destruction
 
     public void Interact(GameObject sender)
     {
@@ -14,7 +15,12 @@ public class PickableItem : MonoBehaviour, IInteractable
             if(wasGiven)
             {
                 AudioManager.Instance?.PlaySound("Pickup", 0.9f, 1.1f);
+
+                if(objectToDestroy == null)
                 Destroy(gameObject);
+
+                else
+                Destroy(objectToDestroy);
             }
 
             else

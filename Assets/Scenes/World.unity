@@ -778,6 +778,63 @@ MonoBehaviour:
     maxDay: 5
   minSilence: 0
   maxSilence: 1
+--- !u!1001 &268974845
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1062199088990199653, guid: fe9c3c058d529bd40b6baf028d26f683, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -62.93688
+      objectReference: {fileID: 0}
+    - target: {fileID: 1062199088990199653, guid: fe9c3c058d529bd40b6baf028d26f683, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.494
+      objectReference: {fileID: 0}
+    - target: {fileID: 1062199088990199653, guid: fe9c3c058d529bd40b6baf028d26f683, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -13.2458
+      objectReference: {fileID: 0}
+    - target: {fileID: 1062199088990199653, guid: fe9c3c058d529bd40b6baf028d26f683, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1062199088990199653, guid: fe9c3c058d529bd40b6baf028d26f683, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1062199088990199653, guid: fe9c3c058d529bd40b6baf028d26f683, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1062199088990199653, guid: fe9c3c058d529bd40b6baf028d26f683, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1062199088990199653, guid: fe9c3c058d529bd40b6baf028d26f683, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1062199088990199653, guid: fe9c3c058d529bd40b6baf028d26f683, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1062199088990199653, guid: fe9c3c058d529bd40b6baf028d26f683, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5291154456772646634, guid: fe9c3c058d529bd40b6baf028d26f683, type: 3}
+      propertyPath: m_Name
+      value: Stone
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fe9c3c058d529bd40b6baf028d26f683, type: 3}
 --- !u!1 &272127026
 GameObject:
   m_ObjectHideFlags: 0
@@ -6493,6 +6550,67 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1001 &889418366
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: ce14b965d0a05a04ab503b8cd4f48377, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -62.36501
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ce14b965d0a05a04ab503b8cd4f48377, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.553
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ce14b965d0a05a04ab503b8cd4f48377, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -13.180774
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ce14b965d0a05a04ab503b8cd4f48377, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ce14b965d0a05a04ab503b8cd4f48377, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ce14b965d0a05a04ab503b8cd4f48377, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ce14b965d0a05a04ab503b8cd4f48377, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ce14b965d0a05a04ab503b8cd4f48377, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ce14b965d0a05a04ab503b8cd4f48377, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ce14b965d0a05a04ab503b8cd4f48377, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: ce14b965d0a05a04ab503b8cd4f48377, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3d9d811e3c980474fa09fcacc62c3f3c, type: 2}
+    - target: {fileID: 919132149155446097, guid: ce14b965d0a05a04ab503b8cd4f48377, type: 3}
+      propertyPath: m_Name
+      value: Vines
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ce14b965d0a05a04ab503b8cd4f48377, type: 3}
 --- !u!1 &969929983
 GameObject:
   m_ObjectHideFlags: 0
@@ -8296,19 +8414,14 @@ MonoBehaviour:
       gameObject: {fileID: 7113273711803475367, guid: 5651103cb9342f84580f06b07dce21bd, type: 3}
       minQuantity: 500
       maxQuantity: 1000
+    - distanceBetweenSpawnables: 20
+      gameObject: {fileID: 2353178246110035332, guid: af679e4b52ffe0e4382fba2700cac075, type: 3}
+      minQuantity: 50
+      maxQuantity: 100
     - distanceBetweenSpawnables: 15
       gameObject: {fileID: 5291154456772646634, guid: a991b0f71a34eb445a21c8157015a1bc, type: 3}
       minQuantity: 100
       maxQuantity: 150
-  - spawnables:
-    - distanceBetweenSpawnables: 5
-      gameObject: {fileID: 7113273711803475367, guid: 5651103cb9342f84580f06b07dce21bd, type: 3}
-      minQuantity: 50
-      maxQuantity: 150
-    - distanceBetweenSpawnables: 5
-      gameObject: {fileID: 32916961726760097, guid: 50400aa3590860e4d8c18f775dded05f, type: 3}
-      minQuantity: 5
-      maxQuantity: 50
   mapMin: {x: -122.05468, y: 50, z: -73.68587}
   mapMax: {x: 65.34532, y: 50, z: 103.51413}
   groundMask:
@@ -8685,3 +8798,5 @@ SceneRoots:
   - {fileID: 1467611772}
   - {fileID: 1650647552}
   - {fileID: 146567179}
+  - {fileID: 268974845}
+  - {fileID: 889418366}
