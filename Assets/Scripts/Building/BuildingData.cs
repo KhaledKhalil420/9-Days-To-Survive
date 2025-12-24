@@ -1,5 +1,7 @@
 using UnityEngine;
 
+public enum BuildType {Structure, Weapons, Unlimited}
+
 [CreateAssetMenu]
 public class BuildingData : ScriptableObject
 {

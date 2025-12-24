@@ -1,428 +1,294 @@
-using System;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using DG.Tweening;
 
-//if this code was a woman I would've married it
 public class BuildingHammer : Item
-{    
+{
     //References
     private Transform mainCamera;
-    private GameObject ghostBuilding;
-    private Building currentBuildingComponent;
-    private MeshFilter ghostMeshFilter;
-    private Renderer ghostRenderer;
     private Animator animator;
-    
-    //Building Selection
-    private int selectedBuildingIndex;
-    public List<Building> availableBuildings;
-    
-    [Header("Building Settings")]
-    [SerializeField] private int gridSize = 2;
-    [SerializeField] private float maxBuildDistance = 12f;
-    [SerializeField] private LayerMask buildableLayers;
-    [SerializeField] private float rotationAngle = 45;
-    
-    [Header("Snapping Settings")]
-    [SerializeField] private float sphereCastRadius = 1.5f; 
-    [SerializeField] private float snapDistance = 5f;
-    
-    [Header("Demolish Settings")]
-    [SerializeField] private LayerMask demolishLayers;
 
-    [Header("UserInterface")]
-    [SerializeField] private Transform canvasParent;
-    [SerializeField] private Image uiImage;
-    [SerializeField] private TMP_Text buildTitle;
-    private List<GameObject> uiRecipeElements = new();
-    [SerializeField] private Transform uiRecipeParent;
-    [SerializeField] private Image uiRecipePrefab;
-    
-    //Internal State
-    private float currentRotation = 0;
-    private bool canPlaceBuilding = false;
+    [Header("Buildings")]
+    [SerializeField] private List<Building> availableBuildings;
+
+    //Selection state
+    private int selectedBuildingIndex;
+    private float currentRotation;
+
+    //Ghost data
+    private GameObject ghostBuilding;
+    private Building currentBuilding;
+    private MeshFilter ghostMeshFilter;
+    private Renderer[] ghostRenderers;
+
+    //Placement state
+    private bool canPlace;
     private Vector3 lastValidPosition;
-        
+    private Tween rotationTween;
+
+    #region Unity
+
     private void Start()
     {
+        //Cache refs
         mainCamera = PlayerLook.mainCamera.transform;
         animator = GetComponent<Animator>();
     }
-    
+
     private void LateUpdate()
     {
-        if(!isItemPickedUp) 
-        return;
-        HandleInputs();
-        UpdateGhostBuildingPosition();
+        if (!isItemPickedUp) return;
+
+        HandleInput();
+        UpdateGhost();
     }
-    
-    #region Input Handling
-    
-    private void HandleInputs()
+
+    #endregion
+
+    #region Input
+
+    private void HandleInput()
     {
-        HandleBuildingSelection();
-        
-        //Rotate building
+        //Scroll selection
+        HandleSelection();
+
+        //Rotate
         if (Input.GetKeyDown(Keybinds.Key("Rotate")))
         {
-            RotateBuilding();
+            currentRotation -= BuildManager.Instance.rotationAngle;
+            rotationTween?.Kill();
+            rotationTween = ghostBuilding?.transform.DORotate(new Vector3(0f, currentRotation, 0f), 0.15f).SetEase(Ease.OutQuad);
         }
-        
-        //Place building
+
+        //Place
         if (Input.GetMouseButtonDown(0))
         {
-            PlaceBuilding();
-
-            //Animation
+            TryPlace();
             animator.SetTrigger("Place");
         }
-        
-        //Demolish building
+
+        //Demolish
         if (Input.GetKeyDown(Keybinds.Key("Demolish")))
         {
-            DemolishBuilding();
+            TryDemolish();
             animator.SetTrigger("Demolish");
         }
     }
-    
-    private void HandleBuildingSelection()
+
+    private void HandleSelection()
     {
-        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
-        
-        if (scrollInput == 0f)
-            return;
-        
-        if (scrollInput < 0f)
-        {
-            selectedBuildingIndex++;
-        }
-        else
-        {
-            selectedBuildingIndex--;
-        }
-        
+        //Read scroll
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        if (scroll == 0f) return;
+
+        //Update index
+        selectedBuildingIndex += scroll < 0 ? 1 : -1;
+
+        //Wrap index
         if (selectedBuildingIndex >= availableBuildings.Count)
-        {
             selectedBuildingIndex = 0;
-        }
         else if (selectedBuildingIndex < 0)
-        {
             selectedBuildingIndex = availableBuildings.Count - 1;
-        }
 
-        InitializeUi();
-        SpawnNewGhostBuilding();
+        //Refresh ghost + ui
+        SpawnGhost();
+        BuildManager.Instance.UpdateBuildUI(availableBuildings[selectedBuildingIndex]);
     }
-    
-    private void RotateBuilding()
-    {
-        currentRotation -= rotationAngle;
-        
-        //Wrap rotation to stay between 0-360
-        if(currentRotation <= -360f)
-            currentRotation += 360f;
-        else if(currentRotation >= 360f)
-            currentRotation -= 360f;
-    }
-    
+
     #endregion
 
-    #region Ghost Building Setup
-    
-    private void SpawnNewGhostBuilding()
+    #region Ghost
+
+    private void SpawnGhost()
     {
-        //Destroy old ghost if it exists
-        if (ghostBuilding != null)
-        {
-            Destroy(ghostBuilding);
-        }
-        
-        if (availableBuildings[selectedBuildingIndex] == null)
-            return;
-        
-        // Spawn new ghost
+        //Destroy old ghost
+        if (ghostBuilding != null) Destroy(ghostBuilding);
+
+        //Spawn new ghost
         ghostBuilding = Instantiate(availableBuildings[selectedBuildingIndex].gameObject);
-        currentBuildingComponent = ghostBuilding.GetComponent<Building>();
-        
-        MakeGhostTransparent();
-    }
-    
-    private void MakeGhostTransparent()
-    {
-        //Get components
-        ghostMeshFilter = ghostBuilding.GetComponent<MeshFilter>();
-        ghostRenderer = ghostBuilding.GetComponent<Renderer>();
-        
-        //Make parent materials semi-transparent (handle ALL materials)
-        if(ghostRenderer != null)
-        {
-            Material[] materials = ghostRenderer.materials;
-            for (int i = 0; i < materials.Length; i++)
-            {
-                Material ghostMaterial = new Material(materials[i]);
-                Color ghostColor = ghostMaterial.color;
-                ghostColor.a = 0.5f; // 50% transparent
-                ghostMaterial.color = ghostColor;
-                materials[i] = ghostMaterial;
-            }
-            ghostRenderer.materials = materials;
-        }
-        
-        //Make all children materials semi-transparent too (handle ALL materials)
-        Renderer[] allRenderers = ghostBuilding.GetComponentsInChildren<Renderer>();
-        foreach (Renderer renderer in allRenderers)
-        {
-            Material[] childMaterials = renderer.materials;
-            for (int i = 0; i < childMaterials.Length; i++)
-            {
-                Material childMaterial = new Material(childMaterials[i]);
-                Color childColor = childMaterial.color;
-                childColor.a = 0.5f; // 50% transparent
-                childMaterial.color = childColor;
-                childMaterials[i] = childMaterial;
-            }
-            renderer.materials = childMaterials;
-        }
-        
-        //Scale to grid size only if building uses pivots
-        if (currentBuildingComponent != null && currentBuildingComponent.usesPivots)
-        {
-            ghostBuilding.transform.localScale = Vector3.one * gridSize;
-        }
-        
-        //Turn off colliders
-        Collider[] allColliders = ghostBuilding.GetComponentsInChildren<Collider>();
-        foreach (Collider collider in allColliders)
-        {
-            collider.enabled = false;
-        }
-    }
-    
-    #endregion
 
-    #region Ghost Building Position Update
-    
-    private void UpdateGhostBuildingPosition()
+        //Cache components
+        currentBuilding = ghostBuilding.GetComponent<Building>();
+        ghostMeshFilter = ghostBuilding.GetComponent<MeshFilter>();
+        ghostRenderers = ghostBuilding.GetComponentsInChildren<Renderer>();
+
+        //Disable colliders
+        foreach (var col in ghostBuilding.GetComponentsInChildren<Collider>())
+            col.enabled = false;
+
+        //Set transparency
+        SetGhostAlpha(0.5f);
+
+        //Scale if using pivots
+        if (currentBuilding != null && currentBuilding.usesPivots)
+            ghostBuilding.transform.localScale = Vector3.one * BuildManager.Instance.gridSize;
+
+        //Set initial rotation
+        ghostBuilding.transform.rotation = Quaternion.Euler(0f, currentRotation, 0f);
+    }
+
+    private void UpdateGhost()
     {
-        //Don't update if no ghost exists
-        if (ghostBuilding == null)
-            return;
-        
-        //Apply current rotation
-        ghostBuilding.transform.rotation = Quaternion.Lerp(ghostBuilding.transform.rotation, Quaternion.Euler(0f, currentRotation, 0f), Time.deltaTime * 30f);        
-        
-        //Use SphereCast (I fucking used it to make it easier to snap to pivots)
-        RaycastHit hitInfo;
-        bool hitSomething = Physics.SphereCast(
-            mainCamera.position,
-            sphereCastRadius,
-            mainCamera.forward,
-            out hitInfo,
-            maxBuildDistance,
-            buildableLayers
-        );
-        
-        //If spherecast missed, hide ghost and return
-        if (!hitSomething)
+        //Skip if missing
+        if (ghostBuilding == null) return;
+
+        var manager = BuildManager.Instance;
+
+        //Spherecast
+        if (!BuildUtilities.TryGetHit(mainCamera, manager.sphereCastRadius, manager.maxBuildDistance, manager.buildableLayers, out RaycastHit hit))
         {
-            canPlaceBuilding = false;
             ghostBuilding.SetActive(false);
+            canPlace = false;
             return;
         }
-        
-        //Show ghost if it was hidden
-        if (!ghostBuilding.activeSelf)
-        {
-            ghostBuilding.SetActive(true);
-        }
-        
-        //Calculate position based on what we hit
-        Vector3 targetPosition = CalculateBuildingPosition(hitInfo);
-        
-        //Move ghost to target position
-        lastValidPosition = targetPosition;
-        ghostBuilding.transform.position = lastValidPosition;
-        
+
+        //Show ghost
+        ghostBuilding.SetActive(true);
+
+        //Calculate position
+        Vector3 position = BuildUtilities.CalculatePosition(hit, currentBuilding, ghostMeshFilter, ghostBuilding, manager.gridSize, currentRotation, manager.snapDistance);
+
+        //Apply transform
+        lastValidPosition = position;
+        ghostBuilding.transform.position = position;
+
         //Update visuals
-        canPlaceBuilding = true;
+        canPlace = true;
         UpdateGhostColor();
     }
-    
-    #endregion
 
-    #region Pivot Snapping System //Mostly done by AI.. like 50% if the work was done by AI
-
-    private Vector3 CalculateBuildingPosition(RaycastHit hitInfo)
-    {
-        // If building doesn't use pivots, just place at hit point
-        if (currentBuildingComponent == null || !currentBuildingComponent.usesPivots)
-        {
-            return hitInfo.point;
-        }
-
-        // Get the size of the building mesh
-        float positionMultiplier = currentBuildingComponent.affectedByGridSizePosition ? gridSize : 1f;
-        Vector3 meshSize = ghostMeshFilter.mesh.bounds.extents * positionMultiplier;
-        
-        // Default: place on surface with correct height offset
-        Vector3 position = hitInfo.point + Vector3.up * (meshSize.y - ghostMeshFilter.mesh.bounds.center.y);
-        
-        // Check if we hit an existing building
-        Building hitBuilding = hitInfo.collider.GetComponent<Building>();
-        bool hitExistingBuilding = hitInfo.collider.CompareTag("Build");
-        bool hitBuildingHasPivots = hitBuilding != null && hitBuilding.pivots.Count > 0;
-        
-        // If we hit a building with pivot points, snap to it
-        if (hitExistingBuilding && hitBuildingHasPivots)
-        {
-            position = FindBestSnapPosition(hitInfo, hitBuilding);
-        }
-        
-        return position;
-    }
-
-    private Vector3 FindBestSnapPosition(RaycastHit hitInfo, Building targetBuilding)
-    {
-        float closestDistance = float.PositiveInfinity;
-        Vector3 finalPosition = hitInfo.point;
-        Vector3 bestOffset = Vector3.zero;
-        
-        float snapMultiplier = currentBuildingComponent.affectedByGridSizePosition ? gridSize : 1f;
-        
-        // Loop through all pivot points on the building we hit
-        foreach (Transform targetPivot in targetBuilding.pivots)
-        {
-            // Get pivot position in world space with rotation
-            Vector3 worldPivotPosition = GetRotatedPivotPosition(
-                targetPivot.position,
-                hitInfo.collider.transform.position,
-                hitInfo.collider.transform.eulerAngles.y
-            );
-            
-            // Calculate direction for snapping
-            Vector3 direction = (worldPivotPosition - hitInfo.collider.transform.position).normalized;
-            direction = (direction + hitInfo.normal).normalized * snapMultiplier / 2f;
-            
-            // Check if we're close enough to this pivot (using adjustable snapDistance)
-            float distanceToPivot = Vector3.Distance(hitInfo.point, worldPivotPosition);
-            if (distanceToPivot < snapDistance)
-            {
-                // Temporarily move ghost to this position
-                ghostBuilding.transform.position = worldPivotPosition;
-                
-                // Check all of OUR pivot points to find best match
-                foreach (Transform myPivot in currentBuildingComponent.pivots)
-                {
-                    Vector3 myWorldPivotPosition = GetRotatedPivotPosition(
-                        myPivot.position,
-                        ghostBuilding.transform.position,
-                        currentRotation
-                    );
-                    
-                    // Calculate distance between the two pivots
-                    float distance = Vector3.Distance(myWorldPivotPosition - direction, worldPivotPosition);
-                    
-                    // Keep track of closest match
-                    if (distance < closestDistance)
-                    {
-                        closestDistance = distance;
-                        bestOffset = myWorldPivotPosition - ghostBuilding.transform.position;
-                        finalPosition = worldPivotPosition;
-                    }
-                }
-            }
-        }
-        
-        // Return final position with offset applied
-        return finalPosition + bestOffset;
-    }
-    
-    private Vector3 GetRotatedPivotPosition(Vector3 pivotPosition, Vector3 centerPosition, float yRotation)
-    {
-        // Get direction from center to pivot
-        Vector3 direction = pivotPosition - centerPosition;
-        
-        // Rotate the direction
-        direction = Quaternion.Euler(0f, yRotation, 0f) * direction;
-        
-        // Return rotated position
-        return direction + centerPosition;
-    }
-    
-    #endregion
-
-    #region Visual Feedback
-    
     private void UpdateGhostColor()
     {
-        //Update parent color (handle ALL materials)
-        if(ghostRenderer != null)
+        //Apply color
+        Color color = canPlace ? Color.green : Color.red;
+        color.a = 0.5f;
+
+        foreach (var r in ghostRenderers)
         {
-            Material[] materials = ghostRenderer.materials;
-            for (int i = 0; i < materials.Length; i++)
-            {
-                Color newColor = canPlaceBuilding ? Color.green : Color.red;
-                newColor.a = 0.5f;
-                materials[i].color = newColor;
-            }
-            ghostRenderer.materials = materials;
-        }
-        
-        //Update all children colors (handle ALL materials)
-        Renderer[] allRenderers = ghostBuilding.GetComponentsInChildren<Renderer>();
-        foreach (Renderer renderer in allRenderers)
-        {
-            Material[] childMaterials = renderer.materials;
-            for (int i = 0; i < childMaterials.Length; i++)
-            {
-                Color newColor = canPlaceBuilding ? Color.green : Color.red;
-                newColor.a = 0.5f;
-                childMaterials[i].color = newColor;
-            }
-            renderer.materials = childMaterials;
+            Material[] mats = r.materials;
+            for (int i = 0; i < mats.Length; i++)
+                mats[i].color = color;
+            r.materials = mats;
         }
     }
-    
+
+    private void SetGhostAlpha(float alpha)
+    {
+        //Set ghost alpha
+        foreach (var r in ghostRenderers)
+        {
+            Material[] mats = r.materials;
+            for (int i = 0; i < mats.Length; i++)
+            {
+                Material newMat = new Material(mats[i]);
+                Color c = newMat.color;
+                c.a = alpha;
+                newMat.color = c;
+                mats[i] = newMat;
+            }
+            r.materials = mats;
+        }
+    }
+
     #endregion
 
-    #region Building Placement
+    #region Placement
 
-    private bool TakeResources()
+    private void TryPlace()
     {
-        PlayerInventory playerInventory = heldby.GetComponent<PlayerInventory>();
+        //Verify
+        if (!canPlace || ghostBuilding == null) return;
+        if (!TakeResources()) return;
 
-        foreach (Ingredient ingredient in availableBuildings[selectedBuildingIndex].ingredients)
+        //Spawn building
+        GameObject placed = Instantiate(availableBuildings[selectedBuildingIndex].gameObject, lastValidPosition, Quaternion.Euler(0f, currentRotation, 0f));
+
+        //Scale if needed
+        if (availableBuildings[selectedBuildingIndex].usesPivots)
+            placed.transform.localScale = Vector3.one * BuildManager.Instance.gridSize;
+
+        //Finalize build
+        placed.tag = "Build";
+
+        //Restore material alpha
+        Renderer[] renderers = placed.GetComponentsInChildren<Renderer>();
+        foreach (var r in renderers)
         {
-            if(!playerInventory.HasItem(ingredient.item, ingredient.quantity))
+            Material[] mats = r.materials;
+            for (int i = 0; i < mats.Length; i++)
             {
-                Debug.Log("FALSE");
-                return false;
+                Color c = mats[i].color;
+                c.a = 1f;
+                mats[i].color = c;
             }
+            r.materials = mats;
         }
 
-       foreach (Ingredient ingredient in availableBuildings[selectedBuildingIndex].ingredients)
+        placed.GetComponent<Building>()?.OnPlace();
+
+        //Sound
+        AudioManager.Instance?.PlaySound("Build", 0.9f, 1.25f);
+    }
+
+    private void TryDemolish()
+    {
+        var manager = BuildManager.Instance;
+
+        //Check if there's a hit
+        if (!BuildUtilities.TryGetHit(mainCamera, manager.sphereCastRadius, manager.maxBuildDistance, manager.demolishLayers, out RaycastHit hit)) return;
+
+        //Double check if it's a build
+        if (!hit.collider.CompareTag("Build")) return;
+
+        //Check for building component (or parent)
+        Building building = hit.collider.GetComponent<Building>();
+        if (building == null)
         {
-            playerInventory.TakeItem(ingredient.item, ingredient.quantity, out bool wasTaken);
+            building = hit.collider.GetComponentInParent<Building>();
+            if (building == null) return;
         }
+
+        //Refund and destroy
+        if (!RefundResources()) return;
+
+        Destroy(building.gameObject);
+        AudioManager.Instance?.PlaySound("Demolish", 0.9f, 1.25f);
+    }
+
+    #endregion
+
+    #region Resources
+
+    bool TakeResources()
+    {
+        //Inventory
+        PlayerInventory inventory = heldby.GetComponent<PlayerInventory>();
+
+        //Check cost
+        foreach (var ing in availableBuildings[selectedBuildingIndex].ingredients)
+            if (!inventory.HasItem(ing.item, ing.quantity))
+                return false;
+
+        //Take
+        foreach (var ing in availableBuildings[selectedBuildingIndex].ingredients)
+            inventory.TakeItem(ing.item, ing.quantity, out _);
 
         return true;
     }
 
-
-    private bool RefundResources()
+    bool RefundResources()
     {
-        PlayerInventory playerInventory = heldby.GetComponent<PlayerInventory>();
+        //Inventory
+        PlayerInventory inventory = heldby.GetComponent<PlayerInventory>();
 
-        foreach (Ingredient ingredient in availableBuildings[selectedBuildingIndex].ingredients)
+        //Refund items
+        foreach (var ing in availableBuildings[selectedBuildingIndex].ingredients)
         {
-            Item item = Instantiate(ingredient.item).GetComponent<Item>();
-            item.HeldQuantity = ingredient.quantity;
+            Item item = Instantiate(ing.item).GetComponent<Item>();
+            item.HeldQuantity = ing.quantity;
 
-            playerInventory.GiveItem(item, out bool wasTaken);
-            if(!wasTaken)
+            inventory.GiveItem(item, out bool taken);
+            if (!taken)
             {
                 Destroy(item);
                 return false;
@@ -431,143 +297,26 @@ public class BuildingHammer : Item
 
         return true;
     }
-    
-    private void PlaceBuilding()
-    {
-        if (!canPlaceBuilding || ghostBuilding == null)
-            return;
-        
-        if(!TakeResources())
-        {
-            return;
-        }
-        
-        
-        //Spawn building
-        GameObject newBuilding = Instantiate(
-            availableBuildings[selectedBuildingIndex].gameObject,
-            lastValidPosition,
-            Quaternion.Euler(0f, currentRotation, 0f)
-        );
-        
-        //Set scale and tag (only apply gridSize if building uses pivots)
-        if (currentBuildingComponent != null && currentBuildingComponent.usesPivots)
-        {
-            newBuilding.transform.localScale = Vector3.one * gridSize;
-        }
-        newBuilding.tag = "Build";
-        
-        //Enable colliders on the placed building
-        Collider[] allColliders = newBuilding.GetComponentsInChildren<Collider>();
-        foreach (Collider collider in allColliders)
-        {
-            collider.enabled = true;
-        }
-        
-        //Materials
-        Renderer buildingRenderer = newBuilding.GetComponent<Renderer>();
-        if (buildingRenderer != null)
-        {
-            Material buildingMaterial = buildingRenderer.material;
-            Color solidColor = buildingMaterial.color;
-            solidColor.a = 1f; // Fully opaque
-            buildingMaterial.color = solidColor;
-            buildingRenderer.material = buildingMaterial;
-        }
-
-        newBuilding.GetComponent<Building>()?.OnPlace();
-
-        //Sound
-        AudioManager.Instance?.PlaySound("Build", 0.9f, 1.25f);
-    }
-
-    private void DemolishBuilding()
-    {
-        //Use SphereCast for demolishing too (I love it goddamn it)
-        RaycastHit hitInfo;
-        bool hitSomething = Physics.SphereCast(
-            mainCamera.position,
-            sphereCastRadius,
-            mainCamera.forward,
-            out hitInfo,
-            maxBuildDistance,
-            demolishLayers
-        );
-
-        
-        if (!hitSomething)
-            return;
-        
-        if (!hitInfo.collider.CompareTag("Build"))
-            return;
-        
-        //Get the building component
-        Building buildingToDemolish = hitInfo.collider.GetComponent<Building>();
-        if (buildingToDemolish == null)
-        {
-            Building buildingToDemolishParent = hitInfo.collider.GetComponentInParent<Building>();
-            if(buildingToDemolishParent == null)
-            {
-                return;
-            }
-        }
-                
-        
-        if(!RefundResources())
-        {
-            return;
-        }
-
-        // Destroy the building
-        Destroy(hitInfo.collider.gameObject);
-
-        //Sound
-        AudioManager.Instance?.PlaySound("Demolish", 0.9f, 1.25f);
-    }
 
     #endregion
 
-    #region Ui
-
-    private void InitializeUi()
-    {
-        //Selection of builds
-        uiImage.sprite = availableBuildings[selectedBuildingIndex].data.sprite;
-        buildTitle.text = availableBuildings[selectedBuildingIndex].data.buildingName;
-
-        //Recipe for builds
-        if(uiRecipeElements.Count > 0)
-        Array.ForEach(uiRecipeElements.ToArray(), element => Destroy(element));
-
-        foreach (Ingredient ingredient in availableBuildings[selectedBuildingIndex].ingredients)
-        {
-            Image uiElement = Instantiate(uiRecipePrefab, uiRecipeParent).GetComponent<Image>();
-            uiElement.sprite = ingredient.item.data.sprite;
-            uiElement.GetComponentInChildren<TMP_Text>().text = ingredient.quantity.ToString();
-            uiRecipeElements.Add(uiElement.gameObject);
-        }
-    }
-
-    #endregion
-
-    public override void OnChangingItems()
-    {
-        canvasParent.gameObject.SetActive(false);
-        ghostRenderer = null;
-        ghostMeshFilter = null;
-        currentBuildingComponent = null;
-        Destroy(ghostBuilding);
-
-        if(isSelected) OnSelect();
-    }
+    #region Item Overrides
 
     public override void OnSelect()
     {
-        canvasParent.gameObject.SetActive(true);
+        //Show ui
+        BuildManager.Instance.ShowUI(true);
+        SpawnGhost();
+        BuildManager.Instance.UpdateBuildUI(availableBuildings[selectedBuildingIndex]);
     }
 
-    public override void OnSelectOnce()
+    public override void OnChangingItems()
     {
-        SpawnNewGhostBuilding();
+        //Cleanup
+        rotationTween?.Kill();
+        BuildManager.Instance.ShowUI(false);
+        Destroy(ghostBuilding);
     }
+
+    #endregion
 }

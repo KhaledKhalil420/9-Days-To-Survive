@@ -21,6 +21,8 @@ public class PickableItem : MonoBehaviour, IInteractable
 
                 else
                 Destroy(objectToDestroy);
+
+                Destroy(this);
             }
 
             else
