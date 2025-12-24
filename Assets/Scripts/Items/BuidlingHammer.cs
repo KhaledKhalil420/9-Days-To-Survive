@@ -302,7 +302,7 @@ public class BuildingHammer : Item
 
     #region Item Overrides
 
-    public override void OnSelect()
+    public override void OnSelectOnce()
     {
         //Show ui
         BuildManager.Instance.ShowUI(true);

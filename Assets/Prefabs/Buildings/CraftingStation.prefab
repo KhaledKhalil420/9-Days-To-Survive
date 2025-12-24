@@ -948,7 +948,7 @@ Transform:
   m_GameObject: {fileID: 5095320248276783499}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.18, y: -0.49, z: -9.2}
+  m_LocalPosition: {x: 2.18, y: 15555, z: -9.2}
   m_LocalScale: {x: 0.875, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -998,7 +998,9 @@ MonoBehaviour:
     quantity: 15
   data: {fileID: 11400000, guid: 1974f81039fa0814286a9d06f3958b50, type: 2}
   usesPivots: 0
+  affectedByGridSizePosition: 1
   pivots: []
+  pivotsOnBuild: []
 --- !u!65 &1907277935932853918
 BoxCollider:
   m_ObjectHideFlags: 0
