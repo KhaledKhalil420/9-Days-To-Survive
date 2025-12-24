@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class PlayerInteract : MonoBehaviour
@@ -9,8 +10,9 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] internal float raycastDistance;
     [SerializeField] private Transform crosshair;
 
-    private float _eHoldTime = 0f;
-    private const float HoldThreshold = 0.5f;
+    [Header("Hold To Interact")]
+    [SerializeField] private Image holdProgress;
+    [SerializeField] private float holdSpeed;
 
     private IHighlightable currentlyHighlightable;
 
@@ -29,20 +31,16 @@ public class PlayerInteract : MonoBehaviour
 
         if (Input.GetKeyDown(Keybinds.Key("Interact")))
         {
-            _eHoldTime = 0f;
             TryInteract();
         }
         else if (Input.GetKey(Keybinds.Key("Interact")))
         {
-            _eHoldTime += Time.deltaTime;
-            if (_eHoldTime >= HoldThreshold)
-            {
-                TryInteract();
-            }
+            TryInteractHold();
         }
+
         else if (Input.GetKeyUp(Keybinds.Key("Interact")))
         {
-            _eHoldTime = 0f;
+            StopHoldInteract();
         }
 
         if (Input.GetMouseButtonDown(2))
@@ -61,6 +59,44 @@ public class PlayerInteract : MonoBehaviour
             }
         }
     }
+
+
+    private IHoldInteractable holdInteractable;
+    private void TryInteractHold()
+    {
+        if (Physics.Raycast(look.transform.position, look.transform.forward, out RaycastHit hit, raycastDistance, LayerMask.GetMask("Interactable")))
+        {
+            if (hit.transform.TryGetComponent(out IHoldInteractable interactable))
+            {
+                holdProgress.fillAmount = interactable.holdProgress;
+                holdInteractable = interactable;
+                interactable.holdProgress += + holdSpeed;
+                interactable.OnHoldProgress(interactable.holdProgress);
+
+                if(interactable.holdProgress >= 1)
+                {
+                    holdInteractable.OnHoldComplete();
+                    interactable.holdProgress = 0;
+                }
+                return;
+            }
+        }
+
+        StopHoldInteract();
+    }
+
+    private void StopHoldInteract()
+    {
+        if(holdInteractable == null) 
+            return;
+
+        holdInteractable.holdProgress = 0;
+        holdInteractable?.OnHoldProgress(0);
+        holdInteractable = null;  
+
+        holdProgress.fillAmount = 0;
+    }
+
 
     private void TryInteractOnce()
     {
