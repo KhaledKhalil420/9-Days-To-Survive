@@ -1,11 +1,15 @@
 using UnityEngine;
 
-public class PickableItem : MonoBehaviour, IInteractable
+public class PickableItem : MonoBehaviour, IHoldInteractable
 {
     [SerializeField] private Item item;
     [SerializeField] private GameObject objectToDestroy; //Leave null for full destruction
 
-    public void Interact(GameObject sender)
+    public float HoldDuration => 0.5f;
+
+    public float holdProgress { get; set;}
+
+    public void OnHoldComplete(GameObject sender)
     {
         if(sender.TryGetComponent(out PlayerInventory inventory))
         {
@@ -29,6 +33,11 @@ public class PickableItem : MonoBehaviour, IInteractable
             {
                 Destroy(_item);
             }
-        }
+        }    
+    }
+
+    public void OnHoldProgress(float progress)
+    {
+        //Sound or something
     }
 }

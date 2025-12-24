@@ -75,7 +75,7 @@ public class PlayerInteract : MonoBehaviour
 
                 if(interactable.holdProgress >= 1)
                 {
-                    holdInteractable.OnHoldComplete();
+                    holdInteractable.OnHoldComplete(gameObject);
                     interactable.holdProgress = 0;
                 }
                 return;
