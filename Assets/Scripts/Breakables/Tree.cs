@@ -1,3 +1,4 @@
+using DG.Tweening;
 using EZCameraShake;
 using UnityEngine;
 
@@ -18,7 +19,8 @@ public class Tree : Breakable
         if(!wasGiven) 
             Destroy(gameObject);
 
-        CameraShaker.Instance?.ShakeOnce(6, 3, 0f, 1f);
+        CameraShaker.Instance?.ShakeOnce(3, 3, 0f, 1f);
+        transform.DOShakeRotation(0.5f, 5, 2);
     }
 
     public override void OnDestroyed()

@@ -201,7 +201,7 @@ public class BuildingHammer : Item
         if (!TakeResources()) return;
 
         //Spawn building
-        GameObject placed = Instantiate(availableBuildings[selectedBuildingIndex].gameObject, lastValidPosition, Quaternion.Euler(0f, currentRotation, 0f));
+        GameObject placed = Instantiate(availableBuildings[selectedBuildingIndex].gameObject, lastValidPosition, Quaternion.Euler(0f, Mathf.Round(currentRotation), 0f));
 
         //Scale if needed
         if (availableBuildings[selectedBuildingIndex].usesPivots)
