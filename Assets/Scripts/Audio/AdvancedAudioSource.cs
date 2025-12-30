@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class AdvancedAudioSource : MonoBehaviour
 {
-    private AudioSource audioSource;
+    internal AudioSource audioSource;
 
     [Header("Source Data")]
     public AudioClip[] clipsOnAwake;

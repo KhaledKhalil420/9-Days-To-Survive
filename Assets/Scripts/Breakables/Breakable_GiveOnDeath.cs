@@ -2,7 +2,7 @@ using DG.Tweening;
 using EZCameraShake;
 using UnityEngine;
 
-public class Tree : Breakable
+public class Breakable_GiveOnDeath : Breakable
 {
     [SerializeField] private int givenQuantityOnHitMax;
     [SerializeField] private ParticleSystem destroyParticles;

@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6202669168483898114}
   - component: {fileID: 1007098427922503245}
   - component: {fileID: 5096120980787383518}
+  - component: {fileID: 7303130852281162168}
   m_Layer: 0
   m_Name: Tree_3
   m_TagString: Untagged
@@ -221,12 +222,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7288bcf933461794580016371acc3da8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  source: {fileID: 0}
+  source: {fileID: 5096120980787383518}
   requiredTool: 1
   toughness: 1
-  health: 30
+  health: 5
   item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
   givenQuantityOnHitMax: 1
+  destroyParticles: {fileID: 7301512366205885463, guid: e15eb7276d1a1cb4bb4aeea033137d4b, type: 3}
+  destroySound: {fileID: 8300000, guid: 9de36afeecc3c83428aead2f685abf23, type: 3}
 --- !u!114 &5096120980787383518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,7 +244,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clipsOnAwake: []
   playClips:
-  - {fileID: 8300000, guid: 9de36afeecc3c83428aead2f685abf23, type: 3}
+  - {fileID: 8300000, guid: a495c1a2eb8e959448d88591513d6729, type: 3}
+  - {fileID: 8300000, guid: 37d5a27b013a5e54f8cdd197db64ee07, type: 3}
   type: 1
   fadeOnAwake: 0
   fadeLowPassOnAwake: 0
+--- !u!208 &7303130852281162168
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7113273711803475367}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 2.2940001, y: 4.316, z: 3.0260003}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.284, y: 4.316, z: -0.061000004}
+  m_TimeToStationary: 0.5

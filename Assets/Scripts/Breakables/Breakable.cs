@@ -1,9 +1,10 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public enum BreakableType {Pickaxe, Axe, Else, Buildings}
 public class Breakable : MonoBehaviour, IBreakable
 {
-    [SerializeField] private AdvancedAudioSource source;
+    [SerializeField] protected AdvancedAudioSource source;
     [SerializeField] private BreakableType requiredTool;
     [SerializeField] private int toughness, health;
     [SerializeField] protected Item item;
@@ -39,5 +40,13 @@ public class Breakable : MonoBehaviour, IBreakable
     public virtual void OnDestroyed()
     {
         
+    }
+
+    public void DisableBreakable()
+    {
+        GetComponent<Renderer>().enabled = false;
+        GetComponent<MeshRenderer>().enabled = false;
+        GetComponent<Collider>().enabled = false;
+        GetComponent<NavMeshObstacle>().enabled = false;
     }
 }

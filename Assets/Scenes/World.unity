@@ -7718,7 +7718,7 @@ MonoBehaviour:
   maxBuildDistance: 4
   snapDistance: 1
   sphereCastRadius: 0.1
-  rotationAngle: 45
+  rotationAngle: 45.01
   buildableLayers:
     serializedVersion: 2
     m_Bits: 521
@@ -8167,13 +8167,13 @@ MonoBehaviour:
   state: 0
   walkingSpeed: 25
   runSpeed: 50
-  airSpeed: 69
+  airSpeed: 15
   crouchSpeed: 10
   jumpForce: 1000
   slideForce: 0
   slideTime: 0
   speedMultiplier: 1
-  maxSpeed: 10
+  maxSpeed: 8
   bufferTime: 0.2
   cayoteTime: 0.1
   groundDrag: 6
