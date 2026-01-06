@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 84339880695931765}
   - component: {fileID: 2146462723720258446}
   - component: {fileID: 6202669168483898114}
-  - component: {fileID: 1007098427922503245}
+  - component: {fileID: 7424779362129416608}
   - component: {fileID: 5096120980787383518}
   - component: {fileID: 7303130852281162168}
   m_Layer: 0
@@ -210,7 +210,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.7466574, y: 4.1073256, z: 0.7663906}
   m_Center: {x: -0.04511881, y: 2.0536628, z: -0.03387013}
---- !u!114 &1007098427922503245
+--- !u!114 &7424779362129416608
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -219,17 +219,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 7113273711803475367}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7288bcf933461794580016371acc3da8, type: 3}
+  m_Script: {fileID: 11500000, guid: c39f4b5d890dc8b4b810304f65463ee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   source: {fileID: 5096120980787383518}
   requiredTool: 1
   toughness: 1
-  health: 5
+  health: 10
   item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
-  givenQuantityOnHitMax: 1
+  givenQuantityAverage: 15
   destroyParticles: {fileID: 7301512366205885463, guid: e15eb7276d1a1cb4bb4aeea033137d4b, type: 3}
   destroySound: {fileID: 8300000, guid: 9de36afeecc3c83428aead2f685abf23, type: 3}
+  damageMeshes:
+  - healthPercentage: 75
+    damageMesh: {fileID: -8678823145569952518, guid: 830e559c01fa5f443837d026c3a6318b, type: 3}
+  - healthPercentage: 15
+    damageMesh: {fileID: -8678823145569952518, guid: 2ce0074bfe90aa74ca61205b7cc3de1b, type: 3}
 --- !u!114 &5096120980787383518
 MonoBehaviour:
   m_ObjectHideFlags: 0

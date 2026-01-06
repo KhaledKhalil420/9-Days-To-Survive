@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using EZCameraShake;
 using UnityEngine;
 
@@ -21,7 +22,7 @@ public class Stone : Breakable
         CameraShaker.Instance?.ShakeOnce(6, 3, 0f, 1f);
     }
 
-    public override void OnDestroyed()
+    public override void OnDestroyed(GameObject sender)
     {
         Destroy(gameObject);
     }

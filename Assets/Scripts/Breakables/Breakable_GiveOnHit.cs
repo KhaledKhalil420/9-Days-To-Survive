@@ -25,7 +25,7 @@ public class Breakable_GiveOnHit : Breakable
         transform.DOShakeRotation(0.5f, 5, 2);
     }
 
-    public override void OnDestroyed()
+    public override void OnDestroyed(GameObject sender)
     {
         //Playone shot, doesn't seem to be working for some reason btw
         source.audioSource.clip = destroySound;

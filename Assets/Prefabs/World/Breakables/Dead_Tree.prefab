@@ -99,9 +99,10 @@ GameObject:
   - component: {fileID: 3348127769471938998}
   - component: {fileID: 6548844571974610509}
   - component: {fileID: 2815779744005972365}
-  - component: {fileID: 8298306151155306568}
+  - component: {fileID: 7471363798807518839}
   - component: {fileID: 3736474884592305914}
   - component: {fileID: 9116334104407964178}
+  - component: {fileID: -6186983615211018732}
   m_Layer: 7
   m_Name: Dead_Tree
   m_TagString: Untagged
@@ -213,7 +214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 789964070537936751, guid: 579e2f28e3108d94eb9886af3095b868, type: 3}
   objectToDestroy: {fileID: 1352700312283822604}
---- !u!114 &8298306151155306568
+--- !u!114 &7471363798807518839
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -222,7 +223,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2353178246110035332}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7288bcf933461794580016371acc3da8, type: 3}
+  m_Script: {fileID: 11500000, guid: c39f4b5d890dc8b4b810304f65463ee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   source: {fileID: 9116334104407964178}
@@ -230,7 +231,9 @@ MonoBehaviour:
   toughness: 1
   health: 5
   item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
-  givenQuantityOnHitMax: 1
+  givenQuantityAverage: 15
+  destroyParticles: {fileID: 7301512366205885463, guid: e15eb7276d1a1cb4bb4aeea033137d4b, type: 3}
+  destroySound: {fileID: 8300000, guid: 9de36afeecc3c83428aead2f685abf23, type: 3}
 --- !u!82 &3736474884592305914
 AudioSource:
   m_ObjectHideFlags: 0
@@ -346,3 +349,19 @@ MonoBehaviour:
   type: 1
   fadeOnAwake: 0
   fadeLowPassOnAwake: 0
+--- !u!208 &-6186983615211018732
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2353178246110035332}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.50100005, y: 1.9440001, z: 1.154}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.091000006, y: 1.9410001, z: -0.21200001}
+  m_TimeToStationary: 0.5

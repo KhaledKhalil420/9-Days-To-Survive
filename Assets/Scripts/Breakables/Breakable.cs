@@ -6,13 +6,15 @@ public class Breakable : MonoBehaviour, IBreakable
 {
     [SerializeField] protected AdvancedAudioSource source;
     [SerializeField] private BreakableType requiredTool;
-    [SerializeField] private int toughness, health;
+    [SerializeField] protected int toughness, health;
+    protected int fullHealth;
     [SerializeField] protected Item item;
     private GameObject sender;
 
     private void Start()
     {
         source = GetComponent<AdvancedAudioSource>();
+        fullHealth = health;
     }
 
     public void Damage(GameObject sender, int damage, BreakableType _type, int _toughness)
@@ -28,7 +30,7 @@ public class Breakable : MonoBehaviour, IBreakable
 
         if(health <= 0)
         {
-            OnDestroyed();
+            OnDestroyed(sender);
         }
     }
 
@@ -37,7 +39,7 @@ public class Breakable : MonoBehaviour, IBreakable
         
     }
 
-    public virtual void OnDestroyed()
+    public virtual void OnDestroyed(GameObject sender)
     {
         
     }
