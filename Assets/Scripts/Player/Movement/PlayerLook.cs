@@ -11,7 +11,7 @@ public class PlayerLook : MonoBehaviour
     public Transform Player;
     private CapsuleCollider playerCollider;
 
-    internal bool disableLook = false;
+    internal static bool disableLook = false;
 
     public static Camera mainCamera;
     public Camera _mainCamera;

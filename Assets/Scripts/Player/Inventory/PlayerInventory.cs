@@ -12,6 +12,7 @@ public class PlayerInventory : MonoBehaviour
     public GameObject slotPrefab;
     public Transform slotParent;
     public List<SlotHolder> SlotHolders = new();
+    [SerializeField] private int mainSlots = 7; //Main slots, from 1 to 9
 
     [Header("Visuals")]
     public Color selectedSlotColor, unselectedSlotColor;
@@ -32,7 +33,7 @@ public class PlayerInventory : MonoBehaviour
 
     [Header("Bag")]
     [SerializeField] private Transform bagParent; //same as slot parent, remember ya ana
-    private bool isOpen = false;
+    private bool isBagOpen = false;
 
     void Awake()
     {
@@ -155,9 +156,9 @@ public class PlayerInventory : MonoBehaviour
     {
         if(Input.GetKeyDown(Keybinds.Key("InventoryOpen")))
         {
-            isOpen = !isOpen;
-            bagParent.gameObject.SetActive(isOpen);
-            UiManager.ToggleUi(isOpen);
+            isBagOpen = !isBagOpen;
+            bagParent.gameObject.SetActive(isBagOpen);
+            UiManager.ToggleUi(isBagOpen);
         }
     }
 
@@ -213,6 +214,9 @@ public class PlayerInventory : MonoBehaviour
 
     private void HandleUse()
     {
+        if(isBagOpen) 
+            return;
+
         if (Input.GetKeyDown(Keybinds.Key("Use")))
         {
             SlotHolder selectedSlot = SlotHolders[_currentSlotIndex];
@@ -282,7 +286,7 @@ public class PlayerInventory : MonoBehaviour
         // }
 
         // Number keys 1-9
-        for (int i = 0; i < Mathf.Min(9, SlotHolders.Count); i++)
+        for (int i = 0; i < mainSlots; i++)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1 + i))
             {

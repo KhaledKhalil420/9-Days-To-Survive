@@ -11,7 +11,7 @@ public class UiManager : MonoBehaviour
 
     public static void ToggleUi(bool state)
     {
-        PlayerLook.instance.disableLook = state;
+        PlayerLook.disableLook = state;
         Cursor.visible = state;
         Cursor.lockState = state ? CursorLockMode.None : CursorLockMode.Locked;
     }

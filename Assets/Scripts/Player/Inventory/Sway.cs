@@ -31,6 +31,9 @@ public class ItemSway : MonoBehaviour
 
     private void Update()
     {
+        if(PlayerLook.disableLook) 
+            return;
+
         if (!isSwayOn)
         {
             transform.localPosition = Vector3.Lerp(transform.localPosition, initialPosition, Time.deltaTime * smoothness);

@@ -59,20 +59,18 @@ public class BuildingHammer : Item
             rotationTween?.Kill();
             rotationTween = ghostBuilding?.transform.DORotate(new Vector3(0f, currentRotation, 0f), 0.15f).SetEase(Ease.OutQuad);
         }
+    }
 
-        //Place
-        if (Input.GetMouseButtonDown(0))
-        {
-            TryPlace();
-            animator.SetTrigger("Place");
-        }
+    public override void OnUse()
+    {
+        TryPlace();
+        animator.SetTrigger("Place");
+    }
 
-        //Demolish
-        if (Input.GetKeyDown(Keybinds.Key("Demolish")))
-        {
-            TryDemolish();
-            animator.SetTrigger("Demolish");
-        }
+    public override void OnUseAlt()
+    {
+        TryDemolish();
+        animator.SetTrigger("Demolish");        
     }
 
     private void HandleSelection()
