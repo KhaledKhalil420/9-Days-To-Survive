@@ -9,42 +9,36 @@ public class PlayerInventory : MonoBehaviour
     public static PlayerInventory instance;
 
     [Header("Slot setup")]
-    public GameObject slotPrefab;
-    public Transform slotParent;
-    public List<SlotHolder> SlotHolders = new();
-    [SerializeField] private int mainSlots = 7; //Main slots, from 1 to 9
+    [SerializeField] private GameObject slotPrefab;
+    [SerializeField] internal List<SlotHolder> SlotHolders = new();
 
-    [Header("Visuals")]
-    public Color selectedSlotColor, unselectedSlotColor;
-    public CanvasGroup group, heldItemGroup;
-    public TMP_Text heldItemDisplayText;
-    internal SlotHolder selectedSlot;
-    private Transform _camera;
-    private int lastSelectedSlot = 1;
-
+    [Header("Item use")]
     [SerializeField] private Transform hand;
-    [SerializeField] private int additionalSlots = 0;
     private PlayerInteract interact;
 
     [Header("Pickup UI")]
-    public GameObject pickedUpUIPrefab;
-    public Transform pickedUpUIParent;
-    Dictionary<string, UiPickedUpItemInfo> activePickedUpUIs = new();
+    [SerializeField] private GameObject pickedUpUIPrefab;
+    [SerializeField] private Transform pickedUpUIParent;
+    private Dictionary<string, UiPickedUpItemInfo> activePickedUpUIs = new();
+    
+    [Header("HotBar")]
+    [SerializeField] private int mainSlots = 7;
+    [SerializeField] private Transform slotParent; //parent for hotbar
 
     [Header("Bag")]
     [SerializeField] private Transform bagParent; //same as slot parent, remember ya ana
     private bool isBagOpen = false;
 
+    [Header("Visuals")]
+    [SerializeField] private Color selectedSlotColor, unselectedSlotColor;
+    [SerializeField] private TMP_Text heldItemDisplayText;
+    internal SlotHolder selectedSlot;
+    private Transform _camera;
+    private int lastSelectedSlot = 1;
+
     void Awake()
     {
         instance = this;
-
-        additionalSlots = PlayerPrefs.GetInt("Slots", 0);
-
-        for (int i = 0; i < additionalSlots; i++)
-        {
-            RetriveInventorySlots();
-        }
     }
 
     private void Start()
@@ -266,7 +260,6 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-
     private int _currentSlotIndex = 1;
 
     private void HandleSlotsSwitching()
@@ -293,15 +286,6 @@ public class PlayerInventory : MonoBehaviour
                 if(i == lastSelectedSlot) 
                 return;
                 SlotHolders[_currentSlotIndex].HeldItem?.OnChangingItems();
-
-                //Visuals
-                if(group != null)
-                {
-                    DOVirtual.Float(group.alpha, 0.5f, 0.25f, value => group.alpha = value);
-                    DOVirtual.Float(heldItemGroup.alpha, 1, 0.25f, value => heldItemGroup.alpha = value);
-                    CancelInvoke(nameof(DecreaseAlpha));
-                    Invoke(nameof(DecreaseAlpha), 4);
-                }
                 
                 lastSelectedSlot = i;
                 _currentSlotIndex = i;
@@ -327,12 +311,6 @@ public class PlayerInventory : MonoBehaviour
         heldItemDisplayText.text = SlotHolders[_currentSlotIndex].HeldItem != null ? SlotHolders[_currentSlotIndex].HeldItem.data.Name : "";
     }
 
-    private void DecreaseAlpha()
-    {
-        if(group == null) return;   
-        DOVirtual.Float(group.alpha, 0.25f, 2, value => group.alpha = value);
-        DOVirtual.Float(heldItemGroup.alpha, 0.05f, 2, value => heldItemGroup.alpha = value);
-    }
     #endregion
 
     #region Ref returns
@@ -444,22 +422,6 @@ public class PlayerInventory : MonoBehaviour
         {
             slot.UpdateSlot();
         }
-    }
-
-    public void RetriveInventorySlots()
-    {
-        SlotHolder slot = Instantiate(slotPrefab, slotParent).GetComponent<SlotHolder>();
-        SlotHolders.Add(slot);
-        UpdateSlots();
-    }
-
-    public void AddInventorySlot()
-    {
-        SlotHolder slot = Instantiate(slotPrefab, slotParent).GetComponent<SlotHolder>();
-        SlotHolders.Add(slot);
-        UpdateSlots();
-
-        additionalSlots++;
     }
 
     #endregion
