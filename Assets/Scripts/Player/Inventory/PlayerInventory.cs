@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
+using UnityEditor.IMGUI.Controls;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -10,8 +11,8 @@ public class PlayerInventory : MonoBehaviour
     [Header("Slot setup")]
     public GameObject slotPrefab;
     public Transform slotParent;
-
     public List<SlotHolder> SlotHolders = new();
+
     [Header("Visuals")]
     public Color selectedSlotColor, unselectedSlotColor;
     public CanvasGroup group, heldItemGroup;
@@ -28,6 +29,10 @@ public class PlayerInventory : MonoBehaviour
     public GameObject pickedUpUIPrefab;
     public Transform pickedUpUIParent;
     Dictionary<string, UiPickedUpItemInfo> activePickedUpUIs = new();
+
+    [Header("Bag")]
+    [SerializeField] private Transform bagParent; //same as slot parent, remember ya ana
+    private bool isOpen = false;
 
     void Awake()
     {
@@ -139,10 +144,21 @@ public class PlayerInventory : MonoBehaviour
 
     private void Inputs()
     {
+        HandleBag();
         HandlePickup();
         HandleThrowing();
         HandleSlotsSwitching();
         HandleUse();
+    }
+
+    private void HandleBag()
+    {
+        if(Input.GetKeyDown(Keybinds.Key("InventoryOpen")))
+        {
+            isOpen = !isOpen;
+            bagParent.gameObject.SetActive(isOpen);
+            UiManager.ToggleUi(isOpen);
+        }
     }
 
     private void HandlePickup()

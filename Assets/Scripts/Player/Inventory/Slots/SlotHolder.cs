@@ -1,24 +1,15 @@
 using DG.Tweening;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class SlotHolder : MonoBehaviour
+public class SlotHolder : BaseSlot
 {
-    public Item HeldItem;
-    public int HeldQuantity;
-    public bool isSelected;
-    
+    public bool isSelected;   
     private bool wasSelected;
 
-    [SerializeField] private Image _itemIconImage;
-    [SerializeField] private Image _slotBorderImage;
-    [SerializeField] private TMP_Text _itemQuantityText;
-    [SerializeField] private Sprite _empty;
-    [SerializeField] private Color unselected, selected;
-
-    private void Visuals()
+    public override void Visuals()
     {
+        _slotBorderImage.color = Color.Lerp(_slotBorderImage.color, isSelected ? selected : unselected, Time.deltaTime * 10f);
+
         if(isSelected)
         {
             transform.DOLocalRotate(new Vector3(0, 0, -2), 1);
@@ -31,20 +22,10 @@ public class SlotHolder : MonoBehaviour
         }
     }
 
-    public void UpdateSlot()
+    public override void OnUpdateSlot()
     {
-        if (HeldQuantity <= 0 && HeldItem != null)
-        {
-            _itemQuantityText.text = "";
-            HeldItem.OnChangingItems();
-            Destroy(HeldItem.gameObject);
-            HeldItem = null;
-        }
-
         if (HeldItem != null)
-        {
-            HeldItem.HeldQuantity = HeldQuantity;
-            
+        {            
             if (isSelected)
             {
                 HeldItem.OnSelect();
@@ -58,34 +39,7 @@ public class SlotHolder : MonoBehaviour
             HeldItem.isSelected = isSelected;
             HeldItem.gameObject.SetActive(isSelected);
         }
-        
+
         wasSelected = isSelected;
-
-        _slotBorderImage.color = Color.Lerp(_slotBorderImage.color, isSelected ? selected : unselected, Time.deltaTime * 10f);
-
-        _itemQuantityText.text = HeldItem != null ? HeldQuantity.ToString() : "";
-        _itemQuantityText.text = HeldQuantity > 1 ? HeldQuantity.ToString() : "";
-
-        _itemIconImage.sprite = HeldItem != null ? HeldItem.data.sprite : _empty;
-
-        Visuals();
-    }
-
-    public void ResetSlot()
-    {
-        HeldItem.isSelected = false;
-        HeldQuantity = 0;
-        HeldItem = null;
-        UpdateSlot();
-    }
-
-    public void RemoveSlotSprite()
-    {
-        _itemIconImage.sprite = _empty;
-    }
-
-    public void ResetSlotSprite()
-    {
-        _itemIconImage.sprite = HeldItem.data.sprite;
     }
 }

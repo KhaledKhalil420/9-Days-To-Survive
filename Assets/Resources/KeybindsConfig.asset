@@ -29,3 +29,5 @@ MonoBehaviour:
     Key: 114
   - Action: Demolish
     Key: 324
+  - Action: InventoryOpen
+    Key: 9

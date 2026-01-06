@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerLook : MonoBehaviour
 {
+    public static PlayerLook instance;
+
     public float Sensitivity = 50f;
     [SerializeField] internal Vector2 rotations;
     internal Vector3 offset;
@@ -9,7 +11,7 @@ public class PlayerLook : MonoBehaviour
     public Transform Player;
     private CapsuleCollider playerCollider;
 
-    internal bool disableLook;
+    internal bool disableLook = false;
 
     public static Camera mainCamera;
     public Camera _mainCamera;
@@ -19,6 +21,8 @@ public class PlayerLook : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        instance = this;
 
         rotations.y = transform.localEulerAngles.y;
         playerCollider = Player.GetComponent<CapsuleCollider>();
@@ -34,6 +38,9 @@ public class PlayerLook : MonoBehaviour
 
     public void Update()
     {        
+        if(disableLook) 
+        return;
+
         AutoFix();
         Inputs();
         Look();
