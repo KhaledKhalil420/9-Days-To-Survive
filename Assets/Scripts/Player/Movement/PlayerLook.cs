@@ -38,12 +38,13 @@ public class PlayerLook : MonoBehaviour
 
     public void Update()
     {        
+        Look();
+        AutoFix();
+
         if(disableLook) 
         return;
 
-        AutoFix();
         Inputs();
-        Look();
     }
 
     public void LateUpdate()

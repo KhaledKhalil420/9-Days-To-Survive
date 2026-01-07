@@ -1,14 +1,14 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(SlotHolder))]
+[RequireComponent(typeof(BaseSlot))]
 public class DraggableSlot : MonoBehaviour, IPointerDownHandler
 {
-    private SlotHolder slot;
+    private BaseSlot slot;
 
     void Awake()
     {
-        slot = GetComponent<SlotHolder>();
+        slot = GetComponent<BaseSlot>();
     }
 
     public void OnPointerDown(PointerEventData eventData)

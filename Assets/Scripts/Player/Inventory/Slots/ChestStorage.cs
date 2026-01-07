@@ -4,24 +4,50 @@ using System.Collections.Generic;
 public class ChestStorage : MonoBehaviour, IInteractable
 {
     [SerializeField] private GameObject chestUI;
-
-    [SerializeField] private Transform slotContainer;
-    [SerializeField] private GameObject chestSlotPrefab;
-    [SerializeField] private int slotCount = 12;
-    
-    private List<BaseSlot> slots = new();
+    [SerializeField] private List<BaseSlot> slots;
+    [SerializeField] private InventoryHolder inventoryHolder;
     private bool isOpen = false;
 
-    public void Interact(GameObject sender)
-    {
-        isOpen = !isOpen;
-    }
 
     private void Start()
     {
-        for (int i = 0; i < slotCount; i++)
+        foreach(BaseSlot slot in slots)
         {
-            Instantiate(chestSlotPrefab, slotContainer);
+            slot.heldBy = inventoryHolder;
         }
+
+        PlayerInventory.instance.OnInventoryOpen += CloseUi;
+
+        InvokeRepeating(nameof(UpdateSlots), 0.001f, 0.001f);
+    }
+
+    private void UpdateSlots()
+    {
+        foreach(BaseSlot slot in slots)
+        {
+            slot.UpdateSlot();
+            slot.HeldItem?.gameObject.SetActive(false);
+        }
+    }
+
+    public void Interact(GameObject sender)
+    {
+        OpenUi();
+    }
+
+    public void CloseUi(bool state)
+    {
+        if(state) return;
+
+        PlayerInventory.instance.ToggleBagNoEvent(false);
+        chestUI.SetActive(false);
+        isOpen = false;
+    }
+
+    public void OpenUi()
+    {
+        PlayerInventory.instance.ToggleBagNoEvent(true);
+        chestUI.SetActive(true);
+        isOpen = true;
     }
 }

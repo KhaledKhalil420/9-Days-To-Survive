@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(SlotHolder))]
+[RequireComponent(typeof(BaseSlot))]
 public class DropZoneSlot : MonoBehaviour, IPointerDownHandler
 {
     private BaseSlot slot;

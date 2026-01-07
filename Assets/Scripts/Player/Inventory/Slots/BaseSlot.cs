@@ -3,11 +3,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class BaseSlot : MonoBehaviour
+public class BaseSlot : MonoBehaviour
 {
     public Item HeldItem;
     public int HeldQuantity;
-    internal PlayerInventory heldBy;
+    internal InventoryHolder heldBy;
 
     [SerializeField] internal Image _itemIconImage;
     [SerializeField] internal Image _slotBorderImage;
@@ -52,7 +52,7 @@ public abstract class BaseSlot : MonoBehaviour
     public void CreateItem(ItemData data)
     {
         Item item = Instantiate(data.prefab).GetComponent<Item>();
-        item.heldby = heldBy.gameObject;
+        item.heldby = heldBy.parent.gameObject;
         item.SetItemParent(heldBy.hand);
         item.HeldQuantity = HeldQuantity;
 

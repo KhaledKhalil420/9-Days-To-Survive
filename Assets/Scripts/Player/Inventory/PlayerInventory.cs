@@ -1,9 +1,14 @@
+using TMPro;
+using System;
 using UnityEngine;
 using System.Collections.Generic;
-using DG.Tweening;
-using TMPro;
-using UnityEditor.IMGUI.Controls;
-using System;
+
+[Serializable]
+public class InventoryHolder
+{
+    public Transform parent;
+    public Transform hand;
+}
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -14,7 +19,7 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] internal List<SlotHolder> SlotHolders = new();
 
     [Header("Item use")]
-    [SerializeField] internal Transform hand;
+    [SerializeField] internal InventoryHolder holder;
     private PlayerInteract interact;
 
     [Header("Pickup UI")]
@@ -52,7 +57,7 @@ public class PlayerInventory : MonoBehaviour
 
         foreach (SlotHolder slot in SlotHolders)
         {
-            slot.heldBy = this;
+            slot.heldBy = holder;
         }
     }
 
@@ -80,7 +85,7 @@ public class PlayerInventory : MonoBehaviour
             emptySlot.HeldItem = item;
             emptySlot.HeldQuantity = item.HeldQuantity;
             item.heldby = gameObject;
-            item.SetItemParent(hand);
+            item.SetItemParent(holder.hand);
             emptySlot.UpdateSlot();
 
             SpawnPickedUpUI(item.data, item.HeldQuantity);
@@ -108,7 +113,7 @@ public class PlayerInventory : MonoBehaviour
             emptySlot.HeldItem = item;
             emptySlot.HeldQuantity = item.HeldQuantity;
             item.heldby = gameObject;
-            item.SetItemParent(hand);
+            item.SetItemParent(holder.hand);
             emptySlot.UpdateSlot();
 
             SpawnPickedUpUI(item.data, item.HeldQuantity);
@@ -172,10 +177,17 @@ public class PlayerInventory : MonoBehaviour
 
     public void ToggleBag(bool state)
     {
-        isBagOpen = !state;
+        isBagOpen = state;
         bagParent.gameObject.SetActive(state);
         UiManager.ToggleUi(state);
         OnInventoryOpen?.Invoke(state);
+    }
+
+    public void ToggleBagNoEvent(bool state)
+    {
+        isBagOpen = state;
+        bagParent.gameObject.SetActive(state);
+        UiManager.ToggleUi(state);
     }
 
     private void HandlePickup()
