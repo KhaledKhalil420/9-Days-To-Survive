@@ -29,8 +29,6 @@ public class DragSlot : MonoBehaviour
 
     void Update()
     {
-        instance = this;
-
         if (!isDragging || dragIcon == null)
             return;
 

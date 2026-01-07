@@ -41,10 +41,10 @@ public class PlayerLook : MonoBehaviour
         Look();
         AutoFix();
 
-        if(disableLook) 
-        return;
-
-        Inputs();
+        if(!disableLook)
+        {
+            Inputs();
+        }
     }
 
     public void LateUpdate()

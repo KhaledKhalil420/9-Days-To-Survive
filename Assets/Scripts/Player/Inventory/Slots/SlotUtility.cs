@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SlotUtility : MonoBehaviour
+public class SlotUtility
 {
     public static bool TryMove(BaseSlot from, BaseSlot to, int qty)
     {

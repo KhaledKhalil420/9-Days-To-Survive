@@ -10,17 +10,23 @@ public class SlotHolder : BaseSlot
     {
         _slotBorderImage.color = Color.Lerp(_slotBorderImage.color, isSelected ? selected : unselected, Time.deltaTime * 10f);
 
-        if(isSelected)
+        if (wasSelected == isSelected)
+            return;
+
+        if (isSelected)
         {
             transform.DOLocalRotate(new Vector3(0, 0, -2), 1);
-            transform.DOScale(new Vector3(1.15f, 1.15f, 1.15f), 1);
+            transform.DOScale(Vector3.one * 1.15f, 1);
         }
         else
         {
-            transform.DOLocalRotate(new Vector3(0, 0, 0), 1);
-            transform.DOScale(new Vector3(1, 1, 1), 1);
+            transform.DOLocalRotate(Vector3.zero, 1);
+            transform.DOScale(Vector3.one, 1);
         }
+
+        wasSelected = isSelected;
     }
+
 
     public override void OnUpdateSlot()
     {
