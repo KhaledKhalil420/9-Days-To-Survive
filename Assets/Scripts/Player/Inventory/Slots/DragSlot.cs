@@ -68,6 +68,7 @@ public class DragSlot : MonoBehaviour
 
         if (moved)
         {
+            AudioManager.Instance.PlaySound("BagPlace");
             DOVirtual.DelayedCall(0.001f, () => StopDrag());
         }
     }

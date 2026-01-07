@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 1068580448057627305}
   - component: {fileID: 4281013464840019890}
   - component: {fileID: 2039898754132160148}
+  - component: {fileID: 5018894235803285881}
   m_Layer: 0
   m_Name: Stone
   m_TagString: Untagged
@@ -134,6 +135,7 @@ MonoBehaviour:
   givenQuantityAverage: 0
   destroyParticles: {fileID: 0}
   destroySound: {fileID: 8300000, guid: a90b08a1f5592064096c21defd95e5c3, type: 3}
+  damageMeshes: []
 --- !u!82 &1068580448057627305
 AudioSource:
   m_ObjectHideFlags: 0
@@ -264,3 +266,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   surfaceType: 1
+--- !u!205 &5018894235803285881
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32916961726760097}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 1
+  m_FadeMode: 1
+  m_AnimateCrossFading: 1
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.008254927
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 3348127769471938998, guid: af679e4b52ffe0e4382fba2700cac075, type: 3}
+  m_Enabled: 1

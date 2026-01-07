@@ -18,7 +18,7 @@ public class ChestStorage : MonoBehaviour, IInteractable
 
         PlayerInventory.instance.OnInventoryOpen += CloseUi;
 
-        // InvokeRepeating(nameof(UpdateSlots), 0.01f, 0.01f);
+        InvokeRepeating(nameof(UpdateSlots), 0.01f, 0.01f);
     }
 
     private void UpdateSlots()

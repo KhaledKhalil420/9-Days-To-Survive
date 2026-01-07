@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 3736474884592305914}
   - component: {fileID: 9116334104407964178}
   - component: {fileID: -6186983615211018732}
+  - component: {fileID: -2842091150858644398}
   m_Layer: 7
   m_Name: Dead_Tree
   m_TagString: Untagged
@@ -234,6 +235,7 @@ MonoBehaviour:
   givenQuantityAverage: 15
   destroyParticles: {fileID: 7301512366205885463, guid: e15eb7276d1a1cb4bb4aeea033137d4b, type: 3}
   destroySound: {fileID: 8300000, guid: 9de36afeecc3c83428aead2f685abf23, type: 3}
+  damageMeshes: []
 --- !u!82 &3736474884592305914
 AudioSource:
   m_ObjectHideFlags: 0
@@ -365,3 +367,22 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0.091000006, y: 1.9410001, z: -0.21200001}
   m_TimeToStationary: 0.5
+--- !u!205 &-2842091150858644398
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2353178246110035332}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 1
+  m_FadeMode: 1
+  m_AnimateCrossFading: 1
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.008254927
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 3348127769471938998}
+  m_Enabled: 1

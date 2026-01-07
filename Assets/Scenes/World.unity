@@ -17,7 +17,7 @@ RenderSettings:
   m_Fog: 1
   m_FogColor: {r: 0, g: 0.779325, b: 1, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.049
+  m_FogDensity: 0.029
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -11281,6 +11281,14 @@ MonoBehaviour:
       Source: {fileID: 0}
       Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
       Clip: {fileID: 8300000, guid: 327495cd2fecc504684a3b034a1ecc9b, type: 3}
+    - SoundName: BagPlace
+      Loop: 0
+      PlayOnAwake: 0
+      Volume: 0.7
+      Pitch: 1
+      Source: {fileID: 0}
+      Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+      Clip: {fileID: 8300000, guid: e6ec68adbdf491644a32efe19d0c7b09, type: 3}
   startFadeIn: 0
   musicMixerGroup: {fileID: 4491711137434354881, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
   soundEffectMixerGroup: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
@@ -13660,15 +13668,15 @@ MonoBehaviour:
   bladeCurveAmount: 2.02
   interactor: {fileID: 0}
   windSpeed: 1
-  windStrength: 0.05
+  windStrength: 0.1
   affectRadius: 0.3
   affectStrength: 5
   minFadeDistance: 15
-  maxFadeDistance: 50
+  maxFadeDistance: 35
   topTint: {r: 1, g: 1, b: 1, a: 1}
   bottomTint: {r: 0.25490198, g: 0.6313726, b: 0.40044615, a: 1}
   ambientStrength: 0
-  castShadow: 1
+  castShadow: 0
 --- !u!33 &1977557024
 MeshFilter:
   m_ObjectHideFlags: 0
