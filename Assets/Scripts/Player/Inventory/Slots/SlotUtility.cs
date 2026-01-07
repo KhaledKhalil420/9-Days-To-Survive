@@ -7,9 +7,9 @@ public class SlotUtility : MonoBehaviour
         if (from.HeldItem == null || from == to) return false;
         
         //if to has an item, same type of item, not single quantity item, add to it
-        if (to.HeldItem != null && !from.HeldItem.isSingleQuantityItem)
+        if (to.HeldItem != null)
         {
-            if(to.HeldItem.data == from.HeldItem.data)
+            if(to.HeldItem.data == from.HeldItem.data && !from.HeldItem.isSingleQuantityItem)
             {
                 //Do quantities
                 to.HeldQuantity += qty;
@@ -19,7 +19,7 @@ public class SlotUtility : MonoBehaviour
                 {
                     to.CreateItem(from.HeldItem.data);
                 }
-                
+
                 from.UpdateSlot();
                 to.UpdateSlot();
                 return true;   
@@ -27,7 +27,8 @@ public class SlotUtility : MonoBehaviour
 
             else
             {
-                TrySwap(from, to);
+                if(TrySwap(from, to))
+                return true;
             }
         }
         

@@ -158,16 +158,24 @@ public class PlayerInventory : MonoBehaviour
     {
         if(Input.GetKeyDown(Keybinds.Key("InventoryOpen")))
         {
-            OpenBag();
+            ToggleBag();
         }
     }
 
-    public void OpenBag()
+    public void ToggleBag()
     {
         isBagOpen = !isBagOpen;
         bagParent.gameObject.SetActive(isBagOpen);
         UiManager.ToggleUi(isBagOpen);
         OnInventoryOpen?.Invoke(isBagOpen);
+    }
+
+    public void ToggleBag(bool state)
+    {
+        isBagOpen = !state;
+        bagParent.gameObject.SetActive(state);
+        UiManager.ToggleUi(state);
+        OnInventoryOpen?.Invoke(state);
     }
 
     private void HandlePickup()
@@ -194,30 +202,36 @@ public class PlayerInventory : MonoBehaviour
     {
         if (Input.GetKeyDown(Keybinds.Key("Throw")))
         {
-            SlotHolder selectedSlot = SlotHolders[_currentSlotIndex];
-            Item heldItem = selectedSlot.HeldItem;
-
-            if (heldItem != null)
-            {
-                heldItem.OnThrow();
-
-                heldItem.HeldQuantity = selectedSlot.HeldQuantity;
-                heldItem.heldby = null;
-                heldItem.SetItemParent(null);
-                heldItem.transform.position = _camera.position;
-
-                if (heldItem.TryGetComponent(out Rigidbody rigidbody))
-                    rigidbody.AddForce(_camera.forward * 6, ForceMode.Impulse);
-
-                if (heldItem.TryGetComponent(out Animator animator))
-                    animator.enabled = false;
-
-                selectedSlot.ResetSlot();
-                heldItem.OnChangingItems();
-            }
-
-            UpdateSlots();
+            ThrowItem(_currentSlotIndex);
         }
+    }
+
+    public void ThrowItem(int throwAt)
+    {
+        SlotHolder selectedSlot = SlotHolders[throwAt];
+        Item heldItem = selectedSlot.HeldItem;
+
+        if (heldItem != null)
+        {
+            heldItem.OnThrow();
+
+            heldItem.HeldQuantity = selectedSlot.HeldQuantity;
+            heldItem.heldby = null;
+            heldItem.SetItemParent(null);
+            heldItem.transform.position = _camera.position;
+
+            if (heldItem.TryGetComponent(out Rigidbody rigidbody))
+                rigidbody.AddForce(_camera.forward * 6, ForceMode.Impulse);
+
+            if (heldItem.TryGetComponent(out Animator animator))
+                animator.enabled = false;
+
+            selectedSlot.ResetSlot();
+            heldItem.OnChangingItems();
+        }
+
+        OnInventoryOpen?.Invoke(false);
+        UpdateSlots();
     }
 
     private void HandleUse()

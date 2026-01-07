@@ -1,4 +1,5 @@
 using DG.Tweening;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -21,6 +22,11 @@ public class DragSlot : MonoBehaviour
         instance = this;
     }
 
+    void Start()
+    {
+        PlayerInventory.instance.OnInventoryOpen += UpdateDragState;
+    }
+
     void Update()
     {
         instance = this;
@@ -29,6 +35,14 @@ public class DragSlot : MonoBehaviour
             return;
 
         dragIcon.position = Input.mousePosition;
+    }
+
+    public void UpdateDragState(bool state)
+    {
+        if(!state)
+        {
+            StopDrag();
+        }
     }
 
     public void StartDrag(BaseSlot from, int quantity)
