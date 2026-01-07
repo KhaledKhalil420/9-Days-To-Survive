@@ -7,6 +7,7 @@ public abstract class BaseSlot : MonoBehaviour
 {
     public Item HeldItem;
     public int HeldQuantity;
+    internal PlayerInventory heldBy;
 
     [SerializeField] internal Image _itemIconImage;
     [SerializeField] internal Image _slotBorderImage;
@@ -46,6 +47,20 @@ public abstract class BaseSlot : MonoBehaviour
     public virtual void OnUpdateSlot()
     {
         
+    }
+
+    public void CreateItem(ItemData data)
+    {
+        Item item = Instantiate(data.prefab).GetComponent<Item>();
+        item.heldby = heldBy.gameObject;
+        item.SetItemParent(heldBy.hand);
+        item.HeldQuantity = HeldQuantity;
+
+        _itemQuantityText.text = HeldItem != null ? HeldQuantity.ToString() : "";
+        _itemQuantityText.text = HeldQuantity > 1 ? HeldQuantity.ToString() : "";
+
+        _itemIconImage.sprite = HeldItem != null ? HeldItem.data.sprite : _empty;
+        HeldItem = item;
     }
 
     public void ResetSlot()

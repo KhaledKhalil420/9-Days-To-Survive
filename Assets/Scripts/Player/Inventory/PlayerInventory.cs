@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEditor.IMGUI.Controls;
+using System;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] internal List<SlotHolder> SlotHolders = new();
 
     [Header("Item use")]
-    [SerializeField] private Transform hand;
+    [SerializeField] internal Transform hand;
     private PlayerInteract interact;
 
     [Header("Pickup UI")]
@@ -28,9 +29,11 @@ public class PlayerInventory : MonoBehaviour
     [Header("Bag")]
     [SerializeField] private Transform bagParent; //same as slot parent, remember ya ana
     private bool isBagOpen = false;
+    public event Action<bool> OnInventoryOpen;
 
     [Header("Visuals")]
-    [SerializeField] private Color selectedSlotColor, unselectedSlotColor;
+    [SerializeField] private Color selectedSlotColor;
+    [SerializeField] private Color unselectedSlotColor;
     [SerializeField] private TMP_Text heldItemDisplayText;
     internal SlotHolder selectedSlot;
     private Transform _camera;
@@ -46,6 +49,11 @@ public class PlayerInventory : MonoBehaviour
         _camera = PlayerLook.mainCamera.transform;
         interact = GetComponent<PlayerInteract>();
         InvokeRepeating(nameof(UpdateSlots), 0.0001f, 0.0001f);
+
+        foreach (SlotHolder slot in SlotHolders)
+        {
+            slot.heldBy = this;
+        }
     }
 
     private void Update()
@@ -150,10 +158,16 @@ public class PlayerInventory : MonoBehaviour
     {
         if(Input.GetKeyDown(Keybinds.Key("InventoryOpen")))
         {
-            isBagOpen = !isBagOpen;
-            bagParent.gameObject.SetActive(isBagOpen);
-            UiManager.ToggleUi(isBagOpen);
+            OpenBag();
         }
+    }
+
+    public void OpenBag()
+    {
+        isBagOpen = !isBagOpen;
+        bagParent.gameObject.SetActive(isBagOpen);
+        UiManager.ToggleUi(isBagOpen);
+        OnInventoryOpen?.Invoke(isBagOpen);
     }
 
     private void HandlePickup()

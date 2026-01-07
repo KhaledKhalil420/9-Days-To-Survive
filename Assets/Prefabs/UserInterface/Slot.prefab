@@ -87,6 +87,8 @@ GameObject:
   - component: {fileID: 7747368740945436264}
   - component: {fileID: 8906861750446166388}
   - component: {fileID: 64128204757331433}
+  - component: {fileID: 2165030296267916832}
+  - component: {fileID: 7705960827644467672}
   m_Layer: 0
   m_Name: Slot
   m_TagString: Untagged
@@ -167,13 +169,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HeldItem: {fileID: 0}
   HeldQuantity: 0
-  isSelected: 0
   _itemIconImage: {fileID: 6880101715607745632}
   _slotBorderImage: {fileID: 8906861750446166388}
   _itemQuantityText: {fileID: 6702771459906535430}
   _empty: {fileID: 21300000, guid: d04a6b3a4b05f2f479e7aa4db082c8a2, type: 3}
   unselected: {r: 1, g: 1, b: 1, a: 1}
   selected: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 1}
+  isSelected: 0
+--- !u!114 &2165030296267916832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2830858313127400088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5db04f558d9cd4a499bee76525495dc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7705960827644467672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2830858313127400088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 460008a413f46a54d898c9e6e815a119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4466709536597899083
 GameObject:
   m_ObjectHideFlags: 0
