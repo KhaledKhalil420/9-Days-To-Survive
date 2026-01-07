@@ -9341,7 +9341,7 @@ MonoBehaviour:
   hand: {fileID: 272127027}
   pickedUpUIPrefab: {fileID: 6966632713228888834, guid: 1b97e880a0343554ab3d3a13a7ea5a1d, type: 3}
   pickedUpUIParent: {fileID: 1235553534}
-  mainSlots: 6
+  mainSlots: 7
   slotParent: {fileID: 790838104}
   bagParent: {fileID: 1286026614}
   selectedSlotColor: {r: 0.8584906, g: 0.8584906, b: 0.8584906, a: 1}
