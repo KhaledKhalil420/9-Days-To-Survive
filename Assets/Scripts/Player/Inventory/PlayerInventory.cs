@@ -32,7 +32,7 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private Transform slotParent; //parent for hotbar
 
     [Header("Bag")]
-    [SerializeField] private Transform bagParent; //same as slot parent, remember ya ana
+    [SerializeField] private CanvasGroup bagParent; //same as slot parent, remember ya ana
     private bool isBagOpen = false;
     public event Action<bool> OnInventoryOpen;
 
@@ -170,7 +170,9 @@ public class PlayerInventory : MonoBehaviour
     public void ToggleBag()
     {
         isBagOpen = !isBagOpen;
-        bagParent.gameObject.SetActive(isBagOpen);
+        AudioManager.Instance.PlaySound(isBagOpen ? "BagOpen" : "BagClose");
+        bagParent.interactable = isBagOpen;
+        bagParent.alpha = isBagOpen ? 1 : 0;
         UiManager.ToggleUi(isBagOpen);
         OnInventoryOpen?.Invoke(isBagOpen);
     }
@@ -178,7 +180,8 @@ public class PlayerInventory : MonoBehaviour
     public void ToggleBag(bool state)
     {
         isBagOpen = state;
-        bagParent.gameObject.SetActive(state);
+        bagParent.interactable = state;
+        bagParent.alpha = state ? 1 : 0;
         UiManager.ToggleUi(state);
         OnInventoryOpen?.Invoke(state);
     }
@@ -186,7 +189,8 @@ public class PlayerInventory : MonoBehaviour
     public void ToggleBagNoEvent(bool state)
     {
         isBagOpen = state;
-        bagParent.gameObject.SetActive(state);
+        bagParent.interactable = state;
+        bagParent.alpha = state ? 1 : 0;
         UiManager.ToggleUi(state);
     }
 
