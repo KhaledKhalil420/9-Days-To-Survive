@@ -17,5 +17,6 @@ public class Food : Consumables
 
         playerStats.Heal(health);
         playerStats.Eat(satiation);
+        playerStats.stamina.Modify(satiation);
     }
 }

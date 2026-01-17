@@ -8790,6 +8790,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestFood
       objectReference: {fileID: 0}
+    - target: {fileID: 5784634455702619647, guid: 3482e79a9229d0e4e873187cbd4a0b4e, type: 3}
+      propertyPath: HeldQuantity
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11494,7 +11498,7 @@ MonoBehaviour:
     modifyRate: 0.1
     canModifyRate: 1
     isDecaying: 1
-    delay: 20
+    delay: 50
     delayTimer: 0
     slider: {fileID: 1006263204}
     sliderLerp: 5

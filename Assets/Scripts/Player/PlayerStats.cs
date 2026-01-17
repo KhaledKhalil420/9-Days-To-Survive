@@ -69,14 +69,14 @@ public class PlayerStat
 public class PlayerStats : MonoBehaviour, IDamagable
 {
     [Header("Health")]
-    [SerializeField] private PlayerStat health = new();
+    [SerializeField] internal PlayerStat health = new();
 
 
     [Header("Hunger")]
-    [SerializeField] private PlayerStat hunger = new();
+    [SerializeField] internal PlayerStat hunger = new();
 
     [Header("Stamina")]
-    [SerializeField] private PlayerStat stamina = new();
+    [SerializeField] internal PlayerStat stamina = new();
     [SerializeField] private float staminaConsumption = 1;
     [SerializeField] private PlayerMovement movement;
     
