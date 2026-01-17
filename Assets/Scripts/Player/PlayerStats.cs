@@ -121,6 +121,7 @@ public class PlayerStats : MonoBehaviour, IDamagable
     public void HandleStamina()
     {
         movement.canRun = stamina.current > 0;
+        movement.canJump = stamina.current > 0;
 
         if(movement.isRunning)
         {

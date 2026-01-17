@@ -44,6 +44,8 @@ public class PlayerMovementVariables : MonoBehaviour
     internal bool isRunning = false;
     internal bool isSliding = false;
     internal bool canRun = true;
+    internal bool canJump = true;
+
 
     #endregion
 

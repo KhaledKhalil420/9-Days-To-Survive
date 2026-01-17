@@ -43,7 +43,7 @@ public class PlayerMovement : PlayerMovementVariables
 
     private void HandleJumping()
     {
-        if (!enableJumping) return;
+        if (!enableJumping || !canJump) return;
 
         if (Input.GetButton("Jump") && IsGrounded())
         {
