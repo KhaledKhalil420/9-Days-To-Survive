@@ -11432,12 +11432,12 @@ MonoBehaviour:
     sliderLerp: 5
     text: {fileID: 1555446458}
   hunger:
-    max: 100
+    max: 10
     current: 0
-    modifyRate: 1
+    modifyRate: 0.1
     canModifyRate: 1
     isDecaying: 1
-    delay: 15
+    delay: 20
     delayTimer: 0
     slider: {fileID: 1006263204}
     sliderLerp: 5
@@ -11454,7 +11454,7 @@ MonoBehaviour:
     slider: {fileID: 2024889314}
     sliderLerp: 5
     text: {fileID: 1192978007}
-  runningStaminaConsumption: 15
+  staminaConsumption: 4
   movement: {fileID: 1220912754}
 --- !u!1 &1235553533
 GameObject:

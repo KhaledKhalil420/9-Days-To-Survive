@@ -78,7 +78,7 @@ public class PlayerStats : MonoBehaviour, IDamagable
 
     [Header("Stamina")]
     [SerializeField] private PlayerStat stamina = new();
-    [SerializeField] private float runningStaminaConsumption = 1;
+    [SerializeField] private float staminaConsumption = 1;
     [SerializeField] private PlayerMovement movement;
 
     void Start()
@@ -86,6 +86,8 @@ public class PlayerStats : MonoBehaviour, IDamagable
         health.Initialize();
         hunger.Initialize();
         stamina.Initialize();
+
+        movement.OnJump += OnJump;
     }
 
     void Update()
@@ -125,8 +127,13 @@ public class PlayerStats : MonoBehaviour, IDamagable
 
         if(movement.isRunning)
         {
-            stamina.Modify(-runningStaminaConsumption * Time.deltaTime);
+            stamina.Modify(-staminaConsumption * Time.deltaTime);
         }
+    }
+
+    public void OnJump()
+    {
+        stamina.Modify(-staminaConsumption);
     }
 
     #endregion

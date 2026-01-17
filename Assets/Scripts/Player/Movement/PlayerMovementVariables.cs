@@ -1,4 +1,5 @@
 // PlayerMovementVariables.cs
+using System;
 using UnityEngine;
 
 [System.Serializable]
@@ -45,7 +46,9 @@ public class PlayerMovementVariables : MonoBehaviour
     internal bool isSliding = false;
     internal bool canRun = true;
     internal bool canJump = true;
-
+    
+    public event Action OnJump;
+    public void OnJumpTrigger() => OnJump?.Invoke(); 
 
     #endregion
 
@@ -110,7 +113,7 @@ public class PlayerMovementVariables : MonoBehaviour
     [SerializeField] internal float maxSlopeAngle = 45f;
     protected RaycastHit slopeHit;
     protected bool onSlope;
-    protected bool isJumpingThisFrame;
+    internal bool isJumpingThisFrame;
     
     protected bool OnSlope()
     {

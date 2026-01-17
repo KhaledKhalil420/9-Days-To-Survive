@@ -58,6 +58,8 @@ public class PlayerMovement : PlayerMovementVariables
                 jumpForce * Time.fixedDeltaTime,
                 rb.linearVelocity.z
             );
+
+            OnJumpTrigger();
         }
     }
 
