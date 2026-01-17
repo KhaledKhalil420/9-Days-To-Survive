@@ -79,6 +79,7 @@ public class PlayerStats : MonoBehaviour, IDamagable
     [SerializeField] private PlayerStat stamina = new();
     [SerializeField] private float staminaConsumption = 1;
     [SerializeField] private PlayerMovement movement;
+    
 
     void Start()
     {
@@ -119,7 +120,7 @@ public class PlayerStats : MonoBehaviour, IDamagable
 
     #region Stamina
 
-    public void HandleStamina()
+    private void HandleStamina()
     {
         movement.canRun = stamina.current > 0;
         movement.canJump = stamina.current > 0;
@@ -139,7 +140,7 @@ public class PlayerStats : MonoBehaviour, IDamagable
 
     #region Hunger
     
-    public void HandleHunger()
+    private void HandleHunger()
     {
         stamina.canModifyRate = hunger.current > 0;
     }

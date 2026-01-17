@@ -70,7 +70,6 @@ public class BaseSlot : MonoBehaviour
         HeldItem.isSelected = false;
         HeldQuantity = 0;
         HeldItem = null;
-        HeldItem.parentSlot = null;
         UpdateSlot();
     }
 
