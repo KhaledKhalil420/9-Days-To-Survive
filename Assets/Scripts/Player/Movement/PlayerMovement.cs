@@ -32,7 +32,7 @@ public class PlayerMovement : PlayerMovementVariables
 
     private void HandleRunning()
     {
-        isRunning = Input.GetButton("Running");
+        isRunning = Input.GetButton("Running") && canRun;
     }
 
     private void HandleDirection()

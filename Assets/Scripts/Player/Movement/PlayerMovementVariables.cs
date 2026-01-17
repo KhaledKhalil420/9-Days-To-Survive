@@ -43,6 +43,7 @@ public class PlayerMovementVariables : MonoBehaviour
     internal bool isCrouching = false;
     internal bool isRunning = false;
     internal bool isSliding = false;
+    internal bool canRun = true;
 
     #endregion
 
