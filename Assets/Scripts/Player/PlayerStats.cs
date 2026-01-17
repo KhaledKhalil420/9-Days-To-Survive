@@ -1,5 +1,7 @@
 using Sortify;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class PlayerStat
@@ -12,6 +14,12 @@ public class PlayerStat
 
     [SerializeField] private float delay = 5; 
     [SerializeField, ReadOnly] private float delayTimer = 0;
+
+    [Space(3)]
+
+    [SerializeField] private Slider slider;
+    [SerializeField] private float sliderLerp = 1;
+    [SerializeField] private TMP_Text text;
 
     public void Initialize()
     {
@@ -38,7 +46,7 @@ public class PlayerStat
         current = Mathf.Clamp(current, 0, max);
     }
     
-    void Restore()
+    private void Restore()
     {
         if(isDecaying)
         {
@@ -48,12 +56,21 @@ public class PlayerStat
 
         current = Mathf.Clamp(current + modifyRate * Time.deltaTime, 0, max);
     }
+
+    public void TickUi()
+    {
+        slider.maxValue = max;
+        slider.value = Mathf.Lerp(slider.value, current, sliderLerp * Time.deltaTime);
+
+        text.text = Mathf.Round(current) + " / " + Mathf.Round(max);
+    }
 }
 
 public class PlayerStats : MonoBehaviour, IDamagable
 {
     [Header("Health")]
     [SerializeField] private PlayerStat health = new();
+
 
     [Header("Hunger")]
     [SerializeField] private PlayerStat hunger = new();
@@ -77,6 +94,10 @@ public class PlayerStats : MonoBehaviour, IDamagable
         hunger.Tick();
         stamina.Tick(); 
 
+        health.TickUi();
+        hunger.TickUi();
+        stamina.TickUi();      
+
         HandleStamina();
         HandleHunger();
     }
@@ -93,11 +114,6 @@ public class PlayerStats : MonoBehaviour, IDamagable
         health.Modify(heal);
     }
 
-    public void HealthUi()
-    {
-        
-    }
-
     #endregion
 
     #region Stamina
@@ -112,11 +128,6 @@ public class PlayerStats : MonoBehaviour, IDamagable
         }
     }
 
-    public void StaminaUi()
-    {
-        
-    }
-
     #endregion
 
     #region Hunger
@@ -129,11 +140,6 @@ public class PlayerStats : MonoBehaviour, IDamagable
     public void Eat(float satiation)
     {
         hunger.Modify(satiation);
-    }
-
-    public void HungerUi()
-    {
-        
     }
 
     #endregion
