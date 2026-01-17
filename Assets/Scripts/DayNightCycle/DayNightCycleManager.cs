@@ -1,33 +1,29 @@
 using System;
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 
 public class DayNightCycleManager : MonoBehaviour
 {
     public static DayNightCycleManager instance;
     public delegate void DayChangeArgs(bool state);
     public static event DayChangeArgs OnDayChange;
-
     public enum CycleState { Day, Night }
-
-    public float dayDurationInMinutes = 3f;
-    public float nightDurationInMinutes = 1f;
-    public float timeScale = 1f;
 
     public Material skyboxMaterial;
     public Light mainLight;
     public float lightIntensity = 1f;
     [Range(0, 1)] public float blendSpeed = 0.1f;
 
+    [ColorUsage(true, true)]
+    public Color fogDay, fogNight;
     public CycleState currentState = CycleState.Day;
-
-    float timeOfDay;
 
     void Awake()
     {
         instance = this;
 
-        if (skyboxMaterial == null) return;
+        if (skyboxMaterial == null) 
+            return;
 
         RenderSettings.skybox = skyboxMaterial;
         RenderSettings.skybox.SetFloat("_CubemapTransition", 1f);
@@ -46,39 +42,32 @@ public class DayNightCycleManager : MonoBehaviour
 
     void Update()
     {
-        UpdateTimeOfDay();
+        if(Input.GetKeyDown(KeyCode.G))
+            SetTime(currentState == CycleState.Day ? CycleState.Night : CycleState.Day);
+        
         UpdateSkyboxBlend();
     }
 
-    void UpdateTimeOfDay()
+    public static void SetTime(CycleState cycleState)
     {
-        float phaseDuration = (currentState == CycleState.Day ? dayDurationInMinutes : nightDurationInMinutes) * 60f;
-        timeOfDay += Time.deltaTime / phaseDuration * timeScale;
-
-        if (timeOfDay >= 1f)
-        {
-            timeOfDay = 0f;
-            currentState = currentState == CycleState.Day ? CycleState.Night : CycleState.Day;
-
-            bool isDay = currentState == CycleState.Day;
-
-            OnDayChange?.Invoke(isDay);
-
-            //DynamicMusic.InDanger(!isDay);
-        }
-
-        mainLight.transform.eulerAngles = new Vector3(45f, timeOfDay * 360f, -14f);
+        instance.currentState = cycleState;
+        OnDayChange?.Invoke(instance.currentState == CycleState.Day);
     }
 
     void UpdateSkyboxBlend()
     {
-        float targetBlend = currentState == CycleState.Day ? 0f : 1f;
-        float targetLighting = currentState == CycleState.Day ? lightIntensity : 0.1f;
+        float targetBlend = currentState == CycleState.Day ? 0f : 1f;        
+        float targetLighting = currentState == CycleState.Day ? lightIntensity : 0.01f;
+        float targetShadows = currentState == CycleState.Day ? 1 : 0f;
 
         float currentBlend = skyboxMaterial.GetFloat("_CubemapTransition");
+        
+        RenderSettings.fogColor = currentState == CycleState.Day ? fogDay : fogNight;
+        RenderSettings.reflectionIntensity = currentState == CycleState.Day ? 0.325f : 0;
+        RenderSettings.ambientIntensity = Mathf.Lerp(RenderSettings.ambientIntensity, targetLighting, blendSpeed * Time.deltaTime);
 
         skyboxMaterial.SetFloat("_CubemapTransition", Mathf.Lerp(currentBlend, targetBlend, blendSpeed * Time.deltaTime));
-        RenderSettings.ambientIntensity = Mathf.Lerp(RenderSettings.ambientIntensity, targetLighting, blendSpeed * Time.deltaTime);
         mainLight.intensity = Mathf.Lerp(mainLight.intensity, targetLighting, blendSpeed * Time.deltaTime);
+        mainLight.shadowStrength = Mathf.Lerp(mainLight.shadowStrength, targetShadows, blendSpeed * Time.deltaTime);
     }
 }
