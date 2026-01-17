@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Item : MonoBehaviour, IHighlightable
 {
+    public BaseSlot parentSlot;
     public GameObject heldby;
     public ItemData data;
 
@@ -21,6 +22,10 @@ public class Item : MonoBehaviour, IHighlightable
         GetComponent<Rigidbody>().constraints = isHolding ? RigidbodyConstraints.FreezeAll : RigidbodyConstraints.None;
         if(gameObject.TryGetComponent(out Animator animator)) animator.enabled = isHolding;
         gameObject.layer = targetLayer;
+
+        
+        if(!isHolding)
+            parentSlot = null;
 
         foreach (Transform child in GetComponentsInChildren<Transform>(true))
         {

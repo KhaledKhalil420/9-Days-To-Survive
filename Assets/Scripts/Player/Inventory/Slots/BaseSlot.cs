@@ -19,6 +19,7 @@ public class BaseSlot : MonoBehaviour
     {
         if (HeldQuantity <= 0 && HeldItem != null)
         {
+
             _itemQuantityText.text = "";
             HeldItem.OnChangingItems();
             Destroy(HeldItem.gameObject);
@@ -27,6 +28,7 @@ public class BaseSlot : MonoBehaviour
 
         if (HeldItem != null)
         {
+            HeldItem.parentSlot = this; 
             HeldItem.HeldQuantity = HeldQuantity;
         }
 
@@ -68,6 +70,7 @@ public class BaseSlot : MonoBehaviour
         HeldItem.isSelected = false;
         HeldQuantity = 0;
         HeldItem = null;
+        HeldItem.parentSlot = null;
         UpdateSlot();
     }
 

@@ -74,7 +74,6 @@ public class PlayerStats : MonoBehaviour, IDamagable
 
     [Header("Hunger")]
     [SerializeField] private PlayerStat hunger = new();
-    [SerializeField] private float runningStaminaPercentange = 25;  
 
     [Header("Stamina")]
     [SerializeField] private PlayerStat stamina = new();
@@ -111,7 +110,7 @@ public class PlayerStats : MonoBehaviour, IDamagable
         health.Modify(-damage);
     }
 
-    public void Heal(int heal)
+    public void Heal(float heal)
     {
         health.Modify(heal);
     }
