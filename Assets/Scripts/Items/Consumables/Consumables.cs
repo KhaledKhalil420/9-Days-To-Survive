@@ -5,7 +5,7 @@ public class Consumables : Item
     [SerializeField] private float timetoConsume = 1;
     [SerializeField] protected Animator anim;
 
-    private PlayerStats playerStats;
+    protected PlayerStats playerStats;
 
     public override void OnUse()
     {

@@ -3,7 +3,6 @@ using UnityEngine;
 public class Food : Consumables
 {
     [SerializeField] private float health, satiation;
-    private PlayerStats playerStats;
 
     public override void OnConsume()
     {
