@@ -62,7 +62,7 @@ public class DayNightCycleManager : MonoBehaviour
 
         float currentBlend = skyboxMaterial.GetFloat("_CubemapTransition");
         
-        RenderSettings.fogColor = currentState == CycleState.Day ? fogDay : fogNight;
+        RenderSettings.fogColor = Color.Lerp(RenderSettings.fogColor, currentState == CycleState.Day ? fogDay : fogNight, blendSpeed * Time.deltaTime);
         RenderSettings.reflectionIntensity = currentState == CycleState.Day ? 0.325f : 0;
         RenderSettings.ambientIntensity = Mathf.Lerp(RenderSettings.ambientIntensity, targetLighting, blendSpeed * Time.deltaTime);
 

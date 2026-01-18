@@ -5,6 +5,12 @@ public class SlotHolder : BaseSlot
 {
     public bool isSelected;   
     private bool wasSelected;
+    private Vector3 initialSize;
+    
+    private void Start()
+    {
+        initialSize = transform.localScale;
+    }
 
     public override void Visuals()
     {
@@ -16,12 +22,12 @@ public class SlotHolder : BaseSlot
         if (isSelected)
         {
             transform.DOLocalRotate(new Vector3(0, 0, -2), 1);
-            transform.DOScale(Vector3.one * 1.15f, 1);
+            transform.DOScale(initialSize * 1.15f, 1);
         }
         else
         {
             transform.DOLocalRotate(Vector3.zero, 1);
-            transform.DOScale(Vector3.one, 1);
+            transform.DOScale(initialSize, 1);
         }
 
         wasSelected = isSelected;
