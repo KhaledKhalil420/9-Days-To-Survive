@@ -8,6 +8,6 @@ public class Food : Consumables
     {
         playerStats.Heal(health);
         playerStats.Eat(satiation);
-        playerStats.stamina.Modify(satiation);
+        playerStats.stamina.Modify(satiation * 3);
     }
 }
