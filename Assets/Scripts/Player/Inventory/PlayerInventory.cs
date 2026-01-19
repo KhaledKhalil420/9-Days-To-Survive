@@ -333,6 +333,10 @@ public class PlayerInventory : MonoBehaviour
                 
                 lastSelectedSlot = i;
                 _currentSlotIndex = i;
+
+                holder.hand.transform.localEulerAngles = new Vector3(45, 0, 0);
+                holder.hand.transform.localPosition = new Vector3(1, -2f, 1);
+
                 break;
             }
         }

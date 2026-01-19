@@ -9,12 +9,15 @@ public class Consumables : Item
 
     public override void OnUse()
     {
+        OnStartConsume();
         anim.SetBool("Trigger", true);
         Invoke(nameof(Consume), timetoConsume);
     }
+    
 
     public override void OnStoppingUse()
     {
+        OnStopConsume();
         anim.SetBool("Trigger", false);
         CancelInvoke(nameof(Consume));
     }
@@ -32,10 +35,20 @@ public class Consumables : Item
         anim.SetBool("Trigger", false);
         parentSlot.HeldQuantity -= 1; 
 
-        OnConsume();
+        OnConsumed();
     }
 
-    public virtual void OnConsume()
+    public virtual void OnStartConsume()
+    {
+        
+    }
+
+    public virtual void OnStopConsume()
+    {
+        
+    }
+
+    public virtual void OnConsumed()
     {
         
     }
