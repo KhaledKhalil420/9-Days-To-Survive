@@ -1,8 +1,8 @@
-using DG.Tweening;
-using UnityEditor;
+using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using DG.Tweening;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class DragSlot : MonoBehaviour
 {
@@ -12,6 +12,7 @@ public class DragSlot : MonoBehaviour
     [SerializeField] private Image iconPrefab;
 
     private RectTransform dragIcon;
+    [SerializeField] private float smoothness = 15f;
 
     private BaseSlot fromSlot;
     private int heldQuantity;
@@ -32,7 +33,12 @@ public class DragSlot : MonoBehaviour
         if (!isDragging || dragIcon == null)
             return;
 
-        dragIcon.position = Input.mousePosition;
+        dragIcon.position = Vector3.Lerp(dragIcon.position, Input.mousePosition, smoothness * Time.deltaTime);
+
+        if(Input.GetMouseButtonDown(2))
+        {
+            StopDrag();
+        }
     }
 
     public void UpdateDragState(bool state)
@@ -47,13 +53,14 @@ public class DragSlot : MonoBehaviour
     {
         if (from.HeldItem == null)
             return;
-
+        
         StopDrag();
 
         fromSlot = from;
         heldQuantity = quantity;
 
-        CreateIcon(from.HeldItem.data.sprite);
+        CreateIcon(from.HeldItem.data.sprite, quantity);
+        dragIcon.position = Input.mousePosition;
         isDragging = true;
     }
 
@@ -83,9 +90,10 @@ public class DragSlot : MonoBehaviour
         heldQuantity = 0;
     }
 
-    void CreateIcon(Sprite sprite)
+    void CreateIcon(Sprite sprite, int quantity)
     {
         dragIcon = Instantiate(iconPrefab, canvasGroup.transform).rectTransform;
         dragIcon.GetComponent<Image>().sprite = sprite;
+        dragIcon.GetComponentInChildren<TMP_Text>().text =  "x" + quantity.ToString();
     }
 }

@@ -13,7 +13,7 @@ public class DropZoneSlot : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (DragSlot.instance.isDragging)
+        if (eventData.button != PointerEventData.InputButton.Middle && DragSlot.instance.isDragging)
         {
             DragSlot.instance.TryDrop(slot, eventData);
         }
