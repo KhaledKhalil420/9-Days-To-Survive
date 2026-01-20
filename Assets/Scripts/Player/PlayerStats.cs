@@ -106,7 +106,7 @@ public class PlayerStats : MonoBehaviour, IDamagable
 
     #region Health
 
-    public void Damage(int damage)
+    public void Damage(float damage)
     {
         health.Modify(-damage);
     }

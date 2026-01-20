@@ -15048,6 +15048,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c142e6dccfce65b49b52ce445eed203e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapMin: {x: -122.05468, y: 50, z: -73.68587}
+  mapMax: {x: 65.34532, y: 50, z: 103.51413}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 513
   days:
   - spawnables:
     - distanceBetweenSpawnables: 15
@@ -15066,16 +15071,14 @@ MonoBehaviour:
       gameObject: {fileID: 32916961726760097, guid: 50400aa3590860e4d8c18f775dded05f, type: 3}
       minQuantity: 50
       maxQuantity: 75
-  mapMin: {x: -122.05468, y: 50, z: -73.68587}
-  mapMax: {x: 65.34532, y: 50, z: 103.51413}
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 513
   grassPainter: {fileID: 1977557022}
   maxAttemptsGrass: 10
   grassAmount: 500
   spawnGrassAtStart: 1
   surface: {fileID: 969929988}
+  rebakeDelay: 0.5
+  useLocalBaking: 0
+  localBakeRadius: 15
 --- !u!1 &1935142675
 GameObject:
   m_ObjectHideFlags: 0

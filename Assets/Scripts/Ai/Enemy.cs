@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour, IDamagable
     private Collider[] results = new Collider[30];
 
     [Header("Health")]
-    [SerializeField] private int health = 1;
+    [SerializeField] private float health = 1;
 
     private void Start()
     {
@@ -90,7 +90,7 @@ public class Enemy : MonoBehaviour, IDamagable
         }
     }
 
-    public void Damage(int damage)
+    public void Damage(float damage)
     {
         health -= damage;
         OnDamage();
