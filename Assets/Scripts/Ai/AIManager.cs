@@ -6,7 +6,7 @@ public class AIManager : MonoBehaviour
     public static AIManager instance;
 
     [SerializeField] private float intreval = 0.1f;
-    private List<Enemy> registeredEnemies = new();
+    public List<Enemy> registeredEnemies = new();
     private float timer;
 
     private void Awake()

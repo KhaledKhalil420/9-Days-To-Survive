@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 public class WorldGenerator : MonoBehaviour
@@ -7,10 +8,15 @@ public class WorldGenerator : MonoBehaviour
     public List<DaySpawnables> days = new();
     public Vector3 mapMin, mapMax;
     public LayerMask groundMask;
-    public int maxAttempts = 10;
-    public GrassPainter grassPainter;
-    public bool spawnGrassAtStart = true;
-    public int grassAmount = 500;
+
+    [Header("Grass")]
+    [SerializeField] private  GrassPainter grassPainter;
+    [SerializeField] private  int maxAttemptsGrass = 10;
+    [SerializeField] private  int grassAmount = 500;
+    [SerializeField] private  bool spawnGrassAtStart = true;
+
+    [Header("Terrain")]
+    [SerializeField] private NavMeshSurface surface;
     
     int currentDay;
 
@@ -20,6 +26,14 @@ public class WorldGenerator : MonoBehaviour
         
         if (spawnGrassAtStart)
             SpawnGrass();
+
+        StartCoroutine(BakeSurface());
+    }
+
+    private IEnumerator BakeSurface()
+    {
+        yield return null;
+        surface.UpdateNavMesh(surface.navMeshData);
     }
 
     void SpawnGrass()
@@ -73,7 +87,7 @@ public class WorldGenerator : MonoBehaviour
                 Quaternion spawnRot = Quaternion.identity;
                 bool spawned = false;
                 
-                for (int attempt = 0; attempt < maxAttempts; attempt++)
+                for (int attempt = 0; attempt < maxAttemptsGrass; attempt++)
                 {
                     Vector3 pos = new Vector3(
                         Random.Range(mapMin.x, mapMax.x),

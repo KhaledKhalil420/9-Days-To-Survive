@@ -1,93 +1,43 @@
 using UnityEngine;
-using DG.Tweening;
+using UnityEngine.Audio; 
 using System.Collections.Generic;
+using DG.Tweening;
 
+//Add custom music for each day
 public class DayMusicSystem : MonoBehaviour
 {
-    [SerializeField] AudioSource source;
-    [SerializeField] List<DayMusic> tracks;
+    [SerializeField] private AudioSource daySource, nightSource;
+    [SerializeField] private float transitionTime = 3;
+    [SerializeField] private List<DayMusic> dayTracks;
+    [SerializeField] private List<NightMusic> nightTracks;
 
-    [SerializeField] float minSilence = 60f;
-    [SerializeField] float maxSilence = 180f;
-
-    List<DayMusic> pool = new();
-    Tween timer;
-    int currentDay = 0;
 
     private void Start()
     {
-        DayNightCycleManager.OnDayChange += StartDay;
+        DayNightCycleManager.OnDayChange += ChangeMusic;
     }
     
 
-    public void StartDay(bool day)
+    public void ChangeMusic(bool day)
     {
-        if(day) currentDay++;
-
-        RebuildPool();
-        ScheduleNext();
-    }
-
-    void ScheduleNext()
-    {
-        timer?.Kill();
-        
-        timer = DOVirtual.DelayedCall(
-            Random.Range(minSilence, maxSilence),
-            PlayNext
-        );
-    }
-
-    void PlayNext()
-    {
-        if(source.isPlaying)
-        {
-                    timer = DOVirtual.DelayedCall(
-            Random.Range(minSilence, maxSilence),
-            PlayNext
-        );
-            return;
-        }
-        if (pool.Count == 0)
-            RebuildPool();
-
-        var m = TakeRandom();
-        source.clip = m.clip;
-        source.Play();
-
-        timer = DOVirtual.DelayedCall(
-            m.clip.length,
-            ScheduleNext
-        );
-    }
-
-    void RebuildPool()
-    {
-        pool.Clear();
-        foreach (var m in tracks)
-            if (currentDay >= m.minDay && currentDay <= m.maxDay)
-                pool.Add(m);
-    }
-
-    DayMusic TakeRandom()
-    {
-        int i = Random.Range(0, pool.Count);
-        var m = pool[i];
-        pool.RemoveAt(i);
-        return m;
+        DOVirtual.Float(daySource.volume, day == true ? 1 : 0, transitionTime, x => daySource.volume = x);
+        DOVirtual.Float(nightSource.volume, day == false ? 1 : 0, transitionTime, x => nightSource.volume = x);
     }
 
     public void Stop()
     {
-        timer?.Kill();
-        source.Stop();
+        daySource.Stop();
     }
 }
 
 [System.Serializable]
 public class DayMusic
 {
-    public AudioClip clip;
-    [Range(1, 9)] public int minDay;
-    [Range(1, 9)] public int maxDay;
+    public AudioResource clip;
+}
+
+[System.Serializable]
+public class NightMusic
+{
+    public AudioResource clip;
 }

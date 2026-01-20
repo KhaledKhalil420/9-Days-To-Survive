@@ -5,6 +5,7 @@ using System.Collections;
 public class DayNightCycleManager : MonoBehaviour
 {
     public static DayNightCycleManager instance;
+    public static int DayCount = 0;
     public delegate void DayChangeArgs(bool state);
     public static event DayChangeArgs OnDayChange;
     public enum CycleState { Day, Night }
@@ -51,7 +52,12 @@ public class DayNightCycleManager : MonoBehaviour
     public static void SetTime(CycleState cycleState)
     {
         instance.currentState = cycleState;
-        OnDayChange?.Invoke(instance.currentState == CycleState.Day);
+        bool isDay = cycleState == CycleState.Day;
+        
+        DayCount += isDay ? 1 : 0;
+        
+        OnDayChange?.Invoke(isDay);
+
     }
 
     void UpdateSkyboxBlend()

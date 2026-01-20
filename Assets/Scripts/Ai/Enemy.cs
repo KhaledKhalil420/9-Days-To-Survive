@@ -97,6 +97,8 @@ public class Enemy : MonoBehaviour, IDamagable
 
         if(health <= 0)
         {
+            GameManager.instance.enemiesDefeated++;
+            AIManager.Deregister(this);
             Destroy(gameObject);
         }
     }

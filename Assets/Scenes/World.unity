@@ -435,7 +435,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 885642296}
-  iconPrefab: {fileID: 2281372117575444568, guid: 5523d32ee06ba9e4f9e7f9ddec1522f8, type: 3}
+  iconPrefab: {fileID: 8906861750446166388, guid: 0d5775d2286dc5348a7c1c3e84ed1431, type: 3}
   smoothness: 45
 --- !u!1 &76255770
 GameObject:
@@ -836,6 +836,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   intreval: 0.25
+  registeredEnemies: []
 --- !u!1001 &146567179
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1138,6 +1139,7 @@ GameObject:
   - component: {fileID: 217955934}
   - component: {fileID: 217955936}
   - component: {fileID: 217955935}
+  - component: {fileID: 217955937}
   m_Layer: 0
   m_Name: MusicManager
   m_TagString: Untagged
@@ -1264,24 +1266,114 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 217955933}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84eba6c73fba1454eb51b14351ae7604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  source: {fileID: 217955935}
-  tracks:
+  daySource: {fileID: 217955935}
+  nightSource: {fileID: 217955937}
+  transitionTime: 3
+  dayTracks:
   - clip: {fileID: 8300000, guid: 01345b109ba8a044a92cd376fe516ae0, type: 3}
-    minDay: 1
-    maxDay: 3
-  - clip: {fileID: 8300000, guid: 20b111822cb89ca41972492d4b409164, type: 3}
-    minDay: 1
-    maxDay: 3
-  - clip: {fileID: 8300000, guid: feb86ac21d7164444b3d1f7c8631cfb1, type: 3}
-    minDay: 2
-    maxDay: 5
-  minSilence: 0
-  maxSilence: 1
+  nightTracks: []
+--- !u!82 &217955937
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 217955933}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 4491711137434354881, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 6418180475301049370, guid: 1a535d02e92115249b3f52e6ff00775f, type: 2}
+  m_PlayOnAwake: 1
+  m_Volume: 0
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &230457629
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8455,10 +8547,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe3ded9ccb604f2409cd46530dea77f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   starterItems:
   - {fileID: 1467611773}
   - {fileID: 1467026425}
+  waves:
+  - enemies:
+    - {fileID: 2246168851940632354, guid: ab1a0a91578b42a4b86807b608f32ae4, type: 3}
+    requiredDefeats: 5
+    maxEnemies: 100
+    spawningCooldown: 15
+    spawningRadius: 15
+    minimumSpawningDistance: 5
+  enemiesDefeated: 0
 --- !u!1001 &764047901
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9429,6 +9529,7 @@ GameObject:
   - component: {fileID: 969929985}
   - component: {fileID: 969929984}
   - component: {fileID: 969929987}
+  - component: {fileID: 969929988}
   m_Layer: 9
   m_Name: Terrain
   m_TagString: Untagged
@@ -9524,6 +9625,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   surfaceType: 2
+--- !u!114 &969929988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969929983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 1
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: acd214d54e63bea4bb4541eb9530c343, type: 2}
+  m_BuildHeightMesh: 0
 --- !u!1 &1006263202
 GameObject:
   m_ObjectHideFlags: 0
@@ -14938,10 +15071,11 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 513
-  maxAttempts: 10
   grassPainter: {fileID: 1977557022}
-  spawnGrassAtStart: 1
+  maxAttemptsGrass: 10
   grassAmount: 500
+  spawnGrassAtStart: 1
+  surface: {fileID: 969929988}
 --- !u!1 &1935142675
 GameObject:
   m_ObjectHideFlags: 0

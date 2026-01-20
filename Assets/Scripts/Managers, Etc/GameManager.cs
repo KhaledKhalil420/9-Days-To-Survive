@@ -4,9 +4,16 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public GameObject player;
-
+    
+    [Header("Player")]
+    private GameObject player;
     public List<Item> starterItems;
+
+    [Header("Waves Rounds")]
+    [SerializeField] private List<Wave> waves;
+    private Wave selectedWave;
+    private bool waveTriggered;
+    public int enemiesDefeated;
 
     private void Awake()
     {
@@ -14,9 +21,79 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindWithTag("Player");
     }
 
-    void Start()
+    private void Start()
+    {
+        DayNightCycleManager.OnDayChange += TriggerWave;
+        GivePlayerStarterItems();
+    }
+
+    private void Update()
+    {
+        SpawnEnemies();
+    }
+
+    #region Waves
+
+    public void TriggerWave(bool isDay)
+    {
+        if(isDay) 
+            return;
+        
+        selectedWave = waves[DayNightCycleManager.DayCount];
+        timer = selectedWave.spawningCooldown;
+        waveTriggered = true;
+    }
+
+    private float timer = 0;
+    public void SpawnEnemies()
+    {
+        if(waveTriggered)
+        {
+            timer += Time.deltaTime;
+            if(AIManager.instance.registeredEnemies.Count < selectedWave.maxEnemies && timer > selectedWave.spawningCooldown)
+            {
+                EnemySpawner.SpawnWave(selectedWave, player.transform.position, selectedWave.spawningRadius, selectedWave.minimumSpawningDistance);
+                timer = 0;
+            }
+
+            if(enemiesDefeated >= selectedWave.requiredDefeats)
+            {
+                DayNightCycleManager.SetTime(DayNightCycleManager.CycleState.Day);
+                waveTriggered = false;
+            }
+        }
+
+        else
+        {
+            timer = 0;
+            enemiesDefeated = 0;
+        }
+    }
+
+    #endregion
+
+    #region Player
+    
+    private void GivePlayerStarterItems()
     {
         foreach(Item item in starterItems)
-        player.GetComponent<PlayerInventory>().GiveItem(item);
+            player.GetComponent<PlayerInventory>().GiveItem(item);
     }
+
+    #endregion
+}
+
+[System.Serializable]
+public class Wave
+{
+    public List<Enemy> enemies = new();
+
+    [Header("Enemies")]
+    public int requiredDefeats;
+    public int maxEnemies = 100;
+
+    [Header("Spawning")]
+    public float spawningCooldown = 0;
+    public float spawningRadius;
+    public float minimumSpawningDistance;
 }
