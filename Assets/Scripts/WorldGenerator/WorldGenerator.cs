@@ -1,24 +1,41 @@
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
-using UnityEngine;
+using UnityEngine.AI;
 
 public class WorldGenerator : MonoBehaviour
 {
-    public List<DaySpawnables> days = new();
+    public static WorldGenerator instance;
+    
+    [Header("Map")]
     public Vector3 mapMin, mapMax;
     public LayerMask groundMask;
 
+    [Header("Day Spawnables")]
+    public List<DaySpawnables> days = new();
+
     [Header("Grass")]
-    [SerializeField] private  GrassPainter grassPainter;
-    [SerializeField] private  int maxAttemptsGrass = 10;
-    [SerializeField] private  int grassAmount = 500;
-    [SerializeField] private  bool spawnGrassAtStart = true;
+    [SerializeField] private GrassPainter grassPainter;
+    [SerializeField] private int maxAttemptsGrass = 10;
+    [SerializeField] private int grassAmount = 500;
+    [SerializeField] private bool spawnGrassAtStart = true;
 
     [Header("Terrain")]
     [SerializeField] private NavMeshSurface surface;
     
+    [Header("NavMesh Optimization")]
+    [SerializeField] private float rebakeDelay = 0.5f;
+    [SerializeField] private bool useLocalBaking = false;
+    [SerializeField] private float localBakeRadius = 15f;
+    private Coroutine pendingBake;
+    
     int currentDay;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Start()
     {
@@ -27,50 +44,149 @@ public class WorldGenerator : MonoBehaviour
         if (spawnGrassAtStart)
             SpawnGrass();
 
-        StartCoroutine(BakeSurface());
+        StartCoroutine(BakeSurfaceAsync());
     }
 
-    private IEnumerator BakeSurface()
+    #region Navmesh (I have no idea what happens here I stole it from github, sue me)
+
+    /// <summary>
+    /// Request a NavMesh rebake. This is debounced to prevent multiple rapid bakes.
+    /// Call this when player builds or destroys objects.
+    /// </summary>
+    public static void RequestNavMeshRebake()
     {
-        yield return null;
-        surface.UpdateNavMesh(surface.navMeshData);
+        if (instance == null) return;
+        
+        if (instance.pendingBake != null)
+        {
+            instance.StopCoroutine(instance.pendingBake);
+        }
+        
+        instance.pendingBake = instance.StartCoroutine(instance.DebouncedBake());
+    }
+    
+    /// <summary>
+    /// Request a local NavMesh rebake around a specific position.
+    /// More efficient for localized changes like building a single structure.
+    /// </summary>
+    public static void RequestLocalNavMeshRebake(Vector3 position, float radius = 0f)
+    {
+        if (instance == null) return;
+        
+        if (!instance.useLocalBaking)
+        {
+            RequestNavMeshRebake();
+            return;
+        }
+        
+        if (instance.pendingBake != null)
+        {
+            instance.StopCoroutine(instance.pendingBake);
+        }
+        
+        float bakeRadius = radius > 0 ? radius : instance.localBakeRadius;
+        instance.pendingBake = instance.StartCoroutine(
+            instance.DebouncedLocalBake(position, bakeRadius)
+        );
     }
 
-    void SpawnGrass()
+    /// <summary>
+    /// Legacy method for backward compatibility. Use RequestNavMeshRebake() instead.
+    /// </summary>
+    public static void BakeSurface()
+    {
+        RequestNavMeshRebake();
+    }
+
+    private IEnumerator DebouncedBake()
+    {
+        // Wait for delay - if another request comes in, this coroutine is cancelled
+        yield return new WaitForSeconds(rebakeDelay);
+        
+        // Now actually bake
+        yield return BakeSurfaceAsync();
+        
+        pendingBake = null;
+    }
+    
+    private IEnumerator DebouncedLocalBake(Vector3 center, float radius)
+    {
+        yield return new WaitForSeconds(rebakeDelay);
+        
+        Bounds bounds = new Bounds(center, Vector3.one * radius * 2);
+        NavMeshBuildSettings buildSettings = surface.GetBuildSettings();
+        List<NavMeshBuildSource> sources = new List<NavMeshBuildSource>();
+        
+        // Collect sources in the specified bounds
+        List<NavMeshBuildMarkup> markups = new List<NavMeshBuildMarkup>();
+        NavMeshBuilder.CollectSources(
+            bounds, 
+            surface.layerMask, 
+            surface.useGeometry, 
+            surface.defaultArea,
+            markups,
+            sources
+        );
+        
+        var operation = NavMeshBuilder.UpdateNavMeshDataAsync(
+            surface.navMeshData, 
+            buildSettings, 
+            sources, 
+            bounds
+        );
+        
+        while (!operation.isDone)
+        {
+            yield return null;
+        }
+        
+        pendingBake = null;
+    }
+
+    private IEnumerator BakeSurfaceAsync()
+    {
+        AsyncOperation op = surface.UpdateNavMesh(surface.navMeshData);
+        
+        while (!op.isDone)
+        {
+            yield return null;
+        }
+        
+        Debug.Log("NavMesh bake complete");
+    }
+
+    #endregion
+
+    #region Grass
+
+    private void SpawnGrass()
     {
         int successfulSpawns = 0;
         
-        // Paint all grass positions WITHOUT building mesh each time
         for (int i = 0; i < grassAmount; i++)
         {
-            Vector3 pos = new Vector3(
-                Random.Range(mapMin.x, mapMax.x), 
-                100, // High Y position to raycast down from
-                Random.Range(mapMin.z, mapMax.z)
-            );
-            
+            Vector3 pos = new Vector3(Random.Range(mapMin.x, mapMax.x), 100, Random.Range(mapMin.z, mapMax.z));
+        
             if (Physics.Raycast(pos, Vector3.down, out RaycastHit hit, 200f))
             {
-                // Use PaintGrassAtPosition to add grass without building mesh
-
                 if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
-                grassPainter.PaintGrassAtPosition(pos);
+                    grassPainter.PaintGrassAtPosition(pos);
                 successfulSpawns++;
             }
         }
         
-        // Build the mesh ONCE after all grass is placed
         grassPainter.FinalizeMesh();
         
-        // Force the GrassComputeScript to reload
         GrassComputeScript grassCompute = grassPainter.GetComponent<GrassComputeScript>();
         if (grassCompute != null)
         {
             grassCompute.ReLoadGrass(this, System.EventArgs.Empty);
         }
-        
-        Debug.Log($"Spawned grass at {successfulSpawns} locations with {grassPainter.i} total grass blades");
     }
+
+    #endregion
+
+    #region Spawnables
 
     public void SpawnNextDay()
     {
@@ -90,8 +206,8 @@ public class WorldGenerator : MonoBehaviour
                 for (int attempt = 0; attempt < maxAttemptsGrass; attempt++)
                 {
                     Vector3 pos = new Vector3(
-                        Random.Range(mapMin.x, mapMax.x),
-                        mapMax.y,
+                        Random.Range(mapMin.x, mapMax.x), 
+                        mapMax.y, 
                         Random.Range(mapMin.z, mapMax.z)
                     );
                     
@@ -107,11 +223,7 @@ public class WorldGenerator : MonoBehaviour
                 
                 if (!spawned)
                 {
-                    spawnPos = new Vector3(
-                        Random.Range(mapMin.x, mapMax.x),
-                        mapMin.y,
-                        Random.Range(mapMin.z, mapMax.z)
-                    );
+                    spawnPos = new Vector3(Random.Range(mapMin.x, mapMax.x), mapMin.y, Random.Range(mapMin.z, mapMax.z));
                     spawnRot = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
                     Instantiate(spawnable.gameObject, spawnPos, spawnRot);
                 }
@@ -119,6 +231,8 @@ public class WorldGenerator : MonoBehaviour
         }
         currentDay++;
     }
+
+    #endregion
 }
 
 [System.Serializable]

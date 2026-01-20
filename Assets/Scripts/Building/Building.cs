@@ -15,6 +15,10 @@ public class Building : MonoBehaviour, IBreakable
     public void OnPlace()
     {
         Array.ForEach(pivotsOnBuild.ToArray(), pivot => pivots.Add(pivot));
+
+        //Only bake when it's at night
+        RebakeNav();
+        OnPlaced();
     }
 
     public void Damage(GameObject sender, int damage, BreakableType type, int toughness)
@@ -23,7 +27,36 @@ public class Building : MonoBehaviour, IBreakable
         return;
 
         currentHealth -= damage;
+        OnDamage();
 
-        if(currentHealth <= 0) Destroy(gameObject);
+        if(currentHealth <= 0) 
+        {
+            RebakeNav();
+            OnDeath();
+            Destroy(gameObject);
+        }
+    }
+
+    public void RebakeNav()
+    {
+        if(DayNightCycleManager.instance.currentState != DayNightCycleManager.CycleState.Night)
+            return;
+
+        WorldGenerator.RequestNavMeshRebake();
+    }
+
+    public virtual void OnPlaced()
+    {
+        
+    }
+
+    public virtual void OnDamage()
+    {
+        
+    }
+
+    public virtual void OnDeath()
+    {
+        
     }
 }
