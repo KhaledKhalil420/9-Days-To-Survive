@@ -3,55 +3,37 @@ using UnityEngine;
 
 public class SlotHolder : BaseSlot
 {
-    public bool isSelected;   
-    private bool wasSelected;
+    public bool isSelected;
+    private bool wasVisual, wasEvent;
     private Vector3 initialSize;
-    
-    private void Start()
-    {
-        initialSize = transform.localScale;
-    }
+
+    void Start() => initialSize = transform.localScale;
 
     public override void Visuals()
     {
         _slotBorderImage.color = Color.Lerp(_slotBorderImage.color, isSelected ? selected : unselected, Time.deltaTime * 10f);
 
-        if (wasSelected == isSelected)
+        if (wasVisual == isSelected) 
             return;
 
-        if (isSelected)
-        {
-            transform.DOLocalRotate(new Vector3(0, 0, -2), 1);
-            transform.DOScale(initialSize * 1.15f, 1);
-        }
-        else
-        {
-            transform.DOLocalRotate(Vector3.zero, 1);
-            transform.DOScale(initialSize, 1);
-        }
+        transform.DOKill();
+        transform.DOLocalRotate(isSelected ? new Vector3(0, 0, -2) : Vector3.zero, 1);
+        transform.DOScale(isSelected ? initialSize * 1.15f : initialSize, 1);
 
-        wasSelected = isSelected;
+        wasVisual = isSelected;
     }
-
 
     public override void OnUpdateSlot()
     {
-        if (HeldItem != null)
-        {            
-            if (isSelected)
-            {
-                HeldItem.OnSelect();
+        if (!HeldItem) 
+            return;
 
-                if(!wasSelected)
-                {
-                    HeldItem.OnSelectOnce();
-                }
-            }
+        HeldItem.isSelected = isSelected;
+        HeldItem.gameObject.SetActive(isSelected);
 
-            HeldItem.isSelected = isSelected;
-            HeldItem.gameObject.SetActive(isSelected);
-        }
+        if (isSelected && !wasEvent) HeldItem.OnSelectOnce();
+        if (isSelected) HeldItem.OnSelect();
 
-        wasSelected = isSelected;
+        wasEvent = isSelected;
     }
 }

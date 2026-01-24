@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.Rendering.Universal;
 
 public class BuildingHammer : Item
 {
@@ -328,8 +327,8 @@ public class BuildingHammer : Item
     public override void OnChangingItems()
     {
         //Cleanup
-        rotationTween?.Kill();
         BuildManager.Instance.ShowUI(false);
+        rotationTween?.Kill();
         Destroy(ghostBuilding);
     }
 

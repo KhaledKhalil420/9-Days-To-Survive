@@ -11565,6 +11565,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 0
+  player: 1
 --- !u!82 &1220912761
 AudioSource:
   m_ObjectHideFlags: 0
