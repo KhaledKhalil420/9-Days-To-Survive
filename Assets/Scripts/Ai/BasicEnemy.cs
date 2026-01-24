@@ -32,10 +32,12 @@ public class BasicEnemy : Enemy
 
     private void Attack()
     {
-        if(target.TryGetComponent(out IBreakable building))
+        if(target.TryGetComponent(out IDamagable damagable))
         {
-            building.Damage(gameObject, attackDamage, BreakableType.Buildings, 1);
+            damagable.Damage(attackDamage);
         }
+
+
 
         canAttack = false;
         DOVirtual.DelayedCall(attackCooldown, () => {canAttack = true;});
