@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Rendering.Universal;
 
 public class BuildingHammer : Item
 {
@@ -63,18 +64,27 @@ public class BuildingHammer : Item
 
     public override void OnUse()
     {
+        if(!BuildManager.CanBuild)
+            return;
+
         TryPlace();
         animator.SetTrigger("Place");
     }
 
     public override void OnUseAlt()
     {
+        if(!BuildManager.CanBuild)
+            return;
+
         TryDemolish();
         animator.SetTrigger("Demolish");        
     }
 
     private void HandleSelection()
     {
+        if(!BuildManager.CanBuild)
+            return;
+
         //Read scroll
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll == 0f) return;
@@ -127,6 +137,13 @@ public class BuildingHammer : Item
 
     private void UpdateGhost()
     {
+        if(!BuildManager.CanBuild)
+        {
+            if(ghostBuilding != null)
+                Destroy(ghostBuilding);
+            return;
+        }
+
         //Skip if missing
         if (ghostBuilding == null) return;
 

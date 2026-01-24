@@ -10,6 +10,7 @@ public class BuildManager : MonoBehaviour
     public event Action OnGridUpdated;
 
     [Header("Build Settings")]
+    public static bool CanBuild = true;
     public int gridSize = 2;
     public float maxBuildDistance = 12f;
     public float snapDistance = 5f;
@@ -29,6 +30,16 @@ public class BuildManager : MonoBehaviour
     [SerializeField] Image recipePrefab;
 
     List<GameObject> recipeInstances = new();
+
+    private void Start()
+    {
+        DayNightCycleManager.OnDayChange += UpdateBuildingStatus;
+    }
+
+    private void UpdateBuildingStatus(bool value)
+    {
+        CanBuild = value;
+    }
 
     private void Update()
     {
