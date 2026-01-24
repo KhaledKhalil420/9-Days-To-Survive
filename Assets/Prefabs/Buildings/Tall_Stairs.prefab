@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 7405853830563566866}
   - component: {fileID: 2688110552309863575}
   - component: {fileID: 236297361481812906}
+  - component: {fileID: 3996439692738443138}
   m_Layer: 0
   m_Name: Tall_Stairs
   m_TagString: Untagged
@@ -149,6 +150,7 @@ MonoBehaviour:
   - {fileID: 6910941872516098785}
   - {fileID: 283616446916370393}
   pivotsOnBuild: []
+  supportCheckScale: 1.15
 --- !u!114 &2688110552309863575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,6 +186,19 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -2003516153734819000, guid: 42c9ae44960516a48bcfab1b7bad7651, type: 3}
+--- !u!114 &3996439692738443138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2711339298170863636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0e4354378b5bf439b8884546972fc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  priority: 1
 --- !u!1 &3772619073804681759
 GameObject:
   m_ObjectHideFlags: 0

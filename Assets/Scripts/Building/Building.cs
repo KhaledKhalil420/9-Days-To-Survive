@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Building : MonoBehaviour, IBreakable
+public class Building : MonoBehaviour, IDamagable
 {
     [Header("Health")]
     public int currentHealth = 5;
@@ -99,19 +99,6 @@ public class Building : MonoBehaviour, IBreakable
         OnPlaced();
     }
 
-    public void Damage(GameObject sender, int damage, BreakableType type, int toughness)
-    {
-        if (type != BreakableType.Buildings) return;
-        
-        currentHealth -= damage;
-        OnDamage();
-        
-        if (currentHealth <= 0)
-        {
-            DestroyBuilding();
-        }
-    }
-
     private void RebakeNav()
     {
         if (DayNightCycleManager.instance?.currentState == DayNightCycleManager.CycleState.Night)
@@ -143,4 +130,14 @@ public class Building : MonoBehaviour, IBreakable
 
     }
 
+    public void Damage(float damage)
+    {
+        currentHealth -= (int)damage;
+        OnDamage();
+        
+        if (currentHealth <= 0)
+        {
+            DestroyBuilding();
+        }
+    }
 }
