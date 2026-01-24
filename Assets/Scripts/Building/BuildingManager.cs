@@ -39,6 +39,7 @@ public class BuildManager : MonoBehaviour
     private void UpdateBuildingStatus(bool value)
     {
         CanBuild = value;
+        ShowUI(!(value == false));
     }
 
     private void Update()
