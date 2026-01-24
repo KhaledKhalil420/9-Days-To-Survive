@@ -83,7 +83,7 @@ public class BreakingTool : Item
 
         if (hit.transform.TryGetComponent<IDamagable>(out var damagable))
         {
-            damagable.Damage(damage / 3); //small debuf for enemies
+            damagable.Damage((float)damage / 3); //small debuf for enemies
         }
     }
 

@@ -49,6 +49,5 @@ public class Breakable : MonoBehaviour, IBreakable
         GetComponent<Renderer>().enabled = false;
         GetComponent<MeshRenderer>().enabled = false;
         GetComponent<Collider>().enabled = false;
-        GetComponent<NavMeshObstacle>().enabled = false;
     }
 }

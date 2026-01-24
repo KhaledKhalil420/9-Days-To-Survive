@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine.UI;
 public class BuildManager : MonoBehaviour
 {
     public static BuildManager Instance;
+    public event Action OnGridUpdated;
 
     [Header("Build Settings")]
     public int gridSize = 2;
@@ -15,6 +17,7 @@ public class BuildManager : MonoBehaviour
     public float rotationAngle = 45f;
 
     [Header("Layers")]
+    public LayerMask PhysicsLayers;
     public LayerMask buildableLayers;
     public LayerMask demolishLayers;
 
@@ -53,6 +56,11 @@ public class BuildManager : MonoBehaviour
 
             recipeInstances.Add(img.gameObject);
         }
+    }
+
+    public void UpdateGrid()
+    {
+        OnGridUpdated?.Invoke();
     }
 
     void ClearRecipe()
