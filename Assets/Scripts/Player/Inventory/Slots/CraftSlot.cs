@@ -11,7 +11,7 @@ public class CraftSlot : MonoBehaviour, IPointerDownHandler
 
     private void Start()
     {
-        GetComponent<Image>().sprite = recipe.itemToGive.data.sprite;
+        GetComponentInChildren<Image>().sprite = recipe.itemToGive.data.sprite;
         foreach (Ingredient ingredient in recipe.ingredients)
         {
             ingredientUi.image.sprite = ingredient.item.data.sprite;
@@ -29,7 +29,7 @@ public class CraftSlot : MonoBehaviour, IPointerDownHandler
         }
     }
 
-        public void CraftRecipe()
+    public void CraftRecipe()
     {
         PlayerInventory playerInventory = PlayerInventory.Instance;
 
@@ -57,6 +57,7 @@ public class CraftSlot : MonoBehaviour, IPointerDownHandler
             playerInventory.TakeItem(ingredient.item, ingredient.quantity, out bool _);
         }   
         
+        AudioManager.Instance.PlaySound("Pickup", 0.95f, 1.1f);
         transform.parent.gameObject.SetActive(false);
     }
 }

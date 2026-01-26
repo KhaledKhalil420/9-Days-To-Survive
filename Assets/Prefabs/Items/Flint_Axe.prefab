@@ -277,6 +277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b613ba236bdf394fbbe34ac8d89dfdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentSlot: {fileID: 0}
   heldby: {fileID: 0}
   data: {fileID: 11400000, guid: 78c1e0890b0ab3942b94a205f88c2d36, type: 2}
   isSingleQuantityItem: 1
