@@ -1,11 +1,12 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Building : MonoBehaviour, IDamagable
 {
-    [Header("Health")]
-    public int currentHealth = 5;
+    [Header("Attributes")]
+    [SerializeField] private int currentHealth = 5;
+    [SerializeField] private int extraDamage = 0;
+
     
     [Header("Building Data")]
     public Ingredient[] ingredients;
@@ -28,7 +29,7 @@ public class Building : MonoBehaviour, IDamagable
     private void Awake()
     {
         buildingCollider = GetComponent<Collider>();
-        buildingLayers = BuildManager.Instance.PhysicsLayers;
+        buildingLayers = BuildingManager.Instance.PhysicsLayers;
     }
 
     #region Self destruction
@@ -84,16 +85,19 @@ public class Building : MonoBehaviour, IDamagable
 
     #endregion
 
-    public void OnPlace()
+    public void OnPlace(float extraHealth, float extraDamage)
     {
         if (isPlaced) 
             return;
         
         isPlaced = true;
+
+        currentHealth += (int)extraHealth;
+        extraDamage += extraDamage;
         
         pivots.AddRange(pivotsOnBuild);
-        BuildManager.Instance.OnGridUpdated += UpdateBuilding;
-        BuildManager.Instance.UpdateGrid();
+        BuildingManager.Instance.OnGridUpdated += UpdateBuilding;
+        BuildingManager.Instance.UpdateGrid();
         
         RebakeNav();
         OnPlaced();
@@ -125,8 +129,8 @@ public class Building : MonoBehaviour, IDamagable
     {
         RebakeNav();
 
-        BuildManager.Instance.OnGridUpdated -= UpdateBuilding;
-        BuildManager.Instance.UpdateGrid();
+        BuildingManager.Instance.OnGridUpdated -= UpdateBuilding;
+        BuildingManager.Instance.UpdateGrid();
 
     }
 

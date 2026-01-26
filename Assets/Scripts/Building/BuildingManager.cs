@@ -4,13 +4,22 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BuildManager : MonoBehaviour
+public class BuildingManager : MonoBehaviour
 {
-    public static BuildManager Instance;
+    public static BuildingManager Instance;
     public event Action OnGridUpdated;
 
+    [Header("Attributes")]
+    public int buildLimit = 10;
+    private int currentBuilds = 0;
+    public float extraBuildingHealth = 0;
+    public float extraBuildingDamage = 0;
+
     [Header("Build Settings")]
-    public static bool CanBuild = true;
+    public bool IsDay = true;
+    public static bool CanBuild() { return Instance.IsDay && Instance.currentBuilds < Instance.buildLimit;}
+
+    
     public int gridSize = 2;
     public float maxBuildDistance = 12f;
     public float snapDistance = 5f;
@@ -23,11 +32,12 @@ public class BuildManager : MonoBehaviour
     public LayerMask demolishLayers;
 
     [Header("UI")]
-    [SerializeField] Transform canvasParent;
-    [SerializeField] Image buildIcon;
-    [SerializeField] TMP_Text buildTitle;
-    [SerializeField] Transform recipeParent;
-    [SerializeField] Image recipePrefab;
+    [SerializeField] private TMP_Text buildsQuantityText;
+    [SerializeField] private Transform canvasParent;
+    [SerializeField] private Image buildIcon;
+    [SerializeField] private TMP_Text buildTitle;
+    [SerializeField] private Transform recipeParent;
+    [SerializeField] private Image recipePrefab;
 
     List<GameObject> recipeInstances = new();
 
@@ -38,7 +48,7 @@ public class BuildManager : MonoBehaviour
 
     private void UpdateBuildingStatus(bool value)
     {
-        CanBuild = value;
+        IsDay = value;
         ShowUI(!(value == false));
     }
 
@@ -56,6 +66,7 @@ public class BuildManager : MonoBehaviour
     {
         buildIcon.sprite = building.data.sprite;
         buildTitle.text = building.data.buildingName;
+        buildsQuantityText.text =  currentBuilds.ToString() + "/" + buildLimit.ToString();
 
         ClearRecipe();
 
@@ -73,6 +84,7 @@ public class BuildManager : MonoBehaviour
     public void UpdateGrid()
     {
         OnGridUpdated?.Invoke();
+        currentBuilds = GameObject.FindGameObjectsWithTag("Build").Length;
     }
 
     void ClearRecipe()

@@ -77,19 +77,6 @@ public class Enemy : MonoBehaviour, IDamagable
         
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if(collision.collider.CompareTag("Spikes"))
-        {
-            if(collision.collider.TryGetComponent(out Building building))
-            {
-                building.currentHealth -= 1;
-            }
-
-            health--;
-        }
-    }
-
     public void Damage(float damage)
     {
         health -= damage;

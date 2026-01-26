@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 2688110552309863575}
   - component: {fileID: 236297361481812906}
   - component: {fileID: 7563793482622143539}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Stairs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,6 +199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 1
+  player: 0
 --- !u!1 &3772619073804681759
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 4703511121998429057}
   - component: {fileID: 7916618858463392770}
   - component: {fileID: 4470272745464252173}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Wall_Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,6 +123,7 @@ MonoBehaviour:
   - {fileID: 4171940298307403724}
   - {fileID: 8783981167103078070}
   pivotsOnBuild: []
+  supportCheckScale: 1.15
 --- !u!208 &6488873899103397894
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -152,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 1
+  player: 0
 --- !u!65 &4918084418101607839
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -5,6 +5,7 @@ using DG.Tweening;
 public class BuildingHammer : Item
 {
     //References
+    private BuildingManager buildManager;
     private Transform mainCamera;
     private Animator animator;
 
@@ -31,6 +32,7 @@ public class BuildingHammer : Item
     private void Start()
     {
         //Cache refs
+        buildManager = BuildingManager.Instance;
         mainCamera = PlayerLook.mainCamera.transform;
         animator = GetComponent<Animator>();
     }
@@ -55,7 +57,7 @@ public class BuildingHammer : Item
         //Rotate
         if (Input.GetKeyDown(Keybinds.Key("Rotate")))
         {
-            currentRotation -= BuildManager.Instance.rotationAngle;
+            currentRotation -= buildManager.rotationAngle;
             rotationTween?.Kill();
             rotationTween = ghostBuilding?.transform.DORotate(new Vector3(0f, currentRotation, 0f), 0.15f).SetEase(Ease.OutQuad);
         }
@@ -63,25 +65,25 @@ public class BuildingHammer : Item
 
     public override void OnUse()
     {
-        if(!BuildManager.CanBuild)
+        if(!BuildingManager.CanBuild())
             return;
 
         TryPlace();
         animator.SetTrigger("Place");
+        buildManager.UpdateBuildUI(availableBuildings[selectedBuildingIndex]);
+
     }
 
     public override void OnUseAlt()
     {
-        if(!BuildManager.CanBuild)
-            return;
-
         TryDemolish();
-        animator.SetTrigger("Demolish");        
+        animator.SetTrigger("Demolish");       
+        buildManager.UpdateBuildUI(availableBuildings[selectedBuildingIndex]); 
     }
 
     private void HandleSelection()
     {
-        if(!BuildManager.CanBuild)
+        if(!BuildingManager.CanBuild())
             return;
 
         //Read scroll
@@ -99,7 +101,7 @@ public class BuildingHammer : Item
 
         //Refresh ghost + ui
         SpawnGhost();
-        BuildManager.Instance.UpdateBuildUI(availableBuildings[selectedBuildingIndex]);
+        buildManager.UpdateBuildUI(availableBuildings[selectedBuildingIndex]);
     }
 
     #endregion
@@ -128,7 +130,7 @@ public class BuildingHammer : Item
 
         //Scale if using pivots
         if (currentBuilding != null && currentBuilding.usesPivots)
-            ghostBuilding.transform.localScale = Vector3.one * BuildManager.Instance.gridSize;
+            ghostBuilding.transform.localScale = Vector3.one * BuildingManager.Instance.gridSize;
 
         //Set initial rotation
         ghostBuilding.transform.rotation = Quaternion.Euler(0f, currentRotation, 0f);
@@ -136,7 +138,7 @@ public class BuildingHammer : Item
 
     private void UpdateGhost()
     {
-        if(!BuildManager.CanBuild)
+        if(!BuildingManager.CanBuild())
         {
             if(ghostBuilding != null)
                 Destroy(ghostBuilding);
@@ -146,10 +148,8 @@ public class BuildingHammer : Item
         //Skip if missing
         if (ghostBuilding == null) return;
 
-        var manager = BuildManager.Instance;
-
         //Spherecast
-        if (!BuildUtilities.TryGetHit(mainCamera, manager.sphereCastRadius, manager.maxBuildDistance, manager.buildableLayers, out RaycastHit hit))
+        if (!BuildUtilities.TryGetHit(mainCamera, buildManager.sphereCastRadius, buildManager.maxBuildDistance, buildManager.buildableLayers, out RaycastHit hit))
         {
             ghostBuilding.SetActive(false);
             canPlace = false;
@@ -160,7 +160,7 @@ public class BuildingHammer : Item
         ghostBuilding.SetActive(true);
 
         //Calculate position
-        Vector3 position = BuildUtilities.CalculatePosition(hit, currentBuilding, ghostMeshFilter, ghostBuilding, manager.gridSize, currentRotation, manager.snapDistance);
+        Vector3 position = BuildUtilities.CalculatePosition(hit, currentBuilding, ghostMeshFilter, ghostBuilding, buildManager.gridSize, currentRotation, buildManager.snapDistance);
 
         //Apply transform
         lastValidPosition = position;
@@ -219,7 +219,7 @@ public class BuildingHammer : Item
 
         //Scale if needed
         if (availableBuildings[selectedBuildingIndex].usesPivots)
-            placed.transform.localScale = Vector3.one * BuildManager.Instance.gridSize;
+            placed.transform.localScale = Vector3.one * buildManager.gridSize;
 
         //Finalize build
         placed.tag = "Build";
@@ -238,7 +238,7 @@ public class BuildingHammer : Item
             r.materials = mats;
         }
 
-        placed.GetComponent<Building>()?.OnPlace();
+        placed.GetComponent<Building>()?.OnPlace(buildManager.extraBuildingHealth, buildManager.extraBuildingDamage);
 
         //Sound
         AudioManager.Instance?.PlaySound("Build", 0.9f, 1.25f);
@@ -246,10 +246,8 @@ public class BuildingHammer : Item
 
     private void TryDemolish()
     {
-        var manager = BuildManager.Instance;
-
         //Check if there's a hit
-        if (!BuildUtilities.TryGetHit(mainCamera, manager.sphereCastRadius, manager.maxBuildDistance, manager.demolishLayers, out RaycastHit hit)) return;
+        if (!BuildUtilities.TryGetHit(mainCamera, buildManager.sphereCastRadius, buildManager.maxBuildDistance, buildManager.demolishLayers, out RaycastHit hit)) return;
 
         //Double check if it's a build
         if (!hit.collider.CompareTag("Build")) return;
@@ -319,15 +317,15 @@ public class BuildingHammer : Item
     public override void OnSelectOnce()
     {
         //Show ui
-        BuildManager.Instance.ShowUI(true);
+        buildManager.ShowUI(true);
         SpawnGhost();
-        BuildManager.Instance.UpdateBuildUI(availableBuildings[selectedBuildingIndex]);
+        buildManager.UpdateBuildUI(availableBuildings[selectedBuildingIndex]);
     }
 
     public override void OnChangingItems()
     {
         //Cleanup
-        BuildManager.Instance.ShowUI(false);
+        buildManager.ShowUI(false);
         rotationTween?.Kill();
         Destroy(ghostBuilding);
     }
