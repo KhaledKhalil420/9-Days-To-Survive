@@ -3,15 +3,17 @@ using UnityEngine;
 
 public class AIManager : MonoBehaviour
 {
-    public static AIManager instance;
+    public static AIManager Instance;
 
     [SerializeField] private float intreval = 0.1f;
     public List<Enemy> registeredEnemies = new();
+    public static LayerMask UnDetectableLayers => Instance.unDetectableLayers;
+    [SerializeField] private LayerMask unDetectableLayers;
     private float timer;
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
     }
 
     void Update()
@@ -24,6 +26,6 @@ public class AIManager : MonoBehaviour
             e.UpdateBrain(); 
     }
 
-    public static void Register(Enemy e) => instance.registeredEnemies.Add(e);
-    public static void Deregister(Enemy e) => instance.registeredEnemies.Remove(e);
+    public static void Register(Enemy e) => Instance.registeredEnemies.Add(e);
+    public static void Deregister(Enemy e) => Instance.registeredEnemies.Remove(e);
 }
