@@ -94,7 +94,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 5633fef5d73914846ba9a76d517c4bd8, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -2139,7 +2139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RenderShadows: 0
+  m_RenderShadows: 1
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
@@ -16060,7 +16060,7 @@ MonoBehaviour:
   maxFadeDistance: 35
   topTint: {r: 1, g: 1, b: 1, a: 1}
   bottomTint: {r: 0.25490198, g: 0.6313726, b: 0.40044615, a: 1}
-  ambientStrength: 0
+  ambientStrength: 1
   castShadow: 0
 --- !u!33 &1977557024
 MeshFilter:
