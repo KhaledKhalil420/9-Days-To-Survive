@@ -14,6 +14,9 @@ public class Enemy : MonoBehaviour, IDamagable
     [Header("Health")]
     [SerializeField] private float health = 1;
 
+    [Header("Points")]
+    public int pointsWorth = 1;
+
     private void Start()
     {
         AIManager.Register(this);

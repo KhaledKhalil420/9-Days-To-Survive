@@ -15,6 +15,13 @@ public class GameManager : MonoBehaviour
     private bool waveTriggered;
     public int enemiesDefeated;
 
+    [Header("Points")]
+    internal int MaxBuilds => BuildingManager.Instance.buildLimit;
+    internal int buildsBeforeNightStarted = 0;
+
+    [Header("Difficulty")]
+    public int difficulty = 1;
+
     private void Awake()
     {
         instance = this;
@@ -78,6 +85,25 @@ public class GameManager : MonoBehaviour
     {
         foreach(Item item in starterItems)
             player.GetComponent<PlayerInventory>().GiveItem(item);
+    }
+
+    #endregion
+
+    #region Points
+
+    private int CalculatePoints()
+    {
+        int enemyPoints = 0;
+
+        foreach (Enemy enemy in selectedWave.enemies)
+            enemyPoints += enemy.pointsWorth;
+
+        int unusedBuilds = MaxBuilds - buildsBeforeNightStarted;
+        int buildBonus = unusedBuilds * 5;
+
+        int totalPoints = enemyPoints + buildBonus;
+
+        return totalPoints;
     }
 
     #endregion
