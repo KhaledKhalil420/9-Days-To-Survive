@@ -19,9 +19,8 @@ public class GameManager : MonoBehaviour
     public static int StoredPoints = 0;
     internal int MaxBuilds => BuildingManager.Instance.buildLimit;
     internal int buildsBeforeNightStarted = 0;
-
-    [Header("Difficulty")]
-    public int difficulty = 1;
+    
+    #region Unity
 
     private void Awake()
     {
@@ -39,6 +38,8 @@ public class GameManager : MonoBehaviour
     {
         SpawnEnemies();
     }
+
+    #endregion
 
     #region Waves
 
@@ -101,16 +102,19 @@ public class GameManager : MonoBehaviour
 
     private int CalculatePoints()
     {
+        //Enemy points calculation
         int enemyPoints = 0;
-
         foreach (Enemy enemy in selectedWave.enemies)
             enemyPoints += enemy.EnemyPoints;
 
+        //Get unsed buildings bonus (the less builds you use, the more points you get)
         int unusedBuilds = MaxBuilds - buildsBeforeNightStarted;
         int buildBonus = unusedBuilds * 5;
-
+        
+        //More points for difficulty
         float difficultyMultiplier = 1 + (Difficulty.DifficultyMultiplier - 1) * 0.2f;
-
+        
+        //Total Points calculation
         int totalPoints = Mathf.RoundToInt((enemyPoints + buildBonus) * difficultyMultiplier);
 
         return totalPoints;

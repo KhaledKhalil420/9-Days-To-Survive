@@ -23,7 +23,8 @@ public class Enemy : MonoBehaviour, IDamagable
     {
         AIManager.Register(this);
         unDetectableLayers = AIManager.UnDetectableLayers;
-
+        
+        //Health buff calculation
         health *= 1 + (Difficulty.DifficultyMultiplier - 1) * 0.2f;
     }
 
