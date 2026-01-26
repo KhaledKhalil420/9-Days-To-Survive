@@ -15,16 +15,11 @@ public class Enemy : MonoBehaviour, IDamagable
     [SerializeField] private float health = 1;
 
     [Header("Points")]
-    [SerializeField] private int pointsWorth = 1;
-    internal int EnemyPoints => pointsWorth * Difficulty.DifficultyMultiplier;
-
+    public int pointsWorth = 1;
 
     private void Start()
     {
         AIManager.Register(this);
-        unDetectableLayers = AIManager.UnDetectableLayers;
-
-        health *= 1 + (Difficulty.DifficultyMultiplier - 1) * 0.2f;
     }
 
     public void UpdateBrain()

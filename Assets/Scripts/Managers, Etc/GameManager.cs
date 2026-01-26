@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
         if(waveTriggered)
         {
             timer += Time.deltaTime;
-            if(AIManager.Instance.registeredEnemies.Count < selectedWave.maxEnemies && timer > selectedWave.spawningCooldown)
+            if(AIManager.instance.registeredEnemies.Count < selectedWave.maxEnemies && timer > selectedWave.spawningCooldown)
             {
                 EnemySpawner.SpawnWave(selectedWave, player.transform.position, selectedWave.spawningRadius, selectedWave.minimumSpawningDistance);
                 timer = 0;
@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
         int enemyPoints = 0;
 
         foreach (Enemy enemy in selectedWave.enemies)
-            enemyPoints += enemy.EnemyPoints;
+            enemyPoints += enemy.pointsWorth;
 
         int unusedBuilds = MaxBuilds - buildsBeforeNightStarted;
         int buildBonus = unusedBuilds * 5;
