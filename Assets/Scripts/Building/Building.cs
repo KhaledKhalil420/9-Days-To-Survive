@@ -5,7 +5,7 @@ public class Building : MonoBehaviour, IDamagable
 {
     [Header("Attributes")]
     [SerializeField] private int currentHealth = 5;
-    [SerializeField] private int extraDamage = 0;
+    [SerializeField] internal int extraDamage = 0;
 
     
     [Header("Building Data")]

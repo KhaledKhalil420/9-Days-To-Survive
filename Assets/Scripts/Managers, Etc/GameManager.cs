@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     public int enemiesDefeated;
 
     [Header("Points")]
+    public static int StoredPoints = 0;
     internal int MaxBuilds => BuildingManager.Instance.buildLimit;
     internal int buildsBeforeNightStarted = 0;
 
@@ -67,6 +68,8 @@ public class GameManager : MonoBehaviour
             {
                 DayNightCycleManager.SetTime(DayNightCycleManager.CycleState.Day);
                 waveTriggered = false;
+                GivePoints();
+
             }
         }
 
@@ -90,6 +93,11 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Points
+    
+    private void GivePoints()
+    {
+        StoredPoints += CalculatePoints();
+    }
 
     private int CalculatePoints()
     {
