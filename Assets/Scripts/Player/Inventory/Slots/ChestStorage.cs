@@ -16,7 +16,7 @@ public class ChestStorage : MonoBehaviour, IInteractable
             slot.heldBy = inventoryHolder;
         }
 
-        PlayerInventory.instance.OnInventoryOpen += CloseUi;
+        PlayerInventory.Instance.OnInventoryOpen += CloseUi;
 
         InvokeRepeating(nameof(UpdateSlots), 0.01f, 0.01f);
     }
@@ -39,14 +39,14 @@ public class ChestStorage : MonoBehaviour, IInteractable
     {
         if(state) return;
 
-        PlayerInventory.instance.ToggleBagNoEvent(false);
+        PlayerInventory.Instance.ToggleBagNoEvent(false);
         chestUI.SetActive(false);
         isOpen = false;
     }
 
     public void OpenUi()
     {
-        PlayerInventory.instance.ToggleBagNoEvent(true);
+        PlayerInventory.Instance.ToggleBagNoEvent(true);
         chestUI.SetActive(true);
         isOpen = true;
     }

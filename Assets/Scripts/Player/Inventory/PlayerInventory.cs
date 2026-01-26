@@ -12,7 +12,7 @@ public class InventoryHolder
 
 public class PlayerInventory : MonoBehaviour
 {
-    public static PlayerInventory instance;
+    public static PlayerInventory Instance;
 
     [Header("Slot setup")]
     [SerializeField] private GameObject slotPrefab;
@@ -46,7 +46,7 @@ public class PlayerInventory : MonoBehaviour
 
     void Awake()
     {
-        instance = this;
+        Instance = this;
     }
 
     private void Start()

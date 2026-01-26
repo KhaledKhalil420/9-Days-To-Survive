@@ -25,7 +25,7 @@ public class DragSlot : MonoBehaviour
 
     void Start()
     {
-        PlayerInventory.instance.OnInventoryOpen += UpdateDragState;
+        PlayerInventory.Instance.OnInventoryOpen += UpdateDragState;
     }
 
     void Update()

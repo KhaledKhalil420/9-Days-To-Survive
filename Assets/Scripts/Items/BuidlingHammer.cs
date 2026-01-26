@@ -316,16 +316,20 @@ public class BuildingHammer : Item
 
     public override void OnSelectOnce()
     {
-        //Show ui
-        buildManager.ShowUI(true);
         SpawnGhost();
-        buildManager.UpdateBuildUI(availableBuildings[selectedBuildingIndex]);
+        buildManager?.UpdateBuildUI(availableBuildings[selectedBuildingIndex]);
+    }
+
+    public override void OnSelect()
+    {
+        //Show ui
+        buildManager?.ShowUI(true);
     }
 
     public override void OnChangingItems()
     {
         //Cleanup
-        buildManager.ShowUI(false);
+        buildManager?.ShowUI(false);
         rotationTween?.Kill();
         Destroy(ghostBuilding);
     }
