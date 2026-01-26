@@ -18,9 +18,9 @@ GameObject:
   - component: {fileID: 4703511121998429057}
   - component: {fileID: 7916618858463392770}
   - component: {fileID: 4470272745464252173}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Wall_Door
-  m_TagString: Untagged
+  m_TagString: Build
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -137,7 +137,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.1, y: 1, z: 1}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5

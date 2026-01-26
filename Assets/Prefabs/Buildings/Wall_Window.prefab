@@ -16,9 +16,9 @@ GameObject:
   - component: {fileID: 6488873899103397894}
   - component: {fileID: 2050593001518001701}
   - component: {fileID: -8552002247630964510}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Wall_Window
-  m_TagString: Untagged
+  m_TagString: Build
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c66d7b0a543924341978aa544ef271ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 5
+  currentHealth: 1
   extraDamage: 0
   ingredients:
   - item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
@@ -155,7 +155,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.1, y: 1, z: 1}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5

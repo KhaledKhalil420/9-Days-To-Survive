@@ -41,6 +41,11 @@ public class BuildingManager : MonoBehaviour
 
     List<GameObject> recipeInstances = new();
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         DayNightCycleManager.OnDayChange += UpdateBuildingStatus;
@@ -52,11 +57,6 @@ public class BuildingManager : MonoBehaviour
 
         if(canvasParent.gameObject.activeInHierarchy)
         ShowUI(!(value == false));
-    }
-
-    private void Update()
-    {
-        Instance = this;
     }
 
     public void ShowUI(bool state)

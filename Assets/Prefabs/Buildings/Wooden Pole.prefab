@@ -16,9 +16,9 @@ GameObject:
   - component: {fileID: 5178800837845617178}
   - component: {fileID: 2688110552309863575}
   - component: {fileID: 1081888127104031369}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Wooden Pole
-  m_TagString: Untagged
+  m_TagString: Build
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -151,7 +151,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.089, y: 0.42000002, z: 0.089}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: -0.001, z: 0}
   m_TimeToStationary: 0.5

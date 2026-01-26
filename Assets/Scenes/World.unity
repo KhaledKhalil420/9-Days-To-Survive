@@ -836,7 +836,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5154aca259958c742b99c03c82c66045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intreval: 0.1
+  intreval: 0.001
   registeredEnemies: []
   unDetectableLayers:
     serializedVersion: 2
@@ -899,7 +899,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5291154456772646634, guid: b63aa8c0b6d33804cb8215f5585ba263, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1136,6 +1136,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 186509671}
   m_CullTransparentMesh: 1
+--- !u!1001 &191489972
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6461314343942047677, guid: ef91890782ef6ea49ab3a94b1469f1b2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6461314343942047677, guid: ef91890782ef6ea49ab3a94b1469f1b2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.548
+      objectReference: {fileID: 0}
+    - target: {fileID: 6461314343942047677, guid: ef91890782ef6ea49ab3a94b1469f1b2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6461314343942047677, guid: ef91890782ef6ea49ab3a94b1469f1b2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 6461314343942047677, guid: ef91890782ef6ea49ab3a94b1469f1b2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6461314343942047677, guid: ef91890782ef6ea49ab3a94b1469f1b2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6461314343942047677, guid: ef91890782ef6ea49ab3a94b1469f1b2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 6461314343942047677, guid: ef91890782ef6ea49ab3a94b1469f1b2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6461314343942047677, guid: ef91890782ef6ea49ab3a94b1469f1b2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6461314343942047677, guid: ef91890782ef6ea49ab3a94b1469f1b2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 6582095982051722072, guid: ef91890782ef6ea49ab3a94b1469f1b2, type: 3}
+      propertyPath: m_Name
+      value: Flint_Hammer
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ef91890782ef6ea49ab3a94b1469f1b2, type: 3}
 --- !u!1 &217955933
 GameObject:
   m_ObjectHideFlags: 0
@@ -2098,7 +2155,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 350
-  field of view: 90
+  field of view: 85
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -10232,7 +10289,7 @@ MonoBehaviour:
   m_Center: {x: 0, y: 2, z: 0}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 1015
+    m_Bits: 3063
   m_UseGeometry: 1
   m_DefaultArea: 0
   m_GenerateLinks: 0
@@ -11056,13 +11113,13 @@ MonoBehaviour:
   rotationAngle: 45.01
   PhysicsLayers:
     serializedVersion: 2
-    m_Bits: 641
+    m_Bits: 2689
   buildableLayers:
     serializedVersion: 2
-    m_Bits: 521
+    m_Bits: 2569
   demolishLayers:
     serializedVersion: 2
-    m_Bits: 641
+    m_Bits: 2689
   buildsQuantityText: {fileID: 1780992142}
   canvasParent: {fileID: 1402026125}
   buildIcon: {fileID: 186509673}
@@ -12533,8 +12590,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a0e4354378b5bf439b8884546972fc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  priority: 0
-  player: 1
+  priority: 5
+  player: 0
 --- !u!82 &1220912761
 AudioSource:
   m_ObjectHideFlags: 0
@@ -15133,7 +15190,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5291154456772646634, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17426,3 +17483,4 @@ SceneRoots:
   - {fileID: 146567179}
   - {fileID: 8330208711744621557}
   - {fileID: 362015169}
+  - {fileID: 191489972}

@@ -235,6 +235,8 @@ MonoBehaviour:
     damageMesh: {fileID: -8678823145569952518, guid: 830e559c01fa5f443837d026c3a6318b, type: 3}
   - healthPercentage: 15
     damageMesh: {fileID: -8678823145569952518, guid: 2ce0074bfe90aa74ca61205b7cc3de1b, type: 3}
+  items:
+  - {fileID: 5101318331368798286, guid: c9e0b3f991dbb1d41ac1dfde0aaaeba6, type: 3}
 --- !u!114 &5096120980787383518
 MonoBehaviour:
   m_ObjectHideFlags: 0
