@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
         int buildBonus = unusedBuilds * 5;
         
         //More points for difficulty
-        float difficultyMultiplier = 1 + (Difficulty.DifficultyMultiplier - 1) * 0.2f;
+        float difficultyMultiplier = 1 + (Difficulty.DifficultyMultiplier - 1) * 0.2f; 
         
         //Total Points calculation
         int totalPoints = Mathf.RoundToInt((enemyPoints + buildBonus) * difficultyMultiplier);

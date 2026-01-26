@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 2688110552309863575}
   - component: {fileID: 236297361481812906}
   - component: {fileID: 3996439692738443138}
-  m_Layer: 1
+  m_Layer: 9
   m_Name: Tall_Stairs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -138,6 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 5
+  extraDamage: 0
   ingredients:
   - item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
     quantity: 5

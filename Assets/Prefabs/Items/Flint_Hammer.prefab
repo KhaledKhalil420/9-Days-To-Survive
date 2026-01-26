@@ -103,6 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9797100460e39545b64619af3ba9735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentSlot: {fileID: 0}
   heldby: {fileID: 0}
   data: {fileID: 11400000, guid: 0f5bf68b6395ef544ae77264f231b84c, type: 2}
   isSingleQuantityItem: 1
@@ -113,27 +114,9 @@ MonoBehaviour:
   - {fileID: 5240809725349178419, guid: 9c7d8e5ffbe09c84b9280a8727ff412a, type: 3}
   - {fileID: 5240809725349178419, guid: 083f78e0846412a4587094eca104f2a3, type: 3}
   - {fileID: 5240809725349178419, guid: d36053dcc2757d44cb2ce8fc28553b16, type: 3}
-  - {fileID: -7787119701086866034, guid: 7d0819f1fa907564f99dd84bee58d5ad, type: 3}
   - {fileID: 7405853830563566866, guid: 923ec0e0524a6ad4dbb0cfa209cca95f, type: 3}
   - {fileID: 7405853830563566866, guid: 3bca4a5805c585a40b1d8f12bfd989d4, type: 3}
-  - {fileID: 7405853830563566866, guid: bf4c704fa02df0d46b72f5aa2e52640f, type: 3}
-  - {fileID: 7405853830563566866, guid: 103116704c11f0b4aaddab3f013e1d3d, type: 3}
-  gridSize: 2
-  maxBuildDistance: 4
-  buildableLayers:
-    serializedVersion: 2
-    m_Bits: 521
-  rotationAngle: 45.01
-  sphereCastRadius: 0.1
-  snapDistance: 1
-  demolishLayers:
-    serializedVersion: 2
-    m_Bits: 129
-  canvasParent: {fileID: 0}
-  uiImage: {fileID: 0}
-  buildTitle: {fileID: 0}
-  uiRecipeParent: {fileID: 0}
-  uiRecipePrefab: {fileID: 4706779054307250776, guid: 267c3892cd1a1604d94cbdb442ff7ba6, type: 3}
+  - {fileID: -7787119701086866034, guid: 7d0819f1fa907564f99dd84bee58d5ad, type: 3}
 --- !u!95 &1807523060306041998
 Animator:
   serializedVersion: 7

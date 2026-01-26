@@ -1,8 +1,8 @@
-using UnityEngine;
 using System;
-using System.Collections.Generic;
 using DG.Tweening;
+using UnityEngine;
 using EZCameraShake;
+using System.Collections.Generic;
 
 [Serializable]
 public class DamageMeshes
@@ -17,6 +17,7 @@ public class Breakable_GiveOnDeath : Breakable
     [SerializeField] private ParticleSystem destroyParticles;
     [SerializeField] private AudioClip destroySound;
     [SerializeField] private List<DamageMeshes> damageMeshes;
+    [SerializeField] private List<Item> items;
 
     public override void OnDamage(int damage, GameObject sender)
     {
@@ -61,6 +62,8 @@ public class Breakable_GiveOnDeath : Breakable
         if(!wasGiven) 
             givenItem.transform.position = transform.position;
 
+        GiveItems(playerInventory);
+
         //Playone shot, doesn't seem to be working for some reason btw
         source.audioSource.clip = destroySound;
         source.audioSource.Play();
@@ -69,5 +72,16 @@ public class Breakable_GiveOnDeath : Breakable
         Instantiate(destroyParticles, transform.position, transform.rotation);
 
         DOVirtual.DelayedCall(destroySound.length, () => Destroy(gameObject));
+    }
+
+    private void GiveItems(PlayerInventory playerInventory)
+    {
+        Item givenItem = Instantiate(item.gameObject).GetComponent<Item>();
+        givenItem.HeldQuantity = UnityEngine.Random.Range(1, 3);
+
+        playerInventory.GiveItem(givenItem, out bool wasGiven);
+
+        if(!wasGiven) 
+            givenItem.transform.position = transform.position;
     }
 }

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffd50b6854d668d4497f11ffcca44bd4, type: 3}
+  m_Name: Stick
+  m_EditorClassIdentifier: 
+  Name: Stick
+  sprite: {fileID: 21300000, guid: 7ec306c44e15ee54095c6f98fe07872c, type: 3}
+  prefab: {fileID: 9207207102112498210, guid: 07f2abc27e37e3840800b9d0ef7a1e19, type: 3}
+  discription: Stick, looks like a sword

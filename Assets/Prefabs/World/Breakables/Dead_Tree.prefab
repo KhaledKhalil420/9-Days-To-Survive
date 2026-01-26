@@ -236,6 +236,7 @@ MonoBehaviour:
   destroyParticles: {fileID: 7301512366205885463, guid: e15eb7276d1a1cb4bb4aeea033137d4b, type: 3}
   destroySound: {fileID: 8300000, guid: 9de36afeecc3c83428aead2f685abf23, type: 3}
   damageMeshes: []
+  items: []
 --- !u!82 &3736474884592305914
 AudioSource:
   m_ObjectHideFlags: 0

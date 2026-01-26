@@ -8,10 +8,11 @@ public class CraftSlot : MonoBehaviour, IPointerDownHandler
     [SerializeField] private CraftingRecipe recipe;
     [SerializeField] private IngredientUi ingredientUi;
     [SerializeField] private Transform parent;
+    [SerializeField] private Image image;
 
     private void Start()
     {
-        GetComponentInChildren<Image>().sprite = recipe.itemToGive.data.sprite;
+        image.sprite = recipe.itemToGive.data.sprite;
         foreach (Ingredient ingredient in recipe.ingredients)
         {
             ingredientUi.image.sprite = ingredient.item.data.sprite;

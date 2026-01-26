@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 5178800837845617178}
   - component: {fileID: 1802257758617118508}
   - component: {fileID: 2024016504605657843}
-  m_Layer: 1
+  m_Layer: 9
   m_Name: Floor_Spikes
   m_TagString: ' Spikes'
   m_Icon: {fileID: 0}
@@ -140,6 +140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 5
+  extraDamage: 0
   ingredients:
   - item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
     quantity: 5
