@@ -1,17 +1,24 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : EnemyBrain
+public class GroundEnemy : EnemyBrain
 {
     [Header("Points")]
     [SerializeField] private int pointsWorth = 1;
     internal int EnemyPoints => pointsWorth * Difficulty.DifficultyMultiplier;
 
-    public override void OnTick()
+    public override void OnLogicalTick()
     {
         if(distanation != Vector3.zero && (!agent.hasPath || agent.destination != distanation))
         {
             agent.SetDestination(distanation);
         }
+
+        OnTick();
+    }
+
+    public virtual void OnTick()
+    {
+        
     }
 }

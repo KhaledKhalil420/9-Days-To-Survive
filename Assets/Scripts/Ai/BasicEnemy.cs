@@ -1,50 +1,49 @@
-using System.Linq;  
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.AI;
 
-public class BasicEnemy : Enemy
+public class BasicEnemy : GroundEnemy
 {
-    // [Header("Attacking")]
-    // private bool canAttack = true;
-    // [SerializeField] private float attackCooldown = 1;
-    // [SerializeField] private LayerMask unAttackableLayers;
-    // [SerializeField] private float attackRange = 1;
-    // [SerializeField] private int attackDamage = 1;
+    [Header("Attacking")]
+    private bool canAttack = true;
+    [SerializeField] private float attackCooldown = 1;
+    [SerializeField] private float attackRange = 1;
+    [SerializeField] private int attackDamage = 1;
 
-    // public override void OnUpdate()
-    // {
-    //     HasReachedTarget();
-    // }
+    public override void OnLogicalStart()
+    {
+        agent.stoppingDistance = attackRange * 0.8f;
+    }
 
-    // public void HasReachedTarget()
-    // {
-    //     if(target == null) 
-    //         return;
+    public override void OnTick()
+    {
+        HasReachedTarget();
+    }
+
+    public void HasReachedTarget()
+    {
+        if(target == null) 
+            return;
+
+        if(agent.remainingDistance > agent.stoppingDistance) 
+            return;
         
-    //     Vector3 position = transform.forward * attackRange;
-    //     if(Physics.CheckSphere(position, attackRange, ~unAttackableLayers) && canAttack)
-    //     {
-    //         Attack();
-    //     }
-    // }
+        //Check if target is within attack range
+        float distanceToTarget = Vector3.Distance(transform.position, target.position);
+        
+        if(distanceToTarget <= attackRange && canAttack)
+        {
+            Attack();
+        }
+    }
 
-    // private void Attack()
-    // {
-    //     if(target.TryGetComponent(out IDamagable damagable))
-    //     {
-    //         damagable.Damage(attackDamage);
-    //     }
+    private void Attack()
+    {
+        if(target.TryGetComponent(out IDamagable damagable))
+        {
+            damagable.Damage(attackDamage);
+        }
 
-
-
-    //     canAttack = false;
-    //     DOVirtual.DelayedCall(attackCooldown, () => {canAttack = true;});
-    // }
-
-    // void OnDrawGizmosSelected()
-    // {
-    //     Vector3 position = transform.forward * attackRange;
-    //     Gizmos.DrawWireSphere(position, attackRange);
-    // }
+        canAttack = false;
+        DOVirtual.DelayedCall(attackCooldown, () => {canAttack = true;});
+    }
 }

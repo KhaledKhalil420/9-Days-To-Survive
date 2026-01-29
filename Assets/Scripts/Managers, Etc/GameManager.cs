@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
     {
         //Enemy points calculation
         int enemyPoints = 0;
-        foreach (Enemy enemy in selectedWave.enemies)
+        foreach (GroundEnemy enemy in selectedWave.enemies)
             enemyPoints += enemy.EnemyPoints;
 
         //Get unsed buildings bonus (the less builds you use, the more points you get)
@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
 [System.Serializable]
 public class Wave
 {
-    public List<Enemy> enemies = new();
+    public List<GroundEnemy> enemies = new();
 
     [Header("Enemies")]
     public int requiredDefeats;

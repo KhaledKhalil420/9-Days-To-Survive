@@ -1,4 +1,5 @@
 using Sortify;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -22,6 +23,7 @@ public class EnemyBrain : MonoBehaviour
         unDetectableLayers = AIManager.UnDetectableLayers;
         mainTarget = GameObject.FindWithTag(TargetTag).transform;
 
+        OnLogicalStart();
     }
 
     public void TickBrain()
@@ -30,7 +32,7 @@ public class EnemyBrain : MonoBehaviour
         UpdatePath();
 
         //Optional virtual
-        OnTick();
+        OnLogicalTick();
     }
 
     private void UpdatePath()
@@ -55,7 +57,12 @@ public class EnemyBrain : MonoBehaviour
     }
 
 
-    public virtual void OnTick()
+    public virtual void OnLogicalTick()
+    {
+        
+    }
+
+    public virtual void OnLogicalStart()
     {
         
     }
