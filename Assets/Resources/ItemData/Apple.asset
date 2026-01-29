@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Apple
   m_EditorClassIdentifier: 
   Name: Apple
-  sprite: {fileID: 21300000, guid: fb0b044341e4fc843b86f8f467ddd155, type: 3}
+  sprite: {fileID: 21300000, guid: 6d522478041732145971a12054facf14, type: 3}
   prefab: {fileID: 1552031018076021213, guid: c9e0b3f991dbb1d41ac1dfde0aaaeba6, type: 3}
   discription: TestFood

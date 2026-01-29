@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4808848778664256377}
   - component: {fileID: 789964070537936751}
   - component: {fileID: 1998692805790846681}
-  - component: {fileID: -9116348345439964973}
+  - component: {fileID: 6061406404221436148}
   m_Layer: 6
   m_Name: Fiber
   m_TagString: Untagged
@@ -134,8 +134,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!64 &-9116348345439964973
-MeshCollider:
+--- !u!65 &6061406404221436148
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -152,7 +152,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -4956866071066647077, guid: ce14b965d0a05a04ab503b8cd4f48377, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.7314012, y: 0.2167446, z: 0.7024858}
+  m_Center: {x: 0.013924807, y: 0.0074955747, z: -0.02518019}
