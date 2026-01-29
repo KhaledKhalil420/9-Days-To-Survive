@@ -106,6 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b613ba236bdf394fbbe34ac8d89dfdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentSlot: {fileID: 0}
   heldby: {fileID: 0}
   data: {fileID: 11400000, guid: 6dbb5236fba8a8548b2e6d1265089462, type: 2}
   isSingleQuantityItem: 1
@@ -117,11 +118,11 @@ MonoBehaviour:
   numberOfAnimations: 3
   range: 2
   cooldown: 1
-  damage: 1
-  minimumDamage: 1
-  maximumDamage: 2
+  damage: 15
+  minimumDamage: 2
+  maximumDamage: 4
   sphereIcon: {fileID: 10912, guid: 0000000000000000f000000000000000, type: 0}
-  toughness: 1
+  toughness: 3
   hitParticlesPrefab: {fileID: 6874815317943588122, guid: eb4b09712adf2bb418e23e8f21a62163, type: 3}
 --- !u!95 &1807523060306041998
 Animator:

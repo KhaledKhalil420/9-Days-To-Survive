@@ -27,5 +27,5 @@ public class AIManager : MonoBehaviour
     }
 
     public static void Register(EnemyBrain e) => Instance.registeredEnemies.Add(e);
-    public static void Deregister(EnemyBrain e) => Instance.registeredEnemies.Remove(e);
+    public static void UnRegister(EnemyBrain e) => Instance.registeredEnemies.Remove(e);
 }

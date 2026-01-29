@@ -56,6 +56,10 @@ public class EnemyBrain : MonoBehaviour
         target = NavMeshUtility.GetTarget(transform, mainTarget, ~unDetectableLayers, searchArea);
     }
 
+    void OnDestroy()
+    {
+        AIManager.UnRegister(this);
+    }
 
     public virtual void OnLogicalTick()
     {

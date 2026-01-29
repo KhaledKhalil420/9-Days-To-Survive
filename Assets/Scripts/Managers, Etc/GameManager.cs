@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
         if(waveTriggered)
         {
             timer += Time.deltaTime;
-            if(AIManager.Instance.registeredEnemies.Count < selectedWave.maxEnemies && timer > selectedWave.spawningCooldown)
+            if(AIManager.Instance?.registeredEnemies.Count < selectedWave.maxEnemies && timer > selectedWave.spawningCooldown)
             {
                 EnemySpawner.SpawnWave(selectedWave, player.transform.position, selectedWave.spawningRadius, selectedWave.minimumSpawningDistance);
                 timer = 0;

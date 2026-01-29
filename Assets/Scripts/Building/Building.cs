@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class Building : MonoBehaviour, IDamagable
 {
     [Header("Attributes")]
-    [SerializeField] private int currentHealth = 5;
+    [SerializeField] internal int currentHealth = 5;
     [SerializeField] internal int extraDamage = 0;
 
     
