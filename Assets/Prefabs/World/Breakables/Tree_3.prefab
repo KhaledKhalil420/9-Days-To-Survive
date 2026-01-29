@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7424779362129416608}
   - component: {fileID: 5096120980787383518}
   - component: {fileID: 3816196941593267752}
+  - component: {fileID: -1296831059111448726}
   m_Layer: 0
   m_Name: Tree_3
   m_TagString: Untagged
@@ -224,7 +225,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   source: {fileID: 5096120980787383518}
   requiredTool: 1
-  toughness: 1
+  toughness: 2
   health: 10
   item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
   givenQuantityAverage: 15
@@ -275,3 +276,19 @@ LODGroup:
     renderers:
     - renderer: {fileID: 84339880695931765}
   m_Enabled: 1
+--- !u!208 &-1296831059111448726
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7113273711803475367}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 2.2940001, y: 4.316, z: 3.0260003}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.284, y: 4.316, z: -0.061000004}
+  m_TimeToStationary: 0.5

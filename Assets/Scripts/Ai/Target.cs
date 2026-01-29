@@ -4,4 +4,5 @@ public class Target : MonoBehaviour
 {
     public float priority;
     public bool player = false;
+    internal bool isBeingAttacked = false;
 }

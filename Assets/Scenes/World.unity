@@ -836,11 +836,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5154aca259958c742b99c03c82c66045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intreval: 0.001
+  tickRate: 0.01
   registeredEnemies: []
   unDetectableLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4478
 --- !u!1001 &146567179
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1150,7 +1150,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6461314343942047677, guid: ef91890782ef6ea49ab3a94b1469f1b2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.548
+      value: 2.267
       objectReference: {fileID: 0}
     - target: {fileID: 6461314343942047677, guid: ef91890782ef6ea49ab3a94b1469f1b2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2574,7 +2574,7 @@ Transform:
   m_GameObject: {fileID: 362015165}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.67, y: 0.9, z: 2.47}
+  m_LocalPosition: {x: 1.67, y: 0.716, z: 2.47}
   m_LocalScale: {x: 2.0747952, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10289,7 +10289,7 @@ MonoBehaviour:
   m_Center: {x: 0, y: 2, z: 0}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 3063
+    m_Bits: 2689
   m_UseGeometry: 1
   m_DefaultArea: 0
   m_GenerateLinks: 0
@@ -10297,11 +10297,11 @@ MonoBehaviour:
   m_IgnoreNavMeshObstacle: 1
   m_OverrideTileSize: 0
   m_TileSize: 256
-  m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_OverrideVoxelSize: 1
+  m_VoxelSize: 0.25
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: acd214d54e63bea4bb4541eb9530c343, type: 2}
-  m_BuildHeightMesh: 0
+  m_BuildHeightMesh: 1
 --- !u!1 &1006263202
 GameObject:
   m_ObjectHideFlags: 0
@@ -16613,7 +16613,7 @@ MonoBehaviour:
   maxFadeDistance: 35
   topTint: {r: 1, g: 1, b: 1, a: 1}
   bottomTint: {r: 0.25490198, g: 0.6313726, b: 0.40044615, a: 1}
-  ambientStrength: 1
+  ambientStrength: 0
   castShadow: 0
 --- !u!33 &1977557024
 MeshFilter:

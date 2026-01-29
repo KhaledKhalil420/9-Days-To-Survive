@@ -3,31 +3,46 @@ using UnityEngine.AI;
 
 public static class NavMeshUtility
 {
-    // reused to avoid GC
-    static readonly NavMeshPath s_path = new NavMeshPath();
+    static readonly NavMeshPath path = new NavMeshPath();
+    static readonly NavMeshPath path2 = new NavMeshPath();
 
-    /// <summary>
-    /// Returns true if there's a blocker between from->to.
-    /// If false, path is complete/reachable.
-    /// If true, hitPosition contains the NavMeshHit position where the NavMesh blocks (use that to search for Build).
-    /// </summary>
-    public static bool TryGetBlocker(Vector3 from, Vector3 to, out Vector3 hitPosition)
+    
+    public static Transform GetTarget(Transform seeker, Transform target, LayerMask targetLayers, float searchArea)
     {
-        if (NavMesh.CalculatePath(from, to, NavMesh.AllAreas, s_path) &&
-            s_path.status == NavMeshPathStatus.PathComplete)
+        NavMesh.CalculatePath(seeker.position, target.position, NavMesh.AllAreas, path);
+
+        if(path.status == NavMeshPathStatus.PathComplete)
         {
-            hitPosition = Vector3.zero;
-            return false;
+            return target;
+        }
+        else  
+        {
+            Debug.Log("Path not found, getting closest target...");
+            
+            Collider[] colliders = Physics.OverlapSphere(target.position, searchArea, targetLayers);
+            
+            foreach (Collider col in colliders)
+            {
+                if(col.TryGetComponent(out Target otherTarget))
+                {
+                    // Try to find nearest valid NavMesh point near the target
+                    if(NavMesh.SamplePosition(otherTarget.transform.position, out NavMeshHit hit, 5f, NavMesh.AllAreas))
+                    {
+                        NavMesh.CalculatePath(seeker.position, hit.position, NavMesh.AllAreas, path2);
+                        Debug.Log("Checking target: " + otherTarget.name + ", Path status: " + path2.status);
+
+                        if(path2.status == NavMeshPathStatus.PathComplete)
+                        {
+                            Debug.Log("Found valid target: " + otherTarget.name);
+                            return otherTarget.transform;
+                        }
+                    }
+                }
+            }
+            
+            Debug.Log("No valid targets found in search area!");
         }
 
-        if (NavMesh.Raycast(from, to, out var hit, NavMesh.AllAreas))
-        {
-            hitPosition = hit.position;
-            return true;
-        }
-
-        // fallback: no ray hit but CalculatePath failed (rare). Return approximate point along direction
-        hitPosition = from + (to - from).normalized * Mathf.Min(1f, Vector3.Distance(from, to));
-        return true;
+        return null;
     }
 }

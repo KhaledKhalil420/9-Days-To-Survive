@@ -5,8 +5,8 @@ public class AIManager : MonoBehaviour
 {
     public static AIManager Instance;
 
-    [SerializeField] private float intreval = 0.1f;
-    public List<Enemy> registeredEnemies = new();
+    [SerializeField] private float tickRate = 0.01f;
+    public List<EnemyBrain> registeredEnemies = new();
     public static LayerMask UnDetectableLayers => Instance.unDetectableLayers;
     [SerializeField] private LayerMask unDetectableLayers;
     private float timer;
@@ -19,13 +19,13 @@ public class AIManager : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-        if (timer < intreval) return;
+        if (timer < tickRate) return;
         timer = 0f;
 
         foreach (var e in registeredEnemies)
-            e.UpdateBrain(); 
+            e.TickBrain(); 
     }
 
-    public static void Register(Enemy e) => Instance.registeredEnemies.Add(e);
-    public static void Deregister(Enemy e) => Instance.registeredEnemies.Remove(e);
+    public static void Register(EnemyBrain e) => Instance.registeredEnemies.Add(e);
+    public static void Deregister(EnemyBrain e) => Instance.registeredEnemies.Remove(e);
 }

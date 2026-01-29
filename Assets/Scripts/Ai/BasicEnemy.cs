@@ -1,51 +1,50 @@
 using System.Linq;  
 using DG.Tweening;
-using Unity.Profiling.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class BasicEnemy : Enemy
 {
-    [Header("Attacking")]
-    private bool canAttack = true;
-    [SerializeField] private float attackCooldown = 1;
-    [SerializeField] private LayerMask unAttackableLayers;
-    [SerializeField] private float attackRange = 1;
-    [SerializeField] private int attackDamage = 1;
+    // [Header("Attacking")]
+    // private bool canAttack = true;
+    // [SerializeField] private float attackCooldown = 1;
+    // [SerializeField] private LayerMask unAttackableLayers;
+    // [SerializeField] private float attackRange = 1;
+    // [SerializeField] private int attackDamage = 1;
 
-    public override void OnUpdate()
-    {
-        HasReachedTarget();
-    }
+    // public override void OnUpdate()
+    // {
+    //     HasReachedTarget();
+    // }
 
-    public void HasReachedTarget()
-    {
-        if(target == null) 
-            return;
+    // public void HasReachedTarget()
+    // {
+    //     if(target == null) 
+    //         return;
         
-        Vector3 position = transform.forward * attackRange;
-        if(Physics.CheckSphere(position, attackRange, ~unAttackableLayers) && canAttack)
-        {
-            Attack();
-        }
-    }
+    //     Vector3 position = transform.forward * attackRange;
+    //     if(Physics.CheckSphere(position, attackRange, ~unAttackableLayers) && canAttack)
+    //     {
+    //         Attack();
+    //     }
+    // }
 
-    private void Attack()
-    {
-        if(target.TryGetComponent(out IDamagable damagable))
-        {
-            damagable.Damage(attackDamage);
-        }
+    // private void Attack()
+    // {
+    //     if(target.TryGetComponent(out IDamagable damagable))
+    //     {
+    //         damagable.Damage(attackDamage);
+    //     }
 
 
 
-        canAttack = false;
-        DOVirtual.DelayedCall(attackCooldown, () => {canAttack = true;});
-    }
+    //     canAttack = false;
+    //     DOVirtual.DelayedCall(attackCooldown, () => {canAttack = true;});
+    // }
 
-    void OnDrawGizmosSelected()
-    {
-        Vector3 position = transform.forward * attackRange;
-        Gizmos.DrawWireSphere(position, attackRange);
-    }
+    // void OnDrawGizmosSelected()
+    // {
+    //     Vector3 position = transform.forward * attackRange;
+    //     Gizmos.DrawWireSphere(position, attackRange);
+    // }
 }

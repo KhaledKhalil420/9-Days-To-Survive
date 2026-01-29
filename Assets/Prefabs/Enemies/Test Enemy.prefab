@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8838052353450104599}
   - component: {fileID: 2376156257152523776}
   - component: {fileID: 2246168851940632354}
+  - component: {fileID: 4414646486991394778}
   - component: {fileID: -1898508997357680436}
   m_Layer: 12
   m_Name: Test Enemy
@@ -124,18 +125,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 2376156257152523776}
-  detectionSize: 15
-  unDetectableLayers:
-    serializedVersion: 2
-    m_Bits: 294
-  health: 1
+  TargetTag: Player
   pointsWorth: 1
-  attackCooldown: 0.1
-  unAttackableLayers:
-    serializedVersion: 2
-    m_Bits: 294
-  attackRange: 1.5
-  attackDamage: 1
+--- !u!114 &4414646486991394778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2792495532164620427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34a3b9dfc80ec79499f302466f753a34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnDamageEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeathEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  destroyOnDeath: 1
+  scaleWithDifficulty: 1
+  MaxHeatlh: 5
 --- !u!136 &-1898508997357680436
 CapsuleCollider:
   m_ObjectHideFlags: 0
