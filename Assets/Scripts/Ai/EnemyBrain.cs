@@ -52,7 +52,6 @@ public class EnemyBrain : MonoBehaviour
     
     private void GetTarget()
     {
-        Debug.Log("Searching for a target...");
         target = NavMeshUtility.GetTarget(transform, mainTarget, ~unDetectableLayers, searchArea);
     }
 
