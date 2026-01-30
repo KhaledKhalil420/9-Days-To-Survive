@@ -39,7 +39,7 @@ public class WorldGenerator : MonoBehaviour
 
     private void Start()
     {
-        SpawnNextDay();
+        DayNightCycleManager.OnDayChange += SpawnNextDay;
         
         if (spawnGrassAtStart)
             SpawnGrass();
@@ -188,9 +188,9 @@ public class WorldGenerator : MonoBehaviour
 
     #region Spawnables
 
-    public void SpawnNextDay()
+    public void SpawnNextDay(bool isDay)
     {
-        if (currentDay >= days.Count) return;
+        if (currentDay >= days.Count || !isDay) return;
         
         var day = days[currentDay];
         foreach (var spawnable in day.spawnables)
