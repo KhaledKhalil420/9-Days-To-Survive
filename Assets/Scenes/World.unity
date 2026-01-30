@@ -11155,7 +11155,7 @@ MonoBehaviour:
   buildLimit: 10
   extraBuildingHealth: 0
   extraBuildingDamage: 0
-  IsDay: 1
+  smoke: {fileID: 7301512366205885463, guid: e15eb7276d1a1cb4bb4aeea033137d4b, type: 3}
   gridSize: 2
   maxBuildDistance: 4
   snapDistance: 1
@@ -13222,8 +13222,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.000015258789}
-  m_SizeDelta: {x: 327.4048, y: 520}
+  m_AnchoredPosition: {x: 0, y: -25}
+  m_SizeDelta: {x: 325, y: 520}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &1286026616
 CanvasGroup:
