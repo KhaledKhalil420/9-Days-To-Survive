@@ -17,7 +17,9 @@ public static class NavMeshUtility
         }
         else  
         {            
-            Collider[] colliders = Physics.OverlapSphere(target.position, searchArea, targetLayers);
+            
+            Collider[] colliders = new Collider[15];
+            Physics.OverlapSphereNonAlloc(target.position, searchArea, colliders, targetLayers);
             
             foreach (Collider col in colliders)
             {
