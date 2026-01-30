@@ -16447,6 +16447,7 @@ MonoBehaviour:
       gameObject: {fileID: 7183572242863629645, guid: 4c6dc6017218eab4b84f1514f884dc51, type: 3}
       minQuantity: 100
       maxQuantity: 150
+  - spawnables:
     - distanceBetweenSpawnables: 15
       gameObject: {fileID: 32916961726760097, guid: 50400aa3590860e4d8c18f775dded05f, type: 3}
       minQuantity: 50

@@ -106,10 +106,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b613ba236bdf394fbbe34ac8d89dfdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentSlot: {fileID: 0}
   heldby: {fileID: 0}
   data: {fileID: 11400000, guid: 4b51f72d429d80a4fb227e5a4dde5f82, type: 2}
   isSingleQuantityItem: 1
   HeldQuantity: 1
+  isItemPickedUp: 0
   source: {fileID: 7283359879970869791}
   type: 0
   animator: {fileID: 3186081879522739102}
@@ -117,6 +119,8 @@ MonoBehaviour:
   range: 2
   cooldown: 1
   damage: 1
+  minimumDamage: 1
+  maximumDamage: 1
   sphereIcon: {fileID: 10912, guid: 0000000000000000f000000000000000, type: 0}
   toughness: 1
   hitParticlesPrefab: {fileID: 6874815317943588122, guid: eb4b09712adf2bb418e23e8f21a62163, type: 3}
@@ -188,8 +192,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.22068378, y: 2.2256517, z: 0.67762965}
-  m_Center: {x: -3.623154e-24, y: 0.046661854, z: 0.16464427}
+  m_Size: {x: 0.20310499, y: 2.090786, z: 0.3113442}
+  m_Center: {x: -0.000000007450581, y: -0.020771265, z: -0.04654774}
 --- !u!82 &7283359879970869791
 AudioSource:
   m_ObjectHideFlags: 0

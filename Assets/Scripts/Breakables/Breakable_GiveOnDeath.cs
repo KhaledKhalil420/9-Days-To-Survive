@@ -11,13 +11,20 @@ public class DamageMeshes
     [SerializeField] internal Mesh damageMesh;
 }
 
+[Serializable]
+public class ItemLoot
+{
+    public Item item;
+    public int minQuantity = 1, maxQauntity = 3;
+}
+
 public class Breakable_GiveOnDeath : Breakable
 {
     [SerializeField] private int givenQuantityAverage;
     [SerializeField] private ParticleSystem destroyParticles;
     [SerializeField] private AudioClip destroySound;
     [SerializeField] private List<DamageMeshes> damageMeshes;
-    [SerializeField] private List<Item> items;
+    [SerializeField] private List<ItemLoot> items;
 
     public override void OnDamage(int damage, GameObject sender)
     {
@@ -76,12 +83,15 @@ public class Breakable_GiveOnDeath : Breakable
 
     private void GiveItems(PlayerInventory playerInventory)
     {
-        Item givenItem = Instantiate(item.gameObject).GetComponent<Item>();
-        givenItem.HeldQuantity = UnityEngine.Random.Range(1, 3);
-
-        playerInventory.GiveItem(givenItem, out bool wasGiven);
-
-        if(!wasGiven) 
-            givenItem.transform.position = transform.position;
+        foreach (var item in items)
+        {
+            Item givenItem = Instantiate(item.item.gameObject).GetComponent<Item>();
+            givenItem.HeldQuantity = UnityEngine.Random.Range(item.minQuantity, item.maxQauntity);
+    
+            playerInventory.GiveItem(givenItem, out bool wasGiven);
+    
+            if(!wasGiven) 
+                givenItem.transform.position = transform.position;
+        }
     }
 }

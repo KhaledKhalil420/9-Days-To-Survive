@@ -225,7 +225,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   source: {fileID: 5096120980787383518}
   requiredTool: 1
-  toughness: 2
+  toughness: 1
   health: 10
   item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
   givenQuantityAverage: 15
@@ -237,7 +237,12 @@ MonoBehaviour:
   - healthPercentage: 15
     damageMesh: {fileID: -8678823145569952518, guid: 2ce0074bfe90aa74ca61205b7cc3de1b, type: 3}
   items:
-  - {fileID: 5101318331368798286, guid: c9e0b3f991dbb1d41ac1dfde0aaaeba6, type: 3}
+  - item: {fileID: 5101318331368798286, guid: c9e0b3f991dbb1d41ac1dfde0aaaeba6, type: 3}
+    minQuantity: 2
+    maxQauntity: 4
+  - item: {fileID: 789964070537936751, guid: 579e2f28e3108d94eb9886af3095b868, type: 3}
+    minQuantity: 3
+    maxQauntity: 6
 --- !u!114 &5096120980787383518
 MonoBehaviour:
   m_ObjectHideFlags: 0
