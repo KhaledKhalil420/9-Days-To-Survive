@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
+    public static GameManager Instance;
     
     [Header("Player")]
     private GameObject player;
@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
         player = GameObject.FindWithTag("Player");
     }
 
@@ -45,8 +45,11 @@ public class GameManager : MonoBehaviour
 
     public void TriggerWave(bool isDay)
     {
-        if(isDay) 
+        if(isDay)
+        {
+            AIManager.KillAll();   
             return;
+        }
         
         selectedWave = waves[DayNightCycleManager.DayCount];
         timer = selectedWave.spawningCooldown;

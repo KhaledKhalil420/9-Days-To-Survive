@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,4 +29,13 @@ public class AIManager : MonoBehaviour
 
     public static void Register(EnemyBrain e) => Instance.registeredEnemies.Add(e);
     public static void UnRegister(EnemyBrain e) => Instance.registeredEnemies.Remove(e);
+
+    public static void KillAll()
+    {
+        foreach (EnemyBrain enemy in Instance.registeredEnemies.ToArray())
+        {
+            UnRegister(enemy);
+            Destroy(enemy.gameObject);
+        }
+    }
 }

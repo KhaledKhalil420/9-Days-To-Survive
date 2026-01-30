@@ -4,7 +4,7 @@ using System.Collections;
 
 public class DayNightCycleManager : MonoBehaviour
 {
-    public static DayNightCycleManager instance;
+    public static DayNightCycleManager Instance;
     public static int DayCount = 0;
     public delegate void DayChangeArgs(bool state);
     public static event DayChangeArgs OnDayChange;
@@ -21,7 +21,7 @@ public class DayNightCycleManager : MonoBehaviour
 
     void Awake()
     {
-        instance = this;
+        Instance = this;
 
         if (skyboxMaterial == null) 
             return;
@@ -51,7 +51,7 @@ public class DayNightCycleManager : MonoBehaviour
 
     public static void SetTime(CycleState cycleState)
     {
-        instance.currentState = cycleState;
+        Instance.currentState = cycleState;
         bool isDay = cycleState == CycleState.Day;
         
         DayCount += isDay ? 1 : 0;

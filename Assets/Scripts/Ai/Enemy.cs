@@ -21,4 +21,12 @@ public class GroundEnemy : EnemyBrain
     {
         
     }
+
+    public void TickDeath()
+    {
+        if(DayNightCycleManager.Instance.currentState == DayNightCycleManager.CycleState.Night)
+        {
+            GameManager.Instance.enemiesDefeated++;
+        }
+    }
 }

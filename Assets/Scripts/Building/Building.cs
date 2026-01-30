@@ -105,7 +105,7 @@ public class Building : MonoBehaviour, IDamagable
 
     private void RebakeNav()
     {
-        if (DayNightCycleManager.instance?.currentState == DayNightCycleManager.CycleState.Night)
+        if (DayNightCycleManager.Instance?.currentState == DayNightCycleManager.CycleState.Night)
         {
             WorldGenerator.RequestNavMeshRebake();
         }
