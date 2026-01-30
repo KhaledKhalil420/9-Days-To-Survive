@@ -64,7 +64,7 @@ public class BuildingManager : MonoBehaviour
         canvasParent.gameObject.SetActive(state);
     }
 
-    public void UpdateBuildUI(Building building)
+    public void UpdateBuildUI(Building building, bool updateNumber)
     {
         buildIcon.sprite = building.data.sprite;
         buildTitle.text = building.data.buildingName;
