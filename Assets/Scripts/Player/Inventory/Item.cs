@@ -3,13 +3,14 @@ using UnityEngine;
 
 public class Item : MonoBehaviour, IHighlightable
 {
-    public BaseSlot parentSlot;
-    public GameObject heldby;
-    public ItemData data;
+    [Header("Item Seetings")]
+    internal BaseSlot parentSlot;
+    internal GameObject heldby;
+    [SerializeField] internal ItemData data;
 
-    public bool isSingleQuantityItem = false;
-    public int HeldQuantity;
-
+    [SerializeField] internal int HeldQuantity;
+    
+    [SerializeField] internal bool isSingleQuantityItem = false;
     [SerializeField] internal bool isItemPickedUp;
     internal bool isSelected = false;
 

@@ -76,7 +76,10 @@ public class Breakable_GiveOnDeath : Breakable
         source.audioSource.Play();
         
         DisableBreakable();
-        Instantiate(destroyParticles, transform.position, transform.rotation);
+
+        //Particles
+        Bounds bounds = GetComponent<Renderer>().bounds;
+        ParticleSpawner.SpawnWithBounds(destroyParticles, bounds.center, transform.rotation, bounds);
 
         DOVirtual.DelayedCall(destroySound.length, () => Destroy(gameObject));
     }

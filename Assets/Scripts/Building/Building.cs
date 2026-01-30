@@ -7,7 +7,6 @@ public class Building : MonoBehaviour, IDamagable
     [SerializeField] internal int currentHealth = 5;
     [SerializeField] internal int extraDamage = 0;
 
-    
     [Header("Building Data")]
     public Ingredient[] ingredients;
     public BuildingData data;
@@ -122,6 +121,7 @@ public class Building : MonoBehaviour, IDamagable
     private void DestroyBuilding()
     {
         OnDeath();
+        ParticleSpawner.SpawnWithBounds(BuildingManager.Instance.smoke, transform.position, transform.rotation, GetComponent<Renderer>().bounds);
         Destroy(gameObject);
     }
 

@@ -11,6 +11,7 @@ public class BuildingHammer : Item
 
     [Header("Buildings")]
     [SerializeField] private List<Building> availableBuildings;
+    [SerializeField] private ParticleSystem spawnParticles;
 
     //Selection state
     private int selectedBuildingIndex;
@@ -240,6 +241,9 @@ public class BuildingHammer : Item
         }
 
         placed.GetComponent<Building>()?.OnPlace(buildManager.extraBuildingHealth, buildManager.extraBuildingDamage);
+
+        //Particles
+        ParticleSpawner.SpawnWithBounds(spawnParticles, placed.transform.position, placed.transform.rotation, placed.GetComponent<Renderer>().bounds);
 
         //Sound
         AudioManager.Instance?.PlaySound("Build", 0.9f, 1.25f);

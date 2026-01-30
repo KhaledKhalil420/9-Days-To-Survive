@@ -104,11 +104,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9797100460e39545b64619af3ba9735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parentSlot: {fileID: 0}
-  heldby: {fileID: 0}
   data: {fileID: 11400000, guid: 0f5bf68b6395ef544ae77264f231b84c, type: 2}
-  isSingleQuantityItem: 1
   HeldQuantity: 1
+  isSingleQuantityItem: 1
   isItemPickedUp: 0
   availableBuildings:
   - {fileID: 7405853830563566866, guid: 0fb8f734329208243a18121d476bcfb5, type: 3}
@@ -118,6 +116,7 @@ MonoBehaviour:
   - {fileID: 6661475757396127233, guid: 923ec0e0524a6ad4dbb0cfa209cca95f, type: 3}
   - {fileID: 7405853830563566866, guid: 3bca4a5805c585a40b1d8f12bfd989d4, type: 3}
   - {fileID: -7787119701086866034, guid: 7d0819f1fa907564f99dd84bee58d5ad, type: 3}
+  spawnParticles: {fileID: 7301512366205885463, guid: e15eb7276d1a1cb4bb4aeea033137d4b, type: 3}
 --- !u!54 &4152181218667105505
 Rigidbody:
   m_ObjectHideFlags: 0

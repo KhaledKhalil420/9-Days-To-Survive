@@ -15,10 +15,13 @@ public class BuildingManager : MonoBehaviour
     public float extraBuildingHealth = 0;
     public float extraBuildingDamage = 0;
 
-    [Header("Build Settings")]
-    public bool IsDay = true;
-    public static bool CanBuild() { return Instance.IsDay && Instance.currentBuilds < Instance.buildLimit;}
+    [Header("Building Effects")]
+    public ParticleSystem smoke;
 
+    [Header("Build Settings")]
+    internal bool IsDay = true;
+    public static bool CanBuild() { return Instance.IsDay && Instance.currentBuilds < Instance.buildLimit;}
+    
     
     public int gridSize = 2;
     public float maxBuildDistance = 12f;
