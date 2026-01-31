@@ -8,24 +8,23 @@ public class DayNightCycleManager : MonoBehaviour
     public static int DayCount = 0;
     public delegate void DayChangeArgs(bool state);
     public static event DayChangeArgs OnDayChange;
+
     public enum CycleState { Day, Night }
 
     public Material skyboxMaterial;
     public Light mainLight;
     public float lightIntensity = 1f;
     [Range(0, 1)] public float blendSpeed = 0.1f;
-
-    [ColorUsage(true, true)]
-    public Color fogDay, fogNight;
+    [ColorUsage(true, true)] public Color fogDay, fogNight;
     public CycleState currentState = CycleState.Day;
+
+    public LightingPreset dayPreset;
+    public LightingPreset nightPreset;
 
     void Awake()
     {
         Instance = this;
-
-        if (skyboxMaterial == null) 
-            return;
-
+        if (skyboxMaterial == null) return;
         RenderSettings.skybox = skyboxMaterial;
         RenderSettings.skybox.SetFloat("_CubemapTransition", 1f);
     }
@@ -43,9 +42,8 @@ public class DayNightCycleManager : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.G))
+        if (Input.GetKeyDown(KeyCode.G))
             SetTime(currentState == CycleState.Day ? CycleState.Night : CycleState.Day);
-        
         UpdateSkyboxBlend();
     }
 
@@ -53,27 +51,32 @@ public class DayNightCycleManager : MonoBehaviour
     {
         Instance.currentState = cycleState;
         bool isDay = cycleState == CycleState.Day;
-        
         DayCount += isDay ? 1 : 0;
-        
         OnDayChange?.Invoke(isDay);
-
     }
 
     void UpdateSkyboxBlend()
     {
-        float targetBlend = currentState == CycleState.Day ? 0f : 1f;        
-        float targetLighting = currentState == CycleState.Day ? lightIntensity : 0.01f;
-        float targetShadows = currentState == CycleState.Day ? 1 : 0f;
+        LightingPreset current = currentState == CycleState.Day ? dayPreset : nightPreset;
+        if (current == null) return;
 
+        float targetBlend = currentState == CycleState.Day ? 0f : 1f;
         float currentBlend = skyboxMaterial.GetFloat("_CubemapTransition");
-        
-        RenderSettings.fogColor = Color.Lerp(RenderSettings.fogColor, currentState == CycleState.Day ? fogDay : fogNight, blendSpeed * Time.deltaTime);
-        RenderSettings.reflectionIntensity = currentState == CycleState.Day ? 0.325f : 0;
-        RenderSettings.ambientIntensity = Mathf.Lerp(RenderSettings.ambientIntensity, targetLighting, blendSpeed * Time.deltaTime);
+        float delta = blendSpeed * Time.deltaTime;
 
-        skyboxMaterial.SetFloat("_CubemapTransition", Mathf.Lerp(currentBlend, targetBlend, blendSpeed * Time.deltaTime));
-        mainLight.intensity = Mathf.Lerp(mainLight.intensity, targetLighting, blendSpeed * Time.deltaTime);
-        mainLight.shadowStrength = Mathf.Lerp(mainLight.shadowStrength, targetShadows, blendSpeed * Time.deltaTime);
+        RenderSettings.fogColor = Color.Lerp(RenderSettings.fogColor, current.fogColor, delta);
+        RenderSettings.reflectionIntensity = Mathf.Lerp(RenderSettings.reflectionIntensity, current.reflectionIntensity, delta);
+        RenderSettings.ambientIntensity = Mathf.Lerp(RenderSettings.ambientIntensity, current.ambientIntensity, delta);
+        RenderSettings.ambientSkyColor = Color.Lerp(RenderSettings.ambientSkyColor, current.skyColor, delta);
+        RenderSettings.ambientEquatorColor = Color.Lerp(RenderSettings.ambientEquatorColor, current.equatorColor, delta);
+        RenderSettings.ambientGroundColor = Color.Lerp(RenderSettings.ambientGroundColor, current.groundColor, delta);
+        
+        if (current.useFogDensity) RenderSettings.fogDensity = Mathf.Lerp(RenderSettings.fogDensity, current.fogDensity, delta);
+        if (current.useSubtractiveShadowColor) RenderSettings.subtractiveShadowColor = Color.Lerp(RenderSettings.subtractiveShadowColor, current.subtractiveShadowColor, delta);
+
+        skyboxMaterial.SetFloat("_CubemapTransition", Mathf.Lerp(currentBlend, targetBlend, delta));
+        mainLight.intensity = Mathf.Lerp(mainLight.intensity, current.lightIntensity, delta);
+        mainLight.shadowStrength = Mathf.Lerp(mainLight.shadowStrength, current.shadowStrength, delta);
+        if (current.useLightColor) mainLight.color = Color.Lerp(mainLight.color, current.lightColor, delta);
     }
 }

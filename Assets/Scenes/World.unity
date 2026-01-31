@@ -15,16 +15,16 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 0, g: 0.779325, b: 1, a: 0}
+  m_FogColor: {r: 0.5208259, g: 0.82767355, b: 0.8301887, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.029
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
-  m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
-  m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
+  m_AmbientSkyColor: {r: 1, g: 1, b: 1, a: 1}
+  m_AmbientEquatorColor: {r: 0.7169812, g: 0.49161214, b: 0.20630117, a: 1}
+  m_AmbientGroundColor: {r: 0.5518868, g: 1, b: 0.8963189, a: 1}
   m_AmbientIntensity: 0.79
-  m_AmbientMode: 0
+  m_AmbientMode: 1
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 1cf6f4c6e6e0518419839d3f5448dd99, type: 2}
   m_HaloStrength: 0.5
@@ -35,7 +35,7 @@ RenderSettings:
   m_DefaultReflectionMode: 0
   m_DefaultReflectionResolution: 128
   m_ReflectionBounces: 1
-  m_ReflectionIntensity: 0.325
+  m_ReflectionIntensity: 0
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
   m_UseRadianceAmbientProbe: 0
@@ -2632,7 +2632,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1.35
+  m_Intensity: 1.3
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -2674,7 +2674,7 @@ Light:
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
+  m_BounceIntensity: 0
   m_ColorTemperature: 5000
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
@@ -11599,6 +11599,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5fdbb6ac06558b49a4b4decfcd35b5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &1128099827
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2711339298170863636, guid: 0fb8f734329208243a18121d476bcfb5, type: 3}
+      propertyPath: m_Name
+      value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 3380879600224066222, guid: 0fb8f734329208243a18121d476bcfb5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.509346
+      objectReference: {fileID: 0}
+    - target: {fileID: 3380879600224066222, guid: 0fb8f734329208243a18121d476bcfb5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.21357656
+      objectReference: {fileID: 0}
+    - target: {fileID: 3380879600224066222, guid: 0fb8f734329208243a18121d476bcfb5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.8539467
+      objectReference: {fileID: 0}
+    - target: {fileID: 3380879600224066222, guid: 0fb8f734329208243a18121d476bcfb5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3380879600224066222, guid: 0fb8f734329208243a18121d476bcfb5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3380879600224066222, guid: 0fb8f734329208243a18121d476bcfb5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3380879600224066222, guid: 0fb8f734329208243a18121d476bcfb5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3380879600224066222, guid: 0fb8f734329208243a18121d476bcfb5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3380879600224066222, guid: 0fb8f734329208243a18121d476bcfb5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3380879600224066222, guid: 0fb8f734329208243a18121d476bcfb5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0fb8f734329208243a18121d476bcfb5, type: 3}
 --- !u!1 &1141176745
 GameObject:
   m_ObjectHideFlags: 0
@@ -16414,9 +16471,11 @@ MonoBehaviour:
   mainLight: {fileID: 410087040}
   lightIntensity: 1
   blendSpeed: 1
-  fogDay: {r: 0, g: 0.78039217, b: 1, a: 1}
-  fogNight: {r: 0, g: 0.13988163, b: 0.1792453, a: 1}
+  fogDay: {r: 0, g: 0, b: 0, a: 0}
+  fogNight: {r: 0, g: 0, b: 0, a: 0}
   currentState: 0
+  dayPreset: {fileID: 11400000, guid: 991f002f0ae5df94cbddb6d2abd7fd9c, type: 2}
+  nightPreset: {fileID: 11400000, guid: f1a0d815c3658e642b5a186812899e90, type: 2}
 --- !u!1 &1818627873
 GameObject:
   m_ObjectHideFlags: 0
@@ -16655,7 +16714,7 @@ MonoBehaviour:
   mapMax: {x: 65.34532, y: 50, z: 103.51413}
   groundMask:
     serializedVersion: 2
-    m_Bits: 513
+    m_Bits: 2689
   days:
   - spawnables:
     - distanceBetweenSpawnables: 15
@@ -17785,8 +17844,9 @@ SceneRoots:
   - {fileID: 1562540754}
   - {fileID: 969929986}
   - {fileID: 1992921022}
+  - {fileID: 362015169}
   - {fileID: 1650647552}
   - {fileID: 146567179}
   - {fileID: 8330208711744621557}
-  - {fileID: 362015169}
   - {fileID: 3068069247375500070}
+  - {fileID: 1128099827}
