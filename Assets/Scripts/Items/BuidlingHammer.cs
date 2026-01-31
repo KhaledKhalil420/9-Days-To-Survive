@@ -243,7 +243,10 @@ public class BuildingHammer : Item
         placed.GetComponent<Building>()?.OnPlace(buildManager.extraBuildingHealth, buildManager.extraBuildingDamage);
 
         //Particles
-        ParticleSpawner.SpawnWithBounds(spawnParticles, placed.transform.position, placed.transform.rotation, placed.GetComponent<Renderer>().bounds);
+        if(TryGetComponent(out Renderer renderer))
+        {
+            ParticleSpawner.SpawnWithBounds(spawnParticles, placed.transform.position, placed.transform.rotation, renderer.bounds);
+        }
 
         //Sound
         AudioManager.Instance?.PlaySound("Build", 0.9f, 1.25f);

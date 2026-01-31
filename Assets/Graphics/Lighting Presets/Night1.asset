@@ -20,7 +20,7 @@ MonoBehaviour:
   fogColor: {r: 0.015419189, g: 0.028944544, b: 0.051886797, a: 1}
   useFogDensity: 1
   fogDensity: 0.039
-  lightIntensity: 0.025
+  lightIntensity: 0.015
   shadowStrength: 0
   useLightColor: 0
   lightColor: {r: 1, g: 1, b: 1, a: 1}

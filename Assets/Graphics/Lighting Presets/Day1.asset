@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skyColor: {r: 0.7264151, g: 0.642598, b: 0.5448113, a: 1}
   equatorColor: {r: 0.6415094, g: 0.6415094, b: 0.6415094, a: 1}
-  groundColor: {r: 0.48713955, g: 0.8396226, b: 0.7592317, a: 1}
+  groundColor: {r: 0.14818442, g: 0.2830189, b: 0.2530557, a: 1}
   ambientIntensity: 1
   reflectionIntensity: 1
   fogColor: {r: 0.47827268, g: 0.9218491, b: 0.9302184, a: 1}
