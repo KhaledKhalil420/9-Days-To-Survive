@@ -25,7 +25,7 @@ public class Building : MonoBehaviour, IDamagable
     private Collider buildingCollider;
     private static HashSet<Building> checkingBuildings = new HashSet<Building>(); 
 
-    private void Awake()
+    private void Start()
     {
         buildingCollider = GetComponent<Collider>();
         buildingLayers = BuildingManager.Instance.PhysicsLayers;
