@@ -121,8 +121,8 @@ public class Building : MonoBehaviour, IDamagable
     private void DestroyBuilding()
     {
         OnDeath();
-        ParticleSpawner.SpawnWithBounds(BuildingManager.Instance.smoke, transform.position, transform.rotation, GetComponent<Renderer>().bounds);
         Destroy(gameObject);
+        if(TryGetComponent(out Renderer renderer)) ParticleSpawner.SpawnWithBounds(BuildingManager.Instance.smoke, transform.position, transform.rotation, renderer.bounds);
     }
 
     private void OnDestroy()

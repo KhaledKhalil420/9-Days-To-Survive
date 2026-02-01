@@ -243,7 +243,7 @@ public class BuildingHammer : Item
         placed.GetComponent<Building>()?.OnPlace(buildManager.extraBuildingHealth, buildManager.extraBuildingDamage);
 
         //Particles
-        if(TryGetComponent(out Renderer renderer))
+        if(placed.TryGetComponent(out Renderer renderer))
         {
             ParticleSpawner.SpawnWithBounds(spawnParticles, placed.transform.position, placed.transform.rotation, renderer.bounds);
         }

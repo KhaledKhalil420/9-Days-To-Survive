@@ -70,7 +70,7 @@ public class PlayerInteract : MonoBehaviour
             {
                 holdProgress.fillAmount = interactable.holdProgress;
                 holdInteractable = interactable;
-                interactable.holdProgress += + holdSpeed;
+                interactable.holdProgress += + holdSpeed * 120 * Time.deltaTime;
                 interactable.OnHoldProgress(interactable.holdProgress);
 
                 if(interactable.holdProgress >= 1)
