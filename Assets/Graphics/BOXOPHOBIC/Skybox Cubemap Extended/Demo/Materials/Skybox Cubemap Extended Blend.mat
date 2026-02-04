@@ -73,7 +73,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Tex_Blend:
-        m_Texture: {fileID: 8900000, guid: b4503954fd147c94180872808dde9eb3, type: 3}
+        m_Texture: {fileID: 8900000, guid: c1473a09822798a41a9cfa11f2721db6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture0:
@@ -90,7 +90,7 @@ Material:
     - _BumpScale: 1
     - _CUBEMAPP: 1
     - _CubemapPosition: 0.2
-    - _CubemapTransition: 0.000000014337128
+    - _CubemapTransition: 0.12126393
     - _Cubemapp: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
