@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4122f037b00e8e64180c876bd90471a9, type: 3}
   m_Name: Workbench
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: d6b0ffcb95308194bac48cf19f410789, type: 3}
   buildingName: Workbench

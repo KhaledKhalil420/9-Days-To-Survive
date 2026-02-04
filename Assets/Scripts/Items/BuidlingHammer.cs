@@ -36,6 +36,8 @@ public class BuildingHammer : Item
         buildManager = BuildingManager.Instance;
         mainCamera = PlayerLook.mainCamera.transform;
         animator = GetComponent<Animator>();
+        buildManager?.UpdateBuildUI(availableBuildings[selectedBuildingIndex], true);
+        SpawnGhost();
     }
 
     private void LateUpdate()
@@ -325,13 +327,13 @@ public class BuildingHammer : Item
     public override void OnSelectOnce()
     {
         SpawnGhost();
+        buildManager?.UpdateBuildUI(availableBuildings[selectedBuildingIndex], true);
     }
 
     public override void OnSelect()
     {
         //Show ui
         buildManager?.ShowUI(true);
-        buildManager?.UpdateBuildUI(availableBuildings[selectedBuildingIndex], true);
     }
 
     public override void OnChangingItems()
