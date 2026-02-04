@@ -328,12 +328,12 @@ public class BuildingHammer : Item
     {
         SpawnGhost();
         buildManager?.UpdateBuildUI(availableBuildings[selectedBuildingIndex], true);
+        buildManager?.ShowUI(true);
     }
 
     public override void OnSelect()
     {
         //Show ui
-        buildManager?.ShowUI(true);
     }
 
     public override void OnChangingItems()

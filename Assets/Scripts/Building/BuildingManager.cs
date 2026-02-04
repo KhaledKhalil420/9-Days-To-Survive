@@ -41,6 +41,7 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private TMP_Text buildTitle;
     [SerializeField] private Transform recipeParent;
     [SerializeField] private Image recipePrefab;
+    private Animator animator;
 
     List<GameObject> recipeInstances = new();
 
@@ -51,6 +52,7 @@ public class BuildingManager : MonoBehaviour
 
     private void Start()
     {
+        animator = canvasParent.GetComponent<Animator>();
         DayNightCycleManager.OnDayChange += UpdateBuildingStatus;
     }
 
@@ -64,7 +66,7 @@ public class BuildingManager : MonoBehaviour
 
     public void ShowUI(bool state)
     {
-        canvasParent.gameObject.SetActive(state);
+        animator.SetBool("Using", state);
     }
 
     public void UpdateBuildUI(Building building, bool updateNumber)
