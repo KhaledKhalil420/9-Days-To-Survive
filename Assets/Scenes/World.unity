@@ -3605,7 +3605,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: d88115c610adc294fbf515b5f2ebe255, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10846,6 +10846,63 @@ MonoBehaviour:
   ingredientUi: {fileID: 1278430951}
   parent: {fileID: 2038537421}
   image: {fileID: 1092666206}
+--- !u!1001 &1134616403
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2164497768412209589, guid: 5651103cb9342f84580f06b07dce21bd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.6482663
+      objectReference: {fileID: 0}
+    - target: {fileID: 2164497768412209589, guid: 5651103cb9342f84580f06b07dce21bd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.29020405
+      objectReference: {fileID: 0}
+    - target: {fileID: 2164497768412209589, guid: 5651103cb9342f84580f06b07dce21bd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5.0777626
+      objectReference: {fileID: 0}
+    - target: {fileID: 2164497768412209589, guid: 5651103cb9342f84580f06b07dce21bd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2164497768412209589, guid: 5651103cb9342f84580f06b07dce21bd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2164497768412209589, guid: 5651103cb9342f84580f06b07dce21bd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2164497768412209589, guid: 5651103cb9342f84580f06b07dce21bd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2164497768412209589, guid: 5651103cb9342f84580f06b07dce21bd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2164497768412209589, guid: 5651103cb9342f84580f06b07dce21bd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2164497768412209589, guid: 5651103cb9342f84580f06b07dce21bd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7113273711803475367, guid: 5651103cb9342f84580f06b07dce21bd, type: 3}
+      propertyPath: m_Name
+      value: Tree_3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5651103cb9342f84580f06b07dce21bd, type: 3}
 --- !u!1 &1141176745
 GameObject:
   m_ObjectHideFlags: 0
@@ -14614,10 +14671,22 @@ MonoBehaviour:
     m_Bits: 2689
   days:
   - spawnables:
-    - distanceBetweenSpawnables: 15
+    - distanceBetweenSpawnables: 30
       gameObject: {fileID: 7113273711803475367, guid: 5651103cb9342f84580f06b07dce21bd, type: 3}
-      minQuantity: 500
-      maxQuantity: 1000
+      minQuantity: 250
+      maxQuantity: 500
+    - distanceBetweenSpawnables: 30
+      gameObject: {fileID: 3498483636202748412, guid: b9bebc8aac6482442aafed80acc1e97f, type: 3}
+      minQuantity: 250
+      maxQuantity: 500
+    - distanceBetweenSpawnables: 30
+      gameObject: {fileID: 3498483636202748412, guid: fef9077b964eeba46b3f9af320c35aaa, type: 3}
+      minQuantity: 250
+      maxQuantity: 500
+    - distanceBetweenSpawnables: 100
+      gameObject: {fileID: 9212952970807901021, guid: 4299eeb345bc1f9408879d82f42ab29a, type: 3}
+      minQuantity: 25
+      maxQuantity: 50
     - distanceBetweenSpawnables: 20
       gameObject: {fileID: 2353178246110035332, guid: af679e4b52ffe0e4382fba2700cac075, type: 3}
       minQuantity: 50
@@ -14758,7 +14827,7 @@ MonoBehaviour:
   computeShader: {fileID: 7200000, guid: 517ee16b3c5d7e141ad449a26d5f8fed, type: 3}
   grassHeight: 1.25
   grassWidth: 0.5
-  grassRandomHeight: 0.4
+  grassRandomHeight: 1.21
   bladeRadius: 1
   bladeForwardAmount: 0.313
   bladeCurveAmount: 2.02
@@ -15497,3 +15566,4 @@ SceneRoots:
   - {fileID: 146567179}
   - {fileID: 8330208711744621557}
   - {fileID: 3068069247375500070}
+  - {fileID: 1134616403}

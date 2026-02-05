@@ -216,7 +216,9 @@ public class WorldGenerator : MonoBehaviour
                         spawnPos = hit.point;
                         spawnRot = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
                         spawned = true;
-                        Instantiate(spawnable.gameObject, spawnPos, spawnRot);
+
+                        float randSize = Random.Range(0.9f, 1.25f);
+                        Instantiate(spawnable.gameObject, spawnPos, spawnRot).transform.localScale *= randSize;
                         break;
                     }
                 }
@@ -225,7 +227,8 @@ public class WorldGenerator : MonoBehaviour
                 {
                     spawnPos = new Vector3(Random.Range(mapMin.x, mapMax.x), mapMin.y, Random.Range(mapMin.z, mapMax.z));
                     spawnRot = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
-                    Instantiate(spawnable.gameObject, spawnPos, spawnRot);
+                    float randSize = Random.Range(0.9f, 1.25f);
+                    Instantiate(spawnable.gameObject, spawnPos, spawnRot).transform.localScale *= randSize;
                 }
             }
         }
