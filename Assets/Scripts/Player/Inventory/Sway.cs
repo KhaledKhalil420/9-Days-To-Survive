@@ -9,6 +9,8 @@ public class ItemSway : MonoBehaviour
 {
     public static bool isSwayOn = true;
 
+    public bool disableOnLook = true;
+
     [Header("Sway Settings")]
     [SerializeField] private float swayAmount = 0.1f;
     [SerializeField] private float maxSwayAmount = 0.2f;
@@ -31,7 +33,7 @@ public class ItemSway : MonoBehaviour
 
     private void Update()
     {
-        if(PlayerLook.disableLook) 
+        if(disableOnLook && PlayerLook.disableLook) 
             return;
 
         if (!isSwayOn)
