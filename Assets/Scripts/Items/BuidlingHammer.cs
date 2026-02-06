@@ -56,7 +56,7 @@ public class BuildingHammer : Item
     private void HandleInput()
     {
         //Scroll selection
-        if(Input.GetKey(Keybinds.Key("SelectBuild"))) 
+        if(Input.GetKeyDown(Keybinds.Key("SelectBuild"))) 
         {
             isChosingBuild = !isChosingBuild;
             PlayerInventory.CanScroll = !isChosingBuild;
@@ -350,8 +350,8 @@ public class BuildingHammer : Item
         buildManager?.ShowUI(false);
         rotationTween?.Kill();
         Destroy(ghostBuilding);
-        PlayerInventory.CanScroll = true;
         isChosingBuild = false;
+        PlayerInventory.CanScroll = true;
     }
 
     #endregion

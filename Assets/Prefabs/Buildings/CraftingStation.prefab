@@ -931,11 +931,10 @@ GameObject:
   - component: {fileID: -7787119701086866034}
   - component: {fileID: 1907277935932853918}
   - component: {fileID: -830527960108696259}
-  - component: {fileID: 2184628641623760914}
   - component: {fileID: -2849839866131368260}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CraftingStation
-  m_TagString: Untagged
+  m_TagString: Build
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -995,14 +994,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 5
+  extraDamage: 0
   ingredients:
   - item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
     quantity: 15
   data: {fileID: 11400000, guid: 1974f81039fa0814286a9d06f3958b50, type: 2}
+  dropResourcesOnDestory: 1
   usesPivots: 0
   affectedByGridSizePosition: 1
   pivots: []
   pivotsOnBuild: []
+  supportCheckScale: 1.15
 --- !u!65 &1907277935932853918
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1022,8 +1024,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.108405, y: 1.618336, z: 1.6601958}
-  m_Center: {x: 0, y: 0.66110575, z: 0}
+  m_Size: {x: 4.108405, y: 3.8033357, z: 1.6601958}
+  m_Center: {x: 0, y: 1.7536056, z: 0}
 --- !u!114 &-830527960108696259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1037,27 +1039,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   surfaceType: 0
---- !u!65 &2184628641623760914
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5095320248276783499}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 4.108405, y: 3.9310405, z: 0.2274189}
-  m_Center: {x: 0, y: 1.817458, z: -0.6592798}
 --- !u!114 &-2849839866131368260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1071,6 +1052,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 1
+  player: 0
 --- !u!1 &5866284026013829549
 GameObject:
   m_ObjectHideFlags: 0

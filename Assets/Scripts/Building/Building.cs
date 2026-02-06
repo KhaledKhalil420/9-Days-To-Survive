@@ -10,6 +10,7 @@ public class Building : MonoBehaviour, IDamagable
     [Header("Building Data")]
     public Ingredient[] ingredients;
     public BuildingData data;
+    public bool dropResourcesOnDestory = false;
     
     [Header("Grid Settings")]
     public bool usesPivots = true;
@@ -135,6 +136,16 @@ public class Building : MonoBehaviour, IDamagable
     {
         OnDeath();
         Destroy(gameObject);
+
+        if(dropResourcesOnDestory)
+        {
+            foreach(Ingredient ingredient in ingredients)
+            {
+                Item item = Instantiate(ingredient.item, transform.position, transform.rotation).GetComponent<Item>();
+                item.HeldQuantity = ingredient.quantity;
+            }
+        }
+        
         if(TryGetComponent(out Renderer renderer)) ParticleSpawner.SpawnWithBounds(BuildingManager.Instance.smoke, transform.position, transform.rotation, renderer.bounds);
     }
 
