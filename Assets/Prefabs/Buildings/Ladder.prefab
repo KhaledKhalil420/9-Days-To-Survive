@@ -117,7 +117,7 @@ MonoBehaviour:
   - {fileID: 899104730165431269}
   - {fileID: 283616446916370393}
   pivotsOnBuild: []
-  supportCheckScale: 1.25
+  supportCheckScale: 5
   climbSpeed: 500
 --- !u!65 &3552079121617091838
 BoxCollider:

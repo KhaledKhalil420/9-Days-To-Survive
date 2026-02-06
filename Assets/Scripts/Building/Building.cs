@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+//DUMBASS bug I've found, I have some pillars ok? when a floating piller is connected a ground pillar all is good, but when another piller grounded or not is connected to that floating pillar it automatically destroys for some reason. same goes for all types of buildings.. I hate this so much fix it please. write code the same way I do..  
 public class Building : MonoBehaviour, IDamagable
 {
     [Header("Attributes")]
@@ -39,18 +40,30 @@ public class Building : MonoBehaviour, IDamagable
 
         if (!HasGroundSupport())
         {
-            Invoke(nameof(DestroyBuilding), 0.15f);
+            Invoke(nameof(DestroyBuilding), 1);
         }
     }
 
     private bool HasGroundSupport()
     {
         if (checkingBuildings.Contains(this))
-            return false;
+            return true;
 
         checkingBuildings.Add(this);
+        Bounds bounds;
 
-        Bounds bounds = buildingCollider.bounds;
+        if(buildingCollider == null)
+        {
+            buildingCollider = gameObject.GetComponent<BoxCollider>();
+
+            if(buildingCollider == null)
+            {
+                buildingCollider = gameObject.AddComponent<BoxCollider>();
+            }
+        }
+
+         bounds = buildingCollider.bounds;
+
         Debug.Log(gameObject);
         Collider[] hits = Physics.OverlapBox(bounds.center, bounds.extents * supportCheckScale, transform.rotation, buildingLayers, QueryTriggerInteraction.Ignore);
 
