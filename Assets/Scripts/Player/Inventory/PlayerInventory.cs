@@ -309,23 +309,6 @@ public class PlayerInventory : MonoBehaviour
 
     private void HandleSlotsSwitching()
     {
-        if(CanScroll)
-        {
-            // Scroll wheel up/down
-            float scroll = Input.GetAxis("Mouse ScrollWheel");
-            if (scroll < 0f)
-            {
-                SlotHolders[_currentSlotIndex].HeldItem?.OnChangingItems();
-                _currentSlotIndex = (_currentSlotIndex + 1) % mainSlots;
-            }
-
-            else if (scroll > 0f)
-            {
-                SlotHolders[_currentSlotIndex].HeldItem?.OnChangingItems();
-                _currentSlotIndex = (_currentSlotIndex - 1 + mainSlots) % mainSlots;
-            }
-        }
-
         // Number keys 1-9
         for (int i = 0; i < mainSlots; i++)
         {
@@ -342,6 +325,31 @@ public class PlayerInventory : MonoBehaviour
                 holder.hand.transform.localPosition = new Vector3(1, -2f, 1);
 
                 break;
+            }
+        }
+
+        if(CanScroll)
+        {
+            // Scroll wheel up/down
+            float scroll = Input.GetAxis("Mouse ScrollWheel");
+            if (scroll < 0f)
+            {
+                SlotHolders[_currentSlotIndex].HeldItem?.OnChangingItems();
+                _currentSlotIndex = (_currentSlotIndex + 1) % mainSlots;
+                lastSelectedSlot = _currentSlotIndex;
+
+                holder.hand.transform.localEulerAngles = new Vector3(45, 0, 0);
+                holder.hand.transform.localPosition = new Vector3(1, -2f, 1);
+            }
+
+            else if (scroll > 0f)
+            {
+                SlotHolders[_currentSlotIndex].HeldItem?.OnChangingItems();
+                _currentSlotIndex = (_currentSlotIndex - 1 + mainSlots) % mainSlots;
+                lastSelectedSlot = _currentSlotIndex;
+
+                holder.hand.transform.localEulerAngles = new Vector3(45, 0, 0);
+                holder.hand.transform.localPosition = new Vector3(1, -2f, 1);
             }
         }
 

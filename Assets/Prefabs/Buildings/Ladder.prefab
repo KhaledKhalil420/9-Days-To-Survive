@@ -111,13 +111,14 @@ MonoBehaviour:
   - item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
     quantity: 2
   data: {fileID: 11400000, guid: 5bd6a2164052f9f46a9ff09800f5419f, type: 2}
+  dropResourcesOnDestory: 0
   usesPivots: 1
   affectedByGridSizePosition: 1
   pivots:
   - {fileID: 899104730165431269}
   - {fileID: 283616446916370393}
   pivotsOnBuild: []
-  supportCheckScale: 5
+  supportCheckScale: 1.25
   climbSpeed: 500
 --- !u!65 &3552079121617091838
 BoxCollider:
