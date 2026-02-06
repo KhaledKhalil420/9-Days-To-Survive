@@ -12,6 +12,7 @@ public class BuildingHammer : Item
     [Header("Buildings")]
     [SerializeField] private List<Building> availableBuildings;
     [SerializeField] private ParticleSystem spawnParticles;
+    private bool isChosingBuild = false;
 
     //Selection state
     private int selectedBuildingIndex;
@@ -55,7 +56,14 @@ public class BuildingHammer : Item
     private void HandleInput()
     {
         //Scroll selection
-        HandleSelection();
+        if(Input.GetKey(Keybinds.Key("SelectBuild"))) 
+        {
+            isChosingBuild = !isChosingBuild;
+            PlayerInventory.CanScroll = !isChosingBuild;
+        }
+
+        if(isChosingBuild)
+            HandleSelection();
 
         //Rotate
         if (Input.GetKeyDown(Keybinds.Key("Rotate")))
@@ -342,6 +350,8 @@ public class BuildingHammer : Item
         buildManager?.ShowUI(false);
         rotationTween?.Kill();
         Destroy(ghostBuilding);
+        PlayerInventory.CanScroll = true;
+        isChosingBuild = false;
     }
 
     #endregion

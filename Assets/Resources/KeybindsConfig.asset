@@ -31,3 +31,5 @@ MonoBehaviour:
     Key: 324
   - Action: InventoryOpen
     Key: 9
+  - Action: SelectBuild
+    Key: 102

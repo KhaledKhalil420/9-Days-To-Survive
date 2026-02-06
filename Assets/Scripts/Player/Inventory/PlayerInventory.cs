@@ -30,6 +30,7 @@ public class PlayerInventory : MonoBehaviour
     [Header("HotBar")]
     [SerializeField] private int mainSlots = 7;
     [SerializeField] private Transform slotParent; //parent for hotbar
+    public static bool CanScroll = true;
 
     [Header("Bag")]
     [SerializeField] private CanvasGroup bagParent; //same as slot parent, remember ya ana
@@ -308,19 +309,22 @@ public class PlayerInventory : MonoBehaviour
 
     private void HandleSlotsSwitching()
     {
-        // // Scroll wheel up/down
-        // float scroll = Input.GetAxis("Mouse ScrollWheel");
-        // if (scroll < 0f)
-        // {
-        //     SlotHolders[_currentSlotIndex].HeldItem?.OnChangingItems();
-        //     _currentSlotIndex = (_currentSlotIndex + 1) % SlotHolders.Count;
-        // }
+        if(CanScroll)
+        {
+            // Scroll wheel up/down
+            float scroll = Input.GetAxis("Mouse ScrollWheel");
+            if (scroll < 0f)
+            {
+                SlotHolders[_currentSlotIndex].HeldItem?.OnChangingItems();
+                _currentSlotIndex = (_currentSlotIndex + 1) % mainSlots;
+            }
 
-        // else if (scroll > 0f)
-        // {
-        //     SlotHolders[_currentSlotIndex].HeldItem?.OnChangingItems();
-        //     _currentSlotIndex = (_currentSlotIndex - 1 + SlotHolders.Count) % SlotHolders.Count;
-        // }
+            else if (scroll > 0f)
+            {
+                SlotHolders[_currentSlotIndex].HeldItem?.OnChangingItems();
+                _currentSlotIndex = (_currentSlotIndex - 1 + mainSlots) % mainSlots;
+            }
+        }
 
         // Number keys 1-9
         for (int i = 0; i < mainSlots; i++)
