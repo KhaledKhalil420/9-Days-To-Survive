@@ -51,6 +51,7 @@ public class Building : MonoBehaviour, IDamagable
         checkingBuildings.Add(this);
 
         Bounds bounds = buildingCollider.bounds;
+        Debug.Log(gameObject);
         Collider[] hits = Physics.OverlapBox(bounds.center, bounds.extents * supportCheckScale, transform.rotation, buildingLayers, QueryTriggerInteraction.Ignore);
 
         bool hasSupport = false;
