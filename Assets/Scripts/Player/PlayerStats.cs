@@ -77,7 +77,8 @@ public class PlayerStats : MonoBehaviour, IDamagable
 
     [Header("Stamina")]
     [SerializeField] internal PlayerStat stamina = new();
-    [SerializeField] private float staminaConsumption = 1;
+    [SerializeField] internal float staminaConsumption = 1;
+    [SerializeField] internal bool jumpingConsumingStamina = true;
     [SerializeField] private PlayerMovement movement;
     
 
@@ -143,6 +144,7 @@ public class PlayerStats : MonoBehaviour, IDamagable
 
     public void OnJump()
     {
+        if(jumpingConsumingStamina)
         stamina.Modify(-staminaConsumption);
     }
 

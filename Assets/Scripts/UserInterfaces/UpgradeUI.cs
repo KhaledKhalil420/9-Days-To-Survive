@@ -19,6 +19,7 @@ public class UpgradeUI : MonoBehaviour, IPointerDownHandler, IPointerEnterHandle
         textName.text = AttachedUpgrade.fullName;
         textPrice.text = AttachedUpgrade.price.ToString() + "POINTS";
         textDiscription.text = AttachedUpgrade.discription;
+        imageIcon.sprite = AttachedUpgrade.sprite;
 
         initSize = transform.localScale;
     }
