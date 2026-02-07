@@ -7,7 +7,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     
     [Header("Player")]
-    private GameObject player;
+    public static Player Player => Instance?.player;
+    private Player player;
     public List<Item> starterItems;
 
     [Header("Waves Rounds")]
@@ -26,7 +27,8 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        player = GameObject.FindWithTag("Player");
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
+
     }
 
     private void Start()

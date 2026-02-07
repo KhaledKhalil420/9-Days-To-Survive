@@ -8,7 +8,7 @@ public class PlayerStat
 {
     [SerializeField] internal float max = 100;
     [SerializeField, ReadOnly] internal float current;
-    [SerializeField] private float modifyRate = 1;
+    [SerializeField] internal float modifyRate = 1;
     [SerializeField] internal bool canModifyRate = true;
     [SerializeField] internal bool isDecaying = false;
 

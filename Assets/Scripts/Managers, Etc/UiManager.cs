@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class UiManager : MonoBehaviour
 {
-    public static UiManager instance;
+    public static UiManager Instance;
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
     }
 
     public static void ToggleUi(bool state)
