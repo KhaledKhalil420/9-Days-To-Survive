@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.AI;
 
 public class Building : MonoBehaviour, IDamagable
 {
@@ -23,13 +24,25 @@ public class Building : MonoBehaviour, IDamagable
     private LayerMask buildingLayers;
 
     private bool isPlaced = false;
-    private Collider buildingCollider;
+    private BoxCollider buildingCollider;
+    private NavMeshObstacle obstacle;
     private static HashSet<Building> checkingBuildings = new HashSet<Building>(); 
 
     private void Start()
     {
-        buildingCollider = GetComponent<Collider>();
+        buildingCollider = GetComponent<BoxCollider>();
         buildingLayers = BuildingManager.Instance.PhysicsLayers;
+
+        //Setup obstacle
+        if(TryGetComponent(out obstacle))
+        {
+            obstacle.carving = true;
+            obstacle.carveOnlyStationary = false;
+            obstacle.shape = NavMeshObstacleShape.Box;
+            obstacle.center = buildingCollider.center;
+            obstacle.size = buildingCollider.size;
+            obstacle.size += Vector3.one * 0.2f;
+        }
     }
 
     #region Self destruction
@@ -153,6 +166,9 @@ public class Building : MonoBehaviour, IDamagable
     {
         OnDeath();
         RebakeNav();
+        
+        if(obstacle != null)
+            obstacle.enabled = false;
 
         BuildingManager.Instance.OnGridUpdated -= UpdateBuilding;
         BuildingManager.Instance.UpdateGrid();
