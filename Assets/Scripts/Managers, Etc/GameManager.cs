@@ -58,17 +58,26 @@ public class GameManager : MonoBehaviour
             }
 
             AIManager.KillAll();   
+            waveTriggered = false;
             return;
         }
 
         else
         {
+            waveTriggered = true;
             spawnPrize = true;
         }
         
-        selectedWave = waves[DayNightCycleManager.DayCount];
+        if(waves.Count > DayNightCycleManager.DayCount)
+        {
+            selectedWave = waves[DayNightCycleManager.DayCount];
+        }
+        else
+        {
+            selectedWave = waves[waves.Count - 1];
+        }
+
         timer = selectedWave.spawningCooldown;
-        waveTriggered = true;
     }
 
     private float timer = 0;

@@ -59,9 +59,6 @@ public class BuildingManager : MonoBehaviour
     private void UpdateBuildingStatus(bool value)
     {
         IsDay = value;
-
-        if(canvasParent.gameObject.activeInHierarchy)
-        ShowUI(!(value == false));
     }
 
     public void ShowUI(bool state)
