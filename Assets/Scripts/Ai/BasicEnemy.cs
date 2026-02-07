@@ -10,14 +10,13 @@ public class BasicEnemy : GroundEnemy
     [SerializeField] private float attackCooldown = 1;
     [SerializeField] private float attackRange = 1;
     [SerializeField] private int attackDamage = 1;
-    
-    public override void OnLogicalStart()
+
+    public override void OnBehaviourStart()
     {
-        // agent.stoppingDistance = attackRange / 1.15f;
         animator = GetComponentInChildren<Animator>();
     }
 
-    public override void OnTick()
+    public override void OnBehaviourTick()
     {
         HasReachedTarget();
         Animations();

@@ -7,17 +7,40 @@ public class GroundEnemy : EnemyBrain
     [SerializeField] private int pointsWorth = 1;
     internal int EnemyPoints => pointsWorth * Difficulty.DifficultyMultiplier;
 
+    [Header("Behaviour")]
+    [SerializeField] private bool speedUpWhenTargetingMain;
+    [SerializeField] private float onCatchMainTargetSpeedBoost = 2.5f;
+    private float initSpeed;
+    
+    public override void OnLogicalStart()
+    {
+        OnBehaviourStart();
+
+        initSpeed = agent.speed;
+    }
+
     public override void OnLogicalTick()
     {
+        if(speedUpWhenTargetingMain)
+        {
+            if(target == mainTarget) agent.speed = initSpeed * onCatchMainTargetSpeedBoost;
+            else agent.speed = initSpeed;
+        }
+
         if(distanation != Vector3.zero && (!agent.hasPath || agent.destination != distanation))
         {
             agent.SetDestination(distanation);
         }
 
-        OnTick();
+        OnBehaviourTick();
     }
 
-    public virtual void OnTick()
+    public virtual void OnBehaviourTick()
+    {
+        
+    }
+
+    public virtual void OnBehaviourStart()
     {
         
     }

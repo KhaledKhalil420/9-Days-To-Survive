@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 1169492533823969571}
   - component: {fileID: 5939200925760884528}
   m_Layer: 12
-  m_Name: Test Enemy
+  m_Name: Enemy_Slime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129,7 +129,11 @@ MonoBehaviour:
   agent: {fileID: 2376156257152523776}
   TargetTag: Player
   searchArea: 15
+  mainTarget: {fileID: 0}
+  target: {fileID: 0}
   pointsWorth: 25
+  speedUpWhenTargetingMain: 1
+  onCatchMainTargetSpeedBoost: 1.5
   attackCooldown: 1
   attackRange: 3
   attackDamage: 1
