@@ -15,4 +15,13 @@ public class UiManager : MonoBehaviour
         Cursor.visible = state;
         Cursor.lockState = state ? CursorLockMode.None : CursorLockMode.Locked;
     }
+
+    public static void CloseUiTabs()
+    {
+        UiTab[] tabs = FindObjectsByType<UiTab>(FindObjectsSortMode.None);
+        foreach (UiTab tab in tabs)
+        {
+            tab.CloseTab();
+        }
+    }
 }

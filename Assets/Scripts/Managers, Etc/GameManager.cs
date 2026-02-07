@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     public static int StoredPoints = 0;
     internal int MaxBuilds => BuildingManager.Instance.buildLimit;
     internal int buildsBeforeNightStarted = 0;
+    public GameObject upgradesPopup;
     
     #region Unity
 
@@ -45,13 +46,24 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Waves
-
+    private bool spawnPrize = false;
     public void TriggerWave(bool isDay)
     {
         if(isDay)
         {
+            if(spawnPrize)
+            {
+                spawnPrize = false;
+                Instantiate(upgradesPopup);
+            }
+
             AIManager.KillAll();   
             return;
+        }
+
+        else
+        {
+            spawnPrize = true;
         }
         
         selectedWave = waves[DayNightCycleManager.DayCount];

@@ -3,8 +3,9 @@ using UnityEngine;
 [CreateAssetMenu]
 public class UpgradeData : ScriptableObject
 {
-    public int price;
-    public Sprite sprite; 
     public string fullName;
+    public int price;
+    public string discription;
+    public Sprite sprite; 
     public GameObject upgrade;
 }

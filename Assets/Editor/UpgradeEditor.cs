@@ -7,10 +7,13 @@ public class UpgradeEditor : EditorWindow
 {
     string upgName;
     int upgPrice;
+    string upgDiscreption;
     Sprite upgSprite;
     int selectedUpgradeIndex;
     System.Type[] upgradeTypes;
     string[] upgradeNames;
+    GameObject prefab;
+    UpgradeData upgradeData;
 
     [MenuItem("Window/Upgrade Editor")]
     public static void ShowWindow()
@@ -28,17 +31,19 @@ public class UpgradeEditor : EditorWindow
     {
         upgName = EditorGUILayout.TextField("Enter upgrade name", upgName);
         upgPrice = EditorGUILayout.IntField("Enter upgrade price", upgPrice);
+        upgDiscreption = EditorGUILayout.TextField("Enter upgrade discreption", upgDiscreption);
         upgSprite = (Sprite)EditorGUILayout.ObjectField("Enter upgrade sprite", upgSprite, typeof(Sprite), false);
         selectedUpgradeIndex = EditorGUILayout.Popup("Select upgrade script", selectedUpgradeIndex, upgradeNames);
 
+        UpgradeData data = new();
+        
         if(GUILayout.Button("Create new upgrade data"))
         {
             //Creating Data
-            UpgradeData data = new();
             data.fullName = upgName;
             data.price = upgPrice;
+            data.discription = upgDiscreption;
             data.sprite = upgSprite;
-
             
             //Creating Object
             System.Type selectedType = upgradeTypes[selectedUpgradeIndex];
@@ -49,11 +54,24 @@ public class UpgradeEditor : EditorWindow
 
             //Saving
             AssetDatabase.CreateAsset(data, $"Assets/Resources/Upgrades/{upgName}Data.asset");
-            GameObject prefab = PrefabUtility.SaveAsPrefabAsset(upgradeObject, $"Assets/Prefabs/Upgrades/{upgName}.prefab");
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            upgradeData = Resources.Load<UpgradeData>($"Upgrades/{upgName}Data");
+
+            prefab = PrefabUtility.SaveAsPrefabAsset(upgradeObject, $"Assets/Prefabs/Upgrades/{upgName}.prefab");
 
             data.upgrade = prefab;
             AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
             DestroyImmediate(upgradeObject);
+            DestroyImmediate(upgradeObject);
+
         }
+
+        EditorGUI.BeginDisabledGroup(true);
+        EditorGUILayout.ObjectField("Upgrade Data Reference", upgradeData, typeof(UpgradeData), false);
+        EditorGUILayout.ObjectField("Upgrade Object Reference", prefab, typeof(GameObject), false);
+        EditorGUI.EndDisabledGroup();
     }
 }

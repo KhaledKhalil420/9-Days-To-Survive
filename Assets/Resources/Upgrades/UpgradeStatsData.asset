@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f08eb16a3fa01684aa98afe10765a247, type: 3}
   m_Name: UpgradeStatsData
   m_EditorClassIdentifier: 
+  fullName: Upgrade Stats
   price: 50
-  sprite: {fileID: 21300000, guid: 6d522478041732145971a12054facf14, type: 3}
-  fullName: UpgradeStats
-  upgrade: {fileID: 0}
+  discription: Upgrade All Player Stats Hunger, Health, Stamina
+  sprite: {fileID: 21300000, guid: 4ac651c013200f14e8a835ca6ab89010, type: 3}
+  upgrade: {fileID: 3987211875644590424, guid: bcf692e911ca3b0438ec7f8077eff60e, type: 3}
