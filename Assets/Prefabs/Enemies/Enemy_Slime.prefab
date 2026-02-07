@@ -133,7 +133,7 @@ MonoBehaviour:
   target: {fileID: 0}
   pointsWorth: 25
   speedUpWhenTargetingMain: 1
-  onCatchMainTargetSpeedBoost: 1.5
+  onCatchMainTargetSpeedBoost: 1.75
   attackCooldown: 1
   attackRange: 3
   attackDamage: 1

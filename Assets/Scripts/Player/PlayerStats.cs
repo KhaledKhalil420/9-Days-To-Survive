@@ -102,9 +102,19 @@ public class PlayerStats : MonoBehaviour, IDamagable
 
         HandleStamina();
         HandleHunger();
+        HandleHealth();
     }
 
     #region Health
+
+    private void HandleHealth()
+    {
+        //Lost.
+        if(health.current <= 0)
+        {
+            GameManager.Instance.PlayerLost();
+        }
+    }
 
     public void Damage(float damage)
     {
