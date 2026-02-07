@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f08eb16a3fa01684aa98afe10765a247, type: 3}
-  m_Name: Remove Jumping StaminaData
+  m_Name: Upgrade Build HealthData
   m_EditorClassIdentifier: 
-  fullName: Remove Jumping Stamina
+  fullName: Upgrade Build Health
   price: 25
-  discription: Can jump without consuming stamina
-  sprite: {fileID: 21300000, guid: 4ac651c013200f14e8a835ca6ab89010, type: 3}
-  upgrade: {fileID: 3090322897248504719, guid: 266930e9a63c66b4e9d7dbc4aa32846e, type: 3}
+  discription: Upgraded heatlh for builds hammer
+  sprite: {fileID: 21300000, guid: cda89e3c0c5107a4d9a93e2da41c9968, type: 3}
+  upgrade: {fileID: 0}
