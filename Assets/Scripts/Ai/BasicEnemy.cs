@@ -3,21 +3,33 @@ using UnityEngine;
 
 public class BasicEnemy : GroundEnemy
 {
+    private Animator animator;
+
     [Header("Attacking")]
     private bool canAttack = true;
     [SerializeField] private float attackCooldown = 1;
     [SerializeField] private float attackRange = 1;
     [SerializeField] private int attackDamage = 1;
-
+    
     public override void OnLogicalStart()
     {
-        agent.stoppingDistance = attackRange * 0.8f;
+        // agent.stoppingDistance = attackRange / 1.15f;
+        animator = GetComponentInChildren<Animator>();
     }
 
     public override void OnTick()
     {
         HasReachedTarget();
+        Animations();
     }
+
+    private void Animations()
+    {
+        float speedPercent = agent.velocity.magnitude / agent.speed;
+        animator.SetBool("Moving", speedPercent > 0.15f);
+        animator.speed = Mathf.Max(1f, speedPercent);
+    }
+
 
     public void HasReachedTarget()
     {
@@ -38,12 +50,19 @@ public class BasicEnemy : GroundEnemy
 
     private void Attack()
     {
+        animator.SetTrigger("Attack");
+
         if(target.TryGetComponent(out IDamagable damagable))
         {
             damagable.Damage(attackDamage);
         }
 
         canAttack = false;
-        DOVirtual.DelayedCall(attackCooldown, () => {canAttack = true;});
+        Invoke(nameof(PrepareAttack), attackCooldown);
+    }
+
+    private void PrepareAttack()
+    {
+        canAttack = true;
     }
 }

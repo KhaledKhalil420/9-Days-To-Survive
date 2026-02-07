@@ -13,7 +13,8 @@ public class EnemyBrain : MonoBehaviour
     [SerializeField] internal NavMeshAgent agent;
     [SerializeField] private string TargetTag = "Player";
     [SerializeField] private float searchArea = 15;
-    [ReadOnly] internal Transform mainTarget, target;
+    private float loseIntrestTimer = 0;
+    [ReadOnly, SerializeField] internal Transform mainTarget, target;
     private LayerMask unDetectableLayers;
     internal Vector3 distanation;
 
@@ -22,6 +23,7 @@ public class EnemyBrain : MonoBehaviour
         AIManager.Register(this);
         unDetectableLayers = AIManager.UnDetectableLayers;
         mainTarget = GameObject.FindWithTag(TargetTag).transform;
+        agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
 
         OnLogicalStart();
     }
@@ -47,6 +49,13 @@ public class EnemyBrain : MonoBehaviour
         else
         {
             distanation = target.position;
+            loseIntrestTimer += Time.deltaTime;
+        }
+
+        if(loseIntrestTimer > 4)
+        {
+            loseIntrestTimer = 0;
+            GetTarget();
         }
     }
     

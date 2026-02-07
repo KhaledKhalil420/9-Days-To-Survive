@@ -126,9 +126,9 @@ public class Building : MonoBehaviour, IDamagable
 
     #region Virtuals
 
-    protected virtual void OnPlaced() { }
-    protected virtual void OnDamage() { }
-    protected virtual void OnDeath() { }
+    public virtual void OnPlaced() { }
+    public virtual void OnDamage() { }
+    public virtual void OnDeath() { }
 
     #endregion
 
@@ -151,6 +151,7 @@ public class Building : MonoBehaviour, IDamagable
 
     private void OnDestroy()
     {
+        OnDeath();
         RebakeNav();
 
         BuildingManager.Instance.OnGridUpdated -= UpdateBuilding;
