@@ -19,7 +19,7 @@ public class MainMenu : MonoBehaviour
     private void LoadGame()
     {
         parentGroup.interactable = false;
-        DOVirtual.Float(source.volume, 0, 4, x => source.volume = x).OnComplete(() => SceneManager.LoadScene(1));
+        DOVirtual.Float(source.volume, 0, 4, x => source.volume = x).OnComplete(() => SceneManager.LoadScene("World"));
         DOVirtual.Float(group.alpha, 1, 2, x => group.alpha = x);
     }
 }

@@ -129,6 +129,7 @@ public class GameManager : MonoBehaviour
     public void PlayerLost()
     {
         //TEMP.. RESTART GAME
+        UiManager.ToggleUi(true);
         SceneManager.LoadScene("MainMenu");
     }
 

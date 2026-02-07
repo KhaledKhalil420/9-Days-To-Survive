@@ -28,7 +28,7 @@ public class Building : MonoBehaviour, IDamagable
     private NavMeshObstacle obstacle;
     private static HashSet<Building> checkingBuildings = new HashSet<Building>(); 
 
-    private void Start()
+    private void Awake()
     {
         buildingCollider = GetComponent<BoxCollider>();
         buildingLayers = BuildingManager.Instance.PhysicsLayers;
