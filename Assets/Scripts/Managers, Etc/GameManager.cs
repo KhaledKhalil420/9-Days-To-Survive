@@ -129,7 +129,7 @@ public class GameManager : MonoBehaviour
     public void PlayerLost()
     {
         //TEMP.. RESTART GAME
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene("MainMenu");
     }
 
     #endregion
