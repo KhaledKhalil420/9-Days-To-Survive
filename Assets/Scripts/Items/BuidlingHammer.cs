@@ -279,7 +279,7 @@ public class BuildingHammer : Item
         }
 
         //Refund and destroy
-        if (!RefundResources()) return;
+        if (!RefundResources(hit.transform.GetComponent<Building>())) return;
 
         Destroy(building.gameObject);
         AudioManager.Instance?.PlaySound("Demolish", 0.9f, 1.25f);
@@ -306,13 +306,13 @@ public class BuildingHammer : Item
         return true;
     }
 
-    bool RefundResources()
+    bool RefundResources(Building building)
     {
         //Inventory
         PlayerInventory inventory = heldby.GetComponent<PlayerInventory>();
 
         //Refund items
-        foreach (var ing in availableBuildings[selectedBuildingIndex].ingredients)
+        foreach (var ing in building.ingredients)
         {
             Item item = Instantiate(ing.item).GetComponent<Item>();
             item.HeldQuantity = ing.quantity;
