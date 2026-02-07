@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections.Generic;
 
 public static class NavMeshUtility
 {
     static readonly NavMeshPath path = new NavMeshPath();
     static readonly NavMeshPath path2 = new NavMeshPath();
+    static readonly List<Transform> reachableTargets = new List<Transform>(15);
 
-    
     public static Transform GetTarget(Transform seeker, Transform target, LayerMask targetLayers, float searchArea)
     {
         NavMesh.CalculatePath(seeker.position, target.position, NavMesh.AllAreas, path);
@@ -17,12 +18,16 @@ public static class NavMeshUtility
         }
         else  
         {            
+            reachableTargets.Clear();
             
             Collider[] colliders = new Collider[15];
-            Physics.OverlapSphereNonAlloc(target.position, searchArea, colliders, targetLayers);
+            int count = Physics.OverlapSphereNonAlloc(target.position, searchArea, colliders, targetLayers);
             
-            foreach (Collider col in colliders)
+            for (int i = 0; i < count; i++)
             {
+                Collider col = colliders[i];
+                if(col == null) continue;
+                
                 if(col.TryGetComponent(out Target otherTarget))
                 {
                     if(NavMesh.SamplePosition(otherTarget.transform.position, out NavMeshHit hit, 5f, NavMesh.AllAreas))
@@ -31,10 +36,15 @@ public static class NavMeshUtility
 
                         if(path2.status == NavMeshPathStatus.PathComplete)
                         {
-                            return otherTarget.transform;
+                            reachableTargets.Add(otherTarget.transform);
                         }
                     }
                 }
+            }
+            
+            if(reachableTargets.Count > 0)
+            {
+                return reachableTargets[Random.Range(0, reachableTargets.Count)];
             }
         }
 
