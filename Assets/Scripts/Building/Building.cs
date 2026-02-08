@@ -23,6 +23,11 @@ public class Building : MonoBehaviour, IDamagable
     [SerializeField] private float supportCheckScale = 1.15f;
     private LayerMask buildingLayers;
 
+    [Header("Sounds")]
+    [SerializeField] private AudioSource source;
+    [SerializeField]  private AudioClip onDestroySound;
+
+
     private bool isPlaced = false;
     private BoxCollider buildingCollider;
     private NavMeshObstacle obstacle;
@@ -43,6 +48,9 @@ public class Building : MonoBehaviour, IDamagable
             obstacle.size = buildingCollider.size;
             obstacle.size += Vector3.one * 0.2f;
         }
+        
+        source = GetComponent<AudioSource>();
+        if(source == null) source = gameObject.AddComponent<AudioSource>();
     }
 
     #region Self destruction
@@ -173,6 +181,7 @@ public class Building : MonoBehaviour, IDamagable
         BuildingManager.Instance.OnGridUpdated -= UpdateBuilding;
         BuildingManager.Instance.UpdateGrid();
 
+        source.PlayOneShot(onDestroySound);
     }
 
     public void Damage(float damage)
