@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+[System.Serializable]
 public enum BreakableType {Pickaxe, Axe, Else, Buildings}
 public class Breakable : MonoBehaviour, IBreakable
 {

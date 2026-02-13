@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using System.IO;
+using System.Text.RegularExpressions;
 
 public class ItemEditor : EditorWindow
 {
@@ -27,6 +28,7 @@ public class ItemEditor : EditorWindow
     
     // EditorChangeable fields
     Dictionary<FieldInfo, object> editableFields = new Dictionary<FieldInfo, object>();
+    Dictionary<string, bool> categoryFoldouts = new Dictionary<string, bool>();
     bool showEditableFields = false;
     System.Type currentItemType;
     
@@ -75,6 +77,7 @@ public class ItemEditor : EditorWindow
     void LoadEditableFields()
     {
         editableFields.Clear();
+        categoryFoldouts.Clear();
         currentItemType = null;
         
         if (itemTemplate == null)
@@ -99,9 +102,55 @@ public class ItemEditor : EditorWindow
         {
             object defaultValue = field.GetValue(itemComponent);
             editableFields[field] = defaultValue;
+            
+            string category = GetAutoCategory(field.Name);
+            if (!categoryFoldouts.ContainsKey(category))
+            {
+                categoryFoldouts[category] = true;
+            }
         }
         
         showEditableFields = editableFields.Count > 0;
+    }
+
+    string GetAutoCategory(string fieldName)
+    {
+        // Remove numbers and convert to lowercase for pattern matching
+        string baseName = Regex.Replace(fieldName, @"\d+", "").ToLower();
+        
+        // Common category patterns
+        if (baseName.Contains("damage") || baseName.Contains("attack") || baseName.Contains("crit"))
+            return "Combat";
+        if (baseName.Contains("health") || baseName.Contains("armor") || baseName.Contains("defense") || baseName.Contains("resist"))
+            return "Defense";
+        if (baseName.Contains("speed") || baseName.Contains("move") || baseName.Contains("velocity"))
+            return "Movement";
+        if (baseName.Contains("durability") || baseName.Contains("wear"))
+            return "Durability";
+        if (baseName.Contains("weight") || baseName.Contains("size") || baseName.Contains("capacity"))
+            return "Physical";
+        if (baseName.Contains("mana") || baseName.Contains("energy") || baseName.Contains("stamina"))
+            return "Resources";
+        if (baseName.Contains("regen") || baseName.Contains("recovery"))
+            return "Regeneration";
+        if (baseName.Contains("range") || baseName.Contains("radius") || baseName.Contains("distance"))
+            return "Range";
+        if (baseName.Contains("cooldown") || baseName.Contains("delay") || baseName.Contains("duration"))
+            return "Timing";
+        
+        return "General";
+    }
+
+    string PrettifyFieldName(string fieldName)
+    {
+        // Insert space before capital letters
+        string result = Regex.Replace(fieldName, "([a-z])([A-Z])", "$1 $2");
+        // Insert space before numbers
+        result = Regex.Replace(result, "([a-zA-Z])([0-9])", "$1 $2");
+        // Capitalize first letter
+        if (result.Length > 0)
+            result = char.ToUpper(result[0]) + result.Substring(1);
+        return result;
     }
 
     void OnGUI()
@@ -110,7 +159,7 @@ public class ItemEditor : EditorWindow
         
         GUILayout.Label("Item Editor", EditorStyles.boldLabel);
         EditorGUILayout.Space();
-
+    
         itemName = EditorGUILayout.TextField("Item Name", itemName);
         itemDescription = EditorGUILayout.TextField("Description", itemDescription);
         itemSprite = (Sprite)EditorGUILayout.ObjectField("Sprite", itemSprite, typeof(Sprite), false);
@@ -136,7 +185,7 @@ public class ItemEditor : EditorWindow
             lastTemplate = itemTemplate;
             LoadEditableFields();
         }
-
+    
         // EditorChangeable fields section
         if (showEditableFields)
         {
@@ -145,39 +194,64 @@ public class ItemEditor : EditorWindow
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Item Properties:", EditorStyles.boldLabel);
             
-            foreach (var kvp in editableFields.ToList())
+            // Group by auto-detected category
+            var groupedFields = editableFields
+                .GroupBy(kvp => GetAutoCategory(kvp.Key.Name))
+                .OrderBy(g => g.Key);
+            
+            foreach (var group in groupedFields)
             {
-                var field = kvp.Key;
-                var attribute = field.GetCustomAttribute<EditorChangeableAttribute>();
-                string displayName = attribute.DisplayName ?? field.Name;
+                string category = group.Key;
                 
-                if (field.FieldType == typeof(int))
+                // Category foldout
+                categoryFoldouts[category] = EditorGUILayout.Foldout(categoryFoldouts[category], category, true, EditorStyles.foldoutHeader);
+                
+                if (categoryFoldouts[category])
                 {
-                    editableFields[field] = EditorGUILayout.IntField(displayName, (int)kvp.Value);
+                    EditorGUI.indentLevel++;
+                    
+                    foreach (var kvp in group.OrderBy(x => x.Key.Name))
+                    {
+                        var field = kvp.Key;
+                        string displayName = PrettifyFieldName(field.Name);
+                        
+                        if (field.FieldType == typeof(int))
+                        {
+                            editableFields[field] = EditorGUILayout.IntField(displayName, (int)kvp.Value);
+                        }
+                        else if (field.FieldType == typeof(float))
+                        {
+                            editableFields[field] = EditorGUILayout.FloatField(displayName, (float)kvp.Value);
+                        }
+                        else if (field.FieldType == typeof(bool))
+                        {
+                            editableFields[field] = EditorGUILayout.Toggle(displayName, (bool)kvp.Value);
+                        }
+                        else if (field.FieldType == typeof(string))
+                        {
+                            editableFields[field] = EditorGUILayout.TextField(displayName, (string)kvp.Value);
+                        }
+                        else if (field.FieldType.IsEnum)
+                        {
+                            editableFields[field] = EditorGUILayout.EnumPopup(displayName, (System.Enum)kvp.Value);
+                        }
+                        else if (typeof(UnityEngine.Object).IsAssignableFrom(field.FieldType))
+                        {
+                            editableFields[field] = EditorGUILayout.ObjectField(displayName, (UnityEngine.Object)kvp.Value, field.FieldType, false);
+                        }
+                    }
+                    
+                    EditorGUI.indentLevel--;
                 }
-                else if (field.FieldType == typeof(float))
-                {
-                    editableFields[field] = EditorGUILayout.FloatField(displayName, (float)kvp.Value);
-                }
-                else if (field.FieldType == typeof(bool))
-                {
-                    editableFields[field] = EditorGUILayout.Toggle(displayName, (bool)kvp.Value);
-                }
-                else if (field.FieldType == typeof(string))
-                {
-                    editableFields[field] = EditorGUILayout.TextField(displayName, (string)kvp.Value);
-                }
-                else if (typeof(UnityEngine.Object).IsAssignableFrom(field.FieldType))
-                {
-                    editableFields[field] = EditorGUILayout.ObjectField(displayName, (UnityEngine.Object)kvp.Value, field.FieldType, false);
-                }
+                
+                EditorGUILayout.Space();
             }
         }
-
+    
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
         EditorGUILayout.Space();
-
+    
         //Recipe section
         createRecipe = EditorGUILayout.Toggle("Create Crafting Recipe", createRecipe);
         
@@ -210,9 +284,9 @@ public class ItemEditor : EditorWindow
             
             EditorGUI.indentLevel--;
         }
-
+    
         EditorGUILayout.Space();
-
+    
         if (GUILayout.Button("Create Item", GUILayout.Height(30)))
         {
             CreateItem();
@@ -228,23 +302,23 @@ public class ItemEditor : EditorWindow
             EditorUtility.DisplayDialog("Error", "Item name cannot be empty!", "OK");
             return;
         }
-    
+
         if (itemTemplate == null)
         {
             EditorUtility.DisplayDialog("Error", "Template prefab is required!", "OK");
             return;
         }
-    
+
         //Create ItemData
         ItemData data = ScriptableObject.CreateInstance<ItemData>();
         data.Name = itemName;
         data.discription = itemDescription;
         data.sprite = itemSprite;
-    
+
         //Instantiate from template (CLONE)
         GameObject clone = Instantiate(itemTemplate);
         clone.name = itemName;
-    
+
         //Copy visuals from source model
         if (sourceModel != null)
         {
@@ -258,11 +332,11 @@ public class ItemEditor : EditorWindow
             {
                 DestroyImmediate(child.gameObject);
             }
-    
+
             //Get source mesh and materials from SOURCE ROOT
             MeshFilter sourceMeshFilter = sourceModel.GetComponent<MeshFilter>();
             MeshRenderer sourceMeshRenderer = sourceModel.GetComponent<MeshRenderer>();
-    
+
             //Apply mesh to CLONE ITSELF
             if (sourceMeshFilter != null)
             {
@@ -272,7 +346,7 @@ public class ItemEditor : EditorWindow
                 
                 cloneMeshFilter.sharedMesh = sourceMeshFilter.sharedMesh;
             }
-    
+
             //Apply materials to CLONE ITSELF
             if (sourceMeshRenderer != null)
             {
@@ -282,14 +356,14 @@ public class ItemEditor : EditorWindow
                 
                 cloneMeshRenderer.sharedMaterials = sourceMeshRenderer.sharedMaterials;
             }
-    
+
             //NOW copy ONLY the children from source to clone
             foreach (Transform sourceChild in sourceModel.transform)
             {
                 CopyChildRecursive(sourceChild, clone.transform);
             }
         }
-    
+
         // Reset collider to fit the new mesh
         Collider collider = clone.GetComponent<Collider>();
         if (collider != null)
@@ -320,7 +394,7 @@ public class ItemEditor : EditorWindow
             MeshCollider meshCollider = clone.AddComponent<MeshCollider>();
             meshCollider.convex = true;
         }
-    
+
         Item itemComponent = clone.GetComponent<Item>();
         itemComponent.data = data;
         
@@ -328,10 +402,10 @@ public class ItemEditor : EditorWindow
         {
             kvp.Key.SetValue(itemComponent, kvp.Value);
         }
-    
+
         string dataPath = "Assets/Resources/ItemData";
         AssetDatabase.CreateAsset(data, $"{dataPath}/{itemName}Data.asset");
-    
+
         string prefabPath = "Assets/Prefabs/Items";
         GameObject prefab = PrefabUtility.SaveAsPrefabAsset(clone, $"{prefabPath}/{itemName}.prefab");
         

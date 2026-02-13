@@ -10,7 +10,7 @@ public class Item : MonoBehaviour, IHighlightable
 
     [SerializeField] internal int HeldQuantity;
     
-    [SerializeField, EditorChangeable("Is Single Quantity")] internal bool isSingleQuantityItem = false;
+    [SerializeField, EditorChangeable] internal bool isSingleQuantityItem = false;
     internal bool isItemPickedUp;
     internal bool isSelected = false;
 

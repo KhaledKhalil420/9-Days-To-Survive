@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class Food : Consumables
 {
-    [SerializeField, EditorChangeable("Food properties")] private float health, satiation;
+    [SerializeField, EditorChangeable] private float health, satiation;
     [SerializeField] private AudioSource source;
-    [SerializeField,  EditorChangeable("Sound properties")] private AudioClip eatingSound, ateSound;
+    [SerializeField,  EditorChangeable] private AudioClip eatingSound, ateSound;
     private Tween eatingSoundTween;
 
     public override void OnStartConsume()

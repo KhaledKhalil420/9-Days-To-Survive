@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Consumables : Item
 {
-    [SerializeField, EditorChangeable("Time to consume")] private float timetoConsume = 1;
+    [SerializeField, EditorChangeable] private float timetoConsume = 1;
     [SerializeField] protected Animator anim;
 
     protected PlayerStats playerStats;
