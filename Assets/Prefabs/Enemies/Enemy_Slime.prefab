@@ -133,7 +133,7 @@ MonoBehaviour:
   searchArea: 15
   mainTarget: {fileID: 0}
   target: {fileID: 0}
-  pointsWorth: 25
+  pointsWorth: 100
   speedUpWhenTargetingMain: 1
   onCatchMainTargetSpeedBoost: 1.75
   attackCooldown: 1
@@ -171,6 +171,7 @@ MonoBehaviour:
         m_CallState: 2
   destroyOnDeath: 1
   scaleWithDifficulty: 1
+  isEnemy: 1
   MaxHeatlh: 1
 --- !u!65 &1169492533823969571
 BoxCollider:

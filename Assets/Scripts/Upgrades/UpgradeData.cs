@@ -5,7 +5,7 @@ public class UpgradeData : ScriptableObject
 {
     public string fullName;
     public int price;
-    public string discription;
+    [TextArea] public string discription;
     public Sprite sprite; 
     public GameObject upgrade;
 }

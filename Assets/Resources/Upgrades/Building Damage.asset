@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f08eb16a3fa01684aa98afe10765a247, type: 3}
-  m_Name: Upgrade Build DamageData
+  m_Name: Building Damage
   m_EditorClassIdentifier: 
-  fullName: Upgrade Build damage
+  fullName: Building Damage
   price: 25
-  discription: Upgraded damage for builds hammer
+  discription: Upgraded damage for builds/traps.  <color=red>(Doesn't apply to already
+    built builds)</color>
   sprite: {fileID: 21300000, guid: cda89e3c0c5107a4d9a93e2da41c9968, type: 3}
-  upgrade: {fileID: 0}
+  upgrade: {fileID: 2601248996099111051, guid: da960f7f131535d4f8145c401648ea77, type: 3}

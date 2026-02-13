@@ -321,10 +321,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upgradesList:
-  - {fileID: 11400000, guid: 17a1277c1dd2354488afa30a64f6f599, type: 2}
+  - {fileID: 11400000, guid: e4ac7bf93b504ad43964c5155fc8b0de, type: 2}
+  - {fileID: 11400000, guid: 4ac44442eb8d6fc46a51b07423dc8d54, type: 2}
   - {fileID: 11400000, guid: 8867f0a46e9ce354c87bdb7d5699a96a, type: 2}
-  - {fileID: 11400000, guid: 9169ce2e9861631418f3ba6d371047f0, type: 2}
+  - {fileID: 11400000, guid: f01eb84482dbd1e45a430b86ad968804, type: 2}
+  - {fileID: 11400000, guid: 17a1277c1dd2354488afa30a64f6f599, type: 2}
   - {fileID: 11400000, guid: d6d0626114962b441997105af9d08ad7, type: 2}
+  - {fileID: 11400000, guid: 9169ce2e9861631418f3ba6d371047f0, type: 2}
   upgradesCount: 3
   parent: {fileID: 1348727180444076651}
   upgradeUI: {fileID: 4921773903025013231, guid: 53b28f93639222841b6bd5ec121ba6f7, type: 3}

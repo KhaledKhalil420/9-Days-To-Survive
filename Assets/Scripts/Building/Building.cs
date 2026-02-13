@@ -7,7 +7,7 @@ public class Building : MonoBehaviour, IDamagable
     [Header("Attributes")]
     internal float initHealth;
     [SerializeField] internal float currentHealth = 5;
-    [SerializeField] internal int extraDamage = 0;
+    [SerializeField] internal float extraDamage = 0;
 
     [Header("Building Data")]
     public Ingredient[] ingredients;
@@ -129,7 +129,7 @@ public class Building : MonoBehaviour, IDamagable
 
     #endregion
 
-    public void OnPlace(float extraHealth, float extraDamage)
+    public void OnPlace(float extraHealth, float _extraDamage)
     {
         if (isPlaced) 
             return;
@@ -137,7 +137,7 @@ public class Building : MonoBehaviour, IDamagable
         isPlaced = true;
 
         currentHealth += (int)extraHealth;
-        extraDamage += extraDamage;
+        extraDamage += _extraDamage;
         
         pivots.AddRange(pivotsOnBuild);
         BuildingManager.Instance.OnGridUpdated += UpdateBuilding;
@@ -166,7 +166,6 @@ public class Building : MonoBehaviour, IDamagable
     private void DestroyBuilding()
     {
         OnDeath();
-        Destroy(gameObject);
 
         if(dropResourcesOnDestory)
         {
@@ -178,11 +177,12 @@ public class Building : MonoBehaviour, IDamagable
         }
         
         if(TryGetComponent(out Renderer renderer)) ParticleSpawner.SpawnWithBounds(BuildingManager.Instance.smoke, transform.position, transform.rotation, renderer.bounds);
+
+        Destroy(gameObject);
     }
 
     private void OnDestroy()
     {
-        OnDeath();
         RebakeNav();
         
         if(obstacle != null)
@@ -214,12 +214,15 @@ public class Building : MonoBehaviour, IDamagable
 
     private void Upgrades()
     {
-        if(UpgradeManager.IncreaseHealthOnEnemyDeath)
+        //Do here
+        if(!isHealthOnEnemyDeath && UpgradeManager.IncreaseHealthOnEnemyDeath)
         {
             UpgradeManager.OnEnemyDeath += IncreaseHealthOnEnemyDeath;
+            isHealthOnEnemyDeath = true;
         }
     }
 
+    private bool isHealthOnEnemyDeath = false;
     public void IncreaseHealthOnEnemyDeath()
     {
         if(UpgradeManager.IncreaseHealthOnEnemyDeath)

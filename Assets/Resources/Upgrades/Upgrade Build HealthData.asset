@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f08eb16a3fa01684aa98afe10765a247, type: 3}
   m_Name: Upgrade Build HealthData
   m_EditorClassIdentifier: 
-  fullName: Upgrade Build Health
+  fullName: Building Health
   price: 25
-  discription: Upgraded heatlh for builds hammer
+  discription: Upgraded heatlh for builds. <color=red>(Doesn't apply to already built
+    builds)</color>
   sprite: {fileID: 21300000, guid: cda89e3c0c5107a4d9a93e2da41c9968, type: 3}
-  upgrade: {fileID: 0}
+  upgrade: {fileID: 7585700710947847530, guid: c133702388e532d4a99595bdb46c0e77, type: 3}
