@@ -178,8 +178,10 @@ public class BuildingHammer : Item
         lastValidPosition = position;
         ghostBuilding.transform.position = position;
 
+        //Check if position is valid (not inside anything)
+        canPlace = BuildUtilities.IsPositionValid(ghostBuilding, currentBuilding, buildManager.gridSize);
+        
         //Update visuals
-        canPlace = true;
         UpdateGhostColor();
     }
 
