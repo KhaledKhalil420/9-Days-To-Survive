@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1998692805790846681}
   - component: {fileID: 789964070537936751}
   m_Layer: 6
-  m_Name: Wood
+  m_Name: Resource_Template
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,7 +43,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5291154456772646634}
-  m_Mesh: {fileID: -234399514717144303, guid: d290c63daec1a9b418787462a9dc9665, type: 3}
+  m_Mesh: {fileID: 0}
 --- !u!23 &4808848778664256377
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -66,9 +66,7 @@ MeshRenderer:
   m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 714a69432ec047f46a339bf22449c7a1, type: 2}
-  - {fileID: 8110501998921344856, guid: d290c63daec1a9b418787462a9dc9665, type: 3}
+  m_Materials: []
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

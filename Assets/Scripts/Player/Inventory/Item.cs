@@ -6,12 +6,12 @@ public class Item : MonoBehaviour, IHighlightable
     [Header("Item Seetings")]
     internal BaseSlot parentSlot;
     internal GameObject heldby;
-    [SerializeField] internal ItemData data;
+    public ItemData data;
 
     [SerializeField] internal int HeldQuantity;
     
-    [SerializeField] internal bool isSingleQuantityItem = false;
-    [SerializeField] internal bool isItemPickedUp;
+    [SerializeField, EditorChangeable("Is Single Quantity")] internal bool isSingleQuantityItem = false;
+    internal bool isItemPickedUp;
     internal bool isSelected = false;
 
     public void UpdateHoldingItem(bool isHolding)

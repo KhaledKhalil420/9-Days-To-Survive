@@ -3,13 +3,13 @@ using UnityEngine;
 public class BreakingTool : Item
 {
     [SerializeField] private AudioSource source;
-    [SerializeField] private BreakableType type;
+    [SerializeField, EditorChangeable("Tool Type")] private BreakableType type;
     [SerializeField] private Animator animator;
     [SerializeField] private int numberOfAnimations;
-    [SerializeField] private float range = 2f, cooldown = 1f;
-    [SerializeField] private int damage = 50, minimumDamage = 1, maximumDamage = 1;
+    [SerializeField, EditorChangeable("Tool attributes")] private float range = 2f, cooldown = 1f;
+    [SerializeField, EditorChangeable("Tool damage")] private int damage = 50, minimumDamage = 1, maximumDamage = 1;
     [SerializeField] private Texture sphereIcon;
-    public int toughness = 1;
+    [EditorChangeable("Toughness")] public int toughness = 1;
     private Transform cam;
     private bool canUse = true;
     private int lastAnimationIndex = -1;

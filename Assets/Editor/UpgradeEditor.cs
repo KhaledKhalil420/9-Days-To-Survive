@@ -15,7 +15,7 @@ public class UpgradeEditor : EditorWindow
     GameObject prefab;
     UpgradeData upgradeData;
 
-    [MenuItem("Window/Upgrade Editor")]
+    [MenuItem("Khaled/Upgrade Editor")]
     public static void ShowWindow()
     {
         GetWindow<UpgradeEditor>("Upgrade Editor");

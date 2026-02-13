@@ -15,6 +15,7 @@ public class UiManager : MonoBehaviour
         Cursor.visible = state;
         Cursor.lockState = state ? CursorLockMode.None : CursorLockMode.Locked;
         PlayerInventory.Instance.canUse = !state;
+        if(state) PlayerInventory.Instance.ToggleBag(false);
 
     }
 

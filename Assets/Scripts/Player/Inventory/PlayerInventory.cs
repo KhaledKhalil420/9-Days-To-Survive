@@ -164,7 +164,7 @@ public class PlayerInventory : MonoBehaviour
 
     private void HandleBag()
     {
-        if(Input.GetKeyDown(Keybinds.Key("InventoryOpen")))
+        if(Input.GetKeyDown(Keybinds.Key("InventoryOpen")) && canUse)
         {
             ToggleBag();
         }
