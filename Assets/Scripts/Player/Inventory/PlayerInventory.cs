@@ -197,6 +197,13 @@ public class PlayerInventory : MonoBehaviour
         UiManager.ToggleUi(state);
     }
 
+    public void ToggleBagNoToggleUi(bool state)
+    {
+        isBagOpen = state;
+        bagParent.interactable = state;
+        bagParent.alpha = state ? 1 : 0;
+    }
+
     private void HandlePickup()
     {
         //if found same type slot, take as much as you can, then on next interact add the rest to a new slot
