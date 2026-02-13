@@ -1,11 +1,16 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class UpgradeManager : MonoBehaviour
 {
     public static UpgradeManager Instance;
 
     public List<Upgrade> ActiveUpgrades = new();
+
+    //Events
+    public static Action OnEnemyDeath;
+    public static bool IncreaseHealthOnEnemyDeath = false;
 
     private void Awake()
     {

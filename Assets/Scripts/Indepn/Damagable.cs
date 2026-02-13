@@ -8,7 +8,7 @@ using UnityEngine.Events;
 public class Damagable : MonoBehaviour, IDamagable
 {
     public UnityEvent OnDamageEvent, OnDeathEvent;
-    [SerializeField] private bool destroyOnDeath = true, scaleWithDifficulty = true;
+    [SerializeField] private bool destroyOnDeath = true, scaleWithDifficulty = true, isEnemy = true;
     [SerializeField] private float MaxHeatlh = 5;
     [ReadOnly] private float currentHealth;
 
@@ -26,6 +26,10 @@ public class Damagable : MonoBehaviour, IDamagable
         if(currentHealth <= 0)
         {
             OnDeathEvent.Invoke();   
+            if(isEnemy)
+            {
+                UpgradeManager.OnEnemyDeath?.Invoke();
+            }
 
             if(destroyOnDeath)
             {

@@ -5,7 +5,8 @@ using UnityEngine.AI;
 public class Building : MonoBehaviour, IDamagable
 {
     [Header("Attributes")]
-    [SerializeField] internal int currentHealth = 5;
+    internal float initHealth;
+    [SerializeField] internal float currentHealth = 5;
     [SerializeField] internal int extraDamage = 0;
 
     [Header("Building Data")]
@@ -51,6 +52,13 @@ public class Building : MonoBehaviour, IDamagable
         
         source = GetComponent<AudioSource>();
         if(source == null) source = gameObject.AddComponent<AudioSource>();
+
+        initHealth = currentHealth;
+    }
+
+    private void Start()
+    {
+        Upgrades();
     }
 
     #region Self destruction
@@ -63,6 +71,8 @@ public class Building : MonoBehaviour, IDamagable
         {
             Invoke(nameof(DestroyBuilding), 0.5f);
         }
+
+        CheckUpgrades();
     }
 
     private bool HasGroundSupport()
@@ -194,4 +204,30 @@ public class Building : MonoBehaviour, IDamagable
             DestroyBuilding();
         }
     }
+
+    #region Upgrades
+    
+    public void CheckUpgrades()
+    {
+        Upgrades();
+    }
+
+    private void Upgrades()
+    {
+        if(UpgradeManager.IncreaseHealthOnEnemyDeath)
+        {
+            UpgradeManager.OnEnemyDeath += IncreaseHealthOnEnemyDeath;
+        }
+    }
+
+    public void IncreaseHealthOnEnemyDeath()
+    {
+        if(UpgradeManager.IncreaseHealthOnEnemyDeath)
+        {
+            currentHealth += initHealth / 0.05f;
+        }
+    }
+
+
+    #endregion
 }
