@@ -11629,7 +11629,7 @@ GameObject:
   - component: {fileID: 1220912756}
   - component: {fileID: 1220912762}
   - component: {fileID: 1220912760}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -11765,7 +11765,7 @@ MonoBehaviour:
   rb: {fileID: 1220912755}
   unJumpableLayers:
     serializedVersion: 2
-    m_Bits: 14
+    m_Bits: 1038
   playerCollider: {fileID: 1220912750}
   playerLook: {fileID: 161227818}
   footstepSounds:

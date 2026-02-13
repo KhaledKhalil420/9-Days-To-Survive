@@ -21,6 +21,7 @@ public class PlayerInventory : MonoBehaviour
     [Header("Item use")]
     [SerializeField] internal InventoryHolder holder;
     private PlayerInteract interact;
+    internal float damageBonus = 1, speedBonus = 1;
 
     [Header("Pickup UI")]
     [SerializeField] private GameObject pickedUpUIPrefab;

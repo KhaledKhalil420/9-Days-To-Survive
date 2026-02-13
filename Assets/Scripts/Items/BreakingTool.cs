@@ -31,7 +31,7 @@ public class BreakingTool : Item
         canUse = false;
 
         int randomAnimation = GetRandomAnimationIndex();
-        animator.speed = 1 / cooldown;
+        animator.speed = 1 / (cooldown / heldby.GetComponent<PlayerInventory>().speedBonus);
         animator.SetInteger("Numb", randomAnimation);
         animator.SetTrigger("Trigger");
 
@@ -71,7 +71,7 @@ public class BreakingTool : Item
 
         Renderer sourceRenderer = hit.transform.GetComponentInChildren<Renderer>();
         Material sourceMat = sourceRenderer != null && sourceRenderer.sharedMaterial != null ? sourceRenderer.sharedMaterial : null;
-        int calculatedDamage = damage * Random.Range(minimumDamage, maximumDamage);
+        float calculatedDamage = damage * Random.Range(minimumDamage, maximumDamage) * heldby.GetComponent<PlayerInventory>().damageBonus;
 
         if (hit.transform.TryGetComponent<IBreakable>(out var breakable))
         {

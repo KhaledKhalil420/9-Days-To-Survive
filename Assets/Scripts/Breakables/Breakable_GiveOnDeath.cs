@@ -26,7 +26,7 @@ public class Breakable_GiveOnDeath : Breakable
     [SerializeField] private List<DamageMeshes> damageMeshes;
     [SerializeField] private List<ItemLoot> items;
 
-    public override void OnDamage(int damage, GameObject sender)
+    public override void OnDamage(float damage, GameObject sender)
     {
         if(damageMeshes.Count > 0)
             UpdateVisualMesh();

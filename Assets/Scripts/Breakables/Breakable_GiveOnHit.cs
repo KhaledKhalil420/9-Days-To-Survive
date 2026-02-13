@@ -8,13 +8,13 @@ public class Breakable_GiveOnHit : Breakable
     [SerializeField] private ParticleSystem destroyParticles;
     [SerializeField] private AudioClip destroySound;
 
-    public override void OnDamage(int damage, GameObject sender)
+    public override void OnDamage(float damage, GameObject sender)
     {
         //Give player material
         PlayerInventory playerInventory = sender.GetComponent<PlayerInventory>();
 
         Item givenItem = Instantiate(item.gameObject).GetComponent<Item>();
-        givenItem.HeldQuantity = Random.Range(damage, damage * givenQuantityOnHitMax);
+        givenItem.HeldQuantity = (int)Random.Range(damage, damage * givenQuantityOnHitMax);
 
         playerInventory.GiveItem(givenItem, out bool wasGiven);
 
