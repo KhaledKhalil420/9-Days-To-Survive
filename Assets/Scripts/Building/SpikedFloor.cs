@@ -23,6 +23,6 @@ public class SpikedFloor : Building
         for (int i = 0; i < hitCount; i++)
             if (hitBuffer[i].TryGetComponent(out IDamagable damagable)) damagable.Damage(damage + extraDamage);
         
-        if (hitCount > 0) { currentHealth -= 1; nextDamageTime = Time.time + damageInterval; }
+        if (hitCount > 0) { Damage(1); nextDamageTime = Time.time + damageInterval; }
     }
 }

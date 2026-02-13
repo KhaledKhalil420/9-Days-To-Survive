@@ -9,13 +9,13 @@ public class Damagable : MonoBehaviour, IDamagable
 {
     public UnityEvent OnDamageEvent, OnDeathEvent;
     [SerializeField] private bool destroyOnDeath = true, scaleWithDifficulty = true, isEnemy = true;
-    [SerializeField] private float MaxHeatlh = 5;
+    [SerializeField] private float MaxHealth = 5;
     [ReadOnly] private float currentHealth;
 
     void Start()
     {
-        MaxHeatlh *= 1 + (Difficulty.DifficultyMultiplier - 1) * 0.2f;
-        currentHealth = MaxHeatlh;
+        MaxHealth *= 1 + (Difficulty.DifficultyMultiplier - 1) * 0.2f;
+        currentHealth = MaxHealth;
     }
 
     public void Damage(float damage)

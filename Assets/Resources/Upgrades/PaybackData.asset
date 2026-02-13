@@ -16,4 +16,4 @@ MonoBehaviour:
   price: 100
   discription: Builds slightly repair when an enemy is defeated
   sprite: {fileID: 21300000, guid: 9ae08f2021908c046b99bd836bdf2ec1, type: 3}
-  upgrade: {fileID: 0}
+  upgrade: {fileID: 2886864183777236364, guid: 6c742853f40cfd343b8ec518a42b36ae, type: 3}

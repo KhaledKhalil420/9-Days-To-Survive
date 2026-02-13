@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -130,6 +131,7 @@ public class GameManager : MonoBehaviour
     {
         //TEMP.. RESTART GAME
         UiManager.ToggleUi(true);
+        DOTween.KillAll(false);
         SceneManager.LoadScene("MainMenu");
     }
 

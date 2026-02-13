@@ -16,4 +16,4 @@ MonoBehaviour:
   price: 50
   discription: Increase Player Damage by 0.25x
   sprite: {fileID: 21300000, guid: 4ac651c013200f14e8a835ca6ab89010, type: 3}
-  upgrade: {fileID: 0}
+  upgrade: {fileID: 6006439788129557267, guid: 12885095052f7cf439c8495f763b1d6a, type: 3}

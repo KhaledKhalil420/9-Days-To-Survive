@@ -80,7 +80,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2711339298170863636}
-  m_Mesh: {fileID: -5495902117074765545, guid: ae21c14b1fcbcd9479b50ae07fd917ce, type: 3}
+  m_Mesh: {fileID: -5495902117074765545, guid: f078e1809f357374681d26a7216ad9dc, type: 3}
 --- !u!23 &4512713246312473025
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -104,7 +104,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1ec79b5ebbcd06043a4e4a1aa65164f4, type: 2}
+  - {fileID: 2100000, guid: 50cf8b98c21d819429afd0bba047a02f, type: 2}
+  - {fileID: 2100000, guid: 06db29c2e2d669147bb75123ed8872f0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -156,10 +157,10 @@ MonoBehaviour:
   - {fileID: 283616446916370393}
   pivotsOnBuild: []
   supportCheckScale: 1
-  source: {fileID: 0}
-  onDestroySound: {fileID: 0}
+  source: {fileID: -3788880822596730553}
+  onDestroySound: {fileID: 8300000, guid: e3e0644a4d59680439ef72e55ead6051, type: 3}
   damage: 5
-  damageInterval: 0.5
+  damageInterval: 0.1
 --- !u!65 &3552079121617091838
 BoxCollider:
   m_ObjectHideFlags: 0

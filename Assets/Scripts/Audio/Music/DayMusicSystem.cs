@@ -16,6 +16,11 @@ public class DayMusicSystem : MonoBehaviour
     {
         DayNightCycleManager.OnDayChange += ChangeMusic;
     }
+
+    private void OnDestroy()
+    {
+        DayNightCycleManager.OnDayChange -= ChangeMusic;
+    }
     
 
     public void ChangeMusic(bool day)
