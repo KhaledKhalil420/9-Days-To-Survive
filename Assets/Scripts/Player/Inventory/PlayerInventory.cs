@@ -22,6 +22,7 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] internal InventoryHolder holder;
     private PlayerInteract interact;
     internal float damageBonus = 1, speedBonus = 1;
+    internal bool canUse = true;
 
     [Header("Pickup UI")]
     [SerializeField] private GameObject pickedUpUIPrefab;
@@ -254,7 +255,7 @@ public class PlayerInventory : MonoBehaviour
 
     private void HandleUse()
     {
-        if(isBagOpen) 
+        if(isBagOpen || !canUse) 
             return;
 
         if (Input.GetKeyDown(Keybinds.Key("Use")))

@@ -14,6 +14,8 @@ public class UiManager : MonoBehaviour
         PlayerLook.disableLook = state;
         Cursor.visible = state;
         Cursor.lockState = state ? CursorLockMode.None : CursorLockMode.Locked;
+        PlayerInventory.Instance.canUse = !state;
+
     }
 
     public static void CloseUiTabs()
