@@ -96,4 +96,9 @@ public class BuildingManager : MonoBehaviour
         recipeInstances.ForEach(Destroy);
         recipeInstances.Clear();
     }
+
+    void OnValidate()
+    {
+        Instance = this;
+    }
 }

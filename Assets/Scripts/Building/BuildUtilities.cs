@@ -2,7 +2,7 @@ using UnityEngine;
 
 public static class BuildUtilities
 {
-    private const float BUILDING_TOUCH_THRESHOLD = 0.1f;
+    private const float BUILDING_TOUCH_THRESHOLD = 0f; // Small threshold for touching buildings
 
     public static bool TryGetHit(Transform camera, float radius, float maxDistance, LayerMask layers, out RaycastHit hit)
     {
@@ -51,23 +51,20 @@ public static class BuildUtilities
             {
                 Vector3 center = col.transform.TransformPoint(box.center);
                 Vector3 halfExtents = Vector3.Scale(box.size / 2f, col.transform.lossyScale);
-                // Shrink the box slightly for building checks
-                overlaps = Physics.OverlapBox(center, halfExtents - Vector3.one * BUILDING_TOUCH_THRESHOLD, col.transform.rotation, ~0, QueryTriggerInteraction.Ignore);
+                overlaps = Physics.OverlapBox(center, halfExtents, col.transform.rotation, ~0, QueryTriggerInteraction.Ignore);
             }
             else if (col is SphereCollider sphere)
             {
                 Vector3 center = col.transform.TransformPoint(sphere.center);
                 float radius = sphere.radius * Mathf.Max(col.transform.lossyScale.x, col.transform.lossyScale.y, col.transform.lossyScale.z);
-                // Shrink the sphere slightly for building checks
-                overlaps = Physics.OverlapSphere(center, radius - BUILDING_TOUCH_THRESHOLD, ~0, QueryTriggerInteraction.Ignore);
+                overlaps = Physics.OverlapSphere(center, radius, ~0, QueryTriggerInteraction.Ignore);
             }
             else if (col is CapsuleCollider capsule)
             {
                 Vector3 center = col.transform.TransformPoint(capsule.center);
                 float radius = capsule.radius * Mathf.Max(col.transform.lossyScale.x, col.transform.lossyScale.z);
                 float height = capsule.height * col.transform.lossyScale.y;
-                // Shrink the capsule slightly for building checks
-                overlaps = Physics.OverlapCapsule(center + Vector3.up * (height / 2f - radius), center - Vector3.up * (height / 2f - radius), radius - BUILDING_TOUCH_THRESHOLD, ~0, QueryTriggerInteraction.Ignore);
+                overlaps = Physics.OverlapCapsule(center + Vector3.up * (height / 2f - radius), center - Vector3.up * (height / 2f - radius), radius, ~0, QueryTriggerInteraction.Ignore);
             }
 
             if (overlaps != null)
@@ -80,8 +77,13 @@ public static class BuildUtilities
                     // Allow touching GROUND layer
                     if (overlap.gameObject.layer == LayerMask.NameToLayer("Ground")) continue;
 
-                    // Allow touching other buildings (they're checked with threshold already)
-                    if (overlap.CompareTag("Build")) continue;
+                    // Allow touching other buildings with threshold
+                    if (overlap.CompareTag("Build"))
+                    {
+                        // Check if actually overlapping beyond threshold
+                        float distance = Vector3.Distance(col.ClosestPoint(overlap.transform.position), overlap.ClosestPoint(col.transform.position));
+                        if (distance > BUILDING_TOUCH_THRESHOLD) continue;
+                    }
 
                     // Found a collision with something else - can't place
                     isValid = false;

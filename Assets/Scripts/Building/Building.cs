@@ -191,7 +191,7 @@ public class Building : MonoBehaviour, IDamagable
         BuildingManager.Instance.OnGridUpdated -= UpdateBuilding;
         BuildingManager.Instance.UpdateGrid();
 
-        source.PlayOneShot(onDestroySound);
+        source?.PlayOneShot(onDestroySound);
     }
 
     public void Damage(float damage)
