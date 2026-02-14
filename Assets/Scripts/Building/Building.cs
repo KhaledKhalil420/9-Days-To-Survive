@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.AI;
+using System;
 
 public class Building : MonoBehaviour, IDamagable
 {
@@ -26,7 +27,7 @@ public class Building : MonoBehaviour, IDamagable
 
     [Header("Sounds")]
     [SerializeField] private AudioSource source;
-    [SerializeField]  private AudioClip onDestroySound;
+    [SerializeField] private AudioClip onDestroySound;
 
 
     private bool isPlaced = false;
@@ -93,9 +94,7 @@ public class Building : MonoBehaviour, IDamagable
             }
         }
 
-         bounds = buildingCollider.bounds;
-
-        Debug.Log(gameObject);
+        bounds = buildingCollider.bounds;
         Collider[] hits = Physics.OverlapBox(bounds.center, bounds.extents * supportCheckScale, transform.rotation, buildingLayers, QueryTriggerInteraction.Ignore);
 
         bool hasSupport = false;

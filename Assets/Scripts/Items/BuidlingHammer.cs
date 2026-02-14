@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class BuildingHammer : Item
 {
@@ -10,7 +11,7 @@ public class BuildingHammer : Item
     private Animator animator;
 
     [Header("Buildings")]
-    [SerializeField] private List<Building> availableBuildings;
+    [SerializeField, EditorChangeable] private List<Building> availableBuildings;
     [SerializeField] private ParticleSystem spawnParticles;
     private bool isChosingBuild = false;
 
