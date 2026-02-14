@@ -10,8 +10,8 @@ public class BuildingManager : MonoBehaviour
     public event Action OnGridUpdated;
 
     [Header("Attributes")]
-    public int buildLimit = 10;
-    private int currentBuilds = 0;
+    public float buildLimitPoints = 100;
+    private float currentBuilds = 0;
     public float extraBuildingHealth = 0;
     public float extraBuildingDamage = 0;
 
@@ -20,7 +20,8 @@ public class BuildingManager : MonoBehaviour
 
     [Header("Build Settings")]
     internal bool IsDay = true;
-    public static bool CanBuild() { return Instance.IsDay && Instance.currentBuilds < Instance.buildLimit;}
+    public static bool CanBuild(float points) { return Instance.IsDay && Instance.currentBuilds + points <= Instance.buildLimitPoints;}
+    public static bool CanBuild() { return Instance.IsDay && Instance.currentBuilds <= Instance.buildLimitPoints;}
     
     
     public int gridSize = 2;
@@ -70,7 +71,7 @@ public class BuildingManager : MonoBehaviour
     {
         buildIcon.sprite = building.data.sprite;
         buildTitle.text = building.data.buildingName;
-        buildsQuantityText.text =  currentBuilds.ToString() + "/" + buildLimit.ToString();
+        buildsQuantityText.text =  currentBuilds.ToString() + "/" + buildLimitPoints.ToString();
 
         ClearRecipe();
 
@@ -88,7 +89,14 @@ public class BuildingManager : MonoBehaviour
     public void UpdateGrid()
     {
         OnGridUpdated?.Invoke();
-        currentBuilds = GameObject.FindGameObjectsWithTag("Build").Length;
+
+        currentBuilds = 0;
+        
+        GameObject[] builds = GameObject.FindGameObjectsWithTag("Build");
+        for (int i = 0; i < builds.Length; i++)
+        {
+            currentBuilds += builds[i].GetComponent<Building>().data.pointsWorth;
+        };
     }
 
     void ClearRecipe()

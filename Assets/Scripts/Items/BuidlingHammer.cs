@@ -77,7 +77,7 @@ public class BuildingHammer : Item
 
     public override void OnUse()
     {
-        if(!BuildingManager.CanBuild())
+        if(!BuildingManager.CanBuild(currentBuilding.data.pointsWorth))
             return;
 
         TryPlace();
@@ -151,7 +151,7 @@ public class BuildingHammer : Item
 
     private void UpdateGhost()
     {
-        if(!BuildingManager.CanBuild())
+        if(!BuildingManager.CanBuild(currentBuilding.data.pointsWorth))
         {
             if(ghostBuilding != null)
                 Destroy(ghostBuilding);

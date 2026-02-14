@@ -19,8 +19,8 @@ public class GameManager : MonoBehaviour
     public int enemiesDefeated;
 
     [Header("Points")]
-    public static int StoredPoints = 0;
-    internal int MaxBuilds => BuildingManager.Instance.buildLimit;
+    public static float StoredPoints = 0;
+    internal float MaxBuilds => BuildingManager.Instance.buildLimitPoints;
     internal int buildsBeforeNightStarted = 0;
     public GameObject upgradesPopup;
     
@@ -144,7 +144,7 @@ public class GameManager : MonoBehaviour
         StoredPoints += CalculatePoints();
     }
 
-    private int CalculatePoints()
+    private float CalculatePoints()
     {
         //Enemy points calculation
         int enemyPoints = 0;
@@ -152,14 +152,14 @@ public class GameManager : MonoBehaviour
             enemyPoints += enemy.EnemyPoints;
 
         //Get unsed buildings bonus (the less builds you use, the more points you get)
-        int unusedBuilds = MaxBuilds - buildsBeforeNightStarted;
-        int buildBonus = unusedBuilds * 5;
+        float unusedBuilds = MaxBuilds - buildsBeforeNightStarted;
+        float buildBonus = unusedBuilds * 5;
         
         //More points for difficulty
         float difficultyMultiplier = 1 + (Difficulty.DifficultyMultiplier - 1) * 0.2f; 
         
         //Total Points calculation
-        int totalPoints = Mathf.RoundToInt((enemyPoints + buildBonus) * difficultyMultiplier);
+        float totalPoints = Mathf.RoundToInt((enemyPoints + buildBonus) * difficultyMultiplier);
 
         return totalPoints;
     }

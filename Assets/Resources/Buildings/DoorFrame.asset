@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: d6b0ffcb95308194bac48cf19f410789, type: 3}
   buildingName: Door Frame
+  pointsWorth: 10
