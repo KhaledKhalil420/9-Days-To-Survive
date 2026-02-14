@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Audio;
 using System;
+using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public struct Sounds
@@ -40,9 +42,18 @@ public class AudioManager : MonoBehaviour
         DefaultAudioMixer.audioMixer.SetFloat("VolumeMaster", -80f);
         StartCoroutine(FadeIn());
         StartCoroutine(FadeInLowpass(1));
+        RestoreSpeed(1);
 
+        SceneManager.sceneLoaded += OnSceneLoad;
 
         SetupAudioManager();
+    }
+
+    public void OnSceneLoad(Scene scene, LoadSceneMode loadSceneMode)
+    {
+        StartCoroutine(FadeIn());
+        StartCoroutine(FadeInLowpass(1));
+        RestoreSpeed(1);
     }
     
 
@@ -135,6 +146,35 @@ public class AudioManager : MonoBehaviour
 
     //-------------------Effects
     
+    // Slow down audio mixer
+    public void SlowDown(float targetPitch = 0.5f, float duration = 1f)
+    {
+        DOTween.To(
+            () => {
+                DefaultAudioMixer.audioMixer.GetFloat("Pitch", out float v);
+                return v;
+            },
+            x => DefaultAudioMixer.audioMixer.SetFloat("Pitch", x),
+            targetPitch,
+            duration
+        );
+    }
+    
+    // Restore normal speed
+    public void RestoreSpeed(float duration = 2f)
+    {
+        DOTween.To(
+            () => {
+                DefaultAudioMixer.audioMixer.GetFloat("Pitch", out float v);
+                return v;
+            },
+            x => DefaultAudioMixer.audioMixer.SetFloat("Pitch", x),
+            1f,
+            duration
+        );
+    }
+
+
     /// <summary>
     /// Fade all Audio In
     /// </summary>

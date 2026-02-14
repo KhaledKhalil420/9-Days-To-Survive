@@ -157,6 +157,7 @@ public class GameManager : MonoBehaviour
         player.Disable();
         UiManager.ToggleUi(true);
 
+        AudioManager.Instance.SlowDown();
         StartCoroutine(AudioManager.Instance.FadeOutLowpass());
     }
 

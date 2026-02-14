@@ -530,7 +530,7 @@ public class PlayerInventory : MonoBehaviour
 
     private void OnDisable()
     {
-        group.DOFade(0, 0.5f).SetUpdate(true);
+        group.DOFade(0, 1f).SetUpdate(true);
     }
 
     private void OnEnable()
