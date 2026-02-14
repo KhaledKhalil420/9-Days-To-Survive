@@ -159,6 +159,8 @@ public class GameManager : MonoBehaviour
 
         AudioManager.Instance.SlowDown();
         StartCoroutine(AudioManager.Instance.FadeOutLowpass());
+
+        DOVirtual.DelayedCall(5, () => {SceneManager.LoadScene(0); Time.timeScale = 1; Time.fixedDeltaTime = 1;});
     }
 
     #endregion

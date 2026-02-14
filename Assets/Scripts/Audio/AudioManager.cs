@@ -157,7 +157,7 @@ public class AudioManager : MonoBehaviour
             x => DefaultAudioMixer.audioMixer.SetFloat("Pitch", x),
             targetPitch,
             duration
-        );
+        ).SetUpdate(true);
     }
     
     // Restore normal speed
@@ -171,7 +171,7 @@ public class AudioManager : MonoBehaviour
             x => DefaultAudioMixer.audioMixer.SetFloat("Pitch", x),
             1f,
             duration
-        );
+        ).SetUpdate(true);
     }
 
 
