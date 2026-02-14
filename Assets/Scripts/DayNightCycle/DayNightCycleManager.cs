@@ -5,7 +5,7 @@ using System.Collections;
 public class DayNightCycleManager : MonoBehaviour
 {
     public static DayNightCycleManager Instance;
-    public static int DayCount = 0;
+    public int DayCount = 0;
     public delegate void DayChangeArgs(bool state);
     public static event DayChangeArgs OnDayChange;
 
@@ -24,9 +24,17 @@ public class DayNightCycleManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        DayCount = 0;
+        currentState = CycleState.Day;
+
         if (skyboxMaterial == null) return;
         RenderSettings.skybox = skyboxMaterial;
         RenderSettings.skybox.SetFloat("_CubemapTransition", 1f);
+    }
+
+    private void OnDestroy()
+    {
+        Instance = null;
     }
 
     private void Start()
@@ -51,7 +59,7 @@ public class DayNightCycleManager : MonoBehaviour
     {
         Instance.currentState = cycleState;
         bool isDay = cycleState == CycleState.Day;
-        DayCount += isDay ? 1 : 0;
+        Instance.DayCount += isDay ? 1 : 0;
         OnDayChange?.Invoke(isDay);
     }
 

@@ -33,6 +33,11 @@ public class GameManager : MonoBehaviour
 
     }
 
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
+
     private void Start()
     {
         DayNightCycleManager.OnDayChange += TriggerWave;
@@ -69,9 +74,9 @@ public class GameManager : MonoBehaviour
             spawnPrize = true;
         }
         
-        if(waves.Count > DayNightCycleManager.DayCount)
+        if(waves.Count > DayNightCycleManager.Instance.DayCount)
         {
-            selectedWave = waves[DayNightCycleManager.DayCount];
+            selectedWave = waves[DayNightCycleManager.Instance.DayCount];
         }
         else
         {
@@ -132,7 +137,7 @@ public class GameManager : MonoBehaviour
         //TEMP.. RESTART GAME
         UiManager.ToggleUi(true);
         DOTween.KillAll(false);
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
     #endregion

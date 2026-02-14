@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.iOS;
 using UnityEngine.UI;
 
 public class BuildingManager : MonoBehaviour
@@ -77,10 +76,10 @@ public class BuildingManager : MonoBehaviour
         buildPriceText.text = building.data.pointsWorth.ToString();
         string currentQuantity = currentBuilds > buildLimitPoints ? "<color=red>" + currentBuilds.ToString() + "</color>" : currentBuilds.ToString();
         buildsQuantityText.text = currentQuantity + "/" + buildLimitPoints.ToString();
-    
+
         UpdateRecipe(building.ingredients.ToList());
     }
-    
+
     void UpdateRecipe(List<Ingredient> ingredients)
     {
         // Add more UI elements if needed
@@ -89,7 +88,7 @@ public class BuildingManager : MonoBehaviour
             Image img = Instantiate(recipePrefab, recipeParent);
             recipeInstances.Add(img.gameObject);
         }
-    
+
         // Remove excess UI elements if needed
         while (recipeInstances.Count > ingredients.Count)
         {
@@ -97,7 +96,7 @@ public class BuildingManager : MonoBehaviour
             Destroy(recipeInstances[lastIndex]);
             recipeInstances.RemoveAt(lastIndex);
         }
-    
+
         // Update existing UI elements (reuse them!)
         for (int i = 0; i < ingredients.Count; i++)
         {

@@ -12,6 +12,6 @@ public class DayCounterText : MonoBehaviour
 
     public void UpdateText(bool isDay)
     {
-        text.text = "Day: " + (DayNightCycleManager.DayCount + 1).ToString();
+        text.text = "Day: " + (DayNightCycleManager.Instance.DayCount + 1).ToString();
     }
 }

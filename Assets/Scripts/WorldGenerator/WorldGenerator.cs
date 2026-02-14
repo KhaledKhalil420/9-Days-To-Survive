@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public class WorldGenerator : MonoBehaviour
 {
-    public static WorldGenerator instance;
+    public static WorldGenerator Instance;
     
     [Header("Map")]
     public Vector3 mapMin, mapMax;
@@ -34,7 +34,12 @@ public class WorldGenerator : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
+    }
+
+    void OnDestroy()
+    {
+        Instance = null;
     }
 
     private void Start()
@@ -55,14 +60,14 @@ public class WorldGenerator : MonoBehaviour
     /// </summary>
     public static void RequestNavMeshRebake()
     {
-        if (instance == null) return;
+        if (Instance == null) return;
         
-        if (instance.pendingBake != null)
+        if (Instance.pendingBake != null)
         {
-            instance.StopCoroutine(instance.pendingBake);
+            Instance.StopCoroutine(Instance.pendingBake);
         }
         
-        instance.pendingBake = instance.StartCoroutine(instance.DebouncedBake());
+        Instance.pendingBake = Instance.StartCoroutine(Instance.DebouncedBake());
     }
     
     /// <summary>
@@ -71,22 +76,22 @@ public class WorldGenerator : MonoBehaviour
     /// </summary>
     public static void RequestLocalNavMeshRebake(Vector3 position, float radius = 0f)
     {
-        if (instance == null) return;
+        if (Instance == null) return;
         
-        if (!instance.useLocalBaking)
+        if (!Instance.useLocalBaking)
         {
             RequestNavMeshRebake();
             return;
         }
         
-        if (instance.pendingBake != null)
+        if (Instance.pendingBake != null)
         {
-            instance.StopCoroutine(instance.pendingBake);
+            Instance.StopCoroutine(Instance.pendingBake);
         }
         
-        float bakeRadius = radius > 0 ? radius : instance.localBakeRadius;
-        instance.pendingBake = instance.StartCoroutine(
-            instance.DebouncedLocalBake(position, bakeRadius)
+        float bakeRadius = radius > 0 ? radius : Instance.localBakeRadius;
+        Instance.pendingBake = Instance.StartCoroutine(
+            Instance.DebouncedLocalBake(position, bakeRadius)
         );
     }
 

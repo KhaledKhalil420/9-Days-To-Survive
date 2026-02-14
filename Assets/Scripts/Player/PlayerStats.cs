@@ -1,19 +1,23 @@
+using DG.Tweening;
+using EZCameraShake;
 using Sortify;
 using TMPro;
+using Unity.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 [System.Serializable]
 public class PlayerStat
 {
     [SerializeField] internal float max = 100;
-    [SerializeField, ReadOnly] internal float current;
+    [SerializeField, Sortify.ReadOnly] internal float current;
     [SerializeField] internal float modifyRate = 1;
     [SerializeField] internal bool canModifyRate = true;
     [SerializeField] internal bool isDecaying = false;
 
     [SerializeField] private float delay = 5; 
-    [SerializeField, ReadOnly] private float delayTimer = 0;
+    [SerializeField, Sortify.ReadOnly] private float delayTimer = 0;
 
     [Space(3)]
 
@@ -70,6 +74,7 @@ public class PlayerStats : MonoBehaviour, IDamagable
 {
     [Header("Health")]
     [SerializeField] internal PlayerStat health = new();
+    [SerializeField] private Volume damagedVolume;
 
 
     [Header("Hunger")]
@@ -120,6 +125,15 @@ public class PlayerStats : MonoBehaviour, IDamagable
     public void Damage(float damage)
     {
         health.Modify(-damage);
+
+        DamageFeedback();
+    }
+
+    private void DamageFeedback()
+    {
+        AudioManager.Instance.PlaySound("PlayerDamaged", 0.9f, 1.2f);
+        CameraShaker.Instance.ShakeOnce(5, 1, 0.1f, 0.1f);
+        DOVirtual.Float(damagedVolume.weight, 1, 0.1f,value => damagedVolume.weight = value).OnComplete(() => DOVirtual.Float(damagedVolume.weight, 0, 1f,value => damagedVolume.weight = value));
     }
 
     public void Heal(float heal)
