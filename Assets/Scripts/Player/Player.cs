@@ -14,6 +14,15 @@ public class Player : MonoBehaviour
         interact = GetComponent<PlayerInteract>();
         inventory = GetComponent<PlayerInventory>();
         stats = GetComponent<PlayerStats>();
-        look = GetComponent<PlayerLook>();
+        look = FindAnyObjectByType<PlayerLook>();
+    }
+
+    public void Disable()
+    {
+        movement.enabled = false;
+        interact.enabled = false;
+        inventory.enabled = false;
+        stats.enabled = false;
+        look.enabled = false;
     }
 }

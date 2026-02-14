@@ -2,6 +2,7 @@ using TMPro;
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using DG.Tweening;
 
 [Serializable]
 public class InventoryHolder
@@ -17,6 +18,7 @@ public class PlayerInventory : MonoBehaviour
     [Header("Slot setup")]
     [SerializeField] private GameObject slotPrefab;
     [SerializeField] internal List<SlotHolder> SlotHolders = new();
+    [SerializeField] internal CanvasGroup group;
 
     [Header("Item use")]
     [SerializeField] internal InventoryHolder holder;
@@ -524,5 +526,15 @@ public class PlayerInventory : MonoBehaviour
         };
 
         activePickedUpUIs[key] = info;
+    }
+
+    private void OnDisable()
+    {
+        group.DOFade(0, 0.5f).SetUpdate(true);
+    }
+
+    private void OnEnable()
+    {
+        group.DOFade(1, 0.1f).SetUpdate(true);
     }
 }

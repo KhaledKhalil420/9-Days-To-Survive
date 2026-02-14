@@ -39,6 +39,8 @@ public class AudioManager : MonoBehaviour
         
         DefaultAudioMixer.audioMixer.SetFloat("VolumeMaster", -80f);
         StartCoroutine(FadeIn());
+        StartCoroutine(FadeInLowpass(1));
+
 
         SetupAudioManager();
     }
@@ -176,6 +178,37 @@ public class AudioManager : MonoBehaviour
         if (destroyOnSceneLoad)
             Destroy(gameObject);
     }
+
+    // Fade in Lowpass (removes lowpass effect)
+    public IEnumerator FadeInLowpass(float duration = 3f, float targetCutoff = 22000f)
+    {
+        DefaultAudioMixer.audioMixer.GetFloat("LowPass", out float startCutoff);
+        float time = 0f;
+        while (time < duration)
+        {
+            time += Time.unscaledDeltaTime;
+            float newCutoff = Mathf.Lerp(startCutoff, targetCutoff, time / duration);
+            DefaultAudioMixer.audioMixer.SetFloat("LowPass", newCutoff);
+            yield return null;
+        }
+        DefaultAudioMixer.audioMixer.SetFloat("LowPass", targetCutoff);
+    }
+
+    // Fade out Lowpass (applies lowpass effect)
+    public IEnumerator FadeOutLowpass(float duration = 3f, float targetCutoff = 500f)
+    {
+        DefaultAudioMixer.audioMixer.GetFloat("LowPass", out float startCutoff);
+        float time = 0f;
+        while (time < duration)
+        {
+            time += Time.unscaledDeltaTime;
+            float newCutoff = Mathf.Lerp(startCutoff, targetCutoff, time / duration);
+            DefaultAudioMixer.audioMixer.SetFloat("LowPass", newCutoff);
+            yield return null;
+        }
+        DefaultAudioMixer.audioMixer.SetFloat("LowPass", targetCutoff);
+    }
+
 
     /// <summary>
     /// Transition AudioClip replacement. finding it using it's name, and replacing it with the clip

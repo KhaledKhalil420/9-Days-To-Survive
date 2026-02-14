@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -11,6 +12,9 @@ public class GameManager : MonoBehaviour
     public static Player Player => Instance?.player;
     private Player player;
     public List<Item> starterItems;
+
+    [Header("Death")]
+    [SerializeField] private Volume volume;
 
     [Header("Waves Rounds")]
     [SerializeField] private List<Wave> waves;
@@ -135,9 +139,25 @@ public class GameManager : MonoBehaviour
     public void PlayerLost()
     {
         //TEMP.. RESTART GAME
-        UiManager.ToggleUi(true);
         DOTween.KillAll(false);
-        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        
+        DOVirtual.Float(volume.weight, 1, 1f,value => volume.weight = value);
+        Sequence eseq = DOTween.Sequence();
+        Transform cam = GameObject.FindWithTag("MainCamera").transform;
+        AudioManager.Instance.PlaySound("PlayerDeath");
+        eseq.Append(cam.transform.DOLocalMove(cam.localPosition + Vector3.back * 1.5f - new Vector3(0, 1, 0), 0.5f))
+            .Join(cam.transform.DOLocalRotate(new Vector3(-65, 0, 0), 2f));
+            
+        DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0, 2f)
+            .SetUpdate(true);
+
+        DOTween.To(() => Time.fixedDeltaTime, x => Time.fixedDeltaTime = x, 0, 2f)
+            .SetUpdate(true);
+
+        player.Disable();
+        UiManager.ToggleUi(true);
+
+        StartCoroutine(AudioManager.Instance.FadeOutLowpass());
     }
 
     #endregion
