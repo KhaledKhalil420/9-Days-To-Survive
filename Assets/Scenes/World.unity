@@ -8575,8 +8575,8 @@ MonoBehaviour:
   - enemies:
     - {fileID: 2246168851940632354, guid: ab1a0a91578b42a4b86807b608f32ae4, type: 3}
     requiredDefeats: 5
-    maxEnemies: 15
-    spawningCooldown: 0.5
+    maxEnemies: 3
+    spawningCooldown: 2
     spawningRadius: 15
     minimumSpawningDistance: 10
   enemiesDefeated: 0

@@ -15,4 +15,4 @@ MonoBehaviour:
   Name: Flint Axe
   sprite: {fileID: 21300000, guid: 95466404b90ed614bbb27ae53d194b9f, type: 3}
   prefab: {fileID: 6582095982051722072, guid: f24966728392e654aa54bc4cb2bb305f, type: 3}
-  discription: Flint Axe, Barley Breaks a tree
+  discription: Breaks trees.
