@@ -38,7 +38,6 @@ public class BuildingHammer : Item
         buildManager = BuildingManager.Instance;
         mainCamera = PlayerLook.mainCamera.transform;
         animator = GetComponent<Animator>();
-        buildManager?.UpdateBuildUI(availableBuildings[selectedBuildingIndex], true);
         SpawnGhost();
     }
 
@@ -82,7 +81,6 @@ public class BuildingHammer : Item
 
         TryPlace();
         animator.SetTrigger("Place");
-        buildManager.UpdateBuildUI(availableBuildings[selectedBuildingIndex], true);
 
     }
 
@@ -90,7 +88,6 @@ public class BuildingHammer : Item
     {
         TryDemolish();
         animator.SetTrigger("Demolish");       
-        buildManager.UpdateBuildUI(availableBuildings[selectedBuildingIndex], true); 
     }
 
     private void HandleSelection()
@@ -113,7 +110,6 @@ public class BuildingHammer : Item
 
         //Refresh ghost + ui
         SpawnGhost();
-        buildManager.UpdateBuildUI(availableBuildings[selectedBuildingIndex], false);
     }
 
     #endregion
@@ -338,13 +334,13 @@ public class BuildingHammer : Item
     public override void OnSelectOnce()
     {
         SpawnGhost();
-        buildManager?.UpdateBuildUI(availableBuildings[selectedBuildingIndex], true);
+        Debug.Log("T");
         buildManager?.ShowUI(true);
     }
 
     public override void OnSelect()
     {
-        //Show ui
+        buildManager?.UpdateBuildUI(availableBuildings[selectedBuildingIndex], true);
     }
 
     public override void OnChangingItems()

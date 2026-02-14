@@ -2,7 +2,7 @@ using UnityEngine;
 
 public static class BuildUtilities
 {
-    private const float BUILDING_TOUCH_THRESHOLD = 0f; // Small threshold for touching buildings
+    private const float BUILDING_TOUCH_THRESHOLD = 0.5f; // Small threshold for touching buildings
 
     public static bool TryGetHit(Transform camera, float radius, float maxDistance, LayerMask layers, out RaycastHit hit)
     {
@@ -82,7 +82,7 @@ public static class BuildUtilities
                     {
                         // Check if actually overlapping beyond threshold
                         float distance = Vector3.Distance(col.ClosestPoint(overlap.transform.position), overlap.ClosestPoint(col.transform.position));
-                        if (distance > BUILDING_TOUCH_THRESHOLD) continue;
+                        if (distance <= BUILDING_TOUCH_THRESHOLD) continue;
                     }
 
                     // Found a collision with something else - can't place

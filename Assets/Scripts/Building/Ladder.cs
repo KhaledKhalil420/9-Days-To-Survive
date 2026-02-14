@@ -50,9 +50,4 @@ public class Ladder : Building
         
         rigidbodiesOnLadder.Clear();
     }
-
-    void OnDestroy()
-    {
-        OnDeath();
-    }
 }

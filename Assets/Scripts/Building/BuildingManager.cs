@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.iOS;
 using UnityEngine.UI;
 
 public class BuildingManager : MonoBehaviour
@@ -39,6 +41,7 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private TMP_Text buildsQuantityText;
     [SerializeField] private Transform canvasParent;
     [SerializeField] private Image buildIcon;
+    [SerializeField] private TMP_Text buildPriceText;
     [SerializeField] private TMP_Text buildTitle;
     [SerializeField] private Transform recipeParent;
     [SerializeField] private Image recipePrefab;
@@ -71,18 +74,36 @@ public class BuildingManager : MonoBehaviour
     {
         buildIcon.sprite = building.data.sprite;
         buildTitle.text = building.data.buildingName;
-        buildsQuantityText.text =  currentBuilds.ToString() + "/" + buildLimitPoints.ToString();
-
-        ClearRecipe();
-
-        foreach (var ingredient in building.ingredients)
+        buildPriceText.text = building.data.pointsWorth.ToString();
+        string currentQuantity = currentBuilds > buildLimitPoints ? "<color=red>" + currentBuilds.ToString() + "</color>" : currentBuilds.ToString();
+        buildsQuantityText.text = currentQuantity + "/" + buildLimitPoints.ToString();
+    
+        UpdateRecipe(building.ingredients.ToList());
+    }
+    
+    void UpdateRecipe(List<Ingredient> ingredients)
+    {
+        // Add more UI elements if needed
+        while (recipeInstances.Count < ingredients.Count)
         {
             Image img = Instantiate(recipePrefab, recipeParent);
-            img.sprite = ingredient.item.data.sprite;
-            img.GetComponentInChildren<TMP_Text>().text =
-                ingredient.quantity.ToString();
-
             recipeInstances.Add(img.gameObject);
+        }
+    
+        // Remove excess UI elements if needed
+        while (recipeInstances.Count > ingredients.Count)
+        {
+            int lastIndex = recipeInstances.Count - 1;
+            Destroy(recipeInstances[lastIndex]);
+            recipeInstances.RemoveAt(lastIndex);
+        }
+    
+        // Update existing UI elements (reuse them!)
+        for (int i = 0; i < ingredients.Count; i++)
+        {
+            Image img = recipeInstances[i].GetComponent<Image>();
+            img.sprite = ingredients[i].item.data.sprite;
+            img.GetComponentInChildren<TMP_Text>().text = ingredients[i].quantity.ToString();
         }
     }
 

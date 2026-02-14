@@ -70,7 +70,7 @@ public class Building : MonoBehaviour, IDamagable
 
         if (!HasGroundSupport())
         {
-            Invoke(nameof(DestroyBuilding), 0.5f);
+            Invoke(nameof(DestroyBuilding), 0.25f);
         }
 
         CheckUpgrades();
@@ -113,7 +113,7 @@ public class Building : MonoBehaviour, IDamagable
             {
                 if(hit.TryGetComponent(out Building supportingBuilding))
                 {
-                    if (supportingBuilding.HasGroundSupport())
+                    if (supportingBuilding.HasGroundSupport() && supportingBuilding.isPlaced)
                     {
                         hasSupport = true;
                         break;
@@ -198,6 +198,7 @@ public class Building : MonoBehaviour, IDamagable
 
         BuildingManager.Instance.OnGridUpdated -= UpdateBuilding;
         BuildingManager.Instance.UpdateGrid();
+        
 
         source?.PlayOneShot(onDestroySound);
     }
