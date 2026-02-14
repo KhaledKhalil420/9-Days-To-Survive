@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Death")]
     [SerializeField] private Volume volume;
+    [SerializeField] private CanvasGroup group;
 
     [Header("Waves Rounds")]
     [SerializeField] private List<Wave> waves;
@@ -159,8 +160,8 @@ public class GameManager : MonoBehaviour
 
         AudioManager.Instance.SlowDown();
         StartCoroutine(AudioManager.Instance.FadeOutLowpass());
-
-        DOVirtual.DelayedCall(5, () => {SceneManager.LoadScene(0); Time.timeScale = 1; Time.fixedDeltaTime = 1;});
+        
+        DOVirtual.DelayedCall(5f, () => {AudioManager.Instance.FadeOut(false); group.DOFade(1f, 2.5f).SetUpdate(true).OnComplete(() => { SceneManager.LoadScene(0); Time.timeScale = 1f; Time.fixedDeltaTime = 1f; }); }).SetUpdate(true);
     }
 
     #endregion

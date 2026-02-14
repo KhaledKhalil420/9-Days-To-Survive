@@ -13,10 +13,15 @@ public class MainMenu : MonoBehaviour
     void Start()
     {
         startButton.onClick.AddListener(LoadGame);
+
+        group.alpha = 1;
+        DOVirtual.Float(group.alpha, 0, 2, x => group.alpha = x);
     }
 
     private void LoadGame()
     {
+        DOTween.KillAll();
+        
         parentGroup.interactable = false;
 
         //Fade out music
