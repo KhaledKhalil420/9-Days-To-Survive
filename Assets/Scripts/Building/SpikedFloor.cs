@@ -53,5 +53,5 @@ public class SpikedFloor : Building
         }
     }
 
-    void OnDestroy() => currentTween?.Kill();
+    public override void OnDeath() => currentTween?.Kill();
 }

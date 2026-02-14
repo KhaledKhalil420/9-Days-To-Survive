@@ -235,7 +235,7 @@ public class Building : MonoBehaviour, IDamagable
     {
         if(UpgradeManager.IncreaseHealthOnEnemyDeath)
         {
-            currentHealth += initHealth / 0.05f;
+            currentHealth += initHealth * 0.15f;
         }
     }
 
