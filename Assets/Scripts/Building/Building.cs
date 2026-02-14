@@ -141,9 +141,18 @@ public class Building : MonoBehaviour, IDamagable
         pivots.AddRange(pivotsOnBuild);
         BuildingManager.Instance.OnGridUpdated += UpdateBuilding;
         BuildingManager.Instance.UpdateGrid();
+        DayNightCycleManager.OnDayChange += ResetHealth;
         
         RebakeNav();
         OnPlaced();
+    }
+
+    private void ResetHealth(bool isDay)
+    {
+        if(isDay)
+        {
+            currentHealth = initHealth;
+        }
     }
 
     private void RebakeNav()
