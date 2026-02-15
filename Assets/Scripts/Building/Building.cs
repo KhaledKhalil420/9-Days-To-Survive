@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.AI;
 using System;
+using UnityEngine.Audio;
 
 public class Building : MonoBehaviour, IDamagable
 {
@@ -28,6 +29,7 @@ public class Building : MonoBehaviour, IDamagable
     [Header("Sounds")]
     [SerializeField] private AudioSource source;
     [SerializeField] private AudioClip onDestroySound;
+    [SerializeField] private AudioClip onDamageSound;
 
 
     private bool isPlaced = false;
@@ -207,6 +209,9 @@ public class Building : MonoBehaviour, IDamagable
     {
         currentHealth -= (int)damage;
         OnDamage();
+
+        if(onDamageSound != null)
+            source.PlayOneShot(onDamageSound, 0.8f);
         
         if (currentHealth <= 0)
         {

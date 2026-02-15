@@ -134,6 +134,30 @@ MonoBehaviour:
       Source: {fileID: 0}
       Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
       Clip: {fileID: 8300000, guid: f20ff5e506971104ea335edeec2ef65d, type: 3}
+    - SoundName: Selecting_Build
+      Loop: 0
+      PlayOnAwake: 0
+      Volume: 0.7
+      Pitch: 1
+      Source: {fileID: 0}
+      Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+      Clip: {fileID: 8300000, guid: 3299093339d15504696310f9b120fddd, type: 3}
+    - SoundName: Rotating_Build
+      Loop: 0
+      PlayOnAwake: 0
+      Volume: 0.7
+      Pitch: 1
+      Source: {fileID: 0}
+      Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+      Clip: {fileID: 8300000, guid: ecb2a9c3f3e619547bfdae246246947a, type: 3}
+    - SoundName: Craft
+      Loop: 0
+      PlayOnAwake: 0
+      Volume: 0.7
+      Pitch: 1
+      Source: {fileID: 0}
+      Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+      Clip: {fileID: 8300000, guid: 4d98dff55af45b14988eb4fcdadd1c3a, type: 3}
   startFadeIn: 0
   musicMixerGroup: {fileID: 4491711137434354881, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
   soundEffectMixerGroup: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}

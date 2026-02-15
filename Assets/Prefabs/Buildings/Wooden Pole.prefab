@@ -120,8 +120,9 @@ MonoBehaviour:
   - {fileID: 283616446916370393}
   pivotsOnBuild: []
   supportCheckScale: 1.15
-  source: {fileID: 0}
+  source: {fileID: 8640619084352257344}
   onDestroySound: {fileID: 8300000, guid: e3e0644a4d59680439ef72e55ead6051, type: 3}
+  onDamageSound: {fileID: 8300000, guid: a495c1a2eb8e959448d88591513d6729, type: 3}
 --- !u!65 &3552079121617091838
 BoxCollider:
   m_ObjectHideFlags: 0

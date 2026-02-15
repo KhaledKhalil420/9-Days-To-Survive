@@ -58,7 +58,7 @@ public class CraftSlot : MonoBehaviour, IPointerDownHandler
             playerInventory.TakeItem(ingredient.item, ingredient.quantity, out bool _);
         }   
         
-        AudioManager.Instance.PlaySound("Pickup", 0.95f, 1.1f);
+        AudioManager.Instance.PlaySound("Craft", 0.95f, 1.1f);
         transform.parent.gameObject.SetActive(false);
     }
 }

@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     public int enemiesDefeated;
 
     [Header("Points")]
-    public static float StoredPoints = 0;
+    public static float StoredPoints = 0; //Display points in UI somehow ok?
     internal float MaxBuilds => BuildingManager.Instance.buildLimitPoints;
     internal int buildsBeforeNightStarted = 0;
     public GameObject upgradesPopup;
