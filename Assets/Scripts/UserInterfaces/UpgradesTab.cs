@@ -4,12 +4,12 @@ using UnityEngine;
 public class UpgradesTab : PopupTab
 {
     [Header("Datas and Upgrades")]
-    [SerializeField] List<UpgradeData> upgradesList;
-    [SerializeField] int upgradesCount;
+    [SerializeField] private List<UpgradeData> upgradesList;
+    [SerializeField] private int upgradesCount;
 
     [Header("Ui")]
-    [SerializeField] Transform parent;
-    [SerializeField] GameObject upgradeUI;
+    [SerializeField] private Transform parent;
+    [SerializeField] private GameObject upgradeUI;
 
     void Start()
     {
@@ -25,5 +25,10 @@ public class UpgradesTab : PopupTab
             ui.AttachedUpgrade = selectedUpgrade;
             ui.Setup();
         }
+    }
+
+    public void PlayClosingSound()
+    {
+        AudioManager.Instance.PlaySound("Ui_Close");
     }
 }

@@ -974,11 +974,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   availableRecipes:
-  - {fileID: 11400000, guid: 2050f6c64b1ae2b4fa9a0225ca1fa4e0, type: 2}
-  - {fileID: 11400000, guid: 2c4f86c1f4e87714fb070259c4999195, type: 2}
-  - {fileID: 11400000, guid: e852869cfb4d799488b0e26ab1260f92, type: 2}
-  - {fileID: 11400000, guid: e852869cfb4d799488b0e26ab1260f92, type: 2}
   - {fileID: 11400000, guid: 91adf94fddd3e4843b9dd85309eb8c83, type: 2}
+  - {fileID: 11400000, guid: e852869cfb4d799488b0e26ab1260f92, type: 2}
   uiHolder: {fileID: 8385736257927671490}
   recipeIcon_Image: {fileID: 2935601502420707642}
   recipeDiscreption_Text: {fileID: 5577177748774976853}

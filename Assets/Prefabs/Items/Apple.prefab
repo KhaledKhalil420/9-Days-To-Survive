@@ -105,15 +105,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ed125ac33abd734cb8831694949f5bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parentSlot: {fileID: 0}
-  heldby: {fileID: 0}
   data: {fileID: 11400000, guid: bcfd48ddf6b17f74da8e997f899c81ca, type: 2}
-  isSingleQuantityItem: 0
   HeldQuantity: 25
-  isItemPickedUp: 0
+  isSingleQuantityItem: 0
   timetoConsume: 1
   anim: {fileID: 2212967355177618160}
-  health: 15
+  health: 5
   satiation: 3
   source: {fileID: 6595006450326892008}
   eatingSound: {fileID: 8300000, guid: 633038fee9a5e844ca5a0413fe183fb0, type: 3}

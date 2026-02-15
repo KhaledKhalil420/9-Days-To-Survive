@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UpgradeUI : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
+public class UpgradeUI : MonoBehaviour
 {
     public UpgradeData AttachedUpgrade;
     [SerializeField] private UnityEvent Event;
@@ -28,21 +28,12 @@ public class UpgradeUI : MonoBehaviour, IPointerDownHandler, IPointerEnterHandle
     {
         if(GameManager.StoredPoints >= AttachedUpgrade.price)
         {
+            AudioManager.Instance.PlaySound("Ui_Click");
             GameManager.StoredPoints -= AttachedUpgrade.price;
             UpgradeManager.GiveUpgrade(AttachedUpgrade);
             Event?.Invoke();
             Destroy(gameObject);
         }
         
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        transform.DOScale(initSize * 1.05f, 0.5f);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        transform.DOScale(initSize, 0.5f);
     }
 }

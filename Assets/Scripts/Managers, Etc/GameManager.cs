@@ -62,14 +62,15 @@ public class GameManager : MonoBehaviour
     {
         if(isDay)
         {
+            waveTriggered = false;
+            AIManager.KillAll();   
+
             if(spawnPrize)
             {
                 spawnPrize = false;
                 Instantiate(upgradesPopup);
             }
 
-            AIManager.KillAll();   
-            waveTriggered = false;
             return;
         }
 
@@ -108,6 +109,7 @@ public class GameManager : MonoBehaviour
                 DayNightCycleManager.SetTime(DayNightCycleManager.CycleState.Day);
                 waveTriggered = false;
                 GivePoints();
+                AIManager.KillAll();   
 
             }
         }
@@ -156,10 +158,12 @@ public class GameManager : MonoBehaviour
             .SetUpdate(true);
 
         player.Disable();
-        UiManager.ToggleUi(true);
 
         AudioManager.Instance.SlowDown();
         StartCoroutine(AudioManager.Instance.FadeOutLowpass());
+
+        UiManager.ToggleUi(true);
+        UiManager.CloseAll();
         
         DOVirtual.DelayedCall(5f, () => {AudioManager.Instance.FadeOut(false); group.DOFade(1f, 2.5f).SetUpdate(true).OnComplete(() => { SceneManager.LoadScene(0); Time.timeScale = 1f; Time.fixedDeltaTime = 1f; }); }).SetUpdate(true);
     }

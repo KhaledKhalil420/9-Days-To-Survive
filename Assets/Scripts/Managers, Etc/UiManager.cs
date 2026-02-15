@@ -35,4 +35,21 @@ public class UiManager : MonoBehaviour
             tab.CloseTab();
         }
     }
+
+    public static void CloseUiPopups()
+    {
+        PopupTab[] tabs = FindObjectsByType<PopupTab>(FindObjectsSortMode.None);
+        foreach (PopupTab tab in tabs)
+        {
+            tab.Close();
+        
+        
+        }
+    }
+
+    public static void CloseAll()
+    {
+        CloseUiPopups();
+        CloseUiTabs();
+    }
 }

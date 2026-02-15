@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7931108405707635268}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.84532, y: 0, z: -14.81413}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -73,7 +73,7 @@ MonoBehaviour:
     - SoundName: BagOpen
       Loop: 0
       PlayOnAwake: 0
-      Volume: 0.7
+      Volume: 0.2
       Pitch: 1
       Source: {fileID: 0}
       Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
@@ -81,7 +81,7 @@ MonoBehaviour:
     - SoundName: BagClose
       Loop: 0
       PlayOnAwake: 0
-      Volume: 0.7
+      Volume: 0.2
       Pitch: 1
       Source: {fileID: 0}
       Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
@@ -110,6 +110,30 @@ MonoBehaviour:
       Source: {fileID: 0}
       Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
       Clip: {fileID: 8300000, guid: fea7e148ca7cad84caee2759ed06cb64, type: 3}
+    - SoundName: Ui_Click
+      Loop: 0
+      PlayOnAwake: 0
+      Volume: 1
+      Pitch: 1
+      Source: {fileID: 0}
+      Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+      Clip: {fileID: 8300000, guid: ee437e99a4693cc4f97d8507d5a9cf94, type: 3}
+    - SoundName: Ui_Hover
+      Loop: 0
+      PlayOnAwake: 0
+      Volume: 1
+      Pitch: 1
+      Source: {fileID: 0}
+      Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+      Clip: {fileID: 8300000, guid: dcde50188e091da41a0679795086b9ea, type: 3}
+    - SoundName: Ui_Close
+      Loop: 0
+      PlayOnAwake: 0
+      Volume: 1
+      Pitch: 1
+      Source: {fileID: 0}
+      Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+      Clip: {fileID: 8300000, guid: f20ff5e506971104ea335edeec2ef65d, type: 3}
   startFadeIn: 0
   musicMixerGroup: {fileID: 4491711137434354881, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
   soundEffectMixerGroup: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
