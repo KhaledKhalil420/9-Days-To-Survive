@@ -110,7 +110,7 @@ MonoBehaviour:
   isSingleQuantityItem: 0
   timetoConsume: 1
   anim: {fileID: 2212967355177618160}
-  health: 5
+  health: 1
   satiation: 3
   source: {fileID: 6595006450326892008}
   eatingSound: {fileID: 8300000, guid: 633038fee9a5e844ca5a0413fe183fb0, type: 3}

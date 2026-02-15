@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UpgradeUI : MonoBehaviour
+public class UpgradeUI : MonoBehaviour, IPointerDownHandler
 {
     public UpgradeData AttachedUpgrade;
     [SerializeField] private UnityEvent Event;
