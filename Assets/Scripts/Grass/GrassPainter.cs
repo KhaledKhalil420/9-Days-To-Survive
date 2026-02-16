@@ -86,10 +86,6 @@ public class GrassPainter : MonoBehaviour
 
     public static System.EventHandler OnPaintedGrass;
 
-    void OnDestroy()
-    {
-    }
-
     private void OnEnable()
     {
         filter = GetComponent<MeshFilter>();

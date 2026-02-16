@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -24,5 +25,10 @@ public class Player : MonoBehaviour
         inventory.enabled = false;
         stats.enabled = false;
         look.enabled = false;
+    }
+
+    void OnDestroy()
+    {
+        DOTween.KillAll();
     }
 }

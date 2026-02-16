@@ -32,4 +32,9 @@ public class UpgradeManager : MonoBehaviour
         Upgrade upgrade = Instantiate(data.upgrade, GameManager.Player.transform).GetComponent<Upgrade>();
         upgrade.Setup(Instance);
     }
+
+    void OnDestroy()
+    {
+        OnEnemyDeath = null;
+    }
 }

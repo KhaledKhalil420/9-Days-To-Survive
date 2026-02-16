@@ -14,12 +14,7 @@ public class DayMusicSystem : MonoBehaviour
 
     private void Start()
     {
-        DayNightCycleManager.OnDayChange += ChangeMusic;
-    }
-
-    private void OnDestroy()
-    {
-        DayNightCycleManager.OnDayChange -= ChangeMusic;
+        DayNightCycleManager.Instance.OnDayChange += ChangeMusic;
     }
     
 

@@ -44,7 +44,7 @@ public class WorldGenerator : MonoBehaviour
 
     private void Start()
     {
-        DayNightCycleManager.OnDayChange += SpawnNextDay;
+        DayNightCycleManager.Instance.OnDayChange += SpawnNextDay;
         
         if (spawnGrassAtStart)
             SpawnGrass();

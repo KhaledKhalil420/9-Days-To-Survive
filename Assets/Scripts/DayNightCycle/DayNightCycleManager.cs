@@ -9,7 +9,7 @@ public class DayNightCycleManager : MonoBehaviour
     public static DayNightCycleManager Instance;
     public int DayCount = 0;
     public delegate void DayChangeArgs(bool state);
-    public static event DayChangeArgs OnDayChange;
+    public event DayChangeArgs OnDayChange;
 
     public enum CycleState { Day, Night }
 
@@ -89,7 +89,7 @@ public class DayNightCycleManager : MonoBehaviour
         Instance.currentState = cycleState;
         bool isDay = cycleState == CycleState.Day;
         Instance.DayCount += isDay ? 1 : 0;
-        OnDayChange?.Invoke(isDay);
+        Instance.OnDayChange?.Invoke(isDay);
     }
 
     void UpdateSkyboxBlend()

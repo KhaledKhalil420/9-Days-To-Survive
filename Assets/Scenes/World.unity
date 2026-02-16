@@ -10825,7 +10825,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1da017f089bc2d4bb5740fbf40b8152, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildLimitPoints: 100
+  buildLimitPoints: 150
   extraBuildingHealth: 0
   extraBuildingDamage: 0
   smoke: {fileID: 7301512366205885463, guid: e15eb7276d1a1cb4bb4aeea033137d4b, type: 3}

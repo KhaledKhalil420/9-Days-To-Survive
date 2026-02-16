@@ -12,41 +12,33 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
-        startButton.onClick.AddListener(LoadGame);
+        //Reset time
+        Time.timeScale = 1;
+        Time.fixedDeltaTime = 0.01f;
 
+        //Unlock mouse
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+        //Setup buttons
+        startButton.onClick.AddListener(LoadGame);
+        
+        //Fade out
         group.alpha = 1;
-        DOVirtual.Float(group.alpha, 0, 2, x => group.alpha = x);
+        group.DOFade(0, 2);
     }
 
     private void LoadGame()
-    {
-        DOTween.KillAll();
-        
+    {        
         parentGroup.interactable = false;
 
         //Fade out music
-        DOVirtual.Float(source.volume, 0, 4, x => source.volume = x);
+        source.DOFade(0, 4);
 
         //Fade in black screen
-        DOVirtual.Float(group.alpha, 1, 2, x => group.alpha = x);
+        group.DOFade(1, 2);
 
         //Start async scene load after short delay
-        StartCoroutine(LoadSceneAsync("World", 2f));
-    }
-
-    private System.Collections.IEnumerator LoadSceneAsync(string sceneName, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-        asyncLoad.allowSceneActivation = false;
-
-        while (!asyncLoad.isDone)
-        {
-            if (asyncLoad.progress >= 0.9f)
-                asyncLoad.allowSceneActivation = true;
-
-            yield return null;
-        }
+        DOVirtual.DelayedCall(5, () => SceneManager.LoadScene("World")).OnComplete(() => DOTween.KillAll());
     }
 }

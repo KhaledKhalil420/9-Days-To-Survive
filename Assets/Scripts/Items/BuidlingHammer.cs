@@ -70,7 +70,9 @@ public class BuildingHammer : Item
         {
             currentRotation -= buildManager.rotationAngle;
             rotationTween?.Kill();
-            rotationTween = ghostBuilding?.transform.DORotate(new Vector3(0f, currentRotation, 0f), 0.15f).SetEase(Ease.OutQuad);
+
+            if(ghostBuilding != null)
+            rotationTween = ghostBuilding.transform.DORotate(new Vector3(0f, currentRotation, 0f), 0.15f).SetEase(Ease.OutQuad);
 
             //PlaySound
             AudioManager.Instance.PlaySound("Rotating_Build", 0.9f, 1.15f);

@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        StoredPoints = 0;
 
     }
 
@@ -45,7 +46,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        DayNightCycleManager.OnDayChange += TriggerWave;
+        DayNightCycleManager.Instance.OnDayChange += TriggerWave;
         GivePlayerStarterItems();
     }
 
@@ -165,7 +166,7 @@ public class GameManager : MonoBehaviour
         UiManager.ToggleUi(true);
         UiManager.CloseAll();
         
-        DOVirtual.DelayedCall(5f, () => {AudioManager.Instance.FadeOut(false); group.DOFade(1f, 2.5f).SetUpdate(true).OnComplete(() => { SceneManager.LoadScene(0); Time.timeScale = 1f; Time.fixedDeltaTime = 1f; }); }).SetUpdate(true);
+        DOVirtual.DelayedCall(5f, () => {AudioManager.Instance.FadeOut(false); group.DOFade(1f, 2.5f).SetUpdate(true).OnComplete(() => { SceneManager.LoadScene(0); Time.timeScale = 1f; Time.fixedDeltaTime = 0.01f; }); }).SetUpdate(true);
     }
 
     #endregion

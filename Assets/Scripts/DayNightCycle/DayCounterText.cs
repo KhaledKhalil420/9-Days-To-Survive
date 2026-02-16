@@ -7,7 +7,7 @@ public class DayCounterText : MonoBehaviour
 
     private void Start()
     {
-        DayNightCycleManager.OnDayChange += UpdateText;
+        DayNightCycleManager.Instance.OnDayChange += UpdateText;
     }
 
     public void UpdateText(bool isDay)

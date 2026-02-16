@@ -143,7 +143,7 @@ public class Building : MonoBehaviour, IDamagable
         pivots.AddRange(pivotsOnBuild);
         BuildingManager.Instance.OnGridUpdated += UpdateBuilding;
         BuildingManager.Instance.UpdateGrid();
-        DayNightCycleManager.OnDayChange += ResetHealth;
+        DayNightCycleManager.Instance.OnDayChange += ResetHealth;
         
         RebakeNav();
         OnPlaced();
@@ -200,9 +200,6 @@ public class Building : MonoBehaviour, IDamagable
 
         BuildingManager.Instance.OnGridUpdated -= UpdateBuilding;
         BuildingManager.Instance.UpdateGrid();
-        
-
-        source?.PlayOneShot(onDestroySound);
     }
 
     public void Damage(float damage)

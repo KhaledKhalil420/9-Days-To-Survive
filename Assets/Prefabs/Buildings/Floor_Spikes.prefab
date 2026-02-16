@@ -166,6 +166,7 @@ MonoBehaviour:
   supportCheckScale: 1
   source: {fileID: -3788880822596730553}
   onDestroySound: {fileID: 8300000, guid: e3e0644a4d59680439ef72e55ead6051, type: 3}
+  onDamageSound: {fileID: 0}
   damage: 5
   damageInterval: 1
   skinnedMesh: {fileID: 7730138191868455486}
@@ -525,7 +526,7 @@ Transform:
   m_GameObject: {fileID: 6058730190719138828}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -75757.5, y: -7777.5, z: -75.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

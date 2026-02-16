@@ -56,7 +56,7 @@ public class BuildingManager : MonoBehaviour
     private void Start()
     {
         animator = canvasParent.GetComponent<Animator>();
-        DayNightCycleManager.OnDayChange += UpdateBuildingStatus;
+        DayNightCycleManager.Instance.OnDayChange += UpdateBuildingStatus;
     }
 
     private void UpdateBuildingStatus(bool value)
