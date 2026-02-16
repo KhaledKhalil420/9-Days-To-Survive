@@ -1311,9 +1311,9 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 4491711137434354881, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: b155231853d07154bb4aacef24d2b18e, type: 3}
+  m_Resource: {fileID: 8300000, guid: ed0152147ad55394a8cdf724edea5b5e, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.6
+  m_Volume: 0.35
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1413,8 +1413,6 @@ MonoBehaviour:
   nightSource: {fileID: 217955937}
   transitionTime: 3
   dayTracks:
-  - clip: {fileID: 8300000, guid: b155231853d07154bb4aacef24d2b18e, type: 3}
-  - clip: {fileID: 8300000, guid: 745b8f45abfc36945bd1816fb1167966, type: 3}
   - clip: {fileID: 8300000, guid: c294658cbd25c47488e682f37687286c, type: 3}
   nightTracks:
   - clip: {fileID: 8300000, guid: a4e85a7a66b20f74c83dab3cbfd33935, type: 3}
@@ -14056,7 +14054,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_TargetDisplay: 0
 --- !u!1 &1562540753
 GameObject:

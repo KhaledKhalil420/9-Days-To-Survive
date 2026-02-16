@@ -23,8 +23,10 @@ public class AIManager : MonoBehaviour
         if (timer < tickRate) return;
         timer = 0f;
 
-        foreach (var e in registeredEnemies)
-            e.TickBrain(); 
+        for (int i = registeredEnemies.Count - 1; i >= 0; i--)
+        {
+            registeredEnemies[i].TickBrain();
+        }
     }
 
     public static void Register(EnemyBrain e) => Instance.registeredEnemies.Add(e);

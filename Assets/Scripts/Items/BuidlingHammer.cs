@@ -347,6 +347,7 @@ public class BuildingHammer : Item
 
     public override void OnPick()
     {
+        if(!isSelected) return;
         SpawnGhost();
         BuildingManager.Instance.ShowUI(true);
     }

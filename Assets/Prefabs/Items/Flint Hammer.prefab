@@ -107,11 +107,9 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 0f5bf68b6395ef544ae77264f231b84c, type: 2}
   HeldQuantity: 1
   isSingleQuantityItem: 1
-  isItemPickedUp: 0
   availableBuildings:
   - {fileID: 7405853830563566866, guid: 0fb8f734329208243a18121d476bcfb5, type: 3}
   - {fileID: 5240809725349178419, guid: 9c7d8e5ffbe09c84b9280a8727ff412a, type: 3}
-  - {fileID: 5240809725349178419, guid: 083f78e0846412a4587094eca104f2a3, type: 3}
   - {fileID: 5240809725349178419, guid: d36053dcc2757d44cb2ce8fc28553b16, type: 3}
   - {fileID: 6661475757396127233, guid: 923ec0e0524a6ad4dbb0cfa209cca95f, type: 3}
   - {fileID: 7405853830563566866, guid: 3bca4a5805c585a40b1d8f12bfd989d4, type: 3}

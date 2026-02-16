@@ -34,6 +34,9 @@ public class BasicEnemy : GroundEnemy
     {
         if(target == null) 
             return;
+            
+        if(!agent.isOnNavMesh) 
+            return;
 
         if(agent.remainingDistance > agent.stoppingDistance) 
             return;
