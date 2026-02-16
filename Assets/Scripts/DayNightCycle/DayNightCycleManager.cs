@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Rendering;
+using EZCameraShake;
 
 public class DayNightCycleManager : MonoBehaviour
 {
@@ -60,8 +61,11 @@ public class DayNightCycleManager : MonoBehaviour
 
     void Update()
     {
+        //Audio & Visual Feedback
         triggeringProgress.fillAmount = Mathf.Lerp(triggeringProgress.fillAmount, holdTimer / holdTime, 50 * Time.deltaTime);
         source.volume = Mathf.Lerp(source.volume, holdTimer / holdTime, 25f * Time.deltaTime);
+        float targetPitch = 1f + (holdTimer / holdTime) / 1.5f;
+        source.pitch = Mathf.Lerp(source.pitch, targetPitch, 25f * Time.deltaTime);
         volume.weight = Mathf.Lerp(volume.weight, holdTimer / holdTime, 5 * Time.deltaTime);
 
         if (Input.GetKey(KeyCode.G) && currentState == CycleState.Day)
@@ -70,6 +74,9 @@ public class DayNightCycleManager : MonoBehaviour
 
             if(holdTimer >= holdTime)
             {
+                //Feedback
+                CameraShaker.Instance.ShakeOnce(5, 2, 0.2f, 1);
+
                 holdTimer = 0;
                 bassDropSource.Play();
                 SetTime(currentState == CycleState.Day ? CycleState.Night : CycleState.Day);
