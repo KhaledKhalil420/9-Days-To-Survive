@@ -28,6 +28,8 @@ public class QuestManager : MonoBehaviour
     public void CompleteQuest()
     {
         //Spawn next quest
+        questIndex++;
+        
         if(questIndex < quests.Count) 
             SpawnQuest(quests[questIndex]);
     }
