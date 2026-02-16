@@ -14,6 +14,7 @@ public class Quest : MonoBehaviour
     
     public void Bootstrap(QuestManager _questManager)
     {
+        UpdateUi("");
         questManager = _questManager;
         OnSpawned();
 
@@ -21,6 +22,7 @@ public class Quest : MonoBehaviour
         float initPosition = transform.position.x;
         transform.localPosition -= new Vector3(500, 0);
         transform.DOMoveX(initPosition, 1).SetEase(Ease.InOutSine);
+
     }
 
     public void UpdateUi(string additionalText)
@@ -34,6 +36,11 @@ public class Quest : MonoBehaviour
     {
         //Animation and close then spawn next quest
         DOVirtual.DelayedCall(2, () => transform.DOMoveX(-500, 1).SetEase(Ease.InOutSine).OnComplete(() => {Destroy(gameObject); questManager.CompleteQuest();}));
+    }
+
+    void OnDestroy()
+    {
+        DOTween.Kill(gameObject);
     }
 
     public void CompleteQuest()

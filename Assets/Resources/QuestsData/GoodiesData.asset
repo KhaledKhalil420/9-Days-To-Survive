@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: GoodiesData
   m_EditorClassIdentifier: 
   questName: Goodies
-  description: Open Inventory using TAB.
+  description: Open Inventory using tab
   sprite: {fileID: 21300000, guid: 4ac651c013200f14e8a835ca6ab89010, type: 3}
