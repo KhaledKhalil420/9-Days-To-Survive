@@ -33,6 +33,7 @@ public class Quest : MonoBehaviour
 
     public void Close()
     {
+        AudioManager.Instance.PlaySound("Quest_Finish");
         DOVirtual.DelayedCall(1f, () =>
         {
             transform.DOMoveX(-500, 1f)
@@ -52,6 +53,9 @@ public class Quest : MonoBehaviour
 
     public void CompleteQuest()
     {
+        if(isCompleted) 
+            return;
+            
         isCompleted = true;
         CompletedText.text = "<Color=Green>Completed"; 
         Close();

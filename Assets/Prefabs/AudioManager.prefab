@@ -174,6 +174,22 @@ MonoBehaviour:
       Source: {fileID: 0}
       Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
       Clip: {fileID: 8300000, guid: 3599fbfcb43ec004bb28941af10b2bc2, type: 3}
+    - SoundName: Quest_Click
+      Loop: 0
+      PlayOnAwake: 0
+      Volume: 0.35
+      Pitch: 1
+      Source: {fileID: 0}
+      Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+      Clip: {fileID: 8300000, guid: 22822dd98daf7c14f8783656420dedb9, type: 3}
+    - SoundName: Quest_Finish
+      Loop: 0
+      PlayOnAwake: 0
+      Volume: 0.35
+      Pitch: 1
+      Source: {fileID: 0}
+      Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+      Clip: {fileID: 8300000, guid: cd1e8c45ddb972c4480b228b0b4b2459, type: 3}
   startFadeIn: 0
   musicMixerGroup: {fileID: 4491711137434354881, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
   soundEffectMixerGroup: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}

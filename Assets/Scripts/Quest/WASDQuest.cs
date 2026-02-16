@@ -13,10 +13,26 @@ public class WASDQuest : Quest
     {
         if (isCompleted) return;
 
-        if (Input.GetKeyDown(KeyCode.W)) pressedW = true;
-        if (Input.GetKeyDown(KeyCode.A)) pressedA = true;
-        if (Input.GetKeyDown(KeyCode.S)) pressedS = true;
-        if (Input.GetKeyDown(KeyCode.D)) pressedD = true;
+        if (Input.GetKeyDown(KeyCode.W) && !pressedW)
+        {
+            pressedW = true;
+            AudioManager.Instance.PlaySound("Quest_Click");
+        }
+        if (Input.GetKeyDown(KeyCode.A) && !pressedA)
+        {
+            pressedA = true;
+            AudioManager.Instance.PlaySound("Quest_Click");
+        }
+        if (Input.GetKeyDown(KeyCode.S) && !pressedS)
+        {
+            pressedS = true;
+            AudioManager.Instance.PlaySound("Quest_Click");
+        }
+        if (Input.GetKeyDown(KeyCode.D) && !pressedD)
+        {
+            pressedD = true;
+            AudioManager.Instance.PlaySound("Quest_Click");
+        }
 
         UpdateUi(BuildWASDString());
 
