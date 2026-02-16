@@ -32,6 +32,12 @@ public class GroundEnemy : EnemyBrain
             agent.SetDestination(distanation);
         }
 
+        if(DayNightCycleManager.Instance?.currentState == DayNightCycleManager.CycleState.Day)
+        {
+            AIManager.UnRegister(this);
+            Destroy(gameObject);
+        }
+
         OnBehaviourTick();
     }
 
