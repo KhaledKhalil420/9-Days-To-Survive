@@ -40,6 +40,16 @@ public class Ladder : Building
 
     public override void OnDemolish()
     {
+        ResetCollision();
+    }
+
+    public override void OnDeath()
+    {
+        ResetCollision();
+    }
+
+    private void ResetCollision()
+    {
         foreach (Rigidbody rb in rigidbodiesOnLadder)
         {
             if (rb != null)

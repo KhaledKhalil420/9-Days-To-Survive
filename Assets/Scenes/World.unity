@@ -11307,7 +11307,7 @@ MonoBehaviour:
   extraBuildingDamage: 0
   smoke: {fileID: 7301512366205885463, guid: e15eb7276d1a1cb4bb4aeea033137d4b, type: 3}
   gridSize: 2
-  maxBuildDistance: 4
+  maxBuildDistance: 6
   snapDistance: 1
   sphereCastRadius: 0.1
   rotationAngle: 45.01
