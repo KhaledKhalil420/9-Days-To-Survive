@@ -66,6 +66,7 @@ public class BuildingManager : MonoBehaviour
 
     public void ShowUI(bool state)
     {
+        Debug.Log(state);
         animator.SetBool("Using", state);
     }
 

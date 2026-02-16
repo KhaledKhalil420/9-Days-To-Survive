@@ -119,6 +119,11 @@ public class PlayerInventory : MonoBehaviour
             emptySlot.HeldQuantity = item.HeldQuantity;
             item.heldby = gameObject;
             item.SetItemParent(holder.hand);
+            if(selectedSlot == emptySlot)
+            {
+                item.isSelected = true;
+            }
+            item.OnPick();
             emptySlot.UpdateSlot();
 
             SpawnPickedUpUI(item.data, item.HeldQuantity);
@@ -130,7 +135,7 @@ public class PlayerInventory : MonoBehaviour
         {
             given = false;
         }
-
+        
         UpdateSlots();
     }
 

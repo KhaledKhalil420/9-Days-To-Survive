@@ -342,8 +342,13 @@ public class BuildingHammer : Item
     public override void OnSelectOnce()
     {
         SpawnGhost();
-        Debug.Log("T");
-        buildManager?.ShowUI(true);
+        BuildingManager.Instance.ShowUI(true);
+    }
+
+    public override void OnPick()
+    {
+        SpawnGhost();
+        BuildingManager.Instance.ShowUI(true);
     }
 
     public override void OnSelect()

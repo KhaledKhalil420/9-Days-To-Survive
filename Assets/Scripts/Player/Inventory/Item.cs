@@ -67,6 +67,11 @@ public class Item : MonoBehaviour, IHighlightable
     }
 
 
+    public virtual void OnPick()
+    {
+    }
+
+
     public virtual void OnThrow()
     {
     }
