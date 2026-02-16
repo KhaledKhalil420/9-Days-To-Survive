@@ -7,18 +7,18 @@ using UnityEngine;
 public class QuestCreatorWindow : EditorWindow
 {
     private const string TEMPLATES_PATH = "Assets/Prefabs/Quests/Templates";
-    private const string PREFABS_PATH   = "Assets/Prefabs/Quests";
-    private const string DATA_PATH      = "Assets/Resources/QuestsData";
+    private const string PREFABS_PATH = "Assets/Prefabs/Quests";
+    private const string DATA_PATH = "Assets/Resources/QuestsData";
 
-    private List<GameObject> templates     = new();
-    private string[]         templateNames = Array.Empty<string>();
-    private int              selectedTemplate;
+    private List<GameObject> templates = new();
+    private string[] templateNames = Array.Empty<string>();
+    private int selectedTemplate;
 
-    private List<Type> questTypes     = new();
-    private string[]   questTypeNames = Array.Empty<string>();
-    private int        selectedType;
+    private List<Type> questTypes = new();
+    private string[] questTypeNames = Array.Empty<string>();
+    private int selectedType;
 
-    private string questName   = "New Quest";
+    private string questName = "New Quest";
     private string description = "Description...";
     private Sprite sprite;
 
@@ -82,9 +82,9 @@ public class QuestCreatorWindow : EditorWindow
 
         EditorGUILayout.Space(4);
 
-        questName   = EditorGUILayout.TextField("Name", questName);
+        questName = EditorGUILayout.TextField("Name", questName);
         description = EditorGUILayout.TextArea(description, GUILayout.Height(48));
-        sprite      = (Sprite)EditorGUILayout.ObjectField("Sprite", sprite, typeof(Sprite), false);
+        sprite = (Sprite)EditorGUILayout.ObjectField("Sprite", sprite, typeof(Sprite), false);
 
         EditorGUILayout.Space(8);
 
@@ -98,20 +98,18 @@ public class QuestCreatorWindow : EditorWindow
         EnsureFolder(DATA_PATH);
         EnsureFolder(PREFABS_PATH);
 
-        // QuestData asset
-        string dataPath      = AssetDatabase.GenerateUniqueAssetPath($"{DATA_PATH}/{questName.Replace(" ", "")}Data.asset");
-        QuestData data       = ScriptableObject.CreateInstance<QuestData>();
-        data.questName       = questName;
-        data.description     = description;
-        data.sprite          = sprite;
+        string dataPath = AssetDatabase.GenerateUniqueAssetPath($"{DATA_PATH}/{questName.Replace(" ", "")}Data.asset");
+        QuestData data = ScriptableObject.CreateInstance<QuestData>();
+        data.questName = questName;
+        data.description = description;
+        data.sprite = sprite;
         AssetDatabase.CreateAsset(data, dataPath);
 
-        // Clone template, swap component, rewire
-        GameObject go  = (GameObject)PrefabUtility.InstantiatePrefab(templates[selectedTemplate]);
-        go.name        = $"{questName.Replace(" ", "")}Quest";
-        Quest old      = go.GetComponent<Quest>();
+        GameObject go = Instantiate(templates[selectedTemplate]);
+        go.name = $"{questName.Replace(" ", "")}Quest";
+        Quest old = go.GetComponent<Quest>();
 
-        var oldSo      = new SerializedObject(old);
+        var oldSo = new SerializedObject(old);
         var cachedIcon = oldSo.FindProperty("imageIcon").objectReferenceValue;
         var cachedName = oldSo.FindProperty("NameText").objectReferenceValue;
         var cachedDesc = oldSo.FindProperty("descriptionText").objectReferenceValue;
@@ -119,22 +117,20 @@ public class QuestCreatorWindow : EditorWindow
         DestroyImmediate(old);
 
         Quest newQuest = (Quest)go.AddComponent(questTypes[selectedType]);
-        var newSo      = new SerializedObject(newQuest);
-        newSo.FindProperty("data").objectReferenceValue            = data;
-        newSo.FindProperty("imageIcon").objectReferenceValue       = cachedIcon;
-        newSo.FindProperty("NameText").objectReferenceValue        = cachedName;
+        var newSo = new SerializedObject(newQuest);
+        newSo.FindProperty("data").objectReferenceValue = data;
+        newSo.FindProperty("imageIcon").objectReferenceValue = cachedIcon;
+        newSo.FindProperty("NameText").objectReferenceValue = cachedName;
         newSo.FindProperty("descriptionText").objectReferenceValue = cachedDesc;
-        newSo.FindProperty("CompletedText").objectReferenceValue   = cachedDone;
+        newSo.FindProperty("CompletedText").objectReferenceValue = cachedDone;
         newSo.ApplyModifiedPropertiesWithoutUndo();
 
-        // Save prefab
         string prefabPath = AssetDatabase.GenerateUniqueAssetPath($"{PREFABS_PATH}/{go.name}.prefab");
-        GameObject saved  = PrefabUtility.SaveAsPrefabAsset(go, prefabPath);
+        GameObject saved = PrefabUtility.SaveAsPrefabAsset(go, prefabPath);
         DestroyImmediate(go);
 
-        // Add to QuestManager
         var managerSo = new SerializedObject(questManager);
-        var list      = managerSo.FindProperty("quests");
+        var list = managerSo.FindProperty("quests");
         list.arraySize++;
         list.GetArrayElementAtIndex(list.arraySize - 1).objectReferenceValue = saved.GetComponent<Quest>();
         managerSo.ApplyModifiedProperties();
@@ -146,8 +142,8 @@ public class QuestCreatorWindow : EditorWindow
     private void EnsureFolder(string path)
     {
         if (AssetDatabase.IsValidFolder(path)) return;
-        string[] parts   = path.Split('/');
-        string   current = parts[0];
+        string[] parts = path.Split('/');
+        string current = parts[0];
         for (int i = 1; i < parts.Length; i++)
         {
             string next = $"{current}/{parts[i]}";

@@ -16605,8 +16605,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quests:
   - {fileID: 4057071465017989448, guid: 4139132bf3195184eb2f58403be1006b, type: 3}
-  - {fileID: 8098381387368875797, guid: fd5a8d8802e04df43b38366fbb1dd0ce, type: 3}
-  - {fileID: 213216145951237293, guid: 88c1e81e0cfe0f940af20b84f9594edb, type: 3}
+  - {fileID: 675563914836647992, guid: ef4ddaf8be3a66b4aab34c4b89ef2ff1, type: 3}
   questIndex: 0
   parent: {fileID: 1843112043}
 --- !u!1 &1977557021
