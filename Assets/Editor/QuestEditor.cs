@@ -299,58 +299,98 @@ public class QuestEditor : EditorWindow
     }
 
     private void Create()
+{
+    EnsureFolder(DATA_PATH);
+    EnsureFolder(PREFABS_PATH);
+
+    string dataPath = AssetDatabase.GenerateUniqueAssetPath($"{DATA_PATH}/{questName.Replace(" ", "")}Data.asset");
+    QuestData data = ScriptableObject.CreateInstance<QuestData>();
+    data.questName = questName;
+    data.description = description;
+    data.sprite = sprite;
+    AssetDatabase.CreateAsset(data, dataPath);
+
+    GameObject go = Instantiate(templates[selectedTemplate]);
+    go.name = $"{questName.Replace(" ", "")}Quest";
+    Quest old = go.GetComponent<Quest>();
+
+    var oldSo = new SerializedObject(old);
+    var cachedIcon = oldSo.FindProperty("imageIcon").objectReferenceValue;
+    var cachedName = oldSo.FindProperty("NameText").objectReferenceValue;
+    var cachedDesc = oldSo.FindProperty("descriptionText").objectReferenceValue;
+    var cachedDone = oldSo.FindProperty("CompletedText").objectReferenceValue;
+    DestroyImmediate(old);
+
+    Quest newQuest = (Quest)go.AddComponent(questTypes[selectedType]);
+    var newSo = new SerializedObject(newQuest);
+    newSo.FindProperty("data").objectReferenceValue = data;
+    newSo.FindProperty("imageIcon").objectReferenceValue = cachedIcon;
+    newSo.FindProperty("NameText").objectReferenceValue = cachedName;
+    newSo.FindProperty("descriptionText").objectReferenceValue = cachedDesc;
+    newSo.FindProperty("CompletedText").objectReferenceValue = cachedDone;
+    newSo.ApplyModifiedPropertiesWithoutUndo();
+    
+    // Apply editable fields using SerializedObject
+    newSo.Update(); // Make sure we have the latest data
+    foreach (var kvp in editableFields)
     {
-        EnsureFolder(DATA_PATH);
-        EnsureFolder(PREFABS_PATH);
-
-        string dataPath = AssetDatabase.GenerateUniqueAssetPath($"{DATA_PATH}/{questName.Replace(" ", "")}Data.asset");
-        QuestData data = ScriptableObject.CreateInstance<QuestData>();
-        data.questName = questName;
-        data.description = description;
-        data.sprite = sprite;
-        AssetDatabase.CreateAsset(data, dataPath);
-
-        GameObject go = Instantiate(templates[selectedTemplate]);
-        go.name = $"{questName.Replace(" ", "")}Quest";
-        Quest old = go.GetComponent<Quest>();
-
-        var oldSo = new SerializedObject(old);
-        var cachedIcon = oldSo.FindProperty("imageIcon").objectReferenceValue;
-        var cachedName = oldSo.FindProperty("NameText").objectReferenceValue;
-        var cachedDesc = oldSo.FindProperty("descriptionText").objectReferenceValue;
-        var cachedDone = oldSo.FindProperty("CompletedText").objectReferenceValue;
-        DestroyImmediate(old);
-
-        Quest newQuest = (Quest)go.AddComponent(questTypes[selectedType]);
-        var newSo = new SerializedObject(newQuest);
-        newSo.FindProperty("data").objectReferenceValue = data;
-        newSo.FindProperty("imageIcon").objectReferenceValue = cachedIcon;
-        newSo.FindProperty("NameText").objectReferenceValue = cachedName;
-        newSo.FindProperty("descriptionText").objectReferenceValue = cachedDesc;
-        newSo.FindProperty("CompletedText").objectReferenceValue = cachedDone;
-        
-        // Apply editable fields
-        foreach (var kvp in editableFields)
+        SerializedProperty prop = newSo.FindProperty(kvp.Key.Name);
+        if (prop != null)
         {
-            kvp.Key.SetValue(newQuest, kvp.Value);
+            SetSerializedPropertyValue(prop, kvp.Value);
         }
-        
-        newSo.ApplyModifiedPropertiesWithoutUndo();
-
-        string prefabPath = AssetDatabase.GenerateUniqueAssetPath($"{PREFABS_PATH}/{go.name}.prefab");
-        GameObject saved = PrefabUtility.SaveAsPrefabAsset(go, prefabPath);
-        DestroyImmediate(go);
-
-        var managerSo = new SerializedObject(questManager);
-        var list = managerSo.FindProperty("quests");
-        list.arraySize++;
-        list.GetArrayElementAtIndex(list.arraySize - 1).objectReferenceValue = saved.GetComponent<Quest>();
-        managerSo.ApplyModifiedProperties();
-
-        AssetDatabase.SaveAssets();
-        EditorGUIUtility.PingObject(saved);
     }
+    newSo.ApplyModifiedPropertiesWithoutUndo(); // Apply again after setting custom fields
 
+    string prefabPath = AssetDatabase.GenerateUniqueAssetPath($"{PREFABS_PATH}/{go.name}.prefab");
+    GameObject saved = PrefabUtility.SaveAsPrefabAsset(go, prefabPath);
+    DestroyImmediate(go);
+
+    var managerSo = new SerializedObject(questManager);
+    var list = managerSo.FindProperty("quests");
+    list.arraySize++;
+    list.GetArrayElementAtIndex(list.arraySize - 1).objectReferenceValue = saved.GetComponent<Quest>();
+    managerSo.ApplyModifiedProperties();
+
+    AssetDatabase.SaveAssets();
+    EditorGUIUtility.PingObject(saved);
+}
+
+private void SetSerializedPropertyValue(SerializedProperty prop, object value)
+{
+    if (value == null) return;
+    
+    switch (prop.propertyType)
+    {
+        case SerializedPropertyType.Integer:
+            prop.intValue = (int)value;
+            break;
+        case SerializedPropertyType.Boolean:
+            prop.boolValue = (bool)value;
+            break;
+        case SerializedPropertyType.Float:
+            prop.floatValue = (float)value;
+            break;
+        case SerializedPropertyType.String:
+            prop.stringValue = (string)value;
+            break;
+        case SerializedPropertyType.ObjectReference:
+            prop.objectReferenceValue = (UnityEngine.Object)value;
+            break;
+        case SerializedPropertyType.Enum:
+            prop.enumValueIndex = (int)value;
+            break;
+        case SerializedPropertyType.Vector2:
+            prop.vector2Value = (Vector2)value;
+            break;
+        case SerializedPropertyType.Vector3:
+            prop.vector3Value = (Vector3)value;
+            break;
+        case SerializedPropertyType.Color:
+            prop.colorValue = (Color)value;
+            break;
+    }
+}
     private void EnsureFolder(string path)
     {
         if (AssetDatabase.IsValidFolder(path)) return;

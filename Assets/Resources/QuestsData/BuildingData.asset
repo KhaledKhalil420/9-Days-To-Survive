@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: BuildingData
   m_EditorClassIdentifier: 
   questName: Building
-  description: Craft a flint in the inventory.
+  description: Craft a flint hammer in the inventory.
   sprite: {fileID: 21300000, guid: baf61bf56277b604bb7e0c2904f7ecbc, type: 3}

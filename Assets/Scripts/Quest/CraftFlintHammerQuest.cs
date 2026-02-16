@@ -11,7 +11,7 @@ public class CraftFlimtHammerQuest : Quest
 
     private void CheckHasItem()
     {   
-        if(Player.inventory.HasItem(item, 1))
+        if(Player.inventory.HasItem(item, 1) && !isCompleted)
         {
             CompleteQuest();
         }

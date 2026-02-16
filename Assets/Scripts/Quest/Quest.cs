@@ -20,7 +20,7 @@ public class Quest : MonoBehaviour
         //Animation
         Vector3 initPosition = transform.position;
         transform.localPosition -= new Vector3(500, 0);
-        transform.DOMove(initPosition, 1).SetEase(Ease.InOutSine);
+        transform.DOMove(initPosition, 1).SetUpdate(true);
 
     }
 
@@ -33,17 +33,16 @@ public class Quest : MonoBehaviour
 
     public void Close()
     {
-        DOVirtual.DelayedCall(2f, () =>
+        DOVirtual.DelayedCall(1f, () =>
         {
             transform.DOMoveX(-500, 1f)
-            .SetEase(Ease.InOutSine)
             .OnComplete(() =>
             {
                 questManager.CompleteQuest();
                 Destroy(gameObject);
             });
         })
-        .SetTarget(this);
+        .SetTarget(this).SetUpdate(true);
     }
 
     void OnDestroy()

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Building2Data
   m_EditorClassIdentifier: 
   questName: Building 2
-  description: While Holding a hammer press F to select builds
+  description: While Holding a hammer press F to select builds (Scroll to select)
   sprite: {fileID: 21300000, guid: baf61bf56277b604bb7e0c2904f7ecbc, type: 3}
