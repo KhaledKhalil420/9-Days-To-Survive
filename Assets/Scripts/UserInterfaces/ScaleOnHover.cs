@@ -24,4 +24,9 @@ public class ScaleOnHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         transform.DOScale(initSize, 0.5f);
     }
+
+    void OnDestroy()
+    {
+        DOTween.Kill(gameObject);
+    }
 }

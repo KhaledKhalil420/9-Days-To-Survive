@@ -34,6 +34,5 @@ public class UpgradeUI : MonoBehaviour, IPointerDownHandler
             Event?.Invoke();
             Destroy(gameObject);
         }
-        
     }
 }
