@@ -38,7 +38,7 @@ public class Ladder : Building
         }
     }
 
-    public override void OnDeath()
+    public override void OnDemolish()
     {
         foreach (Rigidbody rb in rigidbodiesOnLadder)
         {

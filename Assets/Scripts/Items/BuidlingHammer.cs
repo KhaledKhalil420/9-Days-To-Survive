@@ -287,6 +287,7 @@ public class BuildingHammer : Item
 
         //Refund and destroy
         if (!RefundResources(hit.transform.GetComponent<Building>())) return;
+        building.OnDemolish();
 
         Destroy(building.gameObject);
         AudioManager.Instance?.PlaySound("Demolish", 0.9f, 1.25f);

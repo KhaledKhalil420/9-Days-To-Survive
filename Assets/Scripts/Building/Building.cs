@@ -170,6 +170,7 @@ public class Building : MonoBehaviour, IDamagable
     public virtual void OnPlaced() { }
     public virtual void OnDamage() { }
     public virtual void OnDeath() { }
+    public virtual void OnDemolish(){ }
 
     #endregion
 
