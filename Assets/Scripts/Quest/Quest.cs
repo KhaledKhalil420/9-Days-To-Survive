@@ -1,6 +1,5 @@
-using System;
-using DG.Tweening;
 using TMPro;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,9 +18,9 @@ public class Quest : MonoBehaviour
         OnSpawned();
 
         //Animation
-        float initPosition = transform.position.x;
+        Vector3 initPosition = transform.position;
         transform.localPosition -= new Vector3(500, 0);
-        transform.DOMoveX(initPosition, 1).SetEase(Ease.InOutSine);
+        transform.DOMove(initPosition, 1).SetEase(Ease.InOutSine);
 
     }
 
@@ -34,13 +33,22 @@ public class Quest : MonoBehaviour
 
     public void Close()
     {
-        //Animation and close then spawn next quest
-        DOVirtual.DelayedCall(2, () => transform.DOMoveX(-500, 1).SetEase(Ease.InOutSine).OnComplete(() => {Destroy(gameObject); questManager.CompleteQuest();}));
+        DOVirtual.DelayedCall(2f, () =>
+        {
+            transform.DOMoveX(-500, 1f)
+            .SetEase(Ease.InOutSine)
+            .OnComplete(() =>
+            {
+                questManager.CompleteQuest();
+                Destroy(gameObject);
+            });
+        })
+        .SetTarget(this);
     }
 
     void OnDestroy()
     {
-        DOTween.Kill(gameObject);
+        DOTween.Kill(this);
     }
 
     public void CompleteQuest()

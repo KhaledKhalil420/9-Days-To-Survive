@@ -13540,7 +13540,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 346277751f242364e828721124b826d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  quests: []
+  quests:
+  - {fileID: 4459320558068516962, guid: ce865499f055e3e4e8aad81fccac336c, type: 3}
   questIndex: 0
   parent: {fileID: 0}
 --- !u!4 &1354406479 stripped
@@ -16604,6 +16605,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   quests:
+  - {fileID: 4459320558068516962, guid: ce865499f055e3e4e8aad81fccac336c, type: 3}
   - {fileID: 4057071465017989448, guid: 4139132bf3195184eb2f58403be1006b, type: 3}
   - {fileID: 675563914836647992, guid: ef4ddaf8be3a66b4aab34c4b89ef2ff1, type: 3}
   questIndex: 0
