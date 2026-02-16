@@ -119,6 +119,7 @@ MonoBehaviour:
   - {fileID: 899104730165431269}
   - {fileID: 283616446916370393}
   pivotsOnBuild: []
+  pivotsOnBuildDisable: []
   supportCheckScale: 1.15
   source: {fileID: 1685197029393783050}
   onDestroySound: {fileID: 8300000, guid: e3e0644a4d59680439ef72e55ead6051, type: 3}

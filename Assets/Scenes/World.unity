@@ -13544,6 +13544,7 @@ MonoBehaviour:
   - {fileID: 4459320558068516962, guid: ce865499f055e3e4e8aad81fccac336c, type: 3}
   - {fileID: 4197470411512676658, guid: 8d78618289a31724395f663e3105c1bb, type: 3}
   - {fileID: 809830078738582219, guid: 9da8f132c4febca45b0eee12f8b2ff3d, type: 3}
+  - {fileID: 2410808978521978343, guid: 5381ba6a50e6d09468139cfeee8decb2, type: 3}
   questIndex: 0
   parent: {fileID: 0}
 --- !u!4 &1354406479 stripped
@@ -16612,6 +16613,7 @@ MonoBehaviour:
   - {fileID: 4459320558068516962, guid: ce865499f055e3e4e8aad81fccac336c, type: 3}
   - {fileID: 4197470411512676658, guid: 8d78618289a31724395f663e3105c1bb, type: 3}
   - {fileID: 809830078738582219, guid: 9da8f132c4febca45b0eee12f8b2ff3d, type: 3}
+  - {fileID: 2410808978521978343, guid: 5381ba6a50e6d09468139cfeee8decb2, type: 3}
   questIndex: 0
   parent: {fileID: 1843112043}
 --- !u!1 &1977557021

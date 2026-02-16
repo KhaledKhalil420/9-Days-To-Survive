@@ -21,6 +21,8 @@ public class Building : MonoBehaviour, IDamagable
     public bool affectedByGridSizePosition = true;
     public List<Transform> pivots;
     public List<Transform> pivotsOnBuild;
+    public List<Transform> pivotsOnBuildDisable;
+
     
     [Header("Physics Settings")]
     [SerializeField] private float supportCheckScale = 1.15f;
@@ -144,6 +146,8 @@ public class Building : MonoBehaviour, IDamagable
         BuildingManager.Instance.OnGridUpdated += UpdateBuilding;
         BuildingManager.Instance.UpdateGrid();
         DayNightCycleManager.Instance.OnDayChange += ResetHealth;
+
+        foreach(Transform pivot in pivotsOnBuildDisable) Destroy(pivot.gameObject);
         
         RebakeNav();
         OnPlaced();

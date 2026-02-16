@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class HoldGQuest : Quest
 {
-    private float Timer = 5;
+    private float Timer = 10;
 
     public override void OnSpawned()
     {
