@@ -40,6 +40,7 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private TMP_Text buildsQuantityText;
     [SerializeField] private Transform canvasParent;
     [SerializeField] private Image buildIcon;
+    [SerializeField] private Image selectionModeImage;
     [SerializeField] private TMP_Text buildPriceText;
     [SerializeField] private TMP_Text buildTitle;
     [SerializeField] private Transform recipeParent;
@@ -66,17 +67,18 @@ public class BuildingManager : MonoBehaviour
 
     public void ShowUI(bool state)
     {
-        Debug.Log(state);
         animator.SetBool("Using", state);
     }
 
-    public void UpdateBuildUI(Building building, bool updateNumber)
+    public void UpdateBuildUI(Building building, bool selectionMode)
     {
         buildIcon.sprite = building.data.sprite;
         buildTitle.text = building.data.buildingName;
         buildPriceText.text = building.data.pointsWorth.ToString();
         string currentQuantity = currentBuilds > buildLimitPoints ? "<color=red>" + currentBuilds.ToString() + "</color>" : currentBuilds.ToString();
         buildsQuantityText.text = currentQuantity + "/" + buildLimitPoints.ToString();
+
+        selectionModeImage.gameObject.SetActive(selectionMode);
 
         UpdateRecipe(building.ingredients.ToList());
     }

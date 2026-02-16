@@ -60,6 +60,9 @@ public class BuildingHammer : Item
         {
             isChosingBuild = !isChosingBuild;
             PlayerInventory.CanScroll = !isChosingBuild;
+
+            float pitch = isChosingBuild ? 1.25f : 1;
+            AudioManager.Instance.PlaySound("Start_Selecting_Build", pitch - 0.1f, pitch + 0.1f);
         }
 
         if(isChosingBuild)
@@ -355,7 +358,7 @@ public class BuildingHammer : Item
 
     public override void OnSelect()
     {
-        buildManager?.UpdateBuildUI(availableBuildings[selectedBuildingIndex], true);
+        buildManager?.UpdateBuildUI(availableBuildings[selectedBuildingIndex], isChosingBuild);
     }
 
     public override void OnChangingItems()

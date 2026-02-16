@@ -22,6 +22,7 @@ public class PlayerStat
     [Space(3)]
 
     [SerializeField] private Slider slider;
+    [SerializeField] private bool roundSlider = false;
     [SerializeField] private float sliderLerp = 1;
     [SerializeField] private TMP_Text text;
 
@@ -64,7 +65,8 @@ public class PlayerStat
     public void TickUi()
     {
         slider.maxValue = max;
-        slider.value = Mathf.Lerp(slider.value, current, sliderLerp * Time.deltaTime);
+        float v = roundSlider ? sliderLerp * 100 : sliderLerp;
+        slider.value = Mathf.Lerp(slider.value, current, v * Time.deltaTime);
 
         text.text = Mathf.Round(current) + " / " + Mathf.Round(max);
     }
