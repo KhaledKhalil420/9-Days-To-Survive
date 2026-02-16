@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+using UnityEngine.Rendering;
 
 public class DayNightCycleManager : MonoBehaviour
 {
@@ -20,6 +22,14 @@ public class DayNightCycleManager : MonoBehaviour
 
     public LightingPreset dayPreset;
     public LightingPreset nightPreset;
+    
+    //FEEL
+    public Volume volume; 
+    public AudioSource bassDropSource;
+    public AudioSource source;
+    public Image triggeringProgress;
+    public float holdTime;
+    private float holdTimer;
 
     void Awake()
     {
@@ -50,8 +60,27 @@ public class DayNightCycleManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
-            SetTime(currentState == CycleState.Day ? CycleState.Night : CycleState.Day);
+        triggeringProgress.fillAmount = Mathf.Lerp(triggeringProgress.fillAmount, holdTimer / holdTime, 50 * Time.deltaTime);
+        source.volume = Mathf.Lerp(source.volume, holdTimer / holdTime, 25f * Time.deltaTime);
+        volume.weight = Mathf.Lerp(volume.weight, holdTimer / holdTime, 5 * Time.deltaTime);
+
+        if (Input.GetKey(KeyCode.G) && currentState == CycleState.Day)
+        {
+            holdTimer += Time.deltaTime;
+
+            if(holdTimer >= holdTime)
+            {
+                holdTimer = 0;
+                bassDropSource.Play();
+                SetTime(currentState == CycleState.Day ? CycleState.Night : CycleState.Day);
+            }
+        }
+
+        else
+        {
+            holdTimer = Mathf.Max(0, holdTimer - Time.deltaTime * 4);
+        }
+
         UpdateSkyboxBlend();
     }
 
