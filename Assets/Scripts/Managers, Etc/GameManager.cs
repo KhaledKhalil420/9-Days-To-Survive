@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
@@ -19,6 +20,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Waves Rounds")]
     [SerializeField] private List<Wave> waves;
+    [SerializeField] private Animator animator;
+    [SerializeField] private TMP_Text text;
+    [SerializeField] private CanvasGroup groupStats;
     private Wave selectedWave;
     private bool waveTriggered;
     public int enemiesDefeated;
@@ -69,6 +73,7 @@ public class GameManager : MonoBehaviour
             if(spawnPrize)
             {
                 spawnPrize = false;
+                groupStats.DOFade(0, 0.5f);
                 Instantiate(upgradesPopup);
             }
 
@@ -77,6 +82,8 @@ public class GameManager : MonoBehaviour
 
         else
         {
+            animator.Play("WaveStats_OnStart");
+            groupStats.DOFade(1, 0.5f);
             waveTriggered = true;
             spawnPrize = true;
         }
@@ -91,10 +98,19 @@ public class GameManager : MonoBehaviour
         }
 
         timer = selectedWave.spawningCooldown;
+        text.text = enemiesDefeated.ToString() + "/" + selectedWave.requiredDefeats;
+    }
+
+    public void OnEnemyDefeated()
+    {
+        AudioManager.Instance.PlaySound("EnemyKill", 0.9f, 1.1f);
+        animator.SetTrigger("Trigger");
+        enemiesDefeated++;
+        text.text = enemiesDefeated.ToString() + "/" + selectedWave.requiredDefeats;
     }
 
     private float timer = 0;
-    public void SpawnEnemies()
+    private void SpawnEnemies()
     {
         if(waveTriggered)
         {
