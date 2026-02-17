@@ -3,7 +3,7 @@ using UnityEngine;
 public class PickableItem : MonoBehaviour, IHoldInteractable
 {
     [SerializeField] private Item item;
-    [SerializeField] private GameObject objectToDestroy; //Leave null for full destruction
+    [SerializeField] private GameObject objectToDestroy;
 
     public float HoldDuration => 0.5f;
 

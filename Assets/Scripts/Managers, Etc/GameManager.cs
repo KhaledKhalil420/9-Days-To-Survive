@@ -110,15 +110,15 @@ public class GameManager : MonoBehaviour
     }
 
     private float timer = 0;
-    private void SpawnEnemies()
+    private void SpawnEnemies() //Bug when player is really high enemies stop spawning for some reason.
     {
         if(waveTriggered)
         {
             timer += Time.deltaTime;
-            if(AIManager.Instance?.registeredEnemies.Count < selectedWave.maxEnemies && timer > selectedWave.spawningCooldown)
+            if(timer > selectedWave.spawningCooldown && AIManager.Instance.registeredEnemies.Count < selectedWave.maxEnemies)
             {
-                EnemySpawner.SpawnWave(selectedWave, player.transform.position, selectedWave.spawningRadius, selectedWave.minimumSpawningDistance);
                 timer = 0;
+                EnemySpawner.SpawnWave(selectedWave, player.transform.position, selectedWave.spawningRadius, selectedWave.minimumSpawningDistance);
             }
 
             if(enemiesDefeated >= selectedWave.requiredDefeats)

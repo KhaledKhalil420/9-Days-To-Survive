@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PrepareWellData
   m_EditorClassIdentifier: 
   questName: Prepare Well
-  description: Hold G To Active The NIGHT (Prepare well)
+  description: Hold G To Active The NIGHT
   sprite: {fileID: 21300000, guid: 83e930f65d194cc4d98203d8f822d33c, type: 3}

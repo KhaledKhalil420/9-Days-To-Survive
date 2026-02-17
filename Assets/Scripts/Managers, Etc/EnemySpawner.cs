@@ -10,8 +10,9 @@ public class EnemySpawner
 
     static Vector3 GetValidSpawnPosition(Vector3 center, float radius, float minDistance, Transform enemy)
     {
-        Vector3 pos;
+        Vector3 pos = Vector3.zero;
         int attempts = 0;
+        center.y = 0;
 
         do
         {

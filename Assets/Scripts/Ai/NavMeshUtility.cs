@@ -21,7 +21,7 @@ public static class NavMeshUtility
             reachableTargets.Clear();
             
             Collider[] colliders = new Collider[15];
-            int count = Physics.OverlapSphereNonAlloc(target.position, searchArea, colliders, targetLayers);
+            int count = Physics.OverlapSphereNonAlloc(seeker.position, searchArea, colliders, targetLayers);
             
             for (int i = 0; i < count; i++)
             {

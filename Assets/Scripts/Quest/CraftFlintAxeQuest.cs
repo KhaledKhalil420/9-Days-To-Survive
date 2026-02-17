@@ -3,7 +3,6 @@ using UnityEngine;
 public class CraftFlintAxeQuest : Quest
 {
     [SerializeField] private Item item; //Expose this for an example
-    private bool done = false;
 
     public override void OnSpawned()
     {
@@ -14,7 +13,6 @@ public class CraftFlintAxeQuest : Quest
     {   
         if(Player.inventory.HasItem(item, 1) && !isCompleted)
         {
-            done = true;
             CompleteQuest();
         }
     }

@@ -1,403 +1,468 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using TMPro;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 [System.Serializable]
 public class GraphicsSettingsData
 {
-    public int resolutionIndex;
-    public int fullscreenMode;
-    public bool vsync;
-    public int fpsLimit;
-    public int shadowQuality;
-    public int shadowResolution;
-    public int antiAliasing;
-    public bool bloom;
-    public bool motionBlur;
-    public bool ambientOcclusion;
+    public int   resolutionIndex;
+    public int   fullscreenMode;
+    public bool  vsync;
+    public int   fpsLimit;
+    public int   shadowQuality;
+    public int   shadowCascades;
+    public int   shadowType;
+    public float renderScale;
+    public int   antiAliasing;
+    public bool  bloom;
+    public bool  motionBlur;
+    public bool  ambientOcclusion;
 }
 
 public class GraphicsSettings : MonoBehaviour
 {
-    [Header("Resolution")]
-    public TMP_Dropdown resolutionDropdown;
-    
-    [Header("Display Mode")]
-    public TMP_Dropdown fullscreenModeDropdown;
-    
-    [Header("VSync")]
-    public Toggle vsyncToggle;
-    public TMP_Text vsyncText;
-    
-    [Header("FPS Limit")]
-    public Slider fpsLimitSlider;
-    public TMP_Text fpsLimitText;
-    
-    [Header("Shadow Quality")]
-    public TMP_Dropdown shadowQualityDropdown;
-    
-    [Header("Shadow Resolution")]
-    public TMP_Dropdown shadowResolutionDropdown;
-    
-    [Header("Anti Aliasing")]
-    public TMP_Dropdown antiAliasingDropdown;
-    
-    [Header("Bloom")]
-    public Toggle bloomToggle;
-    public TMP_Text bloomText;
-    
-    [Header("Motion Blur")]
-    public Toggle motionBlurToggle;
-    public TMP_Text motionBlurText;
-    
-    [Header("Ambient Occlusion")]
-    public Toggle ambientOcclusionToggle;
-    public TMP_Text ambientOcclusionText;
+    [Header("Prefabs")]
+    [SerializeField] private TMP_Dropdown dropdownPrefab;
+    [SerializeField] private Slider       sliderPrefab;
+    [SerializeField] private Toggle       togglePrefab;
 
-    [Header("URP Post Processing")]
-    public UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset urpAsset;
+    [Header("Category Parents")]
+    [SerializeField] private Transform displayParent;
+    [SerializeField] private Transform qualityParent;
+    [SerializeField] private Transform shadowsParent;
+    [SerializeField] private Transform postFXParent;
 
-    private GraphicsSettingsData settingsData = new GraphicsSettingsData();
-    private string savePath;
+    [Header("Post Processing")]
+    [SerializeField] private Volume postProcessVolume;
 
-    private List<Resolution> availableResolutions = new List<Resolution>();
-    private Resolution maxResolution;
+    // Spawned controls
+    private TMP_Dropdown resolutionDropdown;
+    private TMP_Dropdown fullscreenDropdown;
+    private Toggle       vsyncToggle;
+    private Slider       fpsSlider;
+
+    private Slider       renderScaleSlider;
+    private TMP_Dropdown antiAliasingDropdown;
+
+    private TMP_Dropdown shadowQualityDropdown;
+    private TMP_Dropdown shadowCascadesDropdown;
+    private TMP_Dropdown shadowTypeDropdown;
+
+    private Toggle bloomToggle;
+    private Toggle motionBlurToggle;
+    private Toggle ambientOcclusionToggle;
+
+    // URP / Post processing
+    private UniversalRenderPipelineAsset urpAsset;
+    private Bloom                        bloomOverride;
+    private MotionBlur                   motionBlurOverride;
+    private ScriptableRendererFeature    ssaoFeature;
+
+    private GraphicsSettingsData settingsData         = new GraphicsSettingsData();
+    private List<Resolution>     availableResolutions = new List<Resolution>();
+    private string               savePath;
 
     void Awake()
     {
-        //Save to game directory
-        savePath = Path.Combine(Application.dataPath, "GraphicsSettings.json");
-        
-        //Get max screen resolution
-        maxResolution = Screen.resolutions[Screen.resolutions.Length - 1];
+        savePath = Path.GetFullPath(Path.Combine(Application.dataPath, "../GraphicsSettings.json"));
+
         BuildAvailableResolutions();
-    }
+        FindPostProcessing();
+        SpawnControls();
 
-    void BuildAvailableResolutions()
-    {
-        // Define all possible 16:9 resolutions
-        Resolution[] allResolutions = new Resolution[]
-        {
-            new Resolution { width = 256, height = 144 },   // 144p
-            new Resolution { width = 426, height = 240 },   // 240p
-            new Resolution { width = 640, height = 360 },   // 360p
-            new Resolution { width = 854, height = 480 },   // 480p
-            new Resolution { width = 1280, height = 720 },  // 720p
-            new Resolution { width = 1920, height = 1080 }, // 1080p
-            new Resolution { width = 2560, height = 1440 }, // 1440p
-            new Resolution { width = 3840, height = 2160 }  // 2160p
-        };
-
-        //Only add resolutions that don't exceed screen max
-        foreach (var res in allResolutions)
-        {
-            if (res.width <= maxResolution.width && res.height <= maxResolution.height)
-            {
-                availableResolutions.Add(res);
-            }
-        }
-
-        Debug.Log($"Max screen resolution: {maxResolution.width}x{maxResolution.height}");
-        Debug.Log($"Available resolutions: {availableResolutions.Count}");
-    }
-
-    void Start()
-    {
-        InitializeResolutions();
-        InitializeFullscreenModes();
-        InitializeShadowQuality();
-        InitializeShadowResolution();
-        InitializeAntiAliasing();
-        InitializeFPSSlider();
-        
+#if UNITY_EDITOR
+        ApplyHighest();
+#else
         LoadSettings();
-        
-        //Add listeners
-        resolutionDropdown.onValueChanged.AddListener(delegate { SetResolution(); });
-        fullscreenModeDropdown.onValueChanged.AddListener(delegate { SetFullscreenMode(); });
-        vsyncToggle.onValueChanged.AddListener(delegate { SetVSync(); });
-        fpsLimitSlider.onValueChanged.AddListener(delegate { SetFPSLimit(); });
-        shadowQualityDropdown.onValueChanged.AddListener(delegate { SetShadowQuality(); });
-        shadowResolutionDropdown.onValueChanged.AddListener(delegate { SetShadowResolution(); });
-        antiAliasingDropdown.onValueChanged.AddListener(delegate { SetAntiAliasing(); });
-        bloomToggle.onValueChanged.AddListener(delegate { SetBloom(); });
-        motionBlurToggle.onValueChanged.AddListener(delegate { SetMotionBlur(); });
+#endif
+
+        HookListeners();
+    }
+
+    void SpawnControls()
+    {
+        // Display
+        resolutionDropdown  = SpawnDropdown(displayParent, BuildResolutionOptions(), availableResolutions.Count - 1, "Resolution");
+        fullscreenDropdown  = SpawnDropdown(displayParent, new List<string> { "Windowed", "Fullscreen", "Borderless" }, 1, "Fullscreen Mode");
+        vsyncToggle         = SpawnToggle(displayParent, true,   "VSync");
+        fpsSlider           = SpawnSlider(displayParent, 30, 600, 60, true, "FPS Limit");
+
+        // Quality
+        renderScaleSlider    = SpawnSlider(qualityParent, 0.1f, 1.15f, 1f, false, "Render Scale");
+        antiAliasingDropdown = SpawnDropdown(qualityParent, new List<string> { "High (8x)", "Low (2x)", "Off" }, 0, "Anti-Aliasing");
+
+        // Shadows
+        shadowQualityDropdown  = SpawnDropdown(shadowsParent, new List<string> { "High (2048)", "Medium (1024)", "Low (512)" }, 0, "Shadow Quality");
+        shadowCascadesDropdown = SpawnDropdown(shadowsParent, new List<string> { "1 Cascade", "2 Cascades", "3 Cascades", "4 Cascades" }, 3, "Shadow Cascades");
+        shadowTypeDropdown     = SpawnDropdown(shadowsParent, new List<string> { "Soft", "Hard" }, 0, "Shadow Type");
+
+        // Post FX
+        bloomToggle            = SpawnToggle(postFXParent, true,  "Bloom");
+        motionBlurToggle       = SpawnToggle(postFXParent, false, "Motion Blur");
+        ambientOcclusionToggle = SpawnToggle(postFXParent, true,  "Ambient Occlusion");
+
+        // Sliders save only when the user releases the handle, not on every tick
+        AddSliderEndListener(fpsSlider);
+        AddSliderEndListener(renderScaleSlider);
+    }
+
+    void HookListeners()
+    {
+        resolutionDropdown.onValueChanged.AddListener(delegate     { SetResolution(); });
+        fullscreenDropdown.onValueChanged.AddListener(delegate     { SetFullscreen(); });
+        vsyncToggle.onValueChanged.AddListener(delegate            { SetVSync(); });
+        fpsSlider.onValueChanged.AddListener(delegate              { SetFPS(); });
+        renderScaleSlider.onValueChanged.AddListener(delegate      { SetRenderScale(); });
+        antiAliasingDropdown.onValueChanged.AddListener(delegate   { SetAntiAliasing(); });
+        shadowQualityDropdown.onValueChanged.AddListener(delegate  { SetShadowQuality(); });
+        shadowCascadesDropdown.onValueChanged.AddListener(delegate { SetShadowCascades(); });
+        shadowTypeDropdown.onValueChanged.AddListener(delegate     { SetShadowType(); });
+        bloomToggle.onValueChanged.AddListener(delegate            { SetBloom(); });
+        motionBlurToggle.onValueChanged.AddListener(delegate       { SetMotionBlur(); });
         ambientOcclusionToggle.onValueChanged.AddListener(delegate { SetAmbientOcclusion(); });
     }
 
-    void InitializeResolutions()
+    // ── Setters ───────────────────────────────────────────────────────────
+
+    void SetResolution()
     {
-        resolutionDropdown.ClearOptions();
-        
-        var options = new List<string>();
-        foreach (var res in availableResolutions)
-        {
-            string label = "";
-            if (res.height == 144) label = "144p (256x144)";
-            else if (res.height == 240) label = "240p (426x240)";
-            else if (res.height == 360) label = "360p (640x360)";
-            else if (res.height == 480) label = "480p (854x480)";
-            else if (res.height == 720) label = "720p (1280x720)";
-            else if (res.height == 1080) label = "1080p (1920x1080)";
-            else if (res.height == 1440) label = "1440p (2560x1440)";
-            else if (res.height == 2160) label = "4K (3840x2160)";
-            else label = $"{res.width}x{res.height}";
-            
-            options.Add(label);
-        }
-        
-        resolutionDropdown.AddOptions(options);
-        
-        // Set default to highest available resolution
-        resolutionDropdown.value = availableResolutions.Count - 1;
-        resolutionDropdown.RefreshShownValue();
+        var res = availableResolutions[resolutionDropdown.value];
+        Screen.SetResolution(res.width, res.height, GetFullscreenMode());
+        settingsData.resolutionIndex = resolutionDropdown.value;
+        SaveSettings();
     }
 
-    void InitializeFullscreenModes()
+    void SetFullscreen()
     {
-        fullscreenModeDropdown.ClearOptions();
-        fullscreenModeDropdown.AddOptions(new List<string>
-        {
-            "Windowed",
-            "Fullscreen",
-            "Windowed Borderless"
-        });
-        fullscreenModeDropdown.value = 1;
-        fullscreenModeDropdown.RefreshShownValue();
+        Screen.fullScreenMode       = GetFullscreenMode();
+        settingsData.fullscreenMode = fullscreenDropdown.value;
+        SaveSettings();
     }
 
-    void InitializeShadowQuality()
-    {
-        shadowQualityDropdown.ClearOptions();
-        shadowQualityDropdown.AddOptions(new List<string>
-        {
-            "High",
-            "Medium",
-            "Low"
-        });
-        shadowQualityDropdown.value = 0;
-        shadowQualityDropdown.RefreshShownValue();
-    }
-
-    void InitializeShadowResolution()
-    {
-        shadowResolutionDropdown.ClearOptions();
-        shadowResolutionDropdown.AddOptions(new List<string>
-        {
-            "High",
-            "Medium",
-            "Low"
-        });
-        shadowResolutionDropdown.value = 0;
-        shadowResolutionDropdown.RefreshShownValue();
-    }
-
-    void InitializeAntiAliasing()
-    {
-        antiAliasingDropdown.ClearOptions();
-        antiAliasingDropdown.AddOptions(new List<string>
-        {
-            "High",
-            "Low",
-            "Off"
-        });
-        antiAliasingDropdown.value = 0;
-        antiAliasingDropdown.RefreshShownValue();
-    }
-
-    void InitializeFPSSlider()
-    {
-        fpsLimitSlider.minValue = 30;
-        fpsLimitSlider.maxValue = 240;
-        fpsLimitSlider.wholeNumbers = true;
-        fpsLimitSlider.value = 60;
-        UpdateFPSText();
-    }
-
-    public void SetResolution()
-    {
-        int index = resolutionDropdown.value;
-        Resolution res = availableResolutions[index];
-        
-        FullScreenMode mode = GetCurrentFullscreenMode();
-        Screen.SetResolution(res.width, res.height, mode);
-        
-        settingsData.resolutionIndex = index;
-        
-        Debug.Log($"Resolution set to: {res.width}x{res.height}");
-    }
-
-    public void SetFullscreenMode()
-    {
-        FullScreenMode mode = GetCurrentFullscreenMode();
-        Screen.fullScreenMode = mode;
-        
-        settingsData.fullscreenMode = fullscreenModeDropdown.value;
-    }
-
-    FullScreenMode GetCurrentFullscreenMode()
-    {
-        switch (fullscreenModeDropdown.value)
-        {
-            case 0: return FullScreenMode.Windowed;
-            case 1: return FullScreenMode.ExclusiveFullScreen;
-            case 2: return FullScreenMode.FullScreenWindow;
-            default: return FullScreenMode.ExclusiveFullScreen;
-        }
-    }
-
-    public void SetVSync()
+    void SetVSync()
     {
         QualitySettings.vSyncCount = vsyncToggle.isOn ? 1 : 0;
-        vsyncText.text = vsyncToggle.isOn ? "ON" : "OFF";
-        
-        settingsData.vsync = vsyncToggle.isOn;
+        settingsData.vsync         = vsyncToggle.isOn;
+        SaveSettings();
     }
 
-    public void SetFPSLimit()
+    void SetFPS()
     {
-        int fps = (int)fpsLimitSlider.value;
-        Application.targetFrameRate = fps;
-        UpdateFPSText();
-        
-        settingsData.fpsLimit = fps;
+        Application.targetFrameRate = (int)fpsSlider.value;
+        settingsData.fpsLimit       = (int)fpsSlider.value;
+        // saved on pointer up via AddSliderEndListener
     }
 
-    void UpdateFPSText()
+    void SetRenderScale()
     {
-        fpsLimitText.text = ((int)fpsLimitSlider.value).ToString();
+        float scale = Mathf.Round(renderScaleSlider.value * 100f) / 100f;
+        if (urpAsset != null) urpAsset.renderScale = scale;
+        settingsData.renderScale = scale;
+        // saved on pointer up via AddSliderEndListener
     }
 
-    public void SetShadowQuality()
+    void SetAntiAliasing()
     {
-        switch (shadowQualityDropdown.value)
-        {
-            case 0: QualitySettings.shadows = ShadowQuality.All; break;
-            case 1: QualitySettings.shadows = ShadowQuality.HardOnly; break;
-            case 2: QualitySettings.shadows = ShadowQuality.Disable; break;
-        }
-        
+        QualitySettings.antiAliasing = antiAliasingDropdown.value switch { 1 => 2, 2 => 0, _ => 8 };
+        settingsData.antiAliasing    = antiAliasingDropdown.value;
+        SaveSettings();
+    }
+
+    void SetShadowQuality()
+    {
+        int res = shadowQualityDropdown.value switch { 1 => 1024, 2 => 512, _ => 2048 };
+        SetURPField("m_MainLightShadowmapResolution", res);
         settingsData.shadowQuality = shadowQualityDropdown.value;
+        SaveSettings();
     }
 
-    public void SetShadowResolution()
+    void SetShadowCascades()
     {
-        switch (shadowResolutionDropdown.value)
-        {
-            case 0: QualitySettings.shadowResolution = ShadowResolution.VeryHigh; break;
-            case 1: QualitySettings.shadowResolution = ShadowResolution.Medium; break;
-            case 2: QualitySettings.shadowResolution = ShadowResolution.Low; break;
-        }
-        
-        settingsData.shadowResolution = shadowResolutionDropdown.value;
+        int count = shadowCascadesDropdown.value + 1;
+        SetURPField("m_ShadowCascadeCount", count);
+        settingsData.shadowCascades = shadowCascadesDropdown.value;
+        SaveSettings();
     }
 
-    public void SetAntiAliasing()
+    void SetShadowType()
     {
-        switch (antiAliasingDropdown.value)
-        {
-            case 0: QualitySettings.antiAliasing = 8; break;
-            case 1: QualitySettings.antiAliasing = 2; break;
-            case 2: QualitySettings.antiAliasing = 0; break;
-        }
-        
-        settingsData.antiAliasing = antiAliasingDropdown.value;
+        SetURPField("m_SoftShadowsSupported", shadowTypeDropdown.value == 0);
+        settingsData.shadowType = shadowTypeDropdown.value;
+        SaveSettings();
     }
 
-    public void SetBloom()
+    void SetBloom()
     {
-        bloomText.text = bloomToggle.isOn ? "ON" : "OFF";
+        if (bloomOverride != null) bloomOverride.active = bloomToggle.isOn;
         settingsData.bloom = bloomToggle.isOn;
+        SaveSettings();
     }
 
-    public void SetMotionBlur()
+    void SetMotionBlur()
     {
-        motionBlurText.text = motionBlurToggle.isOn ? "ON" : "OFF";
+        if (motionBlurOverride != null) motionBlurOverride.active = motionBlurToggle.isOn;
         settingsData.motionBlur = motionBlurToggle.isOn;
+        SaveSettings();
     }
 
-    public void SetAmbientOcclusion()
+    void SetAmbientOcclusion()
     {
-        ambientOcclusionText.text = ambientOcclusionToggle.isOn ? "ON" : "OFF";
+        if (ssaoFeature != null) ssaoFeature.SetActive(ambientOcclusionToggle.isOn);
         settingsData.ambientOcclusion = ambientOcclusionToggle.isOn;
+        SaveSettings();
     }
 
-    // SAVE TO JSON
+    void ApplyAll()
+    {
+        SetResolution();    SetFullscreen();     SetVSync();       SetFPS();
+        SetRenderScale();   SetAntiAliasing();
+        SetShadowQuality(); SetShadowCascades(); SetShadowType();
+        SetBloom();         SetMotionBlur();     SetAmbientOcclusion();
+    }
+
+    // ── Editor highest ───────────────────────────────────────────────────
+
+    void ApplyHighest()
+    {
+        settingsData = new GraphicsSettingsData
+        {
+            resolutionIndex  = availableResolutions.Count - 1,
+            fullscreenMode   = 1,
+            vsync            = true,
+            fpsLimit         = 240,
+            shadowQuality    = 0,
+            shadowCascades   = 3,
+            shadowType       = 0,
+            renderScale      = 1.15f,
+            antiAliasing     = 0,
+            bloom            = true,
+            motionBlur       = true,
+            ambientOcclusion = true
+        };
+
+        PushToUI();
+        ApplyAll();
+    }
+
+    // ── Save / Load ──────────────────────────────────────────────────────
+
     public void SaveSettings()
     {
-        string json = JsonUtility.ToJson(settingsData, true);
-        File.WriteAllText(savePath, json);
-        Debug.Log($"Settings saved to: {savePath}");
+        try
+        {
+            File.WriteAllText(savePath, JsonUtility.ToJson(settingsData, true));
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning($"[GraphicsSettings] Could not save settings: {e.Message}");
+        }
     }
 
-    // LOAD FROM JSON
     void LoadSettings()
     {
         if (File.Exists(savePath))
         {
-            string json = File.ReadAllText(savePath);
-            settingsData = JsonUtility.FromJson<GraphicsSettingsData>(json);
-            
-            //Clamp resolution index to available resolutions
-            settingsData.resolutionIndex = Mathf.Clamp(settingsData.resolutionIndex, 0, availableResolutions.Count - 1);
-            
-            //Apply loaded settings to UI
-            resolutionDropdown.value = settingsData.resolutionIndex;
-            fullscreenModeDropdown.value = settingsData.fullscreenMode;
-            vsyncToggle.isOn = settingsData.vsync;
-            vsyncText.text = settingsData.vsync ? "ON" : "OFF";
-            fpsLimitSlider.value = settingsData.fpsLimit;
-            shadowQualityDropdown.value = settingsData.shadowQuality;
-            shadowResolutionDropdown.value = settingsData.shadowResolution;
-            antiAliasingDropdown.value = settingsData.antiAliasing;
-            bloomToggle.isOn = settingsData.bloom;
-            bloomText.text = settingsData.bloom ? "ON" : "OFF";
-            motionBlurToggle.isOn = settingsData.motionBlur;
-            motionBlurText.text = settingsData.motionBlur ? "ON" : "OFF";
-            ambientOcclusionToggle.isOn = settingsData.ambientOcclusion;
-            ambientOcclusionText.text = settingsData.ambientOcclusion ? "ON" : "OFF";
-            
-            //Apply settings to Unity
-            SetResolution();
-            SetFullscreenMode();
-            SetVSync();
-            SetFPSLimit();
-            SetShadowQuality();
-            SetShadowResolution();
-            SetAntiAliasing();
-            
-            Debug.Log($"Settings loaded from: {savePath}");
+            try
+            {
+                settingsData = JsonUtility.FromJson<GraphicsSettingsData>(File.ReadAllText(savePath));
+                settingsData.resolutionIndex = Mathf.Clamp(settingsData.resolutionIndex, 0, availableResolutions.Count - 1);
+                settingsData.renderScale     = Mathf.Clamp(settingsData.renderScale, 0.1f, 1.15f);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"[GraphicsSettings] Corrupt save file, resetting defaults: {e.Message}");
+                WriteDefaults();
+            }
         }
         else
         {
-            //Set default values
-            settingsData.resolutionIndex = availableResolutions.Count - 1; // Highest available
-            settingsData.fullscreenMode = 1;
-            settingsData.vsync = true;
-            settingsData.fpsLimit = 60;
-            settingsData.shadowQuality = 0;
-            settingsData.shadowResolution = 0;
-            settingsData.antiAliasing = 0;
-            settingsData.bloom = true;
-            settingsData.motionBlur = false;
-            settingsData.ambientOcclusion = true;
-            
-            SaveSettings();
-            Debug.Log("No settings file found. Created default settings.");
+            WriteDefaults();
+        }
+
+        PushToUI();
+        ApplyAll();
+    }
+
+    void WriteDefaults()
+    {
+        settingsData = new GraphicsSettingsData
+        {
+            resolutionIndex  = availableResolutions.Count - 1,
+            fullscreenMode   = 1,
+            vsync            = true,
+            fpsLimit         = 60,
+            shadowQuality    = 0,
+            shadowCascades   = 3,
+            shadowType       = 0,
+            renderScale      = 1.0f,
+            antiAliasing     = 0,
+            bloom            = true,
+            motionBlur       = false,
+            ambientOcclusion = true
+        };
+        SaveSettings();
+    }
+
+    void PushToUI()
+    {
+        resolutionDropdown.SetValueWithoutNotify(settingsData.resolutionIndex);
+        fullscreenDropdown.SetValueWithoutNotify(settingsData.fullscreenMode);
+        vsyncToggle.SetIsOnWithoutNotify(settingsData.vsync);
+        fpsSlider.SetValueWithoutNotify(settingsData.fpsLimit);
+        shadowQualityDropdown.SetValueWithoutNotify(settingsData.shadowQuality);
+        shadowCascadesDropdown.SetValueWithoutNotify(settingsData.shadowCascades);
+        shadowTypeDropdown.SetValueWithoutNotify(settingsData.shadowType);
+        renderScaleSlider.SetValueWithoutNotify(settingsData.renderScale);
+        antiAliasingDropdown.SetValueWithoutNotify(settingsData.antiAliasing);
+        bloomToggle.SetIsOnWithoutNotify(settingsData.bloom);
+        motionBlurToggle.SetIsOnWithoutNotify(settingsData.motionBlur);
+        ambientOcclusionToggle.SetIsOnWithoutNotify(settingsData.ambientOcclusion);
+    }
+
+    void OnApplicationQuit() => SaveSettings();
+
+    // ── Spawn helpers ────────────────────────────────────────────────────
+
+    TMP_Dropdown SpawnDropdown(Transform parent, List<string> options, int defaultVal, string label)
+    {
+        var dd = Instantiate(dropdownPrefab, parent);
+        dd.gameObject.name = label;
+        dd.ClearOptions();
+        dd.AddOptions(options);
+        dd.value = defaultVal;
+        dd.RefreshShownValue();
+
+        var labelText = dd.GetComponentInChildren<TMP_Text>();
+        if (labelText != null) labelText.text = label;
+
+        return dd;
+    }
+
+    Slider SpawnSlider(Transform parent, float min, float max, float defaultVal, bool wholeNumbers, string label)
+    {
+        var s = Instantiate(sliderPrefab, parent);
+        s.gameObject.name = label;
+        s.minValue        = min;
+        s.maxValue        = max;
+        s.wholeNumbers    = wholeNumbers;
+        s.value           = defaultVal;
+
+        var labelText = s.GetComponentInChildren<TMP_Text>();
+        if (labelText != null) labelText.text = label;
+
+        return s;
+    }
+
+    Toggle SpawnToggle(Transform parent, bool defaultVal, string label)
+    {
+        var t = Instantiate(togglePrefab, parent);
+        t.gameObject.name = label;
+        t.isOn            = defaultVal;
+
+        var labelText = t.GetComponentInChildren<TMP_Text>();
+        if (labelText != null) labelText.text = label;
+
+        return t;
+    }
+
+    void AddSliderEndListener(Slider slider)
+    {
+        var trigger = slider.gameObject.GetComponent<EventTrigger>()
+                      ?? slider.gameObject.AddComponent<EventTrigger>();
+
+        var entry = new EventTrigger.Entry { eventID = EventTriggerType.PointerUp };
+        entry.callback.AddListener((_) => SaveSettings());
+        trigger.triggers.Add(entry);
+    }
+
+    // ── Post processing ──────────────────────────────────────────────────
+
+    void FindPostProcessing()
+    {
+        var vol = postProcessVolume != null ? postProcessVolume : FindFirstObjectByType<Volume>();
+        if (vol != null)
+        {
+            vol.profile.TryGet(out bloomOverride);
+            vol.profile.TryGet(out motionBlurOverride);
+        }
+
+        urpAsset = UnityEngine.Rendering.GraphicsSettings.defaultRenderPipeline as UniversalRenderPipelineAsset;
+
+        if (urpAsset == null) return;
+
+        var dataList = typeof(UniversalRenderPipelineAsset)
+            .GetField("m_RendererDataList", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+            ?.GetValue(urpAsset) as ScriptableRendererData[];
+
+        if (dataList == null) return;
+
+        foreach (var data in dataList)
+        {
+            if (data == null) continue;
+            foreach (var feature in data.rendererFeatures)
+            {
+                if (feature is not ScreenSpaceAmbientOcclusion) continue;
+                ssaoFeature = feature;
+                return;
+            }
         }
     }
 
-    public void ApplySettings()
+    // ── Resolution helpers ───────────────────────────────────────────────
+
+    void BuildAvailableResolutions()
     {
-        SaveSettings();
-        Debug.Log("Graphics settings applied and saved!");
+        var nativeRes = Screen.resolutions[Screen.resolutions.Length - 1];
+
+        Resolution[] all =
+        {
+            new Resolution { width = 640,  height = 360  },
+            new Resolution { width = 854,  height = 480  },
+            new Resolution { width = 1280, height = 720  },
+            new Resolution { width = 1920, height = 1080 },
+            new Resolution { width = 2560, height = 1440 },
+            new Resolution { width = 3840, height = 2160 }
+        };
+
+        foreach (var r in all)
+            if (r.width <= nativeRes.width && r.height <= nativeRes.height)
+                availableResolutions.Add(r);
     }
 
-    void OnApplicationQuit()
+    List<string> BuildResolutionOptions()
     {
-        SaveSettings();
+        var opts = new List<string>();
+        foreach (var res in availableResolutions)
+            opts.Add(res.height switch
+            {
+                360  => "360p  (640×360)",
+                480  => "480p  (854×480)",
+                720  => "720p  (1280×720)",
+                1080 => "1080p (1920×1080)",
+                1440 => "1440p (2560×1440)",
+                2160 => "4K    (3840×2160)",
+                _    => $"{res.width}×{res.height}"
+            });
+        return opts;
+    }
+
+    FullScreenMode GetFullscreenMode() => fullscreenDropdown.value switch
+    {
+        0 => FullScreenMode.Windowed,
+        2 => FullScreenMode.FullScreenWindow,
+        _ => FullScreenMode.ExclusiveFullScreen
+    };
+
+    void SetURPField(string fieldName, object value)
+    {
+        if (urpAsset == null) return;
+        typeof(UniversalRenderPipelineAsset)
+            .GetField(fieldName, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+            ?.SetValue(urpAsset, value);
     }
 }

@@ -229,7 +229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   source: {fileID: 9116334104407964178}
   requiredTool: 1
-  toughness: 2
+  toughness: 0
   health: 5
   item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
   givenQuantityAverage: 15
