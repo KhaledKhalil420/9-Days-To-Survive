@@ -5,6 +5,7 @@ using UnityEngine;
 public class QuestManager : MonoBehaviour
 {
     public static QuestManager Instance;
+    public bool turnOn = true;
     [SerializeField] private List<Quest> quests = new();
     [SerializeField] private int questIndex = 0;
     [SerializeField] private Transform parent;
@@ -16,6 +17,7 @@ public class QuestManager : MonoBehaviour
 
     private void Start()
     {
+        if(turnOn)
         SpawnQuest(quests[0]);
     }
     

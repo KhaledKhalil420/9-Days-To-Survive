@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour
     }
 
     private float timer = 0;
-    private void SpawnEnemies() //Bug when player is really high enemies stop spawning for some reason.
+    private void SpawnEnemies() //Failed to create agent because it's not close enough to the navemsh
     {
         if(waveTriggered)
         {

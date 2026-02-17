@@ -2,7 +2,7 @@
     "resolutionIndex": 3,
     "fullscreenMode": 1,
     "vsync": true,
-    "fpsLimit": 600,
+    "fpsLimit": 240,
     "shadowQuality": 0,
     "shadowCascades": 3,
     "shadowType": 0,
