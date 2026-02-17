@@ -9,7 +9,7 @@ public class PauseMenu : MonoBehaviour
     private void Start()
     {
         parent.gameObject.SetActive(true);
-        StartCoroutine(LateStart());
+        parent.gameObject.SetActive(false);
     }
 
     private IEnumerator LateStart()

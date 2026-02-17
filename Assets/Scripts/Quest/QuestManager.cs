@@ -1,6 +1,6 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class QuestManager : MonoBehaviour
 {
@@ -17,6 +17,12 @@ public class QuestManager : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(nameof(LateStart));
+    }
+
+    private IEnumerator LateStart()
+    {
+        yield return new WaitForEndOfFrame();
         if(turnOn)
         SpawnQuest(quests[0]);
     }
@@ -32,7 +38,7 @@ public class QuestManager : MonoBehaviour
         //Spawn next quest
         questIndex++;
         
-        if(questIndex < quests.Count) 
+        if(turnOn && questIndex < quests.Count) 
             SpawnQuest(quests[questIndex]);
     }
 }
