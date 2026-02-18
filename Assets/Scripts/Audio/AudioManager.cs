@@ -18,7 +18,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance { get; private set; }
     [SerializeField] private Sounds s;
     public bool startFadeIn;
-    public AudioMixerGroup musicMixerGroup, soundEffectMixerGroup, masterMixerGroup;
+    public AudioMixerGroup musicMixerGroup, soundEffectMixerGroup, ambienceMixerGroup, masterMixerGroup;
 
     public AudioMixerGroup DefaultAudioMixer;
 

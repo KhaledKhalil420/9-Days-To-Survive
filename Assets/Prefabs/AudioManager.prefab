@@ -193,6 +193,7 @@ MonoBehaviour:
   startFadeIn: 0
   musicMixerGroup: {fileID: 4491711137434354881, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
   soundEffectMixerGroup: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+  ambienceMixerGroup: {fileID: 3321533341175482111, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
   masterMixerGroup: {fileID: 24300002, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
   DefaultAudioMixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
   destroyOnSceneLoad: 0
