@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 //Coal, Ui
-public class Furnace : MonoBehaviour, IInteractable
+public class Furnace : Building, IInteractable
 {
     [Header("Slots")]
     [SerializeField] private BaseSlot fuel;
@@ -13,14 +13,14 @@ public class Furnace : MonoBehaviour, IInteractable
     [SerializeField] private InventoryHolder holder;
 
     [Header("User Interface")]
-    [SerializeField] private Canvas canvas;
+    [SerializeField] private GameObject canvas;
     [SerializeField] private Slider progressSlider;
 
     [Header("Data")]
     [SerializeField] private Smeltables smeltablesData;
 
     [Header("Audio")]
-    [SerializeField] private AudioSource source;
+    [SerializeField] private AudioSource furnaceSource;
     [SerializeField] private AudioClip smeltClip;
     
     [Header("Smelting Progress")]
@@ -28,7 +28,7 @@ public class Furnace : MonoBehaviour, IInteractable
     [SerializeField, ReadOnly] private float smeltingProgress = 0;
     [SerializeField, ReadOnly] private float smeltingFuel = 0;
 
-    private void Start()
+    public override void OnPlaced()
     {
         //Get data
         if (smeltablesData == null)
@@ -51,6 +51,9 @@ public class Furnace : MonoBehaviour, IInteractable
 
     private void Update()
     {
+        if(!isPlaced) 
+            return;
+            
         progressSlider.value = Mathf.Lerp(progressSlider.value, smeltingProgress, Time.deltaTime * 10);
 
         if (input.HeldItem == null)
@@ -61,10 +64,10 @@ public class Furnace : MonoBehaviour, IInteractable
 
         if(smeltingFuel <= 0)
         {
-            if(fuel.HeldItem != null || fuel.HeldQuantity <= 0)
+            if(fuel.HeldItem != null || fuel.HeldItem != null && fuel.HeldQuantity > 0)
                 foreach (var fuelItem in smeltablesData.fuel)
                 {
-                    if(fuelItem.item.data == fuel.HeldItem.data)
+                    if(fuelItem.item.data == fuel.HeldItem?.data)
                     {
                         fuel.HeldQuantity--;
                         smeltingFuel += fuelItem.efficiency;
@@ -110,7 +113,7 @@ public class Furnace : MonoBehaviour, IInteractable
                 input.HeldQuantity--;
                 smeltingFuel--;
 
-                source.PlayOneShot(smeltClip, 1);
+                furnaceSource.PlayOneShot(smeltClip, 1);
             }
 
             else if (output.HeldItem.data == foundItem.data)
@@ -119,7 +122,7 @@ public class Furnace : MonoBehaviour, IInteractable
                 input.HeldQuantity--;
                 smeltingFuel--;
 
-                source.PlayOneShot(smeltClip, 1);
+                furnaceSource.PlayOneShot(smeltClip, 1);
             }
 
             output.UpdateSlot();
@@ -146,6 +149,12 @@ public class Furnace : MonoBehaviour, IInteractable
     {
         PlayerInventory.Instance.ToggleBagNoEvent(true);
         canvas.gameObject.SetActive(true);
+    }
+
+    public override void OnDeath()
+    {
+        if (PlayerInventory.Instance != null)
+            PlayerInventory.Instance.OnInventoryOpen -= CloseUi;
     }
 
     #endregion

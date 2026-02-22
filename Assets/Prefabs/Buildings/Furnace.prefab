@@ -412,11 +412,10 @@ GameObject:
   - component: {fileID: 739171408406774406}
   - component: {fileID: 9119398318314211063}
   - component: {fileID: 3040705182547231922}
+  - component: {fileID: 5095168610675013997}
   - component: {fileID: 1741020841411367384}
-  - component: {fileID: 3051067365933790562}
   - component: {fileID: 5402683621749946469}
   - component: {fileID: -139844298197069266}
-  - component: {fileID: 5095168610675013997}
   m_Layer: 7
   m_Name: Furnace
   m_TagString: Build
@@ -498,6 +497,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5095168610675013997
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2275851901843836078}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.855875, y: 5.377603, z: 3.162579}
+  m_Center: {x: 0, y: 2.6953056, z: 0.1533522}
 --- !u!114 &1741020841411367384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -508,32 +528,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e2073a0ef5bc1144084729842a2827f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fuel: {fileID: 7301112670804220076}
-  input: {fileID: 4003476504961722129}
-  output: {fileID: 2999755580100324274}
-  holder:
-    parent: {fileID: 739171408406774406}
-    hand: {fileID: 2026094877168759192}
-  canvas: {fileID: 2824880741469967390}
-  progressSlider: {fileID: 1642459660843296566}
-  smeltablesData: {fileID: 11400000, guid: 1363b11abc491074ea76099d19a5b7fe, type: 2}
-  source: {fileID: -139844298197069266}
-  smeltClip: {fileID: 8300000, guid: 66f8b898803aa684fa72f7a6850b36a0, type: 3}
-  smeltingTime: 1
-  smeltingProgress: 0
-  smeltingFuel: 0
---- !u!114 &3051067365933790562
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2275851901843836078}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c66d7b0a543924341978aa544ef271ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 5
@@ -552,6 +546,20 @@ MonoBehaviour:
   source: {fileID: -139844298197069266}
   onDestroySound: {fileID: 0}
   onDamageSound: {fileID: 0}
+  fuel: {fileID: 7301112670804220076}
+  input: {fileID: 4003476504961722129}
+  output: {fileID: 2999755580100324274}
+  holder:
+    parent: {fileID: 739171408406774406}
+    hand: {fileID: 2026094877168759192}
+  canvas: {fileID: 2892462992893526707}
+  progressSlider: {fileID: 1642459660843296566}
+  smeltablesData: {fileID: 11400000, guid: 1363b11abc491074ea76099d19a5b7fe, type: 2}
+  furnaceSource: {fileID: -139844298197069266}
+  smeltClip: {fileID: 8300000, guid: 66f8b898803aa684fa72f7a6850b36a0, type: 3}
+  smeltingTime: 1
+  smeltingProgress: 0
+  smeltingFuel: 0
 --- !u!114 &5402683621749946469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -663,27 +671,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!65 &5095168610675013997
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2275851901843836078}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2.855875, y: 5.377603, z: 3.162579}
-  m_Center: {x: 0, y: 2.6953056, z: 0.1533522}
 --- !u!1 &2320684939234550886
 GameObject:
   m_ObjectHideFlags: 0

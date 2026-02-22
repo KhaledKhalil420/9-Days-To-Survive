@@ -17809,7 +17809,7 @@ MonoBehaviour:
   fogNight: {r: 0, g: 0, b: 0, a: 0}
   currentState: 0
   dayPreset: {fileID: 11400000, guid: 991f002f0ae5df94cbddb6d2abd7fd9c, type: 2}
-  nightPreset: {fileID: 11400000, guid: f1a0d815c3658e642b5a186812899e90, type: 2}
+  nightPreset: {fileID: 11400000, guid: 9e5f3bd4c09c96c4eb09ff5d4f92e54a, type: 2}
   volume: {fileID: 305789033}
   bassDropSource: {fileID: 1799642142}
   source: {fileID: 1799642141}

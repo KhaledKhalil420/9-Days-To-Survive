@@ -12,7 +12,7 @@ public class Building : MonoBehaviour, IDamagable
     [SerializeField] internal float extraDamage = 0;
 
     [Header("Building Data")]
-    public Ingredient[] ingredients;
+    public Ingredient[] ingredients = Array.Empty<Ingredient>();
     public BuildingData data;
     public bool dropResourcesOnDestory = false;
     
@@ -34,7 +34,7 @@ public class Building : MonoBehaviour, IDamagable
     [SerializeField] private AudioClip onDamageSound;
 
 
-    private bool isPlaced = false;
+    internal bool isPlaced = false;
     private BoxCollider buildingCollider;
     private NavMeshObstacle obstacle;
     private static HashSet<Building> checkingBuildings = new HashSet<Building>(); 
