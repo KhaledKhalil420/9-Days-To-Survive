@@ -933,6 +933,7 @@ GameObject:
   - component: {fileID: -830527960108696259}
   - component: {fileID: -2849839866131368260}
   - component: {fileID: 5311472441886756726}
+  - component: {fileID: 5110819634871482723}
   m_Layer: 11
   m_Name: CraftingStation
   m_TagString: Build
@@ -1004,9 +1005,11 @@ MonoBehaviour:
   affectedByGridSizePosition: 1
   pivots: []
   pivotsOnBuild: []
+  pivotsOnBuildDisable: []
   supportCheckScale: 1.15
   source: {fileID: 0}
   onDestroySound: {fileID: 0}
+  onDamageSound: {fileID: 0}
 --- !u!65 &1907277935932853918
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1152,6 +1155,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!208 &5110819634871482723
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5095320248276783499}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0
 --- !u!1 &5866284026013829549
 GameObject:
   m_ObjectHideFlags: 0
