@@ -513,12 +513,14 @@ MonoBehaviour:
   fuel: {fileID: 7301112670804220076}
   input: {fileID: 4003476504961722129}
   output: {fileID: 2999755580100324274}
-  canvas: {fileID: 2824880741469967390}
-  progressSlider: {fileID: 1642459660843296566}
   holder:
     parent: {fileID: 739171408406774406}
     hand: {fileID: 2026094877168759192}
+  canvas: {fileID: 2824880741469967390}
+  progressSlider: {fileID: 1642459660843296566}
   smeltablesData: {fileID: 11400000, guid: 1363b11abc491074ea76099d19a5b7fe, type: 2}
+  source: {fileID: -139844298197069266}
+  smeltClip: {fileID: 8300000, guid: 66f8b898803aa684fa72f7a6850b36a0, type: 3}
   smeltingTime: 1
   smeltingProgress: 0
   smeltingFuel: 0
@@ -575,18 +577,18 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 26c2e72c71d40174abb8f51b5149bd25, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.6
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
+  MinDistance: 1.5
+  MaxDistance: 10.088566
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -621,7 +623,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0

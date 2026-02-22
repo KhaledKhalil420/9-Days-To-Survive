@@ -14,9 +14,9 @@
         "ambientOcclusion": true
     },
     "sound": {
-        "masterVolume": 0.0,
-        "musicVolume": 0.0,
-        "sfxVolume": 0.0
+        "masterVolume": 0.822513222694397,
+        "musicVolume": 0.7688685059547424,
+        "sfxVolume": 0.7331054210662842
     },
     "gameplay": {
         "sensitivity": 47.900001525878909,

@@ -6,15 +6,24 @@ using UnityEngine.UI;
 //Coal, Ui
 public class Furnace : MonoBehaviour, IInteractable
 {
+    [Header("Slots")]
     [SerializeField] private BaseSlot fuel;
     [SerializeField] private BaseSlot input;
     [SerializeField] private BaseSlot output;
-    [SerializeField] private Canvas canvas;
-    [SerializeField] private Slider progressSlider;
     [SerializeField] private InventoryHolder holder;
 
+    [Header("User Interface")]
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private Slider progressSlider;
+
+    [Header("Data")]
     [SerializeField] private Smeltables smeltablesData;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource source;
+    [SerializeField] private AudioClip smeltClip;
     
+    [Header("Smelting Progress")]
     [SerializeField] private float smeltingTime;
     [SerializeField, ReadOnly] private float smeltingProgress = 0;
     [SerializeField, ReadOnly] private float smeltingFuel = 0;
@@ -52,7 +61,7 @@ public class Furnace : MonoBehaviour, IInteractable
 
         if(smeltingFuel <= 0)
         {
-            if(fuel.HeldItem != null)
+            if(fuel.HeldItem != null || fuel.HeldQuantity <= 0)
                 foreach (var fuelItem in smeltablesData.fuel)
                 {
                     if(fuelItem.item.data == fuel.HeldItem.data)
@@ -100,6 +109,8 @@ public class Furnace : MonoBehaviour, IInteractable
                 output.HeldQuantity++;
                 input.HeldQuantity--;
                 smeltingFuel--;
+
+                source.PlayOneShot(smeltClip, 1);
             }
 
             else if (output.HeldItem.data == foundItem.data)
@@ -107,6 +118,8 @@ public class Furnace : MonoBehaviour, IInteractable
                 output.HeldQuantity++;
                 input.HeldQuantity--;
                 smeltingFuel--;
+
+                source.PlayOneShot(smeltClip, 1);
             }
 
             output.UpdateSlot();
