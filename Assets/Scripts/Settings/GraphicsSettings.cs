@@ -65,22 +65,13 @@ public class GraphicsSettings : MonoBehaviour
 
     private GraphicsSettingsData settingsData         = new GraphicsSettingsData();
     private List<Resolution>     availableResolutions = new List<Resolution>();
-    private string               savePath;
 
     void Awake()
     {
-        savePath = Path.GetFullPath(Path.Combine(Application.dataPath, "../GraphicsSettings.json"));
-
         BuildAvailableResolutions();
         FindPostProcessing();
         SpawnControls();
-
-#if UNITY_EDITOR
-        ApplyHighest();
-#else
-        LoadSettings();
-#endif
-
+        LoadSettings();      // always load — works in editor and in build
         HookListeners();
     }
 
@@ -106,7 +97,7 @@ public class GraphicsSettings : MonoBehaviour
         motionBlurToggle       = SpawnToggle(postFXParent, false, "Motion Blur");
         ambientOcclusionToggle = SpawnToggle(postFXParent, true,  "Ambient Occlusion");
 
-        // Sliders save only when the user releases the handle, not on every tick
+        // Sliders save only when the user releases the handle
         AddSliderEndListener(fpsSlider);
         AddSliderEndListener(renderScaleSlider);
     }
@@ -225,87 +216,18 @@ public class GraphicsSettings : MonoBehaviour
         SetBloom();         SetMotionBlur();     SetAmbientOcclusion();
     }
 
-    // ── Editor highest ───────────────────────────────────────────────────
-
-    void ApplyHighest()
-    {
-        settingsData = new GraphicsSettingsData
-        {
-            resolutionIndex  = availableResolutions.Count - 1,
-            fullscreenMode   = 1,
-            vsync            = true,
-            fpsLimit         = 240,
-            shadowQuality    = 0,
-            shadowCascades   = 3,
-            shadowType       = 0,
-            renderScale      = 1.15f,
-            antiAliasing     = 0,
-            bloom            = true,
-            motionBlur       = true,
-            ambientOcclusion = true
-        };
-
-        PushToUI();
-        ApplyAll();
-    }
-
     // ── Save / Load ──────────────────────────────────────────────────────
 
-    public void SaveSettings()
-    {
-        try
-        {
-            File.WriteAllText(savePath, JsonUtility.ToJson(settingsData, true));
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogWarning($"[GraphicsSettings] Could not save settings: {e.Message}");
-        }
-    }
+    public void SaveSettings() => SettingsFileManager.SaveGraphics(settingsData);
 
     void LoadSettings()
     {
-        if (File.Exists(savePath))
-        {
-            try
-            {
-                settingsData = JsonUtility.FromJson<GraphicsSettingsData>(File.ReadAllText(savePath));
-                settingsData.resolutionIndex = Mathf.Clamp(settingsData.resolutionIndex, 0, availableResolutions.Count - 1);
-                settingsData.renderScale     = Mathf.Clamp(settingsData.renderScale, 0.1f, 1.15f);
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogWarning($"[GraphicsSettings] Corrupt save file, resetting defaults: {e.Message}");
-                WriteDefaults();
-            }
-        }
-        else
-        {
-            WriteDefaults();
-        }
+        settingsData = SettingsFileManager.Data.graphics;
+        settingsData.resolutionIndex = Mathf.Clamp(settingsData.resolutionIndex, 0, availableResolutions.Count - 1);
+        settingsData.renderScale     = Mathf.Clamp(settingsData.renderScale, 0.1f, 1.15f);
 
         PushToUI();
         ApplyAll();
-    }
-
-    void WriteDefaults()
-    {
-        settingsData = new GraphicsSettingsData
-        {
-            resolutionIndex  = availableResolutions.Count - 1,
-            fullscreenMode   = 1,
-            vsync            = true,
-            fpsLimit         = 60,
-            shadowQuality    = 0,
-            shadowCascades   = 3,
-            shadowType       = 0,
-            renderScale      = 1.0f,
-            antiAliasing     = 0,
-            bloom            = true,
-            motionBlur       = false,
-            ambientOcclusion = true
-        };
-        SaveSettings();
     }
 
     void PushToUI()

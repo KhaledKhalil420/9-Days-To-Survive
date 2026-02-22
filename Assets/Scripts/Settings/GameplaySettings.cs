@@ -2,8 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
-using System.IO;
-using System.Collections.Generic;
 
 [System.Serializable]
 public class GameplaySettingsData
@@ -27,20 +25,11 @@ public class GameplaySettings : MonoBehaviour
     private Toggle questsToggle;
 
     private GameplaySettingsData settingsData = new GameplaySettingsData();
-    private string               savePath;
 
     void Awake()
     {
-        savePath = Path.GetFullPath(Path.Combine(Application.dataPath, "../GameplaySettings.json"));
-
         SpawnControls();
-
-#if UNITY_EDITOR
-        ApplyDefaults();
-#else
-        LoadSettings();
-#endif
-
+        LoadSettings();      // always load — works in editor and in build
         HookListeners();
     }
 
@@ -90,66 +79,17 @@ public class GameplaySettings : MonoBehaviour
         SetQuests();
     }
 
-    // ── Defaults ─────────────────────────────────────────────────────────
-
-    void ApplyDefaults()
-    {
-        settingsData = new GameplaySettingsData
-        {
-            sensitivity    = 50f,
-            questsEnabled  = true
-        };
-
-        PushToUI();
-        ApplyAll();
-    }
-
     // ── Save / Load ──────────────────────────────────────────────────────
 
-    public void SaveSettings()
-    {
-        try
-        {
-            File.WriteAllText(savePath, JsonUtility.ToJson(settingsData, true));
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogWarning($"[GameplaySettings] Could not save settings: {e.Message}");
-        }
-    }
+    public void SaveSettings() => SettingsFileManager.SaveGameplay(settingsData);
 
     void LoadSettings()
     {
-        if (File.Exists(savePath))
-        {
-            try
-            {
-                settingsData = JsonUtility.FromJson<GameplaySettingsData>(File.ReadAllText(savePath));
-                settingsData.sensitivity = Mathf.Clamp(settingsData.sensitivity, 1f, 100f);
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogWarning($"[GameplaySettings] Corrupt save file, resetting defaults: {e.Message}");
-                WriteDefaults();
-            }
-        }
-        else
-        {
-            WriteDefaults();
-        }
+        settingsData = SettingsFileManager.Data.gameplay;
+        settingsData.sensitivity = Mathf.Clamp(settingsData.sensitivity, 1f, 100f);
 
         PushToUI();
         ApplyAll();
-    }
-
-    void WriteDefaults()
-    {
-        settingsData = new GameplaySettingsData
-        {
-            sensitivity   = 50f,
-            questsEnabled = true
-        };
-        SaveSettings();
     }
 
     void PushToUI()

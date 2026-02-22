@@ -231,9 +231,9 @@ public class Building : MonoBehaviour, IDamagable
     private void Upgrades()
     {
         //Do here
-        if(!isHealthOnEnemyDeath && UpgradeManager.IncreaseHealthOnEnemyDeath)
+        if(!isHealthOnEnemyDeath && UpgradeManager.Instance.IncreaseHealthOnEnemyDeath)
         {
-            UpgradeManager.OnEnemyDeath += IncreaseHealthOnEnemyDeath;
+            UpgradeManager.Instance.OnEnemyDeath += IncreaseHealthOnEnemyDeath;
             isHealthOnEnemyDeath = true;
         }
     }
@@ -241,9 +241,9 @@ public class Building : MonoBehaviour, IDamagable
     private bool isHealthOnEnemyDeath = false;
     public void IncreaseHealthOnEnemyDeath()
     {
-        if(UpgradeManager.IncreaseHealthOnEnemyDeath)
+        if(UpgradeManager.Instance.IncreaseHealthOnEnemyDeath)
         {
-            currentHealth += initHealth * 0.15f;
+            currentHealth += (initHealth * 0.15f) * UpgradeManager.Instance.IncreaseHealthOnEnemyDeathMultiplier;
         }
     }
 

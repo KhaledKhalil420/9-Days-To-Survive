@@ -30,7 +30,7 @@ public class Damagable : MonoBehaviour, IDamagable
             OnDeathEvent.Invoke();   
             if(isEnemy)
             {
-                UpgradeManager.OnEnemyDeath?.Invoke();
+                UpgradeManager.Instance.OnEnemyDeath?.Invoke();
             }
 
             if(destroyOnDeath)

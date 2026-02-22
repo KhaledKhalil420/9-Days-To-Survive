@@ -185,7 +185,7 @@ MonoBehaviour:
   scaleWithDifficulty: 1
   isEnemy: 1
   doNumberEffect: 1
-  MaxHealth: 2
+  MaxHealth: 4
 --- !u!65 &1169492533823969571
 BoxCollider:
   m_ObjectHideFlags: 0

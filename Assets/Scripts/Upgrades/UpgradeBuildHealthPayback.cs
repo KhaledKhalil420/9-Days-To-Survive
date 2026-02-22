@@ -11,5 +11,6 @@ public class UpgradeBuildHealthPayback : Upgrade
     void UpgradeStat()
     {
         UpgradeManager.IncreaseHealthOnEnemyDeath = true;
+        UpgradeManager.IncreaseHealthOnEnemyDeathMultiplier = amount;
     }
 }

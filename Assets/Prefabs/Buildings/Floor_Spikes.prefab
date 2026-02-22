@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 717dab8b3dad3d8449b28da38d0b6aa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 25
+  currentHealth: 10
   extraDamage: 0
   ingredients:
   - item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
@@ -163,6 +163,7 @@ MonoBehaviour:
   - {fileID: 283616446916370393}
   pivotsOnBuild:
   - {fileID: 6661467453701758330}
+  pivotsOnBuildDisable: []
   supportCheckScale: 1
   source: {fileID: -3788880822596730553}
   onDestroySound: {fileID: 8300000, guid: e3e0644a4d59680439ef72e55ead6051, type: 3}

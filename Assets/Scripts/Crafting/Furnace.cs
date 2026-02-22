@@ -1,0 +1,139 @@
+using Sortify;
+using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine.UI;
+
+//Coal, Ui
+public class Furnace : MonoBehaviour, IInteractable
+{
+    [SerializeField] private BaseSlot fuel;
+    [SerializeField] private BaseSlot input;
+    [SerializeField] private BaseSlot output;
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private Slider progressSlider;
+    [SerializeField] private InventoryHolder holder;
+
+    [SerializeField] private Smeltables smeltablesData;
+    
+    [SerializeField] private float smeltingTime;
+    [SerializeField, ReadOnly] private float smeltingProgress = 0;
+    [SerializeField, ReadOnly] private float smeltingFuel = 0;
+
+    private void Start()
+    {
+        //Get data
+        if (smeltablesData == null)
+            smeltablesData = Resources.Load<Smeltables>("Smeltables");
+
+        //Ui sync
+        PlayerInventory.Instance.OnInventoryOpen += CloseUi;
+
+        //Setup slots
+        fuel.heldBy = holder;
+        input.heldBy = holder;
+        output.heldBy = holder;
+        fuel.UpdateSlot();
+        input.UpdateSlot();
+        output.UpdateSlot();
+
+        //Slider setup
+        progressSlider.maxValue = smeltingTime;
+    }
+
+    private void Update()
+    {
+        progressSlider.value = Mathf.Lerp(progressSlider.value, smeltingProgress, Time.deltaTime * 10);
+
+        if (input.HeldItem == null)
+        {
+            smeltingProgress = 0;
+            return;
+        }
+
+        if(smeltingFuel <= 0)
+        {
+            if(fuel.HeldItem != null)
+                foreach (var fuelItem in smeltablesData.fuel)
+                {
+                    if(fuelItem.item.data == fuel.HeldItem.data)
+                    {
+                        fuel.HeldQuantity--;
+                        smeltingFuel += fuelItem.efficiency;
+                        fuel.UpdateSlot();
+                    }
+                }
+
+            if(smeltingFuel <= 0)
+            {
+                return;
+            }
+        }
+
+        // Only progress if input is actually smeltable
+        Item foundItem = null;
+        foreach (var item in smeltablesData.smeltables)
+        {
+            if (item.input.data == input.HeldItem.data)
+            {
+                foundItem = item.output;
+                break;
+            }
+        }
+
+        if (foundItem == null)
+        {
+            smeltingProgress = 0;
+            return;
+        }
+
+        smeltingProgress += Time.deltaTime;
+
+        if (smeltingProgress >= smeltingTime)
+        {
+            smeltingProgress = 0;
+            progressSlider.value = 0;
+
+            if (output.HeldItem == null)
+            {
+                Item instantiatedItem = Instantiate(foundItem.gameObject).GetComponent<Item>();
+                output.HeldItem = instantiatedItem;
+                output.HeldQuantity++;
+                input.HeldQuantity--;
+                smeltingFuel--;
+            }
+
+            else if (output.HeldItem.data == foundItem.data)
+            {
+                output.HeldQuantity++;
+                input.HeldQuantity--;
+                smeltingFuel--;
+            }
+
+            output.UpdateSlot();
+            input.UpdateSlot();
+        }
+    }
+
+    #region Ui
+
+    public void Interact(GameObject sender)
+    {
+        OpenUi();
+    }
+
+    public void CloseUi(bool state)
+    {
+        if (state) return;
+
+        PlayerInventory.Instance.ToggleBagNoEvent(false);
+        canvas.gameObject.SetActive(false);
+    }
+
+    public void OpenUi()
+    {
+        PlayerInventory.Instance.ToggleBagNoEvent(true);
+        canvas.gameObject.SetActive(true);
+    }
+
+    #endregion
+}

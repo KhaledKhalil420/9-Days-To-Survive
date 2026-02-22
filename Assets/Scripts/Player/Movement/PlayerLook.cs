@@ -60,8 +60,8 @@ public class PlayerLook : MonoBehaviour
 
     private void Inputs()
     {
-        float mouseX = Input.GetAxisRaw("Mouse X") * Sensitivity * 2 * Time.deltaTime;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Sensitivity * 2 * Time.deltaTime;
+        float mouseX = Input.GetAxisRaw("Mouse X") * Sensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * Sensitivity * Time.deltaTime;
 
         rotations.x -= mouseY;
         rotations.y += mouseX;
@@ -73,8 +73,8 @@ public class PlayerLook : MonoBehaviour
     {
         if (Player == null) return;
 
-        Player.eulerAngles = new Vector3(Player.eulerAngles.x, rotations.y, Player.eulerAngles.z);
-        transform.eulerAngles = new Vector3(rotations.x, Player.eulerAngles.y, transform.eulerAngles.z);
+        Player.rotation = Quaternion.Euler(0f, rotations.y, 0f);
+        transform.rotation = Quaternion.Euler(rotations.x, rotations.y, 0f);
     }
 
     private void Follow()

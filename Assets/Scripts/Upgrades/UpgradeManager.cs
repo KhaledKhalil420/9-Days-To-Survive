@@ -9,8 +9,9 @@ public class UpgradeManager : MonoBehaviour
     public List<Upgrade> ActiveUpgrades = new();
 
     //Events
-    public static Action OnEnemyDeath;
-    public static bool IncreaseHealthOnEnemyDeath = false;
+    public Action OnEnemyDeath;
+    public bool IncreaseHealthOnEnemyDeath = false;
+    public float IncreaseHealthOnEnemyDeathMultiplier = 1;
 
     private void Awake()
     {

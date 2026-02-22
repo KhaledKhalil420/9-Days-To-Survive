@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 861ba835f11deed44910460ec435d5b6, type: 3}
+  m_Name: SmeltablesData
+  m_EditorClassIdentifier: 
+  fuel:
+  - item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
+    efficiency: 1
+  - item: {fileID: 1000862222911474493, guid: 07f2abc27e37e3840800b9d0ef7a1e19, type: 3}
+    efficiency: 1
+  smeltables:
+  - input: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
+    output: {fileID: 5101318331368798286, guid: c9e0b3f991dbb1d41ac1dfde0aaaeba6, type: 3}

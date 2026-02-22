@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
-using System.IO;
 
 [System.Serializable]
 public class SoundSettingsData
@@ -26,20 +25,11 @@ public class SoundSettings : MonoBehaviour
     private Slider sfxSlider;
 
     private SoundSettingsData settingsData = new SoundSettingsData();
-    private string            savePath;
 
     void Awake()
     {
-        savePath = Path.GetFullPath(Path.Combine(Application.dataPath, "../SoundSettings.json"));
-
         SpawnControls();
-
-#if UNITY_EDITOR
-        ApplyDefaults();
-#else
-        LoadSettings();
-#endif
-
+        LoadSettings();      // always load — works in editor and in build
         HookListeners();
     }
 
@@ -95,70 +85,19 @@ public class SoundSettings : MonoBehaviour
         SetSFX();
     }
 
-    // ── Defaults ─────────────────────────────────────────────────────────
-
-    void ApplyDefaults()
-    {
-        settingsData = new SoundSettingsData
-        {
-            masterVolume = 1f,
-            musicVolume  = 0.75f,
-            sfxVolume    = 1f
-        };
-
-        PushToUI();
-        ApplyAll();
-    }
-
     // ── Save / Load ──────────────────────────────────────────────────────
 
-    public void SaveSettings()
-    {
-        try
-        {
-            File.WriteAllText(savePath, JsonUtility.ToJson(settingsData, true));
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogWarning($"[SoundSettings] Could not save settings: {e.Message}");
-        }
-    }
+    public void SaveSettings() => SettingsFileManager.SaveSound(settingsData);
 
     void LoadSettings()
     {
-        if (File.Exists(savePath))
-        {
-            try
-            {
-                settingsData = JsonUtility.FromJson<SoundSettingsData>(File.ReadAllText(savePath));
-                settingsData.masterVolume = Mathf.Clamp01(settingsData.masterVolume);
-                settingsData.musicVolume  = Mathf.Clamp01(settingsData.musicVolume);
-                settingsData.sfxVolume    = Mathf.Clamp01(settingsData.sfxVolume);
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogWarning($"[SoundSettings] Corrupt save file, resetting defaults: {e.Message}");
-                WriteDefaults();
-            }
-        }
-        else
-        {
-            WriteDefaults();
-        }
+        settingsData = SettingsFileManager.Data.sound;
+        settingsData.masterVolume = Mathf.Clamp01(settingsData.masterVolume);
+        settingsData.musicVolume  = Mathf.Clamp01(settingsData.musicVolume);
+        settingsData.sfxVolume    = Mathf.Clamp01(settingsData.sfxVolume);
 
         PushToUI();
         ApplyAll();
-    }
-
-    void WriteDefaults()
-    {
-        settingsData = new SoundSettingsData
-        {
-            masterVolume = 1f,
-            musicVolume  = 0.75f,
-            sfxVolume    = 1f
-        };
-        SaveSettings();
     }
 
     void PushToUI()

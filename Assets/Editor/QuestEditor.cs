@@ -44,7 +44,7 @@ public class QuestEditor : EditorWindow
     {
         RefreshTemplates();
         RefreshTypes();
-        questManager = FindObjectOfType<QuestManager>();
+        questManager = FindAnyObjectByType<QuestManager>();
     }
 
     private void RefreshTemplates()
