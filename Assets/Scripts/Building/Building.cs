@@ -69,13 +69,17 @@ public class Building : MonoBehaviour, IDamagable
 
     #region Self destruction
 
+    private bool isPendingDestroy = false;
+
     public void UpdateBuilding()
     {
-        if (!isPlaced || buildingCollider == null) return;
+        if (!isPlaced || buildingCollider == null || isPendingDestroy) return;
 
         if (!HasGroundSupport())
         {
+            isPendingDestroy = true;
             Invoke(nameof(DestroyBuilding), 0.25f);
+            return;
         }
 
         CheckUpgrades();
@@ -87,48 +91,39 @@ public class Building : MonoBehaviour, IDamagable
             return true;
 
         checkingBuildings.Add(this);
-        Bounds bounds;
 
-        if(buildingCollider == null)
+        try
         {
-            buildingCollider = gameObject.GetComponent<BoxCollider>();
-
-            if(buildingCollider == null)
+            if (buildingCollider == null)
             {
-                buildingCollider = gameObject.AddComponent<BoxCollider>();
+                buildingCollider = gameObject.GetComponent<BoxCollider>();
+                if (buildingCollider == null)
+                    buildingCollider = gameObject.AddComponent<BoxCollider>();
             }
-        }
 
-        bounds = buildingCollider.bounds;
-        Collider[] hits = Physics.OverlapBox(bounds.center, bounds.extents * supportCheckScale, transform.rotation, buildingLayers, QueryTriggerInteraction.Ignore);
+            Bounds bounds = buildingCollider.bounds;
+            Collider[] hits = Physics.OverlapBox(bounds.center, bounds.extents * supportCheckScale, transform.rotation, buildingLayers, QueryTriggerInteraction.Ignore);
 
-        bool hasSupport = false;
-
-        foreach (var hit in hits)
-        {
-            if (hit == buildingCollider) continue;
-            
-            if (hit.CompareTag("Ground"))
+            foreach (var hit in hits)
             {
-                hasSupport = true;
-                break;
-            }
-            
-            if (hit.CompareTag("Build"))
-            {
-                if(hit.TryGetComponent(out Building supportingBuilding))
+                if (hit == buildingCollider) continue;
+
+                if (hit.CompareTag("Ground"))
+                    return true;
+
+                if (hit.CompareTag("Build") && hit.TryGetComponent(out Building supportingBuilding))
                 {
-                    if (supportingBuilding.HasGroundSupport() && supportingBuilding.isPlaced)
-                    {
-                        hasSupport = true;
-                        break;
-                    }
+                    if (supportingBuilding.isPlaced && supportingBuilding.HasGroundSupport())
+                        return true;
                 }
             }
-        }
 
-        checkingBuildings.Remove(this);
-        return hasSupport;
+            return false;
+        }
+        finally
+        {
+            checkingBuildings.Remove(this);
+        }
     }
 
     #endregion
