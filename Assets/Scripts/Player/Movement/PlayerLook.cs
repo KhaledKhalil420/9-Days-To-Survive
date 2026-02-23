@@ -60,8 +60,8 @@ public class PlayerLook : MonoBehaviour
 
     private void Inputs()
     {
-        float mouseX = Input.GetAxisRaw("Mouse X") * Sensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Sensitivity * Time.deltaTime;
+        float mouseX = Input.GetAxisRaw("Mouse X") * Sensitivity * 0.01f;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * Sensitivity * 0.01f;
 
         rotations.x -= mouseY;
         rotations.y += mouseX;

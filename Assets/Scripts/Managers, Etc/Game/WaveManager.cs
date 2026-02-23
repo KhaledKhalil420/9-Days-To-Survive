@@ -34,6 +34,10 @@ public class WaveManager : MonoBehaviour
     private void Start()
     {
         DayNightCycleManager.Instance.OnDayChange += TriggerWave;
+
+        //Prewarm pool with all enemies across all waves upfront
+        foreach (Wave wave in waves)
+            EnemyPool.Instance.Prewarm(wave.enemies);
     }
 
     private void Update()
@@ -93,7 +97,7 @@ public class WaveManager : MonoBehaviour
     }
 
     private float timer = 0;
-    private void SpawnEnemies() //Failed to create agent because it's not close enough to the navemsh
+    private void SpawnEnemies()
     {
         if(waveTriggered)
         {
@@ -101,7 +105,10 @@ public class WaveManager : MonoBehaviour
             if(timer > selectedWave.spawningCooldown && AIManager.Instance.registeredEnemies.Count < selectedWave.maxEnemies)
             {
                 timer = 0;
-                EnemySpawner.SpawnWave(selectedWave, GameManager.Player.transform.position, selectedWave.spawningRadius, selectedWave.minimumSpawningDistance);
+
+                //Pick a random enemy from the wave and spawn it from the pool
+                GroundEnemy prefab = selectedWave.enemies[Random.Range(0, selectedWave.enemies.Count)];
+                EnemyPool.Instance.Spawn(prefab, GameManager.Player.transform.position, selectedWave.spawningRadius, selectedWave.minimumSpawningDistance);
             }
 
             if(enemiesDefeated >= selectedWave.requiredDefeats)

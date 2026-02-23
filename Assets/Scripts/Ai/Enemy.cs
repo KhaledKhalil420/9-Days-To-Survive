@@ -33,11 +33,11 @@ public class GroundEnemy : EnemyBrain
             agent.SetDestination(distanation);
         }
 
-        //Destroy during daytime
+        //Return to pool during daytime instead of destroying
         if (dayNightCycle != null && dayNightCycle.currentState == DayNightCycleManager.CycleState.Day)
         {
             AIManager.UnRegister(this);
-            Destroy(gameObject);
+            EnemyPool.Instance.Return(this);
             return;
         }
 
@@ -46,6 +46,19 @@ public class GroundEnemy : EnemyBrain
 
     public virtual void OnBehaviourTick() { }
     public virtual void OnBehaviourStart() { }
+
+    public virtual void OnSpawn()
+    {
+        GetComponent<Damagable>()?.ResetHealth();
+        AIManager.Register(this);
+    }
+
+    public virtual void OnDespawn()
+    {
+        AIManager.UnRegister(this);
+        agent.ResetPath();
+        agent.velocity = Vector3.zero;
+    }
 
     public void TickDeath()
     {

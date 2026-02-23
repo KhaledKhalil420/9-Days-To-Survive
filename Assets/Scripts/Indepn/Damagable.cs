@@ -8,7 +8,7 @@ using UnityEngine.Events;
 public class Damagable : MonoBehaviour, IDamagable
 {
     public UnityEvent OnDamageEvent, OnDeathEvent;
-    [SerializeField] private bool destroyOnDeath = true, scaleWithDifficulty = true, isEnemy = true, doNumberEffect = true;
+    [SerializeField] private bool destroyOnDeath = true, scaleWithDifficulty = true, isEnemy = true, doNumberEffect = true, poolObject = false;
     [SerializeField] private float MaxHealth = 5;
     [ReadOnly] private float currentHealth;
 
@@ -16,6 +16,12 @@ public class Damagable : MonoBehaviour, IDamagable
     {
         if(scaleWithDifficulty)
         MaxHealth *= 1 + (Difficulty.DifficultyMultiplier - 1) * 0.2f;
+        currentHealth = MaxHealth;
+    }
+
+    //Called by EnemyPool when the enemy is pulled from the pool for reuse
+    public void ResetHealth()
+    {
         currentHealth = MaxHealth;
     }
 
@@ -35,7 +41,15 @@ public class Damagable : MonoBehaviour, IDamagable
 
             if(destroyOnDeath)
             {
-                Destroy(gameObject);
+                if(poolObject)
+                {
+                    //Return to pool instead of destroying
+                    EnemyPool.Instance.Return(GetComponent<GroundEnemy>());
+                }
+                else
+                {
+                    Destroy(gameObject);
+                }
             }
         }
     }

@@ -22,6 +22,22 @@ public class BasicEnemy : GroundEnemy
         Animations();
     }
 
+    //Reset attack state when pulled from pool
+    public override void OnSpawn()
+    {
+        base.OnSpawn();
+        canAttack = true;
+        CancelInvoke(nameof(PrepareAttack));
+    }
+
+    //Clean up any pending invokes when returned to pool
+    public override void OnDespawn()
+    {
+        base.OnDespawn();
+        CancelInvoke(nameof(PrepareAttack));
+        canAttack = true;
+    }
+
     private void Animations()
     {
         float speedPercent = agent.velocity.magnitude / agent.speed;
