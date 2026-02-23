@@ -1542,7 +1542,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   craftingStation: {fileID: 5926124917630625843}
   buttonType: 2
-  source: {fileID: 8453217349718050556}
+  source: {fileID: 3442847215802551170}
 --- !u!65 &574304791591533575
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1575,9 +1575,9 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 22822dd98daf7c14f8783656420dedb9, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.75
   m_Pitch: 1
   Loop: 0
   Mute: 0

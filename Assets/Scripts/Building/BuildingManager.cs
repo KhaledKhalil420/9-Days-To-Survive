@@ -120,8 +120,6 @@ public class BuildingManager : MonoBehaviour
         {
             currentBuilds += builds[i].GetComponent<Building>().data.pointsWorth;
         };
-
-        Debug.Log("W");
     }
 
     void ClearRecipe()

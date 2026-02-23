@@ -32,6 +32,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        #if  UNITY_EDITOR
+
+        #else
+        group.alpha = 1;
+        group.DOFade(0, 5);
+        #endif
         GivePlayerStarterItems();
     }
 
