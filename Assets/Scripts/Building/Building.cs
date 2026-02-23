@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 using System;
 using UnityEngine.Audio;
+using NUnit.Framework;
 
 public class Building : MonoBehaviour, IDamagable
 {
@@ -198,6 +199,8 @@ public class Building : MonoBehaviour, IDamagable
 
     private void OnDestroy()
     {
+        if(!isPlaced) 
+            return; 
         RebakeNav();
 
         BuildingManager.Instance.OnGridUpdated -= UpdateBuilding;

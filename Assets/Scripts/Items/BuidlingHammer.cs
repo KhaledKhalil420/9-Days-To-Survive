@@ -38,6 +38,10 @@ public class BuildingHammer : Item
         buildManager = BuildingManager.Instance;
         mainCamera = PlayerLook.mainCamera.transform;
         animator = GetComponent<Animator>();
+
+        //new line added
+        buildManager.OnGridUpdated += UpdateUiGhost;
+
         SpawnGhost();
     }
 
@@ -345,15 +349,27 @@ public class BuildingHammer : Item
 
     public override void OnSelectOnce()
     {
-        SpawnGhost();
-        BuildingManager.Instance.ShowUI(true);
+        UpdateUiGhost();
     }
+
 
     public override void OnPick()
     {
         if(!isSelected) return;
+        UpdateUiGhost();
+    }
+
+    public void UpdateUiGhost()
+    {
+        if(!isSelected || !isItemPickedUp) return;
         SpawnGhost();
-        BuildingManager.Instance.ShowUI(true);
+        BuildingManager.Instance.ShowUI(true);   
+    }
+
+    void OnDestroy()
+    {
+        //new line added
+        buildManager.OnGridUpdated -= UpdateUiGhost;
     }
 
     public override void OnSelect()
