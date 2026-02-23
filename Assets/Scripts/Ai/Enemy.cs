@@ -51,7 +51,7 @@ public class GroundEnemy : EnemyBrain
     {
         if (dayNightCycle != null && dayNightCycle.currentState == DayNightCycleManager.CycleState.Night)
         {
-            GameManager.Instance.OnEnemyDefeated();
+            WaveManager.Instance.OnEnemyDefeated();
         }
     }
 }

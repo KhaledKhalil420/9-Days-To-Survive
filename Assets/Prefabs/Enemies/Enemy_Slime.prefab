@@ -131,6 +131,8 @@ MonoBehaviour:
   agent: {fileID: 2376156257152523776}
   TargetTag: Player
   searchArea: 15
+  loseInterestTime: 4
+  pathRefreshInterval: 0.5
   mainTarget: {fileID: 0}
   target: {fileID: 0}
   pointsWorth: 100
@@ -218,7 +220,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 9d9420675d72fc046a6d81235320e645, type: 2}
-  m_CullingMode: 0
+  m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -250,8 +252,8 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 0.27
-  MaxDistance: 5.487578
+  MinDistance: 0.25
+  MaxDistance: 5.5
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
