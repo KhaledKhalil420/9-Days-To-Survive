@@ -12,7 +12,7 @@ public class CraftingStation : MonoBehaviour
 
     [SerializeField] private Transform uiHolder;  
     [SerializeField] private Image recipeIcon_Image;
-    [SerializeField] private TMP_Text recipeDiscreption_Text;
+    [SerializeField] private TMP_Text recipeName_Text, recipeDiscreption_Text;
     [SerializeField] private Image ingredientPrefab;
     [SerializeField] private Transform craftingPoint;
 
@@ -62,6 +62,7 @@ public class CraftingStation : MonoBehaviour
 
         //Update recipe
         recipeIcon_Image.sprite = availableRecipes[currentRecipe].itemToGive.data.sprite;
+        recipeName_Text.text = availableRecipes[currentRecipe].itemToGive.data.Name;
         recipeDiscreption_Text.text = availableRecipes[currentRecipe].itemToGive.data.discription;
 
         //Add ingrediets
@@ -70,7 +71,7 @@ public class CraftingStation : MonoBehaviour
             
             IngredientUi ingredientUi = Instantiate(ingredientPrefab, uiHolder).GetComponent<IngredientUi>();
             ingredientUi.image.sprite = ingredient.item.data.sprite;
-            ingredientUi.text.text = ingredient.quantity.ToString();
+            ingredientUi.text.text = "x" + ingredient.quantity.ToString() + " " + ingredient.item.data.Name;
 
             tempUI.Add(ingredientUi.gameObject);
         }

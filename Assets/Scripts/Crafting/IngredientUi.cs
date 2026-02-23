@@ -7,5 +7,5 @@ using UnityEngine.UI;
 public class IngredientUi : MonoBehaviour
 {
     public Image image;
-    public TMP_Text text;
+    public TMP_Text text, text2;
 }
