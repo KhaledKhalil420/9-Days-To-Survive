@@ -29,6 +29,6 @@ public class Player : MonoBehaviour
 
     void OnDestroy()
     {
-        DOTween.KillAll();
+        DOTween.Kill(gameObject);
     }
 }

@@ -53,8 +53,17 @@ public class DragSlot : MonoBehaviour
     {
         if (from.HeldItem == null)
             return;
-        
-        StopDrag();
+
+        if(isDragging)
+        {
+            if(fromSlot == from && from.HeldQuantity > heldQuantity)
+            {
+                heldQuantity++;
+                dragIcon.GetComponentInChildren<TMP_Text>().text = "x" + heldQuantity.ToString();
+            }
+
+            return;
+        }
 
         fromSlot = from;
         heldQuantity = quantity;
@@ -94,6 +103,6 @@ public class DragSlot : MonoBehaviour
     {
         dragIcon = Instantiate(iconPrefab, canvasGroup.transform).rectTransform;
         dragIcon.GetComponent<Image>().sprite = sprite;
-        dragIcon.GetComponentInChildren<TMP_Text>().text =  "x" + quantity.ToString();
+        dragIcon.GetComponentInChildren<TMP_Text>().text = "x" + quantity.ToString();
     }
 }

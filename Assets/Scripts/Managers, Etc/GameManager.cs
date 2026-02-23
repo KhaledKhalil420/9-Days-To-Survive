@@ -144,16 +144,16 @@ public class GameManager : MonoBehaviour
     
     private void GivePlayerStarterItems()
     {
-        #if UNITY_EDITOR
+        // #if UNITY_EDITOR
         foreach(Item item in starterItems)
             player.GetComponent<PlayerInventory>().GiveItem(item);
 
-        #else 
+        // #else 
         
-        foreach(Item item in starterItems)
-            Destroy(item.gameObject);
+        // foreach(Item item in starterItems)
+        //     Destroy(item.gameObject);
 
-        #endif
+        // #endif
     }
 
     public void PlayerLost()

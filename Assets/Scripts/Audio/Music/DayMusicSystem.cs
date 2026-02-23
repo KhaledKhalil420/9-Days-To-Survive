@@ -3,7 +3,6 @@ using UnityEngine.Audio;
 using System.Collections.Generic;
 using DG.Tweening;
 
-//Add custom music for each day
 public class DayMusicSystem : MonoBehaviour
 {
     [SerializeField] private AudioSource daySource, nightSource;

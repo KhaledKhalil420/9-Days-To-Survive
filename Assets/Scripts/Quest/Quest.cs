@@ -48,7 +48,7 @@ public class Quest : MonoBehaviour
 
     void OnDestroy()
     {
-        DOTween.Kill(this);
+        DOTween.Kill(gameObject);
     }
 
     public void CompleteQuest()

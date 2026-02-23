@@ -199,9 +199,6 @@ public class Building : MonoBehaviour, IDamagable
     private void OnDestroy()
     {
         RebakeNav();
-        
-        if(obstacle != null)
-            obstacle.enabled = false;
 
         BuildingManager.Instance.OnGridUpdated -= UpdateBuilding;
         BuildingManager.Instance.UpdateGrid();
