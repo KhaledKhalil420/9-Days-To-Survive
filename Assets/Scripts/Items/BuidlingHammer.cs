@@ -369,6 +369,7 @@ public class BuildingHammer : Item
     void OnDestroy()
     {
         //new line added
+        if(buildManager)
         buildManager.OnGridUpdated -= UpdateUiGhost;
     }
 

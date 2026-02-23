@@ -40,6 +40,9 @@ public class BasicEnemy : GroundEnemy
 
     private void Animations()
     {
+        if(animator == null) 
+            return;
+            
         float speedPercent = agent.velocity.magnitude / agent.speed;
         animator.SetBool("Moving", speedPercent > 0.15f);
         animator.speed = Mathf.Max(1f, speedPercent);
