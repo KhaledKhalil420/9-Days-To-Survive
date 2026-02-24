@@ -1722,6 +1722,7 @@ MonoBehaviour:
   availableRecipes:
   - {fileID: 11400000, guid: 91adf94fddd3e4843b9dd85309eb8c83, type: 2}
   - {fileID: 11400000, guid: e852869cfb4d799488b0e26ab1260f92, type: 2}
+  - {fileID: 11400000, guid: 92f0cec7716554c489b3f2d6a745c2f6, type: 2}
   uiHolder: {fileID: 8385736257927671490}
   recipeIcon_Image: {fileID: 2935601502420707642}
   recipeName_Text: {fileID: 5577177748774976853}

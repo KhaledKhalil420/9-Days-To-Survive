@@ -1483,6 +1483,63 @@ MonoBehaviour:
   unRenderableLayers:
     serializedVersion: 2
     m_Bits: 256
+--- !u!1001 &168587593
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1664812503627422844, guid: bf0e99c8f5d043947a633e8f262ebdcb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6.7662807
+      objectReference: {fileID: 0}
+    - target: {fileID: 1664812503627422844, guid: bf0e99c8f5d043947a633e8f262ebdcb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.44813842
+      objectReference: {fileID: 0}
+    - target: {fileID: 1664812503627422844, guid: bf0e99c8f5d043947a633e8f262ebdcb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 1664812503627422844, guid: bf0e99c8f5d043947a633e8f262ebdcb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1664812503627422844, guid: bf0e99c8f5d043947a633e8f262ebdcb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1664812503627422844, guid: bf0e99c8f5d043947a633e8f262ebdcb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1664812503627422844, guid: bf0e99c8f5d043947a633e8f262ebdcb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1664812503627422844, guid: bf0e99c8f5d043947a633e8f262ebdcb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1664812503627422844, guid: bf0e99c8f5d043947a633e8f262ebdcb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1664812503627422844, guid: bf0e99c8f5d043947a633e8f262ebdcb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 9080617714454738072, guid: bf0e99c8f5d043947a633e8f262ebdcb, type: 3}
+      propertyPath: m_Name
+      value: Stone Axe
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bf0e99c8f5d043947a633e8f262ebdcb, type: 3}
 --- !u!1 &186509671
 GameObject:
   m_ObjectHideFlags: 0
@@ -19859,3 +19916,4 @@ SceneRoots:
   - {fileID: 2126618535}
   - {fileID: 1801142246}
   - {fileID: 1120478804}
+  - {fileID: 168587593}
