@@ -88,5 +88,24 @@ public class GameManager : MonoBehaviour
         DOVirtual.DelayedCall(5f, () => { AudioManager.Instance.FadeOut(false); group.DOFade(1f, 2.5f).SetUpdate(true).OnComplete(() => { SceneManager.LoadScene(0); Time.timeScale = 1f; Time.fixedDeltaTime = 0.01f; }); }).SetUpdate(true);
     }
 
+    private void Update()
+    {
+        #if UNITY_EDITOR
+        if(Input.GetKeyDown(KeyCode.F1))
+        {
+            Player.stats.health.max = 10000;
+            Player.stats.health.modifyRate = 10000;
+
+            Player.stats.stamina.max = 10000;
+            Player.stats.stamina.modifyRate = 10000;
+
+            Player.inventory.speedBonus *= 1.5f;
+
+            BuildingManager.Instance.buildLimitPoints = 1000;
+            BuildingManager.Instance.extraBuildingHealth = 1000;
+        }
+        #endif
+    }   
+
     #endregion
 }
