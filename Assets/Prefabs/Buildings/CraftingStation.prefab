@@ -1576,7 +1576,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 22822dd98daf7c14f8783656420dedb9, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.75
   m_Pitch: 1
   Loop: 0
@@ -1752,7 +1752,7 @@ MonoBehaviour:
   pivots: []
   pivotsOnBuild: []
   pivotsOnBuildDisable: []
-  supportCheckScale: 1.15
+  supportCheckScale: 1.05
   source: {fileID: 0}
   onDestroySound: {fileID: 0}
   onDamageSound: {fileID: 0}

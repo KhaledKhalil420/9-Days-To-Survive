@@ -141,14 +141,18 @@ public class Furnace : Building, IInteractable
     {
         if (state) return;
 
-        PlayerInventory.Instance.ToggleBagNoEvent(false);
-        canvas?.SetActive(false);
+        PlayerInventory.Instance?.ToggleBagNoEvent(false);
+
+        if(canvas != null)
+            canvas.SetActive(false);
     }
 
     public void OpenUi()
     {
-        PlayerInventory.Instance.ToggleBagNoEvent(true);
-        canvas?.SetActive(true);
+        PlayerInventory.Instance?.ToggleBagNoEvent(true);
+
+        if(canvas != null)
+            canvas.SetActive(true);
     }
 
     public override void OnDeath()

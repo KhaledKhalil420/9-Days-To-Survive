@@ -4415,8 +4415,8 @@ MonoBehaviour:
     requiredDefeats: 15
     maxEnemies: 20
     spawningCooldown: 1
-    spawningRadius: 5
-    minimumSpawningDistance: 2
+    spawningRadius: 12
+    minimumSpawningDistance: 6
   animator: {fileID: 1246647109}
   text: {fileID: 73522711}
   groupStats: {fileID: 1246647110}

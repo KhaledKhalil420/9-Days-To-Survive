@@ -1,0 +1,159 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cf8d45489a93ab4bb4b9a1862c274a9, type: 3}
+  m_Name: AudioData
+  m_EditorClassIdentifier: 
+  sounds:
+  - SoundName: Pickup
+    Loop: 0
+    PlayOnAwake: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+    Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+    Clip: {fileID: 8300000, guid: 2e305dc9b39a9d64a800b0907ee9c191, type: 3}
+  - SoundName: Build
+    Loop: 0
+    PlayOnAwake: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+    Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+    Clip: {fileID: 8300000, guid: 2e4705d8af82d324998838b1fbe9090d, type: 3}
+  - SoundName: Demolish
+    Loop: 0
+    PlayOnAwake: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+    Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+    Clip: {fileID: 8300000, guid: e3e0644a4d59680439ef72e55ead6051, type: 3}
+  - SoundName: BagOpen
+    Loop: 0
+    PlayOnAwake: 0
+    Volume: 0.2
+    Pitch: 1
+    Source: {fileID: 0}
+    Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+    Clip: {fileID: 8300000, guid: d9ea6731448c5584ea9924c062f4027e, type: 3}
+  - SoundName: BagClose
+    Loop: 0
+    PlayOnAwake: 0
+    Volume: 0.2
+    Pitch: 1
+    Source: {fileID: 0}
+    Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+    Clip: {fileID: 8300000, guid: 327495cd2fecc504684a3b034a1ecc9b, type: 3}
+  - SoundName: BagPlace
+    Loop: 0
+    PlayOnAwake: 0
+    Volume: 0.7
+    Pitch: 1
+    Source: {fileID: 0}
+    Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+    Clip: {fileID: 8300000, guid: e6ec68adbdf491644a32efe19d0c7b09, type: 3}
+  - SoundName: PlayerDamaged
+    Loop: 0
+    PlayOnAwake: 0
+    Volume: 0.35
+    Pitch: 1
+    Source: {fileID: 0}
+    Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+    Clip: {fileID: 8300000, guid: e53e0203eac654a4288c65316dac8619, type: 3}
+  - SoundName: PlayerDeath
+    Loop: 0
+    PlayOnAwake: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+    Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+    Clip: {fileID: 8300000, guid: fea7e148ca7cad84caee2759ed06cb64, type: 3}
+  - SoundName: Ui_Click
+    Loop: 0
+    PlayOnAwake: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+    Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+    Clip: {fileID: 8300000, guid: ee437e99a4693cc4f97d8507d5a9cf94, type: 3}
+  - SoundName: Ui_Hover
+    Loop: 0
+    PlayOnAwake: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+    Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+    Clip: {fileID: 8300000, guid: dcde50188e091da41a0679795086b9ea, type: 3}
+  - SoundName: Ui_Close
+    Loop: 0
+    PlayOnAwake: 0
+    Volume: 1
+    Pitch: 1
+    Source: {fileID: 0}
+    Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+    Clip: {fileID: 8300000, guid: f20ff5e506971104ea335edeec2ef65d, type: 3}
+  - SoundName: Selecting_Build
+    Loop: 0
+    PlayOnAwake: 0
+    Volume: 0.7
+    Pitch: 1
+    Source: {fileID: 0}
+    Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+    Clip: {fileID: 8300000, guid: 3299093339d15504696310f9b120fddd, type: 3}
+  - SoundName: Rotating_Build
+    Loop: 0
+    PlayOnAwake: 0
+    Volume: 0.7
+    Pitch: 1
+    Source: {fileID: 0}
+    Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+    Clip: {fileID: 8300000, guid: ecb2a9c3f3e619547bfdae246246947a, type: 3}
+  - SoundName: Craft
+    Loop: 0
+    PlayOnAwake: 0
+    Volume: 0.7
+    Pitch: 1
+    Source: {fileID: 0}
+    Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+    Clip: {fileID: 8300000, guid: 4d98dff55af45b14988eb4fcdadd1c3a, type: 3}
+  - SoundName: EnemyKill
+    Loop: 0
+    PlayOnAwake: 0
+    Volume: 0.6
+    Pitch: 1
+    Source: {fileID: 0}
+    Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+    Clip: {fileID: 8300000, guid: 7560ead05e714624185b97040a9c4f15, type: 3}
+  - SoundName: Start_Selecting_Build
+    Loop: 0
+    PlayOnAwake: 0
+    Volume: 0.35
+    Pitch: 1
+    Source: {fileID: 0}
+    Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+    Clip: {fileID: 8300000, guid: 3599fbfcb43ec004bb28941af10b2bc2, type: 3}
+  - SoundName: Quest_Click
+    Loop: 0
+    PlayOnAwake: 0
+    Volume: 0.35
+    Pitch: 1
+    Source: {fileID: 0}
+    Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+    Clip: {fileID: 8300000, guid: 22822dd98daf7c14f8783656420dedb9, type: 3}
+  - SoundName: Quest_Finish
+    Loop: 0
+    PlayOnAwake: 0
+    Volume: 0.35
+    Pitch: 1
+    Source: {fileID: 0}
+    Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+    Clip: {fileID: 8300000, guid: cd1e8c45ddb972c4480b228b0b4b2459, type: 3}

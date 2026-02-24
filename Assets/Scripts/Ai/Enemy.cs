@@ -23,17 +23,14 @@ public class GroundEnemy : EnemyBrain
 
     public override void OnLogicalTick()
     {
+        if (agent == null || !agent.isActiveAndEnabled) return;
+
         if (speedUpWhenTargetingMain)
-        {
             agent.speed = (target == mainTarget) ? initSpeed * onCatchMainTargetSpeedBoost : initSpeed;
-        }
 
         if (distanation != Vector3.zero && (!agent.hasPath || agent.destination != distanation))
-        {
             agent.SetDestination(distanation);
-        }
 
-        //Return to pool during daytime instead of destroying
         if (dayNightCycle != null && dayNightCycle.currentState == DayNightCycleManager.CycleState.Day)
         {
             AIManager.UnRegister(this);
@@ -44,16 +41,13 @@ public class GroundEnemy : EnemyBrain
         OnBehaviourTick();
     }
 
-    public virtual void OnBehaviourTick() { }
-    public virtual void OnBehaviourStart() { }
-
-    public virtual void OnSpawn()
+    public override void OnSpawn()
     {
         GetComponent<Damagable>()?.ResetHealth();
         AIManager.Register(this);
     }
 
-    public virtual void OnDespawn()
+    public override void OnDespawn()
     {
         AIManager.UnRegister(this);
         agent.ResetPath();
@@ -63,8 +57,9 @@ public class GroundEnemy : EnemyBrain
     public void TickDeath()
     {
         if (dayNightCycle != null && dayNightCycle.currentState == DayNightCycleManager.CycleState.Night)
-        {
             WaveManager.Instance.OnEnemyDefeated();
-        }
     }
+
+    public virtual void OnBehaviourTick() { }
+    public virtual void OnBehaviourStart() { }
 }

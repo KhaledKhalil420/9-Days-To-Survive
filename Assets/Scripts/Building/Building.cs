@@ -88,7 +88,7 @@ public class Building : MonoBehaviour, IDamagable
     private bool HasGroundSupport()
     {
         if (checkingBuildings.Contains(this))
-            return true;
+            return false;
 
         checkingBuildings.Add(this);
 
@@ -242,6 +242,14 @@ public class Building : MonoBehaviour, IDamagable
         }
     }
 
-
+    private void OnDrawGizmosSelected()
+    {
+        BoxCollider col = buildingCollider != null ? buildingCollider : GetComponent<BoxCollider>();
+        if (col == null) return;
+    
+        Gizmos.color = new Color(0f, 1f, 0f, 0.3f);
+        Gizmos.matrix = Matrix4x4.TRS(col.bounds.center, transform.rotation, Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, col.bounds.extents * supportCheckScale * 2);
+    }
     #endregion
 }

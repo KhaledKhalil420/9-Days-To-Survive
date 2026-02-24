@@ -107,7 +107,7 @@ public class WaveManager : MonoBehaviour
                 timer = 0;
 
                 //Pick a random enemy from the wave and spawn it from the pool
-                GroundEnemy prefab = selectedWave.enemies[Random.Range(0, selectedWave.enemies.Count)];
+                EnemyBrain prefab = selectedWave.enemies[Random.Range(0, selectedWave.enemies.Count)];
                 EnemyPool.Instance.Spawn(prefab, GameManager.Player.transform.position, selectedWave.spawningRadius, selectedWave.minimumSpawningDistance);
             }
 
@@ -133,7 +133,7 @@ public class WaveManager : MonoBehaviour
 [System.Serializable]
 public class Wave
 {
-    public List<GroundEnemy> enemies = new();
+    public List<EnemyBrain> enemies = new();
 
     [Header("Enemies")]
     public int requiredDefeats;

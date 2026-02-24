@@ -1,4 +1,3 @@
-using DG.Tweening;
 using UnityEngine;
 
 public class BasicEnemy : GroundEnemy
@@ -22,7 +21,6 @@ public class BasicEnemy : GroundEnemy
         Animations();
     }
 
-    //Reset attack state when pulled from pool
     public override void OnSpawn()
     {
         base.OnSpawn();
@@ -30,7 +28,6 @@ public class BasicEnemy : GroundEnemy
         CancelInvoke(nameof(PrepareAttack));
     }
 
-    //Clean up any pending invokes when returned to pool
     public override void OnDespawn()
     {
         base.OnDespawn();
@@ -40,50 +37,33 @@ public class BasicEnemy : GroundEnemy
 
     private void Animations()
     {
-        if(animator == null) 
-            return;
-            
+        if (animator == null) return;
+
         float speedPercent = agent.velocity.magnitude / agent.speed;
         animator.SetBool("Moving", speedPercent > 0.15f);
         animator.speed = Mathf.Max(1f, speedPercent);
     }
 
-
-    public void HasReachedTarget()
+    private void HasReachedTarget()
     {
-        if(target == null) 
-            return;
-            
-        if(!agent.isOnNavMesh) 
-            return;
+        if (target == null) return;
+        if (!agent.isOnNavMesh) return;
+        if (agent.remainingDistance > agent.stoppingDistance) return;
 
-        if(agent.remainingDistance > agent.stoppingDistance) 
-            return;
-        
-        //Check if target is within attack range
-        float distanceToTarget = Vector3.Distance(transform.position, target.position);
-        
-        if(distanceToTarget <= attackRange && canAttack)
-        {
+        if (Vector3.Distance(transform.position, target.position) <= attackRange && canAttack)
             Attack();
-        }
     }
 
     private void Attack()
     {
         animator.SetTrigger("Attack");
 
-        if(target.TryGetComponent(out IDamagable damagable))
-        {
+        if (target.TryGetComponent(out IDamagable damagable))
             damagable.Damage(attackDamage);
-        }
 
         canAttack = false;
         Invoke(nameof(PrepareAttack), attackCooldown);
     }
 
-    private void PrepareAttack()
-    {
-        canAttack = true;
-    }
+    private void PrepareAttack() => canAttack = true;
 }

@@ -2,9 +2,6 @@ using Sortify;
 using UnityEngine;
 using UnityEngine.AI;
 
-/// <summary>
-/// Pathfinding logic for enemies. 
-/// </summary>
 public class EnemyBrain : MonoBehaviour
 {
     [Header("Pathfinding")]
@@ -14,10 +11,10 @@ public class EnemyBrain : MonoBehaviour
 
     [SerializeField] private float searchArea = 15f;
 
-    [SerializeField, Tooltip("When attacking something, lose intreset and attack something else after..")] 
+    [SerializeField, Tooltip("When attacking something, lose interest and attack something else after..")]
     private float loseInterestTime = 4f;
 
-    [SerializeField, Tooltip("How often doees the path get calculated")] 
+    [SerializeField, Tooltip("How often does the path get calculated")]
     private float pathRefreshInterval = 0.5f;
 
     private float loseInterestTimer;
@@ -29,13 +26,10 @@ public class EnemyBrain : MonoBehaviour
 
     private void Start()
     {
-        //Setup enemy
         AIManager.Register(this);
         unDetectableLayers = AIManager.UnDetectableLayers;
         mainTarget = GameObject.FindWithTag(TargetTag).transform;
         agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
-
-        //randomize refresh timer, because cool
         pathRefreshTimer = Random.Range(0f, pathRefreshInterval);
 
         OnLogicalStart();
@@ -51,7 +45,6 @@ public class EnemyBrain : MonoBehaviour
     {
         pathRefreshTimer += delta;
 
-        //Only recalculate path at the refresh interval.. path calculation is very expensive so this helps a lot I think
         if (pathRefreshTimer < pathRefreshInterval) return;
         pathRefreshTimer = 0f;
 
@@ -85,4 +78,6 @@ public class EnemyBrain : MonoBehaviour
 
     public virtual void OnLogicalTick() { }
     public virtual void OnLogicalStart() { }
+    public virtual void OnSpawn() { }
+    public virtual void OnDespawn() { }
 }

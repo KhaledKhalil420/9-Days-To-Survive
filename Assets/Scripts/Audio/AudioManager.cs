@@ -6,17 +6,12 @@ using System;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 
-[System.Serializable]
-public struct Sounds
-{
-    public List<Sound> sounds;
-}
 
 [System.Serializable]
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
-    [SerializeField] private Sounds s;
+    [SerializeField] private AudioData data;
     public bool startFadeIn;
     public AudioMixerGroup musicMixerGroup, soundEffectMixerGroup, ambienceMixerGroup, masterMixerGroup;
 
@@ -64,7 +59,7 @@ public class AudioManager : MonoBehaviour
 
     void SetupAudioManager()
     {
-        foreach (Sound soundToPlay in s.sounds)
+        foreach (Sound soundToPlay in data.sounds)
         {
             // Create AudioSources for each sound
             soundToPlay.Source = gameObject.AddComponent<AudioSource>();
@@ -88,7 +83,7 @@ public class AudioManager : MonoBehaviour
     /// <param name="SoundName"></param>
     public void PlaySound(string SoundName)
     {
-        foreach (Sound soundToPlay in s.sounds)
+        foreach (Sound soundToPlay in data.sounds)
             if (soundToPlay.SoundName == SoundName)
             {
                 soundToPlay.Source.Stop();
@@ -105,7 +100,7 @@ public class AudioManager : MonoBehaviour
     /// <param name="MaxPitch"></param>
     public void PlaySound(string SoundName, float MinPitch, float MaxPitch)
     {
-        foreach (Sound soundToPlay in s.sounds)
+        foreach (Sound soundToPlay in data.sounds)
             if (soundToPlay.SoundName == SoundName)
             {
                 soundToPlay.Source.Stop();
@@ -121,7 +116,7 @@ public class AudioManager : MonoBehaviour
     /// <param name="SoundName"></param>
     public void StopSound(string SoundName)
     {
-        foreach (Sound soundToPlay in s.sounds)
+        foreach (Sound soundToPlay in data.sounds)
             if (soundToPlay.SoundName == SoundName)
             {
                 soundToPlay.Source.Stop();
@@ -136,7 +131,7 @@ public class AudioManager : MonoBehaviour
     /// <param name="NewClip"></param>
     public void ReplaceSoundClip(string SoundName, AudioClip NewClip)
     {
-        foreach (Sound soundToPlay in s.sounds)
+        foreach (Sound soundToPlay in data.sounds)
             if (soundToPlay.SoundName == SoundName)
             {
                 soundToPlay.Source.clip = NewClip;
@@ -259,7 +254,7 @@ public class AudioManager : MonoBehaviour
     public IEnumerator FadeOutReplace(string audioName, AudioClip clip)
     {
         AudioSource source = new();
-        foreach (Sound soundToPlay in s.sounds)
+        foreach (Sound soundToPlay in data.sounds)
         {
             if (soundToPlay.SoundName == audioName)
             {

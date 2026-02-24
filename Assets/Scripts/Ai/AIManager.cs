@@ -17,14 +17,10 @@ public class AIManager : MonoBehaviour
     private float timer;
     private float currentTickRate;
 
-    private void Awake()
-    {
-        Instance = this;
-    }
+    private void Awake() => Instance = this;
 
     private void Update()
     {
-        //Smoothly scale tickrate depending on enemies.. (maybe it's better to set it instead of lerping but idk)
         currentTickRate = Mathf.Lerp(minTickRate, maxTickRate, (float)registeredEnemies.Count / enemyCountForMaxTickRate);
 
         timer += Time.deltaTime;
@@ -35,19 +31,24 @@ public class AIManager : MonoBehaviour
 
         for (int i = registeredEnemies.Count - 1; i >= 0; i--)
         {
-            registeredEnemies[i].TickBrain(delta);
+            if (i < registeredEnemies.Count)
+                registeredEnemies[i].TickBrain(delta);
         }
     }
 
-    public static void Register(EnemyBrain e) => Instance.registeredEnemies.Add(e);
+    public static void Register(EnemyBrain e)
+    {
+        if (!Instance.registeredEnemies.Contains(e))
+            Instance.registeredEnemies.Add(e);
+    }
+
     public static void UnRegister(EnemyBrain e) => Instance.registeredEnemies.Remove(e);
 
     public static void KillAll()
     {
         foreach (EnemyBrain enemy in Instance.registeredEnemies.ToArray())
-        {
             UnRegister(enemy);
-            Destroy(enemy.gameObject);
-        }
+
+        EnemyPool.Instance.ReturnAll();
     }
 }
