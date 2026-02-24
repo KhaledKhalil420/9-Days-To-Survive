@@ -114,10 +114,10 @@ MonoBehaviour:
   animator: {fileID: 3186081879522739102}
   numberOfAnimations: 3
   range: 2
-  cooldown: 1
-  damage: 1
-  minimumDamage: 1
-  maximumDamage: 1
+  cooldown: 0.8
+  damage: 3
+  minimumDamage: 2
+  maximumDamage: 5
   sphereIcon: {fileID: 10912, guid: 0000000000000000f000000000000000, type: 0}
   toughness: 2
   hitParticlesPrefab: {fileID: 6874815317943588122, guid: eb4b09712adf2bb418e23e8f21a62163, type: 3}

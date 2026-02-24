@@ -11,13 +11,13 @@ GameObject:
   - component: {fileID: 3621319943860898526}
   - component: {fileID: 4611867924702972892}
   - component: {fileID: 7247963216718286162}
-  - component: {fileID: 2952486398060349140}
   - component: {fileID: 2459322055362175130}
   - component: {fileID: 1068580448057627305}
   - component: {fileID: 4281013464840019890}
   - component: {fileID: 2039898754132160148}
   - component: {fileID: 5018894235803285881}
   - component: {fileID: 303484051747302692}
+  - component: {fileID: 7449389314666678832}
   m_Layer: 0
   m_Name: Stone
   m_TagString: Untagged
@@ -93,29 +93,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &2952486398060349140
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 32916961726760097}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 2.360486
-  m_Height: 0
-  m_Direction: 1
-  m_Center: {x: -0.034149885, y: -0.01, z: 0}
 --- !u!114 &2459322055362175130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,11 +113,18 @@ MonoBehaviour:
   givenQuantityAverage: 5
   destroyParticles: {fileID: 7301512366205885463, guid: e15eb7276d1a1cb4bb4aeea033137d4b, type: 3}
   destroySound: {fileID: 8300000, guid: a90b08a1f5592064096c21defd95e5c3, type: 3}
-  damageMeshes: []
+  audioSource: {fileID: 0}
+  damageMeshes:
+  - healthPercentage: 65
+    damageMesh: {fileID: -3505231035254027634, guid: ba614d6b40486a142bb2d919a2eb4396, type: 3}
+  - healthPercentage: 30
+    damageMesh: {fileID: 1009085864058569157, guid: ba614d6b40486a142bb2d919a2eb4396, type: 3}
   items:
   - item: {fileID: 789964070537936751, guid: b63aa8c0b6d33804cb8215f5585ba263, type: 3}
     minQuantity: 1
-    maxQauntity: 3
+    maxQuantity: 3
+  updateColliderOnMesh: 0
+  mainItem: {fileID: 0}
 --- !u!82 &1068580448057627305
 AudioSource:
   m_ObjectHideFlags: 0
@@ -306,3 +290,25 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 0
   m_Center: {x: -0.034, y: 0, z: 0}
   m_TimeToStationary: 0
+--- !u!64 &7449389314666678832
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32916961726760097}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5495902117074765545, guid: ba614d6b40486a142bb2d919a2eb4396, type: 3}

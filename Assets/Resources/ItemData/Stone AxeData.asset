@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Stone AxeData
   m_EditorClassIdentifier: 
   Name: Stone Axe
-  sprite: {fileID: 21300000, guid: 8cbfb2460b51a6a4fa20f1efe6e12bdd, type: 3}
-  prefab: {fileID: 0}
+  sprite: {fileID: 21300000, guid: 9987962a517545241a03f6f1db187296, type: 3}
+  prefab: {fileID: 9080617714454738072, guid: bf0e99c8f5d043947a633e8f262ebdcb, type: 3}
   discription: an Axe of stone, breaks faster than flint axes

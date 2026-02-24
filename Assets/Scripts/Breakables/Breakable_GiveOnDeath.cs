@@ -15,7 +15,7 @@ public class DamageMeshes
 public class ItemLoot
 {
     public Item item;
-    public int minQuantity = 1, maxQauntity = 3;
+    public int minQuantity = 1, maxQuantity = 3;
 }
 
 public class Breakable_GiveOnDeath : Breakable
@@ -23,61 +23,65 @@ public class Breakable_GiveOnDeath : Breakable
     [SerializeField] private int givenQuantityAverage;
     [SerializeField] private ParticleSystem destroyParticles;
     [SerializeField] private AudioClip destroySound;
+    [SerializeField] private AudioSource audioSource;
     [SerializeField] private List<DamageMeshes> damageMeshes;
     [SerializeField] private List<ItemLoot> items;
+    [SerializeField] private bool updateColliderOnMesh = false;
+    [SerializeField] private Item mainItem;
 
     public override void OnDamage(float damage, GameObject sender)
     {
-        if(damageMeshes.Count > 0)
+        if (damageMeshes.Count > 0)
             UpdateVisualMesh();
 
         CameraShaker.Instance?.ShakeOnce(3, 3, 0f, 1f);
         transform.DOShakeRotation(0.5f, 5, 2);
     }
 
-    void UpdateVisualMesh()
+    private void UpdateVisualMesh()
     {
         float healthPercentage = (health / (float)fullHealth) * 100f;
-    
+
         DamageMeshes selected = null;
         int smallestAbove = int.MaxValue;
-    
+
         foreach (var d in damageMeshes)
         {
-            if (d.healthPercentage >= healthPercentage &&
-                d.healthPercentage < smallestAbove)
+            if (d.healthPercentage >= healthPercentage && d.healthPercentage < smallestAbove)
             {
                 smallestAbove = d.healthPercentage;
                 selected = d;
             }
         }
-    
-        if (selected != null)
-            GetComponent<MeshFilter>().mesh = selected.damageMesh;
+
+        if (selected == null) return;
+
+        MeshFilter meshFilter = GetComponent<MeshFilter>();
+        meshFilter.mesh = selected.damageMesh;
+
+        if (updateColliderOnMesh && TryGetComponent(out MeshCollider meshCollider))
+            meshCollider.sharedMesh = selected.damageMesh;
     }
 
     public override void OnDestroyed(GameObject sender)
     {
-        //Give player material
         PlayerInventory playerInventory = sender.GetComponent<PlayerInventory>();
 
-        Item givenItem = Instantiate(item.gameObject).GetComponent<Item>();
-        givenItem.HeldQuantity = UnityEngine.Random.Range(givenQuantityAverage / 2, givenQuantityAverage);
+        if (mainItem != null)
+        {
+            Item givenItem = Instantiate(mainItem.gameObject).GetComponent<Item>();
+            givenItem.HeldQuantity = UnityEngine.Random.Range(givenQuantityAverage / 2, givenQuantityAverage);
 
-        playerInventory.GiveItem(givenItem, out bool wasGiven);
-
-        if(!wasGiven) 
-            givenItem.transform.position = transform.position;
+            playerInventory.GiveItem(givenItem, out bool wasGiven);
+            if (!wasGiven) givenItem.transform.position = transform.position;
+        }
 
         GiveItems(playerInventory);
 
-        //Playone shot, doesn't seem to be working for some reason btw
-        source.audioSource.clip = destroySound;
-        source.audioSource.Play();
-        
+        audioSource.PlayOneShot(destroySound);
+
         DisableBreakable();
 
-        //Particles
         Bounds bounds = GetComponent<Renderer>().bounds;
         ParticleSpawner.SpawnWithBounds(destroyParticles, bounds.center, transform.rotation, bounds);
 
@@ -89,12 +93,10 @@ public class Breakable_GiveOnDeath : Breakable
         foreach (var item in items)
         {
             Item givenItem = Instantiate(item.item.gameObject).GetComponent<Item>();
-            givenItem.HeldQuantity = UnityEngine.Random.Range(item.minQuantity, item.maxQauntity);
-    
+            givenItem.HeldQuantity = UnityEngine.Random.Range(item.minQuantity, item.maxQuantity);
+
             playerInventory.GiveItem(givenItem, out bool wasGiven);
-    
-            if(!wasGiven) 
-                givenItem.transform.position = transform.position;
+            if (!wasGiven) givenItem.transform.position = transform.position;
         }
     }
 }
