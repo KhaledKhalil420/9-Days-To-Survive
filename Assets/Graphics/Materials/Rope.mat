@@ -14,6 +14,7 @@ Material:
   m_ValidKeywords:
   - _NORMALMAP
   - _OCCLUSIONMAP
+  - _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
@@ -104,12 +105,12 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
-    - _OcclusionStrength: 0.295
+    - _OcclusionStrength: 0.349
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0
-    - _SmoothnessTextureChannel: 0
+    - _SmoothnessTextureChannel: 1
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
@@ -118,8 +119,8 @@ Material:
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.745283, g: 0.67050517, b: 0.55193126, a: 1}
-    - _Color: {r: 0.745283, g: 0.6705051, b: 0.5519312, a: 1}
+    - _BaseColor: {r: 0.7264151, g: 0.60823977, b: 0.44201672, a: 1}
+    - _Color: {r: 0.7264151, g: 0.60823977, b: 0.4420167, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
