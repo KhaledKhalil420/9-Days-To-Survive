@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ef833ba548351d4f8c141687209bf97, type: 3}
   m_Name: Stone HammerRecipe
   m_EditorClassIdentifier: 
-  itemToGive: {fileID: 0}
+  itemToGive: {fileID: 7533300970719132304, guid: 6b62d58b574f98a43bb7b9cc2ad7da1f, type: 3}
   givenQuantity: 1
   ingredients:
   - item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}

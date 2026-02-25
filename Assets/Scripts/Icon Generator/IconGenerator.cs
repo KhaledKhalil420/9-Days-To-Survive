@@ -86,12 +86,22 @@ public class IconGenerator : MonoBehaviour
         }
 
         // 5) assign Sprite on the item data
-        allInGameItems[0].sprite = Sprite.Create(
-            tex,
-            new Rect(0, 0, tex.width, tex.height),
-            new Vector2(0.5f, 0.5f),
-            100f
-        );
+        AssetDatabase.Refresh();
+        
+        // Load the asset-backed Sprite Unity just imported
+        Sprite importedSprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
+        if (importedSprite != null)
+        {
+            allInGameItems[0].sprite = importedSprite;
+            // Mark the ItemData asset dirty so the change is saved
+            EditorUtility.SetDirty(allInGameItems[0]);
+            AssetDatabase.SaveAssets();
+        }
+        else
+        {
+            Debug.LogWarning($"Could not load sprite at: {assetPath}");
+        }
+
 #endif
     }
 
