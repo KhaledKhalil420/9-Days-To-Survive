@@ -231,6 +231,7 @@ MonoBehaviour:
   givenQuantityAverage: 15
   destroyParticles: {fileID: 7301512366205885463, guid: e15eb7276d1a1cb4bb4aeea033137d4b, type: 3}
   destroySound: {fileID: 8300000, guid: 9de36afeecc3c83428aead2f685abf23, type: 3}
+  audioSource: {fileID: 6418558604165305464}
   damageMeshes:
   - healthPercentage: 75
     damageMesh: {fileID: -5495902117074765545, guid: fc6e8bcb47f6b7e4a80b9ccf9b08a693, type: 3}
@@ -239,10 +240,12 @@ MonoBehaviour:
   items:
   - item: {fileID: 5101318331368798286, guid: c9e0b3f991dbb1d41ac1dfde0aaaeba6, type: 3}
     minQuantity: 2
-    maxQauntity: 4
+    maxQuantity: 3
   - item: {fileID: 789964070537936751, guid: 579e2f28e3108d94eb9886af3095b868, type: 3}
     minQuantity: 3
-    maxQauntity: 6
+    maxQuantity: 3
+  updateColliderOnMesh: 0
+  mainItem: {fileID: 0}
 --- !u!114 &937865690646096860
 MonoBehaviour:
   m_ObjectHideFlags: 0

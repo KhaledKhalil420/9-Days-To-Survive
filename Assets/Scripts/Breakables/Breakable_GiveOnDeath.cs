@@ -27,7 +27,6 @@ public class Breakable_GiveOnDeath : Breakable
     [SerializeField] private List<DamageMeshes> damageMeshes;
     [SerializeField] private List<ItemLoot> items;
     [SerializeField] private bool updateColliderOnMesh = false;
-    [SerializeField] private Item mainItem;
 
     public override void OnDamage(float damage, GameObject sender)
     {
@@ -67,9 +66,9 @@ public class Breakable_GiveOnDeath : Breakable
     {
         PlayerInventory playerInventory = sender.GetComponent<PlayerInventory>();
 
-        if (mainItem != null)
+        if (item != null)
         {
-            Item givenItem = Instantiate(mainItem.gameObject).GetComponent<Item>();
+            Item givenItem = Instantiate(item.gameObject).GetComponent<Item>();
             givenItem.HeldQuantity = UnityEngine.Random.Range(givenQuantityAverage / 2, givenQuantityAverage);
 
             playerInventory.GiveItem(givenItem, out bool wasGiven);
