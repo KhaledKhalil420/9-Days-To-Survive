@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 
 public class PointsManager : MonoBehaviour
 {
+    public event Action onPointsChanged;
     public static PointsManager Instance;
 
     [Header("Points")]
@@ -26,9 +28,18 @@ public class PointsManager : MonoBehaviour
 
     #region Points
 
+    public void TakePoints(float points)
+    {
+        StoredPoints -= points;
+        StoredPoints = Mathf.Clamp(StoredPoints, 0, Mathf.Infinity);
+
+        onPointsChanged.Invoke();
+    }
+
     public void GivePoints(Wave selectedWave)
     {
         StoredPoints += CalculatePoints(selectedWave);
+        onPointsChanged.Invoke();
     }
 
     private float CalculatePoints(Wave selectedWave)

@@ -27,7 +27,13 @@ public class UpgradesTab : PopupTab
             ui.AttachedUpgrade = selectedUpgrade;
             ui.Setup();
         }
+        
+        score_Text.text = PointsManager.Instance.StoredPoints.ToString();
+        PointsManager.Instance.onPointsChanged += UpdatePoints;
+    }
 
+    private void UpdatePoints()
+    {
         score_Text.text = PointsManager.Instance.StoredPoints.ToString();
     }
 

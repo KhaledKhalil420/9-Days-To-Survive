@@ -135,7 +135,7 @@ MonoBehaviour:
   pathRefreshInterval: 0.5
   mainTarget: {fileID: 0}
   target: {fileID: 0}
-  pointsWorth: 100
+  pointsWorth: 5
   speedUpWhenTargetingMain: 1
   onCatchMainTargetSpeedBoost: 1.75
   attackCooldown: 1
@@ -190,8 +190,6 @@ MonoBehaviour:
   poolObject: 1
   doKnockback: 1
   MaxHealth: 4
-  knockbackForce: 6
-  knockbackDuration: 0.5
 --- !u!65 &1169492533823969571
 BoxCollider:
   m_ObjectHideFlags: 0
