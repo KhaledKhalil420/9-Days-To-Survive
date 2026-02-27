@@ -18,6 +18,15 @@ public class Player : MonoBehaviour
         look = FindAnyObjectByType<PlayerLook>();
     }
 
+    private void OnValidate()
+    {
+        movement = GetComponent<PlayerMovement>();
+        interact = GetComponent<PlayerInteract>();
+        inventory = GetComponent<PlayerInventory>();
+        stats = GetComponent<PlayerStats>();
+        look = FindAnyObjectByType<PlayerLook>();
+    }
+
     public void Disable()
     {
         movement.enabled = false;

@@ -24,6 +24,11 @@ public class PointsManager : MonoBehaviour
         Instance = null;
     }
 
+    void OnValidate()
+    {
+        Instance = this;
+    }
+
     #endregion
 
     #region Points
@@ -33,13 +38,13 @@ public class PointsManager : MonoBehaviour
         StoredPoints -= points;
         StoredPoints = Mathf.Clamp(StoredPoints, 0, Mathf.Infinity);
 
-        onPointsChanged.Invoke();
+        onPointsChanged?.Invoke();
     }
 
     public void GivePoints(Wave selectedWave)
     {
         StoredPoints += CalculatePoints(selectedWave);
-        onPointsChanged.Invoke();
+        onPointsChanged?.Invoke();
     }
 
     private float CalculatePoints(Wave selectedWave)

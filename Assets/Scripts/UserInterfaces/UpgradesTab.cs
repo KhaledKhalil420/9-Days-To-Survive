@@ -32,6 +32,11 @@ public class UpgradesTab : PopupTab
         PointsManager.Instance.onPointsChanged += UpdatePoints;
     }
 
+    void OnDestroy()
+    {
+        PointsManager.Instance.onPointsChanged -= UpdatePoints;
+    }
+
     private void UpdatePoints()
     {
         score_Text.text = PointsManager.Instance.StoredPoints.ToString();

@@ -68,12 +68,11 @@ public class WaveManager : MonoBehaviour
                 spawnPrize = false;
                 groupStats.DOFade(0, 0.5f);
 
-                CameraShaker.Instance.ShakeOnce(20f, 4f, 0.15f, 0.2f);
-                Camera.main.transform.DOPunchPosition(Vector3.up * 0.5f, 0.4f, 10, 1); 
+                CameraShaker.Instance.ShakeOnce(2, 2, 0.25f, 1f);
 
                 AudioManager.Instance.PlaySound("Wave_Survived");
                 
-                DOTween.Sequence().Append(DOTween.To(() => volume.weight, x => volume.weight = x, 1f, 1f).SetEase(Ease.OutCubic)).AppendInterval(0.1f).Append(DOTween.To(() => volume.weight, x => volume.weight = x, 0f, 3f).SetEase(Ease.InOutSine)).OnComplete(() => Instantiate(upgradesPopup));
+                DOTween.Sequence().Append(DOTween.To(() => volume.weight, x => volume.weight = x, 1f, 0.25f).SetEase(Ease.OutCubic)).AppendInterval(0.1f).Append(DOTween.To(() => volume.weight, x => volume.weight = x, 0f, 3.75f).SetEase(Ease.InOutSine)).OnComplete(() => Instantiate(upgradesPopup));
                 animator.SetTrigger("Survive");
             }
 

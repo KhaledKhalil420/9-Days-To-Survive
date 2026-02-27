@@ -542,4 +542,9 @@ public class PlayerInventory : MonoBehaviour
     {
         group.DOFade(1, 0.1f).SetUpdate(true);
     }
+
+    void OnValidate()
+    {
+        Instance = this;
+    }
 }
