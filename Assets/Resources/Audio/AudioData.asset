@@ -157,3 +157,11 @@ MonoBehaviour:
     Source: {fileID: 0}
     Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
     Clip: {fileID: 8300000, guid: cd1e8c45ddb972c4480b228b0b4b2459, type: 3}
+  - SoundName: Wave_Survived
+    Loop: 0
+    PlayOnAwake: 0
+    Volume: 0.7
+    Pitch: 1
+    Source: {fileID: 0}
+    Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+    Clip: {fileID: 8300000, guid: ca2cd122d756db945b8ab1a71d724bca, type: 3}

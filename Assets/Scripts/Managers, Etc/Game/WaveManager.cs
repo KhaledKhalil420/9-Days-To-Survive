@@ -1,11 +1,16 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using EZCameraShake;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class WaveManager : MonoBehaviour
 {
     public static WaveManager Instance;
+
+    [Header("Feel")]
+    [SerializeField] private Volume volume;
 
     [Header("Waves Rounds")]
     [SerializeField] private List<Wave> waves;
@@ -54,6 +59,7 @@ public class WaveManager : MonoBehaviour
     {
         if(isDay)
         {
+            //WON
             waveTriggered = false;
             AIManager.KillAll();   
 
@@ -61,7 +67,14 @@ public class WaveManager : MonoBehaviour
             {
                 spawnPrize = false;
                 groupStats.DOFade(0, 0.5f);
-                Instantiate(upgradesPopup);
+
+                CameraShaker.Instance.ShakeOnce(20f, 4f, 0.15f, 0.2f);
+                Camera.main.transform.DOPunchPosition(Vector3.up * 0.5f, 0.4f, 10, 1); 
+
+                AudioManager.Instance.PlaySound("Wave_Survived");
+                
+                DOTween.Sequence().Append(DOTween.To(() => volume.weight, x => volume.weight = x, 1f, 1f).SetEase(Ease.OutCubic)).AppendInterval(0.1f).Append(DOTween.To(() => volume.weight, x => volume.weight = x, 0f, 3f).SetEase(Ease.InOutSine)).OnComplete(() => Instantiate(upgradesPopup));
+                animator.SetTrigger("Survive");
             }
 
             return;

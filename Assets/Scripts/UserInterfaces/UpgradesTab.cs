@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class UpgradesTab : PopupTab
@@ -10,6 +11,7 @@ public class UpgradesTab : PopupTab
     [Header("Ui")]
     [SerializeField] private Transform parent;
     [SerializeField] private GameObject upgradeUI;
+    [SerializeField] private TMP_Text score_Text;
 
     void Start()
     {
@@ -25,6 +27,8 @@ public class UpgradesTab : PopupTab
             ui.AttachedUpgrade = selectedUpgrade;
             ui.Setup();
         }
+
+        score_Text.text = PointsManager.Instance.StoredPoints.ToString();
     }
 
     public void PlayClosingSound()

@@ -26,10 +26,10 @@ public class UpgradeUI : MonoBehaviour, IPointerDownHandler
     
     public void OnPointerDown(PointerEventData eventData)
     {
-        if(PointsManager.StoredPoints >= AttachedUpgrade.price)
+        if(PointsManager.Instance.StoredPoints >= AttachedUpgrade.price)
         {
             AudioManager.Instance.PlaySound("Ui_Click");
-            PointsManager.StoredPoints -= AttachedUpgrade.price;
+            PointsManager.Instance.StoredPoints -= AttachedUpgrade.price;
             UpgradeManager.GiveUpgrade(AttachedUpgrade);
             Event?.Invoke();
             Destroy(gameObject);

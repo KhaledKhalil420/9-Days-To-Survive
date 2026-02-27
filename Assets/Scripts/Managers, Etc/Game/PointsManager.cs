@@ -5,7 +5,7 @@ public class PointsManager : MonoBehaviour
     public static PointsManager Instance;
 
     [Header("Points")]
-    public static float StoredPoints = 0; //Display points in UI somehow ok?
+    public float StoredPoints = 0; //Display points in UI somehow ok?
     internal float MaxBuilds => BuildingManager.Instance.buildLimitPoints;
     internal int buildsBeforeNightStarted = 0;
 
