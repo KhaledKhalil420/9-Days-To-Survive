@@ -40,7 +40,6 @@ public class WaveManager : MonoBehaviour
     {
         DayNightCycleManager.Instance.OnDayChange += TriggerWave;
 
-        //Prewarm pool with all enemies across all waves upfront
         foreach (Wave wave in waves)
             EnemyPool.Instance.Prewarm(wave.enemies);
     }
@@ -57,13 +56,12 @@ public class WaveManager : MonoBehaviour
     private bool spawnPrize = false;
     public void TriggerWave(bool isDay)
     {
-        if(isDay)
+        if (isDay)
         {
-            //WON
             waveTriggered = false;
-            AIManager.KillAll();   
+            AIManager.KillAll();
 
-            if(spawnPrize)
+            if (spawnPrize)
             {
                 spawnPrize = false;
                 groupStats.DOFade(0, 0.5f);
@@ -71,14 +69,18 @@ public class WaveManager : MonoBehaviour
                 CameraShaker.Instance.ShakeOnce(2, 2, 0.25f, 1f);
 
                 AudioManager.Instance.PlaySound("Wave_Survived");
-                
-                DOTween.Sequence().Append(DOTween.To(() => volume.weight, x => volume.weight = x, 1f, 0.25f).SetEase(Ease.OutCubic)).AppendInterval(0.1f).Append(DOTween.To(() => volume.weight, x => volume.weight = x, 0f, 3.75f).SetEase(Ease.InOutSine)).OnComplete(() => Instantiate(upgradesPopup));
+
+                DOTween.Sequence()
+                    .Append(DOTween.To(() => volume.weight, x => volume.weight = x, 1f, 0.25f).SetEase(Ease.OutCubic))
+                    .AppendInterval(0.1f)
+                    .Append(DOTween.To(() => volume.weight, x => volume.weight = x, 0f, 3.75f).SetEase(Ease.InOutSine))
+                    .OnComplete(() => Instantiate(upgradesPopup));
+
                 animator.SetTrigger("Survive");
             }
 
             return;
         }
-
         else
         {
             animator.Play("WaveStats_OnStart");
@@ -86,15 +88,11 @@ public class WaveManager : MonoBehaviour
             waveTriggered = true;
             spawnPrize = true;
         }
-        
-        if(waves.Count > DayNightCycleManager.Instance.DayCount)
-        {
+
+        if (waves.Count > DayNightCycleManager.Instance.DayCount)
             selectedWave = waves[DayNightCycleManager.Instance.DayCount];
-        }
         else
-        {
             selectedWave = waves[waves.Count - 1];
-        }
 
         timer = selectedWave.spawningCooldown;
         text.text = enemiesDefeated.ToString() + "/" + selectedWave.requiredDefeats;
@@ -111,27 +109,25 @@ public class WaveManager : MonoBehaviour
     private float timer = 0;
     private void SpawnEnemies()
     {
-        if(waveTriggered)
+        if (waveTriggered)
         {
             timer += Time.deltaTime;
-            if(timer > selectedWave.spawningCooldown && AIManager.Instance.registeredEnemies.Count < selectedWave.maxEnemies)
+            if (timer > selectedWave.spawningCooldown && AIManager.Instance.registeredEnemies.Count < selectedWave.maxEnemies)
             {
                 timer = 0;
 
-                //Pick a random enemy from the wave and spawn it from the pool
                 EnemyBrain prefab = selectedWave.enemies[Random.Range(0, selectedWave.enemies.Count)];
                 EnemyPool.Instance.Spawn(prefab, GameManager.Player.transform.position, selectedWave.spawningRadius, selectedWave.minimumSpawningDistance);
             }
 
-            if(enemiesDefeated >= selectedWave.requiredDefeats)
+            if (enemiesDefeated >= selectedWave.requiredDefeats)
             {
                 DayNightCycleManager.SetTime(DayNightCycleManager.CycleState.Day);
                 waveTriggered = false;
                 PointsManager.Instance.GivePoints(selectedWave);
-                AIManager.KillAll();   
+                AIManager.KillAll();
             }
         }
-
         else
         {
             timer = 0;

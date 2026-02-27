@@ -36,6 +36,13 @@ public class EnemyPool : MonoBehaviour
 
     public EnemyBrain Spawn(EnemyBrain prefab, Vector3 center, float radius, float minDistance)
     {
+        // FIX: guard against invalid center before doing anything
+        if (!IsFinite(center))
+        {
+            Debug.LogWarning("EnemyPool.Spawn: center position is not finite, aborting spawn.");
+            return null;
+        }
+
         int id = prefab.GetInstanceID();
 
         if (!pools.ContainsKey(id))
@@ -46,7 +53,14 @@ public class EnemyPool : MonoBehaviour
 
         EnemyBrain enemy = pools[id].Count > 0 ? pools[id].Dequeue() : CreateNew(prefab, id);
 
-        enemy.transform.position = GetNavMeshPosition(center, radius, minDistance);
+        if (!TryGetNavMeshPosition(center, radius, minDistance, out Vector3 spawnPos))
+        {
+            Debug.LogWarning("EnemyPool.Spawn: could not find a valid NavMesh position, returning enemy to pool.");
+            pools[id].Enqueue(enemy);
+            return null;
+        }
+
+        enemy.transform.position = spawnPos;
         enemy.transform.rotation = Quaternion.identity;
         enemy.gameObject.SetActive(true);
         enemy.OnSpawn();
@@ -82,19 +96,35 @@ public class EnemyPool : MonoBehaviour
         instanceToPrefabId[instance] = id;
         return instance;
     }
-
-    private Vector3 GetNavMeshPosition(Vector3 center, float radius, float minDistance)
+    
+    private bool TryGetNavMeshPosition(Vector3 center, float radius, float minDistance, out Vector3 result)
     {
+        center.y = 0;
+
         for (int i = 0; i < 30; i++)
         {
-            Vector2 rand2D = Random.insideUnitCircle.normalized * Random.Range(minDistance, radius);
-            Vector3 candidate = center + new Vector3(rand2D.x, 0, rand2D.y);
+            float angle = Random.Range(0f, Mathf.PI * 2f);
+            float dist  = Random.Range(minDistance, radius);
+            Vector3 candidate = center + new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * dist;
 
             if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, 5f, NavMesh.AllAreas))
-                return hit.position;
+            {
+                result = hit.position;
+                return true;
+            }
         }
 
-        NavMesh.SamplePosition(center + Vector3.right * minDistance, out NavMeshHit fallback, 10f, NavMesh.AllAreas);
-        return fallback.position;
+        if (NavMesh.SamplePosition(center + Vector3.right * minDistance, out NavMeshHit fallback, 10f, NavMesh.AllAreas))
+        {
+            result = fallback.position;
+            return true;
+        }
+
+        result = Vector3.zero;
+        return false;
     }
+
+    private static bool IsFinite(Vector3 v) =>
+        !float.IsInfinity(v.x) && !float.IsInfinity(v.y) && !float.IsInfinity(v.z) &&
+        !float.IsNaN(v.x)      && !float.IsNaN(v.y)      && !float.IsNaN(v.z);
 }

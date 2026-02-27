@@ -208,7 +208,7 @@ public class Building : MonoBehaviour, IDamagable
         OnDamage();
 
         if(onDamageSound != null)
-            source.PlayOneShot(onDamageSound, 0.8f);
+            source?.PlayOneShot(onDamageSound, 0.8f);
         
         if (currentHealth <= 0)
         {
