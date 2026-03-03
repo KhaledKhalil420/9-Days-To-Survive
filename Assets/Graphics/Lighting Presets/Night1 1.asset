@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skyColor: {r: 0, g: 0, b: 0, a: 1}
   equatorColor: {r: 0.056692783, g: 0.09524158, b: 0.13207549, a: 1}
-  groundColor: {r: 0.066037714, g: 0.066037714, b: 0.066037714, a: 1}
+  groundColor: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 1}
   ambientIntensity: 1
   reflectionIntensity: 0
   fogColor: {r: 0.043387327, g: 0.0698054, b: 0.122641504, a: 1}
   useFogDensity: 1
   fogDensity: 0.055
   lightIntensity: 0.05
-  shadowStrength: 0.2
+  shadowStrength: 0.15
   useLightColor: 0
   lightColor: {r: 1, g: 1, b: 1, a: 1}
   useSubtractiveShadowColor: 0
