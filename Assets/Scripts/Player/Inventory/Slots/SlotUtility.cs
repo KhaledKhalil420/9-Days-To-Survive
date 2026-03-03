@@ -4,45 +4,73 @@ public class SlotUtility
 {
     public static bool TryMove(BaseSlot from, BaseSlot to, int qty)
     {
-        if (from.HeldItem == null || from == to) return false;
-        
-        //if to has an item, same type of item, not single quantity item, add to it
+        if (from == null || to == null || from.HeldItem == null || from == to) return false;
+
+        qty = Mathf.Clamp(qty, 1, from.HeldQuantity);
+
+        //If target has an item
         if (to.HeldItem != null)
         {
-            if(to.HeldItem.data == from.HeldItem.data && !from.HeldItem.isSingleQuantityItem)
+            //Same type -> merge quantities
+            if (to.HeldItem.data == from.HeldItem.data && !from.HeldItem.isSingleQuantityItem)
             {
-                //Do quantities
                 to.HeldQuantity += qty;
                 from.HeldQuantity -= qty;
 
-                if(from.HeldQuantity == 0)
+                //If source emptied, destroy its GameObject and clear reference
+                if (from.HeldQuantity <= 0)
                 {
-                    to.CreateItem(from.HeldItem.data);
+                    from.HeldItem.OnChangingItems();
+                    Object.Destroy(from.HeldItem.gameObject);
+                    from.ResetSlot();
                 }
 
                 from.UpdateSlot();
                 to.UpdateSlot();
-                return true;   
-            }
-
-            else
-            {
-                if(TrySwap(from, to))
                 return true;
             }
+            else
+            {
+                //Different items, swap
+                return TrySwap(from, to);
+            }
         }
-        
-        //if to doesn't have an item.. leave it there
+
+        // If target is empty -> either move the whole stack (move GameObject) or split (create new)
         if (to.HeldItem == null)
         {
-            to.CreateItem(from.HeldItem.data);
-            to.HeldQuantity = qty;
+            // Move full stack: transfer the existing Item GameObject (no instantiate)
+            if (qty >= from.HeldQuantity)
+            {
+                to.HeldItem = from.HeldItem;
+                to.HeldQuantity = from.HeldQuantity;
 
-            from.HeldQuantity -= qty;
+                // Reparent the item GameObject to the target holder's hand
+                if (to.heldBy != null && to.heldBy.hand != null && to.HeldItem != null)
+                {
+                    to.HeldItem.heldby = to.heldBy.parent.gameObject;
+                    to.HeldItem.SetItemParent(to.heldBy.hand);
+                }
 
-            from.UpdateSlot();
-            to.UpdateSlot();
-            return true;
+                from.HeldItem = null;
+                from.HeldQuantity = 0;
+
+                from.UpdateSlot();
+                to.UpdateSlot();
+                return true;
+            }
+            else
+            {
+                // Split stack: create a new item instance for the target
+                to.HeldQuantity = qty;
+                to.CreateItem(from.HeldItem.data);
+
+                from.HeldQuantity -= qty;
+
+                from.UpdateSlot();
+                to.UpdateSlot();
+                return true;
+            }
         }
 
         return false;
@@ -66,5 +94,4 @@ public class SlotUtility
         b.UpdateSlot();
         return true;
     }
-
 }

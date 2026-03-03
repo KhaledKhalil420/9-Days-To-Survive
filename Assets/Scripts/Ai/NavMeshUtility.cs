@@ -4,10 +4,9 @@ using System.Collections.Generic;
 
 public static class NavMeshUtility
 {
-    // Cached per-call — safe since everything runs on the main thread sequentially
     private static readonly NavMeshPath path = new NavMeshPath();
     private static readonly NavMeshPath path2 = new NavMeshPath();
-    private static readonly Collider[] colliderBuffer = new Collider[15]; // No per-call allocation
+    private static readonly Collider[] colliderBuffer = new Collider[15];
     private static readonly List<Transform> reachableTargets = new List<Transform>(15);
 
     public static Transform GetTarget(Transform seeker, Transform target, LayerMask targetLayers, float searchArea)
