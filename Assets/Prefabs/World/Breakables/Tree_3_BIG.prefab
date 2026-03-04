@@ -70,8 +70,9 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 714a69432ec047f46a339bf22449c7a1, type: 2}
+  - {fileID: 2100000, guid: cd5f44efe70d98245801cd3fd5b8bf5d, type: 2}
   - {fileID: 2100000, guid: efdeb068b98c12d4793ca0242454d704, type: 2}
+  - {fileID: 2100000, guid: e87a5890744babf4aafaebead86315a6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -228,7 +229,7 @@ MonoBehaviour:
   toughness: 2
   health: 10
   item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
-  givenQuantityAverage: 15
+  givenQuantityAverage: 30
   destroyParticles: {fileID: 7301512366205885463, guid: e15eb7276d1a1cb4bb4aeea033137d4b, type: 3}
   destroySound: {fileID: 8300000, guid: 9de36afeecc3c83428aead2f685abf23, type: 3}
   audioSource: {fileID: 6418558604165305464}
@@ -238,14 +239,10 @@ MonoBehaviour:
   - healthPercentage: 15
     damageMesh: {fileID: -5495902117074765545, guid: 1244b664f81445548ab4618054b2ced5, type: 3}
   items:
-  - item: {fileID: 5101318331368798286, guid: c9e0b3f991dbb1d41ac1dfde0aaaeba6, type: 3}
-    minQuantity: 2
-    maxQuantity: 3
-  - item: {fileID: 789964070537936751, guid: 579e2f28e3108d94eb9886af3095b868, type: 3}
-    minQuantity: 3
+  - item: {fileID: 5761389796953065547, guid: 882baef7e3945174fa65ce7f841611da, type: 3}
+    minQuantity: 1
     maxQuantity: 3
   updateColliderOnMesh: 0
-  mainItem: {fileID: 0}
 --- !u!114 &937865690646096860
 MonoBehaviour:
   m_ObjectHideFlags: 0

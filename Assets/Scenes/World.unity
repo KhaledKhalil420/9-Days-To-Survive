@@ -18926,10 +18926,6 @@ MonoBehaviour:
       gameObject: {fileID: 3498483636202748412, guid: fef9077b964eeba46b3f9af320c35aaa, type: 3}
       minQuantity: 400
       maxQuantity: 700
-    - distanceBetweenSpawnables: 100
-      gameObject: {fileID: 9212952970807901021, guid: 4299eeb345bc1f9408879d82f42ab29a, type: 3}
-      minQuantity: 25
-      maxQuantity: 50
     - distanceBetweenSpawnables: 20
       gameObject: {fileID: 2353178246110035332, guid: af679e4b52ffe0e4382fba2700cac075, type: 3}
       minQuantity: 50
@@ -18945,8 +18941,12 @@ MonoBehaviour:
   - spawnables:
     - distanceBetweenSpawnables: 15
       gameObject: {fileID: 32916961726760097, guid: 50400aa3590860e4d8c18f775dded05f, type: 3}
-      minQuantity: 50
-      maxQuantity: 75
+      minQuantity: 25
+      maxQuantity: 50
+    - distanceBetweenSpawnables: 100
+      gameObject: {fileID: 9212952970807901021, guid: 4299eeb345bc1f9408879d82f42ab29a, type: 3}
+      minQuantity: 25
+      maxQuantity: 50
   grassPainter: {fileID: 1977557022}
   maxAttemptsGrass: 10
   grassAmount: 500

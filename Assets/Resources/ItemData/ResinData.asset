@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffd50b6854d668d4497f11ffcca44bd4, type: 3}
+  m_Name: ResinData
+  m_EditorClassIdentifier: 
+  Name: Resin
+  sprite: {fileID: 21300000, guid: cbfeeeaee5e02304fb4d2ec4cdac15d0, type: 3}
+  prefab: {fileID: 468043660871181166, guid: 1a9d74af5d92c3c40ae12b8adbdcd497, type: 3}
+  discription: Sticky!
