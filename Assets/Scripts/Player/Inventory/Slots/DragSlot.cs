@@ -3,13 +3,16 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
 public class DragSlot : MonoBehaviour
 {
-    public static DragSlot instance;
+    public static DragSlot Instance;
+    public event Action onDrag;
 
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private Image iconPrefab;
+    [SerializeField] private Animator animator;
 
     private RectTransform dragIcon;
     [SerializeField] private float smoothness = 15f;
@@ -20,7 +23,7 @@ public class DragSlot : MonoBehaviour
 
     void Awake()
     {
-        instance = this;
+        Instance = this;
     }
 
     void Start()
@@ -59,6 +62,7 @@ public class DragSlot : MonoBehaviour
             if(fromSlot == from && from.HeldQuantity > heldQuantity)
             {
                 heldQuantity++;
+                dragIcon.GetComponent<Animator>().SetTrigger("Trigger");
                 dragIcon.GetComponentInChildren<TMP_Text>().text = "x" + heldQuantity.ToString();
             }
 
@@ -69,8 +73,9 @@ public class DragSlot : MonoBehaviour
         heldQuantity = quantity;
 
         CreateIcon(from.HeldItem.data.sprite, quantity);
-        dragIcon.position = Input.mousePosition;
+        dragIcon.position = fromSlot.transform.position;
         isDragging = true;
+        onDrag?.Invoke();
     }
 
     public void TryDrop(BaseSlot target, PointerEventData eventData)
@@ -97,6 +102,8 @@ public class DragSlot : MonoBehaviour
         isDragging = false;
         fromSlot = null;
         heldQuantity = 0;
+        onDrag?.Invoke();
+
     }
 
     void CreateIcon(Sprite sprite, int quantity)

@@ -67,7 +67,7 @@ public class Furnace : Building, IInteractable
             if(fuel.HeldItem != null || fuel.HeldItem != null && fuel.HeldQuantity > 0)
                 foreach (var fuelItem in smeltablesData.fuel)
                 {
-                    if(fuelItem.item.data == fuel.HeldItem?.data)
+                    if(fuelItem.item == fuel.HeldItem?.data)
                     {
                         fuel.HeldQuantity--;
                         smeltingFuel += fuelItem.efficiency;
@@ -85,9 +85,9 @@ public class Furnace : Building, IInteractable
         Item foundItem = null;
         foreach (var item in smeltablesData.smeltables)
         {
-            if (item.input.data == input.HeldItem.data)
+            if (item.input == input.HeldItem.data)
             {
-                foundItem = item.output;
+                foundItem = item.output.prefab.GetComponent<Item>();
                 break;
             }
         }

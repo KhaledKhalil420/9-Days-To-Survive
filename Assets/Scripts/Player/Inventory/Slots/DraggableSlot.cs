@@ -18,13 +18,13 @@ public class DraggableSlot : MonoBehaviour, IPointerDownHandler
 
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (DragSlot.instance.isDragging) return;
-            DragSlot.instance.StartDrag(slot, slot.HeldQuantity);
+            if (DragSlot.Instance.isDragging) return;
+            DragSlot.Instance.StartDrag(slot, slot.HeldQuantity);
             slot.UpdateSlot();
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
-            DragSlot.instance.StartDrag(slot, 1);
+            DragSlot.Instance.StartDrag(slot, 1);
             slot.UpdateSlot();
         }
     }

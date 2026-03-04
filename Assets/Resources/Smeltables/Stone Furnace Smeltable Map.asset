@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 861ba835f11deed44910460ec435d5b6, type: 3}
-  m_Name: SmeltablesData
+  m_Name: Stone Furnace Smeltable Map
   m_EditorClassIdentifier: 
   fuel:
-  - item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
-    efficiency: 1
-  - item: {fileID: 1000862222911474493, guid: 07f2abc27e37e3840800b9d0ef7a1e19, type: 3}
+  - item: {fileID: 11400000, guid: 392954726db508e498803a9b5979026f, type: 2}
+    efficiency: 2
+  - item: {fileID: 11400000, guid: 313f7e909445851409c1ca3d0f37ab4b, type: 2}
     efficiency: 1
   smeltables:
-  - input: {fileID: 5761389796953065547, guid: 882baef7e3945174fa65ce7f841611da, type: 3}
-    output: {fileID: 279549747404331904, guid: 1a9d74af5d92c3c40ae12b8adbdcd497, type: 3}
+  - input: {fileID: 11400000, guid: 61ae00e549aecff4a9f68fdd64772470, type: 2}
+    output: {fileID: 11400000, guid: a39336f7410408145b32c5bbb2ead5f8, type: 2}

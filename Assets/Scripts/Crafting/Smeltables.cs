@@ -11,13 +11,13 @@ public class Smeltables : ScriptableObject
 [System.Serializable]
 public class Smeltable
 {
-    public Item input;
-    public Item output;
+    public ItemData input;
+    public ItemData output;
 }
 
 [System.Serializable]
 public class Fuel
 {
-    public Item item;
+    public ItemData item;
     public int efficiency = 1;
 }
