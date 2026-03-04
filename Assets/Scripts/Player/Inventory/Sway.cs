@@ -20,7 +20,7 @@ public class ItemSway : MonoBehaviour
     [SerializeField] private float rotationMultiplier = 1f;
     [SerializeField] private float maxRotationAmount = 5f;
 
-    private Vector3 initialPosition;
+    [SerializeField] private Vector3 initialPosition;
     private Quaternion initialRotation;
     private Vector3 targetSwayPosition;
     private Vector3 targetSwayRotation;

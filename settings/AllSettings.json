@@ -7,14 +7,14 @@
         "shadowQuality": 0,
         "shadowCascades": 3,
         "shadowType": 0,
-        "renderScale": 0.8399999737739563,
+        "renderScale": 0.9700000286102295,
         "antiAliasing": 0,
         "bloom": true,
         "motionBlur": false,
         "ambientOcclusion": true
     },
     "sound": {
-        "masterVolume": 0.12489200383424759,
+        "masterVolume": 0.0,
         "musicVolume": 1.0,
         "sfxVolume": 0.7331054210662842
     },

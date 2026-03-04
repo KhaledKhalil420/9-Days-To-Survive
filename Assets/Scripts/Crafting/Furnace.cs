@@ -108,6 +108,8 @@ public class Furnace : Building, IInteractable
             if (output.HeldItem == null)
             {
                 Item instantiatedItem = Instantiate(foundItem.gameObject).GetComponent<Item>();
+                instantiatedItem.transform.position = new Vector3(0, 1000, 0);
+                instantiatedItem.UpdateHoldingItem(true);
                 output.HeldItem = instantiatedItem;
                 output.HeldQuantity++;
                 input.HeldQuantity--;

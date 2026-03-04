@@ -18,5 +18,5 @@ MonoBehaviour:
   - item: {fileID: 1000862222911474493, guid: 07f2abc27e37e3840800b9d0ef7a1e19, type: 3}
     efficiency: 1
   smeltables:
-  - input: {fileID: 279549747404331904, guid: 1a9d74af5d92c3c40ae12b8adbdcd497, type: 3}
-    output: {fileID: 5761389796953065547, guid: 882baef7e3945174fa65ce7f841611da, type: 3}
+  - input: {fileID: 5761389796953065547, guid: 882baef7e3945174fa65ce7f841611da, type: 3}
+    output: {fileID: 279549747404331904, guid: 1a9d74af5d92c3c40ae12b8adbdcd497, type: 3}

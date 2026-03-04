@@ -153,7 +153,8 @@ public class Building : MonoBehaviour, IDamagable
     {
         if(isDay)
         {
-            currentHealth = initHealth;
+            currentHealth = initHealth + BuildingManager.Instance.extraBuildingHealth;
+            extraDamage = BuildingManager.Instance.extraBuildingDamage;
         }
     }
 
