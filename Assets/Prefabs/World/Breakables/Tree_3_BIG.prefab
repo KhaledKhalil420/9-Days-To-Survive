@@ -241,7 +241,7 @@ MonoBehaviour:
   items:
   - item: {fileID: 5761389796953065547, guid: 882baef7e3945174fa65ce7f841611da, type: 3}
     minQuantity: 1
-    maxQuantity: 3
+    maxQuantity: 6
   updateColliderOnMesh: 0
 --- !u!114 &937865690646096860
 MonoBehaviour:
