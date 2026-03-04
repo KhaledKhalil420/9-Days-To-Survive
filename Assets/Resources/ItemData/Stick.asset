@@ -15,4 +15,4 @@ MonoBehaviour:
   Name: Stick
   sprite: {fileID: 21300000, guid: 7ec306c44e15ee54095c6f98fe07872c, type: 3}
   prefab: {fileID: 9207207102112498210, guid: 07f2abc27e37e3840800b9d0ef7a1e19, type: 3}
-  discription: Stick, looks like a sword
+  discription: It's a stick, looks like a sword

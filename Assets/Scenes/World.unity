@@ -703,6 +703,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 885642296}
   iconPrefab: {fileID: 8906861750446166388, guid: 0d5775d2286dc5348a7c1c3e84ed1431, type: 3}
+  animator: {fileID: 0}
   smoothness: 45
 --- !u!114 &68614917
 MonoBehaviour:
@@ -1285,8 +1286,10 @@ MonoBehaviour:
   swayAmount: 1
   maxSwayAmount: 1
   smoothness: 6
-  rotationMultiplier: 0.35
+  rotationMultiplier: 0
   maxRotationAmount: 1
+  rotationSmoothness: 6
+  inputSmoothing: 8
   initialPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &139603958
 GameObject:
@@ -2279,8 +2282,10 @@ MonoBehaviour:
   swayAmount: 0.05
   maxSwayAmount: 0.1
   smoothness: 4
-  rotationMultiplier: 1
+  rotationMultiplier: 10
   maxRotationAmount: 5
+  rotationSmoothness: 6
+  inputSmoothing: 8
   initialPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &274035486
 GameObject:
@@ -2808,6 +2813,8 @@ MonoBehaviour:
   smoothness: 6
   rotationMultiplier: 0.35
   maxRotationAmount: 1
+  rotationSmoothness: 6
+  inputSmoothing: 8
   initialPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &309520735
 GameObject:
@@ -4734,25 +4741,75 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tilt:
-    tiltValue: -2
+    enabled: 1
+    tiltValue: -1.25
     tiltSmoothness: 15
-    angle: 1e-45
+    angle: 8.566477e-20
   Bob:
+    enabled: 1
     walkBobSpeed: 10
     walkBobAmount: 0.25
+    walkBobAmountX: 0
     walkBobAmountMultiplier: 1
     sprintMultiplier: 1.35
+    sprintPositionShift: {x: 0, y: 0, z: 0.045}
+    sprintShiftSmoothness: 5
     smoothSpeed: 1
     timer: 0
-    currentBob: -0.0059651225
+    currentBobY: -0.0017877537
+    currentBobX: 0
+    currentSprintShift: {x: 0, y: 0, z: 0.00000012728152}
+  Breath:
+    enabled: 1
+    breathAmountY: 0.05
+    breathAmountX: 0.05
+    breathSpeed: 0.25
+    breathSmoothness: 1
+    timer: 0.617393
+    currentBreathY: 0.018727861
+    currentBreathX: 0.044138916
   Landing:
-    baseIntensity: 1
-    velocityMultiplier: 1
-    maxIntensity: 1
-    recoverySpeed: 1
+    enabled: 1
+    baseIntensity: 0.1
+    velocityMultiplier: 0.1
+    maxIntensity: 0.1
     minimumVelocityThreshold: 1
-    fadeInSpeed: 1
+    recoveryCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: -0.020832062
+        value: 0.0071411133
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.3382565
+        value: 0.9972478
+        inSlope: -0.0023333842
+        outSlope: -0.0023333842
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.4430379
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    recoveryDuration: 0.5
   movement: {fileID: 1220912754}
+  disable: 0
 --- !u!1 &641616579
 GameObject:
   m_ObjectHideFlags: 0

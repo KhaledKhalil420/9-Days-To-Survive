@@ -15,4 +15,4 @@ MonoBehaviour:
   Name: Resin
   sprite: {fileID: 21300000, guid: cbfeeeaee5e02304fb4d2ec4cdac15d0, type: 3}
   prefab: {fileID: 468043660871181166, guid: 1a9d74af5d92c3c40ae12b8adbdcd497, type: 3}
-  discription: Sticky!
+  discription: Sticky

@@ -15,4 +15,4 @@ MonoBehaviour:
   Name: Stone Pickaxe
   sprite: {fileID: 21300000, guid: a0fb72e03b038114abf09481a4c96a5e, type: 3}
   prefab: {fileID: 3480038928521971533, guid: bafec94af81c97045b5d06849c7a8aee, type: 3}
-  discription: Stone pickaxe, Breaks better than a flint pickaxe
+  discription: Breaks better than a flint pickaxe

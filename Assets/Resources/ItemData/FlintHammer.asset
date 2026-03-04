@@ -15,4 +15,4 @@ MonoBehaviour:
   Name: Flint Hammer
   sprite: {fileID: 21300000, guid: baf61bf56277b604bb7e0c2904f7ecbc, type: 3}
   prefab: {fileID: 399830256769943869, guid: d75bbb617c47e57468c05902c1c0facc, type: 3}
-  discription: Basic Buidling
+  discription: Build Basic Builds

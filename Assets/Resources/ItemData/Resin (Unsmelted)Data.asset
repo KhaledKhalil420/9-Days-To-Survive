@@ -15,4 +15,4 @@ MonoBehaviour:
   Name: Resin (Unsmelted)
   sprite: {fileID: 21300000, guid: 84e6f82f3a946894a97ddcf39dcb2b08, type: 3}
   prefab: {fileID: 9032074284293904908, guid: 882baef7e3945174fa65ce7f841611da, type: 3}
-  discription: Bonk it into a furnace
+  discription: Smelt it in a furnace
