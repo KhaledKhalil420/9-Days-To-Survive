@@ -4686,7 +4686,7 @@ MonoBehaviour:
   - enemies:
     - {fileID: 2246168851940632354, guid: ab1a0a91578b42a4b86807b608f32ae4, type: 3}
     requiredDefeats: 15
-    maxEnemies: 20
+    maxEnemies: 6
     spawningCooldown: 1
     spawningRadius: 12
     minimumSpawningDistance: 6
@@ -4808,6 +4808,41 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     recoveryDuration: 0.5
+    pitchIntensity: 25
+    rollIntensity: 25
+    rotationRecoveryCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: -0.020832062
+        value: 0.0071411133
+        inSlope: 5.9539466
+        outSlope: 5.9539466
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.106606565
+      - serializedVersion: 3
+        time: 0.34250998
+        value: 0.8994124
+        inSlope: -2.6353598
+        outSlope: -2.6353598
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.4430379
+        outWeight: 0.06156056
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: -0.0070998147
+        outSlope: -0.0070998147
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.51107365
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   movement: {fileID: 1220912754}
   disable: 0
 --- !u!1 &641616579
@@ -12654,7 +12689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1da017f089bc2d4bb5740fbf40b8152, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildLimitPoints: 150
+  buildLimitPoints: 160
   extraBuildingHealth: 0
   extraBuildingDamage: 0
   smoke: {fileID: 7301512366205885463, guid: e15eb7276d1a1cb4bb4aeea033137d4b, type: 3}

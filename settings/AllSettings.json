@@ -20,6 +20,6 @@
     },
     "gameplay": {
         "sensitivity": 57.70000076293945,
-        "questsEnabled": true
+        "questsEnabled": false
     }
 }

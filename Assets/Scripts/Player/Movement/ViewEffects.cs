@@ -25,25 +25,17 @@ public struct BobSettings
     public bool enabled;
 
     [Header("Bob Parameters")]
-    [Tooltip("Speed of bobbing while walking")]
     public float walkBobSpeed;
-    [Tooltip("Vertical bob strength while walking")]
     public float walkBobAmount;
-    [Tooltip("Horizontal bob strength (X axis)")]
     public float walkBobAmountX;
-    [Tooltip("Extra strength multiplier on bob amounts")]
     public float walkBobAmountMultiplier;
-    [Tooltip("Speed/amount multiplier while sprinting")]
     public float sprintMultiplier;
 
     [Header("Sprint Position Shift")]
-    [Tooltip("Offset applied to item position while sprinting")]
     public Vector3 sprintPositionShift;
-    [Tooltip("Smoothness of sprint shift transition")]
-    public float sprintShiftSmoothness;
+    public float   sprintShiftSmoothness;
 
     [Header("Bob Smoothing")]
-    [Tooltip("How quickly bob positions smooth out")]
     public float smoothSpeed;
 
     [HideInInspector] public float timer;
@@ -58,13 +50,9 @@ public struct BreathSettings
     public bool enabled;
 
     [Header("Idle Breath Parameters")]
-    [Tooltip("Vertical amplitude of idle breathing")]
     public float breathAmountY;
-    [Tooltip("Horizontal amplitude of idle breathing")]
     public float breathAmountX;
-    [Tooltip("Speed of idle breathing cycle")]
     public float breathSpeed;
-    [Tooltip("How smoothly breathing fades in/out")]
     public float breathSmoothness;
 
     [HideInInspector] public float timer;
@@ -83,11 +71,16 @@ public struct LandingSettings
     public float maxIntensity;
     public float minimumVelocityThreshold;
 
-    [Header("Recovery")]
-    [Tooltip("Curve controlling how the item recovers after landing (X = time 0–1, Y = offset multiplier)")]
+    [Header("Position Recovery")]
     public AnimationCurve recoveryCurve;
-    [Tooltip("How long the full recovery takes in seconds")]
     public float recoveryDuration;
+
+    [Header("Landing Rotation")]
+    [Tooltip("Peak pitch (X-axis) rotation on landing")]
+    public float pitchIntensity;
+    [Tooltip("Peak roll (Z-axis) rotation on landing")]
+    public float rollIntensity;
+    public AnimationCurve rotationRecoveryCurve;
 }
 
 // ─────────────────────────────────────────────
@@ -97,9 +90,9 @@ public struct LandingSettings
 public class ViewEffects : MonoBehaviour
 {
     [Header("Effects")]
-    public TiltSettings Tilt;
-    public BobSettings Bob;
-    public BreathSettings Breath;
+    public TiltSettings    Tilt;
+    public BobSettings     Bob;
+    public BreathSettings  Breath;
     public LandingSettings Landing;
 
     [Header("References")]
@@ -108,47 +101,71 @@ public class ViewEffects : MonoBehaviour
     [Header("Global Toggle")]
     public bool disable = false;
 
-    // ── private state ──────────────────────────
-    private Vector3 _startPos;
+    // ── cached refs ───────────────────────────
+    private Rigidbody _rb;
 
+    // ── transform base ────────────────────────
+    private Vector3    _startPos;
+    private Quaternion _startRot;
+
+    // ── per-frame shared values ───────────────
+    private float _dt;
+    private bool  _grounded;
+    private bool  _running;
+    private float _moveSqr;   // moveDir.sqrMagnitude
+
+    // ── landing state ─────────────────────────
     private bool  _wasGrounded;
     private float _lastFallVelocity;
     private float _landingOffset;
     private float _landingTimer;
     private float _landingIntensity;
+    private float _landingRotIntensity;
+    private float _landingPitch;
+    private float _landingRoll;
 
     // ──────────────────────────────────────────
+    private static readonly AnimationCurve DefaultCurve =
+        AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
+
     private void Start()
     {
-        _startPos    = transform.localPosition;
+        _rb       = movement.rb;
+        _startPos = transform.localPosition;
+        _startRot = transform.localRotation;
+
         _wasGrounded = movement.IsGrounded();
 
-        // Ensure a default recovery curve if none is set
-        if (Landing.recoveryCurve == null || Landing.recoveryCurve.length == 0)
-        {
-            Landing.recoveryCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
-        }
+        if (Landing.recoveryCurve         == null || Landing.recoveryCurve.length         == 0)
+            Landing.recoveryCurve         = DefaultCurve;
+        if (Landing.rotationRecoveryCurve == null || Landing.rotationRecoveryCurve.length == 0)
+            Landing.rotationRecoveryCurve = DefaultCurve;
     }
 
     private void Update()
     {
         if (disable || movement == null) return;
 
+        // ── gather shared state once ──────────
+        _dt       = Time.deltaTime;
+        _grounded = movement.IsGrounded();   // single call per frame
+        _running  = movement.isRunning;
+        _moveSqr  = movement.moveDir.sqrMagnitude;  // no sqrt
+
         TrackFallVelocity();
         HandleLanding();
         ApplyTilt();
-        ApplyBob();        // also handles sprint shift
+        ApplyBob();
         ApplyBreath();
-        CommitPosition();
+        CommitTransform();
     }
 
     // ── Fall velocity tracker ──────────────────
     private void TrackFallVelocity()
     {
-        if (!movement.IsGrounded())
+        if (!_grounded)
         {
-            // Store the downward speed; only track the falling direction
-            float vy = -movement.rb.linearVelocity.y;
+            float vy = -_rb.linearVelocity.y;
             if (vy > 0f) _lastFallVelocity = vy;
         }
     }
@@ -156,39 +173,49 @@ public class ViewEffects : MonoBehaviour
     // ── Landing ───────────────────────────────
     private void HandleLanding()
     {
-        if (!Landing.enabled) { _landingOffset = 0f; _wasGrounded = movement.IsGrounded(); return; }
+        if (!Landing.enabled)
+        {
+            _landingOffset = 0f;
+            _landingPitch  = 0f;
+            _landingRoll   = 0f;
+            _wasGrounded   = _grounded;
+            return;
+        }
 
-        bool isGrounded = movement.IsGrounded();
-
-        // Just landed
-        if (!_wasGrounded && isGrounded)
+        if (!_wasGrounded && _grounded)
         {
             if (_lastFallVelocity > Landing.minimumVelocityThreshold)
             {
-                _landingIntensity = Mathf.Min(
+                float scale = Mathf.Min(
                     Landing.baseIntensity + _lastFallVelocity * Landing.velocityMultiplier,
                     Landing.maxIntensity
                 );
-                _landingTimer = 0f;
+                _landingIntensity    = scale;
+                _landingRotIntensity = scale;
+                _landingTimer        = 0f;
             }
             _lastFallVelocity = 0f;
         }
 
-        // Drive recovery with the curve
         if (_landingTimer < Landing.recoveryDuration)
         {
-            _landingTimer += Time.deltaTime;
-            float t          = Mathf.Clamp01(_landingTimer / Landing.recoveryDuration);
-            float curveValue = Landing.recoveryCurve.Evaluate(t);   // 1 → 0 over recovery
-            _landingOffset   = -_landingIntensity * curveValue;
+            _landingTimer += _dt;
+            float t = Mathf.Clamp01(_landingTimer / Landing.recoveryDuration);
+
+            _landingOffset = -_landingIntensity    * Landing.recoveryCurve.Evaluate(t);
+            _landingPitch  =  Landing.pitchIntensity * _landingRotIntensity * Landing.rotationRecoveryCurve.Evaluate(t);
+            _landingRoll   =  Landing.rollIntensity  * _landingRotIntensity * Landing.rotationRecoveryCurve.Evaluate(t);
         }
         else
         {
-            _landingOffset    = 0f;
-            _landingIntensity = 0f;
+            _landingOffset       = 0f;
+            _landingIntensity    = 0f;
+            _landingRotIntensity = 0f;
+            _landingPitch        = 0f;
+            _landingRoll         = 0f;
         }
 
-        _wasGrounded = isGrounded;
+        _wasGrounded = _grounded;
     }
 
     // ── Bob + sprint shift ─────────────────────
@@ -196,42 +223,34 @@ public class ViewEffects : MonoBehaviour
     {
         if (!Bob.enabled)
         {
-            Bob.currentBobY     = 0f;
-            Bob.currentBobX     = 0f;
+            Bob.currentBobY        = 0f;
+            Bob.currentBobX        = 0f;
             Bob.currentSprintShift = Vector3.zero;
             return;
         }
 
-        bool isMoving = movement.moveDir.magnitude > 0.01f && movement.IsGrounded();
+        float bobSmooth = _dt * Bob.smoothSpeed;
 
-        if (isMoving)
+        if (_moveSqr > 0.0001f && _grounded)
         {
-            float speedMult  = movement.isRunning ? Bob.sprintMultiplier : 1f;
-            Bob.timer += Time.deltaTime * Bob.walkBobSpeed * speedMult;
+            float speedMult = _running ? Bob.sprintMultiplier : 1f;
+            float amount    = Bob.walkBobAmountMultiplier * speedMult;
 
-            float targetY = Mathf.Sin(Bob.timer)       * Bob.walkBobAmount  * Bob.walkBobAmountMultiplier * speedMult;
-            float targetX = Mathf.Cos(Bob.timer * 0.5f) * Bob.walkBobAmountX * Bob.walkBobAmountMultiplier * speedMult;
+            Bob.timer += _dt * Bob.walkBobSpeed * speedMult;
 
-            Bob.currentBobY = Mathf.Lerp(Bob.currentBobY, targetY, Time.deltaTime * Bob.smoothSpeed);
-            Bob.currentBobX = Mathf.Lerp(Bob.currentBobX, targetX, Time.deltaTime * Bob.smoothSpeed);
+            Bob.currentBobY = Mathf.Lerp(Bob.currentBobY, Mathf.Sin(Bob.timer)        * Bob.walkBobAmount  * amount, bobSmooth);
+            Bob.currentBobX = Mathf.Lerp(Bob.currentBobX, Mathf.Cos(Bob.timer * 0.5f) * Bob.walkBobAmountX * amount, bobSmooth);
         }
         else
         {
-            Bob.timer       = 0f;
-            Bob.currentBobY = Mathf.Lerp(Bob.currentBobY, 0f, Time.deltaTime * Bob.smoothSpeed);
-            Bob.currentBobX = Mathf.Lerp(Bob.currentBobX, 0f, Time.deltaTime * Bob.smoothSpeed);
+            // Let timer keep its phase — only stop incrementing
+            // so resuming movement doesn't pop back to sin(0)
+            Bob.currentBobY = Mathf.Lerp(Bob.currentBobY, 0f, bobSmooth);
+            Bob.currentBobX = Mathf.Lerp(Bob.currentBobX, 0f, bobSmooth);
         }
 
-        // Sprint position shift
-        Vector3 targetShift = (movement.isRunning && movement.IsGrounded())
-            ? Bob.sprintPositionShift
-            : Vector3.zero;
-
-        Bob.currentSprintShift = Vector3.Lerp(
-            Bob.currentSprintShift,
-            targetShift,
-            Time.deltaTime * Bob.sprintShiftSmoothness
-        );
+        Vector3 targetShift = (_running && _grounded) ? Bob.sprintPositionShift : Vector3.zero;
+        Bob.currentSprintShift = Vector3.Lerp(Bob.currentSprintShift, targetShift, _dt * Bob.sprintShiftSmoothness);
     }
 
     // ── Idle breath ────────────────────────────
@@ -244,23 +263,20 @@ public class ViewEffects : MonoBehaviour
             return;
         }
 
-        bool isIdle = movement.moveDir.magnitude < 0.01f && movement.IsGrounded();
+        float breathSmooth = _dt * Breath.breathSmoothness;
 
-        if (isIdle)
+        if (_moveSqr < 0.0001f && _grounded)
         {
-            Breath.timer += Time.deltaTime * Breath.breathSpeed;
+            Breath.timer += _dt * Breath.breathSpeed;
 
-            float targetY = Mathf.Sin(Breath.timer)        * Breath.breathAmountY;
-            float targetX = Mathf.Cos(Breath.timer * 0.6f) * Breath.breathAmountX; // offset phase
-
-            Breath.currentBreathY = Mathf.Lerp(Breath.currentBreathY, targetY, Time.deltaTime * Breath.breathSmoothness);
-            Breath.currentBreathX = Mathf.Lerp(Breath.currentBreathX, targetX, Time.deltaTime * Breath.breathSmoothness);
+            Breath.currentBreathY = Mathf.Lerp(Breath.currentBreathY, Mathf.Sin(Breath.timer)        * Breath.breathAmountY, breathSmooth);
+            Breath.currentBreathX = Mathf.Lerp(Breath.currentBreathX, Mathf.Cos(Breath.timer * 0.6f) * Breath.breathAmountX, breathSmooth);
         }
         else
         {
-            Breath.timer          = 0f;
-            Breath.currentBreathY = Mathf.Lerp(Breath.currentBreathY, 0f, Time.deltaTime * Breath.breathSmoothness);
-            Breath.currentBreathX = Mathf.Lerp(Breath.currentBreathX, 0f, Time.deltaTime * Breath.breathSmoothness);
+            // Same as bob — keep timer phase, just fade out
+            Breath.currentBreathY = Mathf.Lerp(Breath.currentBreathY, 0f, breathSmooth);
+            Breath.currentBreathX = Mathf.Lerp(Breath.currentBreathX, 0f, breathSmooth);
         }
     }
 
@@ -272,29 +288,22 @@ public class ViewEffects : MonoBehaviour
         Tilt.angle = Mathf.Lerp(
             Tilt.angle,
             movement.inputDir.x * Tilt.tiltValue,
-            Tilt.tiltSmoothness * Time.deltaTime
-        );
-
-        transform.localEulerAngles = new Vector3(
-            transform.localEulerAngles.x,
-            transform.localEulerAngles.y,
-            Tilt.angle
+            Tilt.tiltSmoothness * _dt
         );
     }
 
-    // ── Write final position ───────────────────
-    private void CommitPosition()
+    // ── Commit everything in one shot ──────────
+    private void CommitTransform()
     {
-        Vector3 bobOffset    = new Vector3(Bob.currentBobX,    Bob.currentBobY,    0f);
-        Vector3 breathOffset = new Vector3(Breath.currentBreathX, Breath.currentBreathY, 0f);
-        Vector3 landingVec   = new Vector3(0f, _landingOffset, 0f);
+        // Position — reuse _startPos to avoid a new Vector3 allocation
+        transform.localPosition = new Vector3(
+            _startPos.x + Bob.currentBobX    + Breath.currentBreathX + Bob.currentSprintShift.x,
+            _startPos.y + Bob.currentBobY    + Breath.currentBreathY + _landingOffset           + Bob.currentSprintShift.y,
+            _startPos.z + Bob.currentSprintShift.z
+        );
 
-        transform.localPosition =
-            _startPos
-            + bobOffset
-            + breathOffset
-            + landingVec
-            + Bob.currentSprintShift;
+        // Rotation — single Quaternion multiply, no intermediate euler allocation
+        transform.localRotation = _startRot * Quaternion.Euler(_landingPitch, 0f, Tilt.angle + _landingRoll);
     }
 
     // ── Public helpers ─────────────────────────
@@ -309,18 +318,17 @@ public class ViewEffects : MonoBehaviour
         Breath.currentBreathY = 0f;
         Breath.currentBreathX = 0f;
 
-        _landingOffset    = 0f;
-        _landingTimer     = 0f;
-        _landingIntensity = 0f;
-        _lastFallVelocity = 0f;
+        _landingOffset       = 0f;
+        _landingTimer        = Landing.recoveryDuration; // skip recovery
+        _landingIntensity    = 0f;
+        _landingRotIntensity = 0f;
+        _landingPitch        = 0f;
+        _landingRoll         = 0f;
+        _lastFallVelocity    = 0f;
 
         Tilt.angle = 0f;
 
-        transform.localPosition    = _startPos;
-        transform.localEulerAngles = new Vector3(
-            transform.localEulerAngles.x,
-            transform.localEulerAngles.y,
-            0f
-        );
+        transform.localPosition = _startPos;
+        transform.localRotation = _startRot;
     }
 }

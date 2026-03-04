@@ -135,7 +135,7 @@ MonoBehaviour:
   pathRefreshInterval: 0.5
   mainTarget: {fileID: 0}
   target: {fileID: 0}
-  pointsWorth: 5
+  pointsWorth: 1
   speedUpWhenTargetingMain: 1
   onCatchMainTargetSpeedBoost: 1.75
   attackCooldown: 1

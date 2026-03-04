@@ -155,6 +155,7 @@ public class Building : MonoBehaviour, IDamagable
         {
             currentHealth = initHealth + BuildingManager.Instance.extraBuildingHealth;
             extraDamage = BuildingManager.Instance.extraBuildingDamage;
+            CheckUpgrades();
         }
     }
 
