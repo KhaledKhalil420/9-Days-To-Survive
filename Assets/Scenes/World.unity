@@ -1872,6 +1872,11 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 5307f011f150dc542a863858b3ec0e95, type: 3}
     nightTracks:
     - {fileID: 8300000, guid: a4e85a7a66b20f74c83dab3cbfd33935, type: 3}
+  - dayToPlayIn: 1
+    dayTracks:
+    - {fileID: 8300000, guid: 2171e6b7212e84b46b3345062f73c88b, type: 3}
+    nightTracks:
+    - {fileID: 8300000, guid: 35118378d26d7bc41926c747a3c4ed53, type: 3}
   ambienceSource: {fileID: 217955938}
 --- !u!82 &217955937
 AudioSource:
@@ -4696,6 +4701,20 @@ MonoBehaviour:
     - {fileID: 2246168851940632354, guid: ab1a0a91578b42a4b86807b608f32ae4, type: 3}
     requiredDefeats: 15
     maxEnemies: 6
+    spawningCooldown: 5
+    spawningRadius: 12
+    minimumSpawningDistance: 6
+  - enemies:
+    - {fileID: 2246168851940632354, guid: ab1a0a91578b42a4b86807b608f32ae4, type: 3}
+    requiredDefeats: 30
+    maxEnemies: 16
+    spawningCooldown: 2
+    spawningRadius: 12
+    minimumSpawningDistance: 6
+  - enemies:
+    - {fileID: 2246168851940632354, guid: ab1a0a91578b42a4b86807b608f32ae4, type: 3}
+    requiredDefeats: 50
+    maxEnemies: 30
     spawningCooldown: 1
     spawningRadius: 12
     minimumSpawningDistance: 6
@@ -18818,11 +18837,19 @@ MonoBehaviour:
   mainLight: {fileID: 410087040}
   lightIntensity: 1
   blendSpeed: 1
-  fogDay: {r: 0, g: 0, b: 0, a: 0}
-  fogNight: {r: 0, g: 0, b: 0, a: 0}
   currentState: 0
-  dayPreset: {fileID: 11400000, guid: 991f002f0ae5df94cbddb6d2abd7fd9c, type: 2}
-  nightPreset: {fileID: 11400000, guid: 9e5f3bd4c09c96c4eb09ff5d4f92e54a, type: 2}
+  presetCycles:
+  - dayToPlayIn: 0
+    dayPreset: {fileID: 11400000, guid: 991f002f0ae5df94cbddb6d2abd7fd9c, type: 2}
+    nightPreset: {fileID: 11400000, guid: 9e5f3bd4c09c96c4eb09ff5d4f92e54a, type: 2}
+  - dayToPlayIn: 1
+    dayPreset: {fileID: 11400000, guid: 991f002f0ae5df94cbddb6d2abd7fd9c, type: 2}
+    nightPreset: {fileID: 11400000, guid: 9e5f3bd4c09c96c4eb09ff5d4f92e54a, type: 2}
+  - dayToPlayIn: 1
+    dayPreset: {fileID: 11400000, guid: 991f002f0ae5df94cbddb6d2abd7fd9c, type: 2}
+    nightPreset: {fileID: 11400000, guid: 37cbd566ec85a1549a1d7fcfde0049b7, type: 2}
+  fallbackDayPreset: {fileID: 11400000, guid: 991f002f0ae5df94cbddb6d2abd7fd9c, type: 2}
+  fallbackNightPreset: {fileID: 11400000, guid: 9e5f3bd4c09c96c4eb09ff5d4f92e54a, type: 2}
   volume: {fileID: 305789033}
   bassDropSource: {fileID: 1799642142}
   source: {fileID: 1799642141}

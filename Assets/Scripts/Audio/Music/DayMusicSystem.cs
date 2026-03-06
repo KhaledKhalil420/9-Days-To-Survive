@@ -45,6 +45,9 @@ public class DayMusicSystem : MonoBehaviour
     {
         isDay = day;
 
+        daySource.Stop();
+        nightSource.Stop();
+
         DayCycleMusic entry = GetEntryForDay(DayNightCycleManager.Instance.DayCount);
         dayPlaylist = Shuffled(entry.dayTracks, lastDayTrack);
         nightPlaylist = Shuffled(entry.nightTracks, lastNightTrack);

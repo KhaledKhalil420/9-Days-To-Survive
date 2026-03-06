@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a0ac9a32be63c84e903ca33540c352a, type: 3}
+  m_Name: Night1 2
+  m_EditorClassIdentifier: 
+  skyColor: {r: 0.18039216, g: 0.13333334, b: 0.13333334, a: 1}
+  equatorColor: {r: 0.18039216, g: 0.18039216, b: 0.18039216, a: 1}
+  groundColor: {r: 0.09411765, g: 0.0031159525, b: 0, a: 1}
+  ambientIntensity: 1
+  reflectionIntensity: 0.5
+  fogColor: {r: 0.28235295, g: 0.086274505, b: 0.09276603, a: 1}
+  useFogDensity: 1
+  fogDensity: 0.055
+  lightIntensity: 0.065
+  shadowStrength: 0.175
+  useLightColor: 1
+  lightColor: {r: 0.7688679, g: 0.8903117, b: 1, a: 1}
+  ambience: {fileID: 8300000, guid: 159639f19b5f70f43a8a792ba17b5c41, type: 3}
+  useSubtractiveShadowColor: 0
+  subtractiveShadowColor: {r: 0.42, g: 0.48, b: 0.63, a: 1}

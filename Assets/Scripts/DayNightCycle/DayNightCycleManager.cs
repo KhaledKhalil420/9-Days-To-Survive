@@ -1,9 +1,18 @@
 using System;
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Rendering;
 using EZCameraShake;
+
+[System.Serializable]
+public class DayCycleEntry
+{
+    public int dayToPlayIn = 0;
+    public DayCyclePreset dayPreset;
+    public DayCyclePreset nightPreset;
+}
 
 public class DayNightCycleManager : MonoBehaviour
 {
@@ -18,21 +27,24 @@ public class DayNightCycleManager : MonoBehaviour
     public Light mainLight;
     public float lightIntensity = 1f;
     [Range(0, 1)] public float blendSpeed = 0.1f;
-    [ColorUsage(true, true)] public Color fogDay, fogNight;
     public CycleState currentState = CycleState.Day;
 
-    public DayCyclePreset dayPreset;
-    public DayCyclePreset nightPreset;
-    
-    //FEEL
-    public Volume volume; 
+    [SerializeField] private List<DayCycleEntry> presetCycles;
+    [SerializeField] private DayCyclePreset fallbackDayPreset;
+    [SerializeField] private DayCyclePreset fallbackNightPreset;
+
+    public DayCyclePreset dayPreset   => GetPresetForDay(DayCount, true);
+    public DayCyclePreset nightPreset => GetPresetForDay(DayCount, false);
+
+    [Header("Feel")]
+    public Volume volume;
     public AudioSource bassDropSource;
     public AudioSource source;
     public Image triggeringProgress;
     public float holdTime;
     private float holdTimer;
 
-    void Awake()
+    private void Awake()
     {
         Instance = this;
         DayCount = 0;
@@ -59,30 +71,25 @@ public class DayNightCycleManager : MonoBehaviour
         OnDayChange?.Invoke(true);
     }
 
-    void Update()
+    private void Update()
     {
-        //Audio & Visual Feedback
         triggeringProgress.fillAmount = Mathf.Lerp(triggeringProgress.fillAmount, holdTimer / holdTime, 50 * Time.deltaTime);
         source.volume = Mathf.Lerp(source.volume, holdTimer / holdTime, 25f * Time.deltaTime);
-        float targetPitch = 1f + (holdTimer / holdTime) / 1.5f;
-        source.pitch = Mathf.Lerp(source.pitch, targetPitch, 25f * Time.deltaTime);
+        source.pitch = Mathf.Lerp(source.pitch, 1f + (holdTimer / holdTime) / 1.5f, 25f * Time.deltaTime);
         volume.weight = Mathf.Lerp(volume.weight, holdTimer / holdTime, 5 * Time.deltaTime);
 
         if (Input.GetKey(KeyCode.G) && currentState == CycleState.Day)
         {
             holdTimer += Time.deltaTime;
 
-            if(holdTimer >= holdTime)
+            if (holdTimer >= holdTime)
             {
-                //Feedback
                 CameraShaker.Instance.ShakeOnce(5, 2, 0.2f, 1);
-
                 holdTimer = 0;
                 bassDropSource.Play();
                 SetTime(currentState == CycleState.Day ? CycleState.Night : CycleState.Day);
             }
         }
-
         else
         {
             holdTimer = Mathf.Max(0, holdTimer - Time.deltaTime * 4);
@@ -99,7 +106,18 @@ public class DayNightCycleManager : MonoBehaviour
         Instance.OnDayChange?.Invoke(isDay);
     }
 
-    void UpdateSkyboxBlend()
+    private DayCyclePreset GetPresetForDay(int day, bool isDay)
+    {
+        DayCycleEntry match = presetCycles?.Find(c => c.dayToPlayIn == day);
+        if (match == null && presetCycles?.Count > 0)
+            match = presetCycles[UnityEngine.Random.Range(0, presetCycles.Count)];
+
+        return isDay
+            ? (match?.dayPreset ?? fallbackDayPreset)
+            : (match?.nightPreset ?? fallbackNightPreset);
+    }
+
+    private void UpdateSkyboxBlend()
     {
         DayCyclePreset current = currentState == CycleState.Day ? dayPreset : nightPreset;
         if (current == null) return;
@@ -114,7 +132,7 @@ public class DayNightCycleManager : MonoBehaviour
         RenderSettings.ambientSkyColor = Color.Lerp(RenderSettings.ambientSkyColor, current.skyColor, delta);
         RenderSettings.ambientEquatorColor = Color.Lerp(RenderSettings.ambientEquatorColor, current.equatorColor, delta);
         RenderSettings.ambientGroundColor = Color.Lerp(RenderSettings.ambientGroundColor, current.groundColor, delta);
-        
+
         if (current.useFogDensity) RenderSettings.fogDensity = Mathf.Lerp(RenderSettings.fogDensity, current.fogDensity, delta);
         if (current.useSubtractiveShadowColor) RenderSettings.subtractiveShadowColor = Color.Lerp(RenderSettings.subtractiveShadowColor, current.subtractiveShadowColor, delta);
 
