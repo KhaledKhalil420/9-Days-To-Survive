@@ -12,6 +12,7 @@ public class Smeltables : ScriptableObject
 public class Smeltable
 {
     public ItemData input;
+    public float timeToSmelt;
     public ItemData output;
 }
 

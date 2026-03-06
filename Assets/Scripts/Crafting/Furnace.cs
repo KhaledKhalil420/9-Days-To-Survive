@@ -46,11 +46,12 @@ public class Furnace : Building, IInteractable
         output.UpdateSlot();
 
         //Slider setup
-        progressSlider.maxValue = smeltingTime;
     }
 
     private void Update()
     {
+        progressSlider.maxValue = smeltingTime;
+
         if(!isPlaced) 
             return;
             
@@ -88,6 +89,7 @@ public class Furnace : Building, IInteractable
             if (item.input == input.HeldItem.data)
             {
                 foundItem = item.output.prefab.GetComponent<Item>();
+                smeltingTime = item.timeToSmelt;
                 break;
             }
         }
@@ -97,7 +99,7 @@ public class Furnace : Building, IInteractable
             smeltingProgress = 0;
             return;
         }
-
+        
         smeltingProgress += Time.deltaTime;
 
         if (smeltingProgress >= smeltingTime)

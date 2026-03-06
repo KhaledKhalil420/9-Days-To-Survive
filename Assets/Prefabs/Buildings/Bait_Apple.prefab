@@ -34,8 +34,7 @@ Transform:
   m_LocalPosition: {x: 2.6030369, y: 0.19976044, z: -0.831357}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2737642873201069079}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &9069041094820435674
@@ -155,10 +154,9 @@ MonoBehaviour:
   dropResourcesOnDestory: 0
   usesPivots: 0
   affectedByGridSizePosition: 0
-  pivots:
-  - {fileID: 2737642873201069079}
+  pivots: []
   pivotsOnBuild:
-  - {fileID: 2737642873201069079}
+  - {fileID: 0}
   pivotsOnBuildDisable: []
   supportCheckScale: 1.15
   source: {fileID: 8187104329155418112}
@@ -261,34 +259,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &5452558738535900478
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2737642873201069079}
-  m_Layer: 11
-  m_Name: Pivot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2737642873201069079
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5452558738535900478}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.831, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1129081527822053564}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

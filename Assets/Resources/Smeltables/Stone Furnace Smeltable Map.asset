@@ -19,4 +19,5 @@ MonoBehaviour:
     efficiency: 1
   smeltables:
   - input: {fileID: 11400000, guid: 61ae00e549aecff4a9f68fdd64772470, type: 2}
+    timeToSmelt: 5
     output: {fileID: 11400000, guid: a39336f7410408145b32c5bbb2ead5f8, type: 2}
