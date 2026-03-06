@@ -21,8 +21,8 @@ public class DayNightCycleManager : MonoBehaviour
     [ColorUsage(true, true)] public Color fogDay, fogNight;
     public CycleState currentState = CycleState.Day;
 
-    public LightingPreset dayPreset;
-    public LightingPreset nightPreset;
+    public DayCyclePreset dayPreset;
+    public DayCyclePreset nightPreset;
     
     //FEEL
     public Volume volume; 
@@ -101,7 +101,7 @@ public class DayNightCycleManager : MonoBehaviour
 
     void UpdateSkyboxBlend()
     {
-        LightingPreset current = currentState == CycleState.Day ? dayPreset : nightPreset;
+        DayCyclePreset current = currentState == CycleState.Day ? dayPreset : nightPreset;
         if (current == null) return;
 
         float targetBlend = currentState == CycleState.Day ? 0f : 1f;

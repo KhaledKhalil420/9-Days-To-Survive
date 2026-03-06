@@ -24,5 +24,6 @@ MonoBehaviour:
   shadowStrength: 0.175
   useLightColor: 1
   lightColor: {r: 0.7688679, g: 0.8903117, b: 1, a: 1}
+  ambience: {fileID: 8300000, guid: 159639f19b5f70f43a8a792ba17b5c41, type: 3}
   useSubtractiveShadowColor: 0
   subtractiveShadowColor: {r: 0.42, g: 0.48, b: 0.63, a: 1}

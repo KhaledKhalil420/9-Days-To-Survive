@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LightingPreset", menuName = "Lighting/Preset")]
-public class LightingPreset : ScriptableObject
+public class DayCyclePreset : ScriptableObject
 {
     [Header("Environment")]
     [ColorUsage(true, true)] public Color skyColor = Color.white;
@@ -20,6 +20,9 @@ public class LightingPreset : ScriptableObject
     [Range(0, 1)] public float shadowStrength = 1f;
     public bool useLightColor;
     [ColorUsage(false, true)] public Color lightColor = Color.white;
+
+    [Header("Sounds")]
+    public AudioClip ambience;
 
     [Header("Optional")]
     public bool useSubtractiveShadowColor;
