@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a0ac9a32be63c84e903ca33540c352a, type: 3}
   m_Name: Day1
   m_EditorClassIdentifier: 
-  skyColor: {r: 0.39215687, g: 0.5686275, b: 0.74509805, a: 1}
-  equatorColor: {r: 0.7254902, g: 0.6862745, b: 0.60784316, a: 1}
-  groundColor: {r: 0.29411766, g: 0.27450982, b: 0.23529412, a: 1}
+  skyColor: {r: 0.39048594, g: 0.5563337, b: 0.6132076, a: 1}
+  equatorColor: {r: 0.745283, g: 0.745283, b: 0.745283, a: 1}
+  groundColor: {r: 0.5004725, g: 0.5004725, b: 0.5004725, a: 1}
   ambientIntensity: 1
-  reflectionIntensity: 1
-  fogColor: {r: 0.47827268, g: 0.9218491, b: 0.9302184, a: 1}
+  reflectionIntensity: 1.25
+  fogColor: {r: 0, g: 0.75172853, b: 1, a: 1}
   useFogDensity: 1
   fogDensity: 0.03
   lightIntensity: 1
-  shadowStrength: 1
+  shadowStrength: 0.5
   useLightColor: 1
   lightColor: {r: 1.1349113, g: 1.1087298, b: 1.0117841, a: 1}
   useSubtractiveShadowColor: 0

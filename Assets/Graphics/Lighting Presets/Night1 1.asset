@@ -12,17 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a0ac9a32be63c84e903ca33540c352a, type: 3}
   m_Name: Night1 1
   m_EditorClassIdentifier: 
-  skyColor: {r: 0, g: 0, b: 0, a: 1}
-  equatorColor: {r: 0.056692783, g: 0.09524158, b: 0.13207549, a: 1}
-  groundColor: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 1}
+  skyColor: {r: 0.13274297, g: 0.1386536, b: 0.1792453, a: 1}
+  equatorColor: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
+  groundColor: {r: 0, g: 0.008542941, b: 0.09433961, a: 1}
   ambientIntensity: 1
-  reflectionIntensity: 0
-  fogColor: {r: 0.043387327, g: 0.0698054, b: 0.122641504, a: 1}
+  reflectionIntensity: 0.5
+  fogColor: {r: 0.08677466, g: 0.15546022, b: 0.2830189, a: 1}
   useFogDensity: 1
   fogDensity: 0.055
-  lightIntensity: 0.05
-  shadowStrength: 0.15
-  useLightColor: 0
-  lightColor: {r: 1, g: 1, b: 1, a: 1}
+  lightIntensity: 0.065
+  shadowStrength: 0.175
+  useLightColor: 1
+  lightColor: {r: 0.7688679, g: 0.8903117, b: 1, a: 1}
   useSubtractiveShadowColor: 0
   subtractiveShadowColor: {r: 0.42, g: 0.48, b: 0.63, a: 1}
