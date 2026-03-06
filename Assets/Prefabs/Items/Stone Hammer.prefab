@@ -290,6 +290,7 @@ MonoBehaviour:
   - {fileID: -7787119701086866034, guid: 7d0819f1fa907564f99dd84bee58d5ad, type: 3}
   - {fileID: -8526626869748728868, guid: 67700d47c1189d548bdb3e87924f604b, type: 3}
   - {fileID: 1741020841411367384, guid: e43dfa7d35d51b042aaaa5d5cc1133f1, type: 3}
+  - {fileID: 719321708722413755, guid: e887bf3464817384499d363ea69805ed, type: 3}
   spawnParticles: {fileID: 7301512366205885463, guid: e15eb7276d1a1cb4bb4aeea033137d4b, type: 3}
 --- !u!54 &4980473814787687472
 Rigidbody:

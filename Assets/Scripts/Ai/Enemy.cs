@@ -17,7 +17,7 @@ public class GroundEnemy : EnemyBrain
     public override void OnLogicalStart()
     {
         OnBehaviourStart();
-        initSpeed = agent.speed;
+        initSpeed = agent.speed - Random.Range(0, 0.25f);
         dayNightCycle = DayNightCycleManager.Instance;
     }
 

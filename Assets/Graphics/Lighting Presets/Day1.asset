@@ -17,11 +17,11 @@ MonoBehaviour:
   groundColor: {r: 0.5004725, g: 0.5004725, b: 0.5004725, a: 1}
   ambientIntensity: 1
   reflectionIntensity: 1.25
-  fogColor: {r: 0, g: 0.75172853, b: 1, a: 1}
+  fogColor: {r: 0.2891153, g: 0.8396226, b: 0.8236659, a: 1}
   useFogDensity: 1
-  fogDensity: 0.03
+  fogDensity: 0.057
   lightIntensity: 1
-  shadowStrength: 0.5
+  shadowStrength: 0.85
   useLightColor: 1
   lightColor: {r: 1.1349113, g: 1.1087298, b: 1.0117841, a: 1}
   useSubtractiveShadowColor: 0
