@@ -46,18 +46,13 @@ public class DayMusicSystem : MonoBehaviour
         isDay = day;
 
         DayCycleMusic entry = GetEntryForDay(DayNightCycleManager.Instance.DayCount);
-        RebuildPlaylist(entry.dayTracks, ref dayPlaylist);
-        RebuildPlaylist(entry.nightTracks, ref nightPlaylist);
+        dayPlaylist = Shuffled(entry.dayTracks, lastDayTrack);
+        nightPlaylist = Shuffled(entry.nightTracks, lastNightTrack);
 
-        // Music crossfade
         DOVirtual.Float(daySource.volume,   day ? 1f : 0f, transitionTime, x => daySource.volume = x);
         DOVirtual.Float(nightSource.volume, day ? 0f : 1f, transitionTime, x => nightSource.volume = x);
 
-        // Ambience crossfade
-        DayCyclePreset preset = day
-            ? DayNightCycleManager.Instance.dayPreset
-            : DayNightCycleManager.Instance.nightPreset;
-
+        DayCyclePreset preset = day ? DayNightCycleManager.Instance.dayPreset : DayNightCycleManager.Instance.nightPreset;
         if (preset?.ambience != null && ambienceSource.clip != preset.ambience)
         {
             DOVirtual.Float(ambienceSource.volume, 0f, transitionTime * 0.5f, x => ambienceSource.volume = x)
@@ -71,30 +66,34 @@ public class DayMusicSystem : MonoBehaviour
         }
 
         if (scheduleCoroutine != null) StopCoroutine(scheduleCoroutine);
-        scheduleCoroutine = StartCoroutine(ScheduleNextTrack());
+        scheduleCoroutine = StartCoroutine(ScheduleNextTrack(immediate: true));
     }
 
-    private IEnumerator ScheduleNextTrack()
+    private IEnumerator ScheduleNextTrack(bool immediate = false)
     {
+        if (!immediate)
+            yield return new WaitForSeconds(Random.Range(randomPlayDelay.x, randomPlayDelay.y));
+
         while (true)
         {
-            float delay = Random.Range(randomPlayDelay.x, randomPlayDelay.y);
-            yield return new WaitForSeconds(delay);
+            if (isDay) PlayNext(daySource, ref dayPlaylist, ref lastDayTrack);
+            else       PlayNext(nightSource, ref nightPlaylist, ref lastNightTrack);
 
-            if (isDay) PlayNext(daySource, dayPlaylist, ref lastDayTrack);
-            else        PlayNext(nightSource, nightPlaylist, ref lastNightTrack);
+            AudioSource current = isDay ? daySource : nightSource;
+            yield return new WaitUntil(() => !current.isPlaying);
+            yield return new WaitForSeconds(Random.Range(randomPlayDelay.x, randomPlayDelay.y));
         }
     }
 
-    private void PlayNext(AudioSource source, List<AudioClip> playlist, ref AudioClip last)
+    private void PlayNext(AudioSource source, ref List<AudioClip> playlist, ref AudioClip last)
     {
-        if (playlist.Count == 0) return;
-
-        if (playlist.Count == 1 && playlist[0] == last)
+        if (playlist.Count == 0)
         {
             DayCycleMusic entry = GetEntryForDay(DayNightCycleManager.Instance.DayCount);
-            RebuildPlaylist(isDay ? entry.dayTracks : entry.nightTracks, ref playlist);
+            playlist = Shuffled(isDay ? entry.dayTracks : entry.nightTracks, last);
         }
+
+        if (playlist.Count == 0) return;
 
         AudioClip next = playlist[0];
         playlist.RemoveAt(0);
@@ -104,26 +103,20 @@ public class DayMusicSystem : MonoBehaviour
         source.Play();
     }
 
-    private void RebuildPlaylist(List<AudioClip> source, ref List<AudioClip> playlist)
+    private List<AudioClip> Shuffled(List<AudioClip> source, AudioClip avoid)
     {
-        playlist = new List<AudioClip>(source);
-        Shuffle(playlist);
-
-        AudioClip last = playlist == dayPlaylist ? lastDayTrack : lastNightTrack;
-        if (playlist.Count > 1 && playlist[0] == last)
-        {
-            playlist.RemoveAt(0);
-            playlist.Insert(Random.Range(1, playlist.Count), last);
-        }
-    }
-
-    private void Shuffle(List<AudioClip> list)
-    {
+        List<AudioClip> list = new(source);
         for (int i = list.Count - 1; i > 0; i--)
         {
             int j = Random.Range(0, i + 1);
             (list[i], list[j]) = (list[j], list[i]);
         }
+        if (list.Count > 1 && list[0] == avoid)
+        {
+            list.RemoveAt(0);
+            list.Insert(Random.Range(1, list.Count), avoid);
+        }
+        return list;
     }
 
     private DayCycleMusic GetEntryForDay(int day)
@@ -141,71 +134,4 @@ public class DayMusicSystem : MonoBehaviour
         nightSource.Stop();
         ambienceSource.Stop();
     }
-
-#if UNITY_EDITOR
-    [ContextMenu("Preview Day Track")]
-    private void PreviewDay()
-    {
-        DayCycleMusic entry = GetEntryForDay(DayNightCycleManager.Instance?.DayCount ?? 0);
-        if (entry?.dayTracks?.Count > 0)
-        {
-            daySource.clip = entry.dayTracks[Random.Range(0, entry.dayTracks.Count)];
-            daySource.Play();
-            Debug.Log($"[DayMusicSystem] Previewing day track: {daySource.clip.name}");
-        }
-    }
-
-    [ContextMenu("Preview Night Track")]
-    private void PreviewNight()
-    {
-        DayCycleMusic entry = GetEntryForDay(DayNightCycleManager.Instance?.DayCount ?? 0);
-        if (entry?.nightTracks?.Count > 0)
-        {
-            nightSource.clip = entry.nightTracks[Random.Range(0, entry.nightTracks.Count)];
-            nightSource.Play();
-            Debug.Log($"[DayMusicSystem] Previewing night track: {nightSource.clip.name}");
-        }
-    }
-
-    [ContextMenu("Preview Day Ambience")]
-    private void PreviewDayAmbience()
-    {
-        AudioClip clip = DayNightCycleManager.Instance?.dayPreset?.ambience;
-        if (clip != null)
-        {
-            ambienceSource.clip = clip;
-            ambienceSource.loop = true;
-            ambienceSource.Play();
-            Debug.Log($"[DayMusicSystem] Previewing day ambience: {clip.name}");
-        }
-    }
-
-    [ContextMenu("Preview Night Ambience")]
-    private void PreviewNightAmbience()
-    {
-        AudioClip clip = DayNightCycleManager.Instance?.nightPreset?.ambience;
-        if (clip != null)
-        {
-            ambienceSource.clip = clip;
-            ambienceSource.loop = true;
-            ambienceSource.Play();
-            Debug.Log($"[DayMusicSystem] Previewing night ambience: {clip.name}");
-        }
-    }
-
-    [ContextMenu("Force Day Transition")]
-    private void ForceDay() => OnDayChange(true);
-
-    [ContextMenu("Force Night Transition")]
-    private void ForceNight() => OnDayChange(false);
-
-    [ContextMenu("Skip Current Track")]
-    private void SkipTrack()
-    {
-        if (scheduleCoroutine != null) StopCoroutine(scheduleCoroutine);
-        scheduleCoroutine = StartCoroutine(ScheduleNextTrack());
-        if (isDay) PlayNext(daySource, dayPlaylist, ref lastDayTrack);
-        else        PlayNext(nightSource, nightPlaylist, ref lastNightTrack);
-    }
-#endif
 }
