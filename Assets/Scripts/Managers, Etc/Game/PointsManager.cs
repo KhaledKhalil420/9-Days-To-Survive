@@ -8,8 +8,9 @@ public class PointsManager : MonoBehaviour
 
     [Header("Points")]
     public float StoredPoints = 0; //Display points in UI somehow ok?
+    [SerializeField] private float maxBuildBonus = 100f;
     internal float MaxBuilds => BuildingManager.Instance.buildLimitPoints;
-    internal int buildsBeforeNightStarted = 0;
+    internal float buildsBeforeNightStarted = 0;
 
     #region Unity
 
@@ -47,22 +48,29 @@ public class PointsManager : MonoBehaviour
         onPointsChanged?.Invoke();
     }
 
-    private float CalculatePoints(Wave selectedWave)
+    public void GivePoints(int points)
     {
-        //Enemy points calculation
-        int enemyPoints = 0;
-        foreach (GroundEnemy enemy in selectedWave.enemies)
-            enemyPoints += enemy.EnemyPoints;
+        Debug.Log(points + "   stored:" + StoredPoints);
+        StoredPoints += points;
+        onPointsChanged?.Invoke();
+    }
 
-        //Get unsed buildings bonus (the less builds you use, the more points you get)
-        float unusedBuilds = MaxBuilds - buildsBeforeNightStarted;
-        float buildBonus = unusedBuilds * 5;
-        
-        //More points for difficulty
-        float difficultyMultiplier = 1 + (Difficulty.DifficultyMultiplier - 1) * 0.2f; 
-        
-        //Total Points calculation
-        float totalPoints = Mathf.RoundToInt((enemyPoints + buildBonus) * difficultyMultiplier);
+    private int CalculatePoints(Wave selectedWave)
+    {
+        // Unused build ratio (0 → 1)
+        float unusedBuilds = Mathf.Max(0, MaxBuilds - buildsBeforeNightStarted);
+        float buildRatio = MaxBuilds > 0 ? unusedBuilds / MaxBuilds : 0f;
+
+        // Proportional capped bonus
+        float buildBonus = buildRatio * maxBuildBonus;
+
+        // Difficulty multiplier
+        float difficultyMultiplier = 1f + (Difficulty.DifficultyMultiplier - 1f) * 0.2f;
+
+        // Total reward for this night
+        int totalPoints = Mathf.RoundToInt(buildBonus * difficultyMultiplier);
+
+        Debug.Log($"Night reward → ratio:{buildRatio:F2} bonus:{buildBonus:F1} total:{totalPoints}");
 
         return totalPoints;
     }

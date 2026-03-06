@@ -79,35 +79,59 @@ public class DayMusicSystem : MonoBehaviour
 
         while (true)
         {
-            if (isDay) PlayNext(daySource, ref dayPlaylist, ref lastDayTrack);
-            else       PlayNext(nightSource, ref nightPlaylist, ref lastNightTrack);
+            AudioSource current;
 
-            AudioSource current = isDay ? daySource : nightSource;
+            // Only start a new clip if that source isn't already playing.
+            if (isDay)
+            {
+                current = daySource;
+                if (!daySource.isPlaying)
+                    PlayNext(daySource, ref dayPlaylist, ref lastDayTrack);
+            }
+            else
+            {
+                current = nightSource;
+                if (!nightSource.isPlaying)
+                    PlayNext(nightSource, ref nightPlaylist, ref lastNightTrack);
+            }
+
+            // Wait until that current source finishes, whether we just started it or it was already playing.
             yield return new WaitUntil(() => !current.isPlaying);
+
+            // then random delay before next play
             yield return new WaitForSeconds(Random.Range(randomPlayDelay.x, randomPlayDelay.y));
         }
     }
 
     private void PlayNext(AudioSource source, ref List<AudioClip> playlist, ref AudioClip last)
     {
-        if (playlist.Count == 0)
+        // Safety: don't start a new clip if the source is still playing.
+        if (source.isPlaying) return;
+
+        if (playlist == null || playlist.Count == 0)
         {
             DayCycleMusic entry = GetEntryForDay(DayNightCycleManager.Instance.DayCount);
-            playlist = Shuffled(isDay ? entry.dayTracks : entry.nightTracks, last);
+            if (entry != null)
+                playlist = Shuffled(isDay ? entry.dayTracks : entry.nightTracks, last);
         }
 
-        if (playlist.Count == 0) return;
+        if (playlist == null || playlist.Count == 0) return;
 
         AudioClip next = playlist[0];
         playlist.RemoveAt(0);
-        last = next;
 
+        // If somehow the next equals the currently playing clip, and it's playing, skip it.
+        if (source.clip == next && source.isPlaying) return;
+
+        last = next;
         source.clip = next;
         source.Play();
     }
 
     private List<AudioClip> Shuffled(List<AudioClip> source, AudioClip avoid)
     {
+        if (source == null) return new List<AudioClip>();
+
         List<AudioClip> list = new(source);
         for (int i = list.Count - 1; i > 0; i--)
         {

@@ -65,7 +65,10 @@ public class GroundEnemy : EnemyBrain
     public void TickDeath()
     {
         if (dayNightCycle != null && dayNightCycle.currentState == DayNightCycleManager.CycleState.Night)
+        {
+            PointsManager.Instance.GivePoints(pointsWorth);
             WaveManager.Instance.OnEnemyDefeated();
+        }
     }
 
     public virtual void OnBehaviourTick() { }

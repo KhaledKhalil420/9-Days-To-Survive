@@ -59,7 +59,10 @@ public class Breakable_GiveOnDeath : Breakable
         meshFilter.mesh = selected.damageMesh;
 
         if (updateColliderOnMesh && TryGetComponent(out MeshCollider meshCollider))
+        {
+            meshCollider.convex = true;
             meshCollider.sharedMesh = selected.damageMesh;
+        }
     }
 
     public override void OnDestroyed(GameObject sender)

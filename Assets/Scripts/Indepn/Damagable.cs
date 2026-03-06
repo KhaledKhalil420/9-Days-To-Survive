@@ -11,6 +11,7 @@ public class Damagable : MonoBehaviour, IDamagable
     [SerializeField] private bool destroyOnDeath = true, scaleWithDifficulty = true, isEnemy = true, doNumberEffect = true, poolObject = false, doKnockback = false;
     [SerializeField] private float MaxHealth = 5;
     [ReadOnly] private float currentHealth;
+    private bool isDead = false;
 
     void Start()
     {
@@ -23,16 +24,18 @@ public class Damagable : MonoBehaviour, IDamagable
     public void ResetHealth()
     {
         currentHealth = MaxHealth;
+        isDead = false;
     }
 
     public void Damage(float damage)
     {
-        currentHealth--;
+        currentHealth -= damage;
         OnDamageEvent.Invoke();
         if(doNumberEffect) DamageNumber.Spawn(damage, transform.position);
 
-        if(currentHealth <= 0)
+        if(currentHealth <= 0 && !isDead)
         {
+            isDead = true;
             OnDeathEvent.Invoke();   
             if(isEnemy)
             {
