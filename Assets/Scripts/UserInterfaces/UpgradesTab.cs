@@ -6,6 +6,7 @@ public class UpgradesTab : PopupTab
 {
     [Header("Datas and Upgrades")]
     [SerializeField] private List<UpgradeData> upgradesList;
+    private List<UpgradeUI> spawnedUis = new();
     [SerializeField] private int upgradesCount;
 
     [Header("Ui")]
@@ -26,10 +27,20 @@ public class UpgradesTab : PopupTab
 
             ui.AttachedUpgrade = selectedUpgrade;
             ui.Setup();
+
+            spawnedUis.Add(ui);
         }
         
         score_Text.text = PointsManager.Instance.StoredPoints.ToString();
         PointsManager.Instance.onPointsChanged += UpdatePoints;
+    }
+
+    private void Update()
+    {
+        if (spawnedUis.TrueForAll(ui => ui == null))
+        {
+            Close();
+        }
     }
 
     void OnDestroy()

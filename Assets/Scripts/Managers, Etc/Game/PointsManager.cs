@@ -50,27 +50,24 @@ public class PointsManager : MonoBehaviour
 
     public void GivePoints(int points)
     {
-        Debug.Log(points + "   stored:" + StoredPoints);
         StoredPoints += points;
         onPointsChanged?.Invoke();
     }
 
     private int CalculatePoints(Wave selectedWave)
     {
-        // Unused build ratio (0 → 1)
+        //Unused build ratio (0 → 1)
         float unusedBuilds = Mathf.Max(0, MaxBuilds - buildsBeforeNightStarted);
         float buildRatio = MaxBuilds > 0 ? unusedBuilds / MaxBuilds : 0f;
 
-        // Proportional capped bonus
+        //Proportional capped bonus
         float buildBonus = buildRatio * maxBuildBonus;
 
-        // Difficulty multiplier
+        //Difficulty multiplier
         float difficultyMultiplier = 1f + (Difficulty.DifficultyMultiplier - 1f) * 0.2f;
 
-        // Total reward for this night
+        //Total reward for this night
         int totalPoints = Mathf.RoundToInt(buildBonus * difficultyMultiplier);
-
-        Debug.Log($"Night reward → ratio:{buildRatio:F2} bonus:{buildBonus:F1} total:{totalPoints}");
 
         return totalPoints;
     }

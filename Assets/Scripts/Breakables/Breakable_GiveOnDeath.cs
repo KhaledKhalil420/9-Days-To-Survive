@@ -60,6 +60,7 @@ public class Breakable_GiveOnDeath : Breakable
 
         if (updateColliderOnMesh && TryGetComponent(out MeshCollider meshCollider))
         {
+            meshCollider.sharedMesh = null;
             meshCollider.convex = true;
             meshCollider.sharedMesh = selected.damageMesh;
         }
