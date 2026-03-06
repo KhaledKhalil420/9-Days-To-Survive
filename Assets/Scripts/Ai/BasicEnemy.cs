@@ -1,3 +1,4 @@
+using Sortify;
 using UnityEngine;
 
 public class BasicEnemy : GroundEnemy
@@ -6,7 +7,7 @@ public class BasicEnemy : GroundEnemy
 
     [Header("Attacking")]
     private bool canAttack = true;
-    [SerializeField] private float attackCooldown = 1;
+    [SerializeField, ReadOnly] private float attackCooldown = 1;
     [SerializeField] private float attackRange = 1;
     [SerializeField] private int attackDamage = 1;
 
@@ -38,8 +39,8 @@ public class BasicEnemy : GroundEnemy
     private void Animations()
     {
         if (animator == null) return;
-
-        float speedPercent = agent.velocity.magnitude / agent.speed;
+    
+        float speedPercent = agent.velocity.magnitude / initSpeed;
         animator.SetBool("Moving", speedPercent > 0.15f);
         animator.speed = Mathf.Max(1f, speedPercent);
     }

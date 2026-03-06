@@ -155,8 +155,7 @@ MonoBehaviour:
   usesPivots: 0
   affectedByGridSizePosition: 0
   pivots: []
-  pivotsOnBuild:
-  - {fileID: 0}
+  pivotsOnBuild: []
   pivotsOnBuildDisable: []
   supportCheckScale: 1.15
   source: {fileID: 8187104329155418112}

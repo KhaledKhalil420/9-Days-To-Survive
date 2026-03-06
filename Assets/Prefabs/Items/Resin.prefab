@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: a39336f7410408145b32c5bbb2ead5f8, type: 2}
-  HeldQuantity: 1
+  HeldQuantity: 150
   isSingleQuantityItem: 0
 --- !u!65 &6854714248457854537
 BoxCollider:

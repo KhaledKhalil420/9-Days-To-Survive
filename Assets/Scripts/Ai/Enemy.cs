@@ -3,6 +3,8 @@ using UnityEngine.AI;
 
 public class GroundEnemy : EnemyBrain
 {
+    private DayNightCycleManager dayNightCycle;
+
     [Header("Points")]
     [SerializeField] private int pointsWorth = 1;
     internal int EnemyPoints => pointsWorth * Difficulty.DifficultyMultiplier;
@@ -10,14 +12,14 @@ public class GroundEnemy : EnemyBrain
     [Header("Behaviour")]
     [SerializeField] private bool speedUpWhenTargetingMain;
     [SerializeField] private float onCatchMainTargetSpeedBoost = 2.5f;
-    private float initSpeed;
-
-    private DayNightCycleManager dayNightCycle;
+    internal float initSpeed, initAngularSpeed, initAcceleration, speedModifier = 1;
 
     public override void OnLogicalStart()
     {
         OnBehaviourStart();
         initSpeed = agent.speed - Random.Range(0, 0.25f);
+        initAngularSpeed = agent.angularSpeed;
+        initAcceleration = agent.acceleration;
         dayNightCycle = DayNightCycleManager.Instance;
     }
 
@@ -26,7 +28,12 @@ public class GroundEnemy : EnemyBrain
         if (agent == null || !agent.isActiveAndEnabled) return;
 
         if (speedUpWhenTargetingMain)
-            agent.speed = (target == mainTarget) ? initSpeed * onCatchMainTargetSpeedBoost : initSpeed;
+            agent.speed = ((target == mainTarget) ? initSpeed * onCatchMainTargetSpeedBoost : initSpeed) * speedModifier;
+        else
+            agent.speed = initSpeed * speedModifier;
+
+        agent.angularSpeed = initAngularSpeed * speedModifier;
+        agent.acceleration = initAcceleration * speedModifier;
 
         if (distanation != Vector3.zero && (!agent.hasPath || agent.destination != distanation))
             agent.SetDestination(distanation);
@@ -43,6 +50,7 @@ public class GroundEnemy : EnemyBrain
 
     public override void OnSpawn()
     {
+        speedModifier = 1;
         GetComponent<Damagable>()?.ResetHealth();
         AIManager.Register(this);
     }
