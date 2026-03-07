@@ -33,8 +33,9 @@ public class DayNightCycleManager : MonoBehaviour
     [SerializeField] private DayCyclePreset fallbackDayPreset;
     [SerializeField] private DayCyclePreset fallbackNightPreset;
 
-    public DayCyclePreset dayPreset   => GetPresetForDay(DayCount, true);
-    public DayCyclePreset nightPreset => GetPresetForDay(DayCount, false);
+    // Cached — resolved once per day change instead of randomly re-evaluated every frame
+    public DayCyclePreset dayPreset   { get; private set; }
+    public DayCyclePreset nightPreset { get; private set; }
 
     [Header("Feel")]
     public Volume volume;
@@ -68,6 +69,7 @@ public class DayNightCycleManager : MonoBehaviour
     private IEnumerator LateStart()
     {
         yield return new WaitForEndOfFrame();
+        ResolvePresetsForDay(DayCount);
         OnDayChange?.Invoke(true);
     }
 
@@ -103,18 +105,21 @@ public class DayNightCycleManager : MonoBehaviour
         Instance.currentState = cycleState;
         bool isDay = cycleState == CycleState.Day;
         Instance.DayCount += isDay ? 1 : 0;
+
+        // Resolve and cache presets once now that DayCount may have changed
+        Instance.ResolvePresetsForDay(Instance.DayCount);
+
         Instance.OnDayChange?.Invoke(isDay);
     }
 
-    private DayCyclePreset GetPresetForDay(int day, bool isDay)
+    private void ResolvePresetsForDay(int day)
     {
         DayCycleEntry match = presetCycles?.Find(c => c.dayToPlayIn == day);
         if (match == null && presetCycles?.Count > 0)
-            match = presetCycles[UnityEngine.Random.Range(0, presetCycles.Count)];
+            match = presetCycles[presetCycles.Count - 1];
 
-        return isDay
-            ? (match?.dayPreset ?? fallbackDayPreset)
-            : (match?.nightPreset ?? fallbackNightPreset);
+        dayPreset   = match?.dayPreset   ?? fallbackDayPreset;
+        nightPreset = match?.nightPreset ?? fallbackNightPreset;
     }
 
     private void UpdateSkyboxBlend()

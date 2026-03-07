@@ -13,8 +13,8 @@ public class BuildingManager : MonoBehaviour
     [Header("Attributes")]
     public float buildLimitPoints = 100;
     private float currentBuilds = 0;
-    public float extraBuildingHealth = 0;
-    public float extraBuildingDamage = 0;
+    public float extraBuildingHealth = 1;
+    public float extraBuildingDamage = 1;
 
     [Header("Building Effects")]
     public ParticleSystem smoke;

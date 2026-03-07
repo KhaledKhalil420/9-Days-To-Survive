@@ -4,6 +4,7 @@ using UnityEngine.AI;
 using System;
 using UnityEngine.Audio;
 using NUnit.Framework;
+using UnityEngine.Rendering.Universal;
 
 public class Building : MonoBehaviour, IDamagable
 {
@@ -151,7 +152,7 @@ public class Building : MonoBehaviour, IDamagable
 
     private void ResetHealth(bool isDay)
     {
-        if(isDay)
+        if(!isDay)
         {
             currentHealth = initHealth + BuildingManager.Instance.extraBuildingHealth;
             extraDamage = BuildingManager.Instance.extraBuildingDamage;
@@ -200,6 +201,10 @@ public class Building : MonoBehaviour, IDamagable
             return; 
         RebakeNav();
 
+        if(DayNightCycleManager.Instance == null || BuildingManager.Instance == null) 
+            return;
+
+        DayNightCycleManager.Instance.OnDayChange -= ResetHealth;
         BuildingManager.Instance.OnGridUpdated -= UpdateBuilding;
         BuildingManager.Instance.UpdateGrid();
     }

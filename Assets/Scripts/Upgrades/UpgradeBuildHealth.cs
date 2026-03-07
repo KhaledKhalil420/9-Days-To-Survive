@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class UpgradeBuildHealth : Upgrade
 {
-    [SerializeField] float amount = 1.15f;
+    [SerializeField] float amount = 1.5f;
 
     public override void OnInit() => UpgradeStat();
     public override void OnUpdate() => UpgradeStat();

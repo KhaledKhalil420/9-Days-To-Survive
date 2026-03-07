@@ -18846,7 +18846,7 @@ MonoBehaviour:
   - dayToPlayIn: 1
     dayPreset: {fileID: 11400000, guid: 991f002f0ae5df94cbddb6d2abd7fd9c, type: 2}
     nightPreset: {fileID: 11400000, guid: 9e5f3bd4c09c96c4eb09ff5d4f92e54a, type: 2}
-  - dayToPlayIn: 1
+  - dayToPlayIn: 2
     dayPreset: {fileID: 11400000, guid: 991f002f0ae5df94cbddb6d2abd7fd9c, type: 2}
     nightPreset: {fileID: 11400000, guid: 37cbd566ec85a1549a1d7fcfde0049b7, type: 2}
   fallbackDayPreset: {fileID: 11400000, guid: 991f002f0ae5df94cbddb6d2abd7fd9c, type: 2}
