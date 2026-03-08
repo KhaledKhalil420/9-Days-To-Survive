@@ -19,6 +19,7 @@ public class EnemyBrain : MonoBehaviour
 
     private float loseInterestTimer;
     private float pathRefreshTimer;
+    internal  bool refreshPath = true;
 
     [ReadOnly, SerializeField] internal Transform mainTarget, target;
     private LayerMask unDetectableLayers;
@@ -43,6 +44,9 @@ public class EnemyBrain : MonoBehaviour
 
     private void UpdatePath(float delta)
     {
+        if(!refreshPath)
+            return;
+
         pathRefreshTimer += delta;
 
         if (pathRefreshTimer < pathRefreshInterval) return;
@@ -66,7 +70,7 @@ public class EnemyBrain : MonoBehaviour
         }
     }
 
-    private void GetTarget()
+    internal void GetTarget()
     {
         target = NavMeshUtility.GetTarget(transform, mainTarget, ~unDetectableLayers, searchArea);
     }
