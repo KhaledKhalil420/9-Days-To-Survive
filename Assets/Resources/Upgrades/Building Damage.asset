@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullName: Building Damage
   price: 100
-  discription: Upgraded damage for builds/traps.  <color=red>(Doesn't apply to already
-    built builds)</color>
+  discription: 'Upgraded damage for builds/traps. '
   sprite: {fileID: 21300000, guid: cda89e3c0c5107a4d9a93e2da41c9968, type: 3}
   upgrade: {fileID: 2601248996099111051, guid: da960f7f131535d4f8145c401648ea77, type: 3}

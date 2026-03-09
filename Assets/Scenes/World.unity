@@ -4700,10 +4700,10 @@ MonoBehaviour:
   waves:
   - enemies:
     - prefab: {fileID: 2246168851940632354, guid: ab1a0a91578b42a4b86807b608f32ae4, type: 3}
-      maxEnemies: 5
+      maxEnemies: 10
       spawningCooldown: 1
       timer: 0
-    requiredDefeats: 5
+    requiredDefeats: 15
     spawningRadius: 12
     minimumSpawningDistance: 6
   - enemies:
@@ -4716,8 +4716,8 @@ MonoBehaviour:
       spawningCooldown: 5
       timer: 0
     requiredDefeats: 15
-    spawningRadius: 12
-    minimumSpawningDistance: 6
+    spawningRadius: 25
+    minimumSpawningDistance: 15
   animator: {fileID: 1246647109}
   text: {fileID: 73522711}
   groupStats: {fileID: 497111333}

@@ -15,6 +15,11 @@ public class TheCharger : GroundEnemy, IInteruptable
     [SerializeField] private float cooldown = 1;
     private float coolDownTimer = 0;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource source;
+    [SerializeField] private AudioClip bullCharge;
+
+
     private Vector3 chargeDirection;
     private Animator animator;
 
@@ -84,6 +89,7 @@ public class TheCharger : GroundEnemy, IInteruptable
             initSpeed = chargeSpeed;
             animator.SetBool("Moving", true);
             animator.SetBool("Charging", true);
+            source.PlayOneShot(bullCharge);
         }
     }
 

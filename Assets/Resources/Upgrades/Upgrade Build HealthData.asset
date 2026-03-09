@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullName: Building Health
   price: 100
-  discription: Upgraded heatlh for builds. <color=red>(Doesn't apply to already built
-    builds)</color>
+  discription: 'Upgraded heatlh for builds. '
   sprite: {fileID: 21300000, guid: cda89e3c0c5107a4d9a93e2da41c9968, type: 3}
   upgrade: {fileID: 7585700710947847530, guid: c133702388e532d4a99595bdb46c0e77, type: 3}
