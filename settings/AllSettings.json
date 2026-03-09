@@ -7,16 +7,16 @@
         "shadowQuality": 0,
         "shadowCascades": 3,
         "shadowType": 0,
-        "renderScale": 0.9399999976158142,
+        "renderScale": 1.149999976158142,
         "antiAliasing": 0,
         "bloom": true,
         "motionBlur": false,
         "ambientOcclusion": true
     },
     "sound": {
-        "masterVolume": 0.36248698830604555,
-        "musicVolume": 0.5980172157287598,
-        "sfxVolume": 0.6429384350776672
+        "masterVolume": 0.056114472448825839,
+        "musicVolume": 0.24994158744812013,
+        "sfxVolume": 0.28120431303977969
     },
     "gameplay": {
         "sensitivity": 57.70000076293945,

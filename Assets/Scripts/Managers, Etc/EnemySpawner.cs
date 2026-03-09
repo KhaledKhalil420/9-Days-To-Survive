@@ -4,8 +4,8 @@ public class EnemySpawner
 {
     public static void SpawnWave(Wave wave, Vector3 playerPosition, float spawnRadius, float minDistance)
     {
-        EnemyBrain enemy = wave.enemies[Random.Range(0, wave.enemies.Count)];
-        Object.Instantiate(enemy, GetValidSpawnPosition(playerPosition, spawnRadius, minDistance, enemy.transform), Quaternion.identity);
+        WaveEnemy enemy = wave.enemies[Random.Range(0, wave.enemies.Count)];
+        Object.Instantiate(enemy.prefab, GetValidSpawnPosition(playerPosition, spawnRadius, minDistance, enemy.prefab.transform), Quaternion.identity);
     }
 
     static Vector3 GetValidSpawnPosition(Vector3 center, float radius, float minDistance, Transform enemy)

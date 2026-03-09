@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using EZCameraShake;
 using TMPro;
@@ -41,7 +42,7 @@ public class WaveManager : MonoBehaviour
         DayNightCycleManager.Instance.OnDayChange += TriggerWave;
 
         foreach (Wave wave in waves)
-            EnemyPool.Instance.Prewarm(wave.enemies);
+            EnemyPool.Instance.Prewarm(wave.enemies.Select(e => e.prefab).ToList());
     }
 
     private void Update()
@@ -54,6 +55,7 @@ public class WaveManager : MonoBehaviour
     #region Waves
 
     private bool spawnPrize = false;
+
     public void TriggerWave(bool isDay)
     {
         if (isDay)
@@ -67,7 +69,6 @@ public class WaveManager : MonoBehaviour
                 groupStats.DOFade(0, 0.5f);
 
                 CameraShaker.Instance.ShakeOnce(2, 2, 0.25f, 1f);
-
                 AudioManager.Instance.PlaySound("Wave_Survived");
 
                 DOTween.Sequence()
@@ -81,21 +82,21 @@ public class WaveManager : MonoBehaviour
 
             return;
         }
-        else
-        {
-            animator.Play("WaveStats_OnStart");
-            groupStats.DOFade(1, 0.5f);
-            waveTriggered = true;
-            spawnPrize = true;
-        }
 
-        if (waves.Count > DayNightCycleManager.Instance.DayCount)
-            selectedWave = waves[DayNightCycleManager.Instance.DayCount];
-        else
-            selectedWave = waves[waves.Count - 1];
+        animator.Play("WaveStats_OnStart");
+        groupStats.DOFade(1, 0.5f);
+        waveTriggered = true;
+        spawnPrize = true;
 
-        timer = selectedWave.spawningCooldown;
-        text.text = enemiesDefeated.ToString() + "/" + selectedWave.requiredDefeats;
+        selectedWave = waves.Count > DayNightCycleManager.Instance.DayCount
+            ? waves[DayNightCycleManager.Instance.DayCount]
+            : waves[^1];
+
+        // Reset every enemy's spawn timer when the wave begins
+        foreach (WaveEnemy waveEnemy in selectedWave.enemies)
+            waveEnemy.timer = waveEnemy.spawningCooldown; // Fire first spawn immediately
+
+        text.text = $"0/{selectedWave.requiredDefeats}";
     }
 
     public void OnEnemyDefeated()
@@ -103,35 +104,44 @@ public class WaveManager : MonoBehaviour
         AudioManager.Instance.PlaySound("EnemyKill", 0.9f, 1.1f);
         animator.SetTrigger("Trigger");
         enemiesDefeated++;
-        text.text = enemiesDefeated.ToString() + "/" + selectedWave.requiredDefeats;
+        text.text = $"{enemiesDefeated}/{selectedWave.requiredDefeats}";
     }
 
-    private float timer = 0;
     private void SpawnEnemies()
     {
-        if (waveTriggered)
+        if (!waveTriggered)
         {
-            timer += Time.deltaTime;
-            if (timer > selectedWave.spawningCooldown && AIManager.Instance.registeredEnemies.Count < selectedWave.maxEnemies)
-            {
-                timer = 0;
-
-                EnemyBrain prefab = selectedWave.enemies[Random.Range(0, selectedWave.enemies.Count)];
-                EnemyPool.Instance.Spawn(prefab, GameManager.Player.transform.position, selectedWave.spawningRadius, selectedWave.minimumSpawningDistance);
-            }
-
-            if (enemiesDefeated >= selectedWave.requiredDefeats)
-            {
-                DayNightCycleManager.SetTime(DayNightCycleManager.CycleState.Day);
-                waveTriggered = false;
-                PointsManager.Instance.GivePoints(selectedWave);
-                AIManager.KillAll();
-            }
-        }
-        else
-        {
-            timer = 0;
             enemiesDefeated = 0;
+            return;
+        }
+
+        foreach (WaveEnemy waveEnemy in selectedWave.enemies)
+        {
+            waveEnemy.timer += Time.deltaTime;
+
+            if (waveEnemy.timer < waveEnemy.spawningCooldown) continue;
+
+            // Count how many of this specific enemy type are currently alive
+            int activeCount = AIManager.Instance.registeredEnemies
+                .Count(e => e != null && e.gameObject.name == waveEnemy.prefab.name + "(Clone)");
+
+            if (activeCount >= waveEnemy.maxEnemies) continue;
+
+            waveEnemy.timer = 0;
+            EnemyPool.Instance.Spawn(
+                waveEnemy.prefab,
+                GameManager.Player.transform.position,
+                selectedWave.spawningRadius,
+                selectedWave.minimumSpawningDistance
+            );
+        }
+
+        if (enemiesDefeated >= selectedWave.requiredDefeats)
+        {
+            DayNightCycleManager.SetTime(DayNightCycleManager.CycleState.Day);
+            waveTriggered = false;
+            PointsManager.Instance.GivePoints(selectedWave);
+            AIManager.KillAll();
         }
     }
 
@@ -139,16 +149,26 @@ public class WaveManager : MonoBehaviour
 }
 
 [System.Serializable]
+public class WaveEnemy
+{
+    public EnemyBrain prefab;
+
+    [Header("Per-Enemy Settings")]
+    public int maxEnemies = 10;
+    public float spawningCooldown = 2f;
+
+    [HideInInspector] public float timer;
+}
+
+[System.Serializable]
 public class Wave
 {
-    public List<EnemyBrain> enemies = new();
+    public List<WaveEnemy> enemies = new();
 
-    [Header("Enemies")]
+    [Header("Defeat Goal")]
     public int requiredDefeats;
-    public int maxEnemies = 100;
 
-    [Header("Spawning")]
-    public float spawningCooldown = 0;
+    [Header("Shared Spawn Area")]
     public float spawningRadius;
     public float minimumSpawningDistance;
 }

@@ -1866,7 +1866,7 @@ MonoBehaviour:
     dayTracks:
     - {fileID: 8300000, guid: c294658cbd25c47488e682f37687286c, type: 3}
     nightTracks:
-    - {fileID: 8300000, guid: 6c8551050a075c24da7cd124c06a5d64, type: 3}
+    - {fileID: 8300000, guid: 9aa5a7b0dd65d92499207312dc5fab54, type: 3}
   - dayToPlayIn: 1
     dayTracks:
     - {fileID: 8300000, guid: 5307f011f150dc542a863858b3ec0e95, type: 3}
@@ -4699,17 +4699,23 @@ MonoBehaviour:
   volume: {fileID: 797414983}
   waves:
   - enemies:
-    - {fileID: 2246168851940632354, guid: ab1a0a91578b42a4b86807b608f32ae4, type: 3}
+    - prefab: {fileID: 2246168851940632354, guid: ab1a0a91578b42a4b86807b608f32ae4, type: 3}
+      maxEnemies: 5
+      spawningCooldown: 1
+      timer: 0
     requiredDefeats: 5
-    maxEnemies: 5
-    spawningCooldown: 2
     spawningRadius: 12
     minimumSpawningDistance: 6
   - enemies:
-    - {fileID: 2246168851940632354, guid: ab1a0a91578b42a4b86807b608f32ae4, type: 3}
+    - prefab: {fileID: 2246168851940632354, guid: ab1a0a91578b42a4b86807b608f32ae4, type: 3}
+      maxEnemies: 10
+      spawningCooldown: 1
+      timer: 0
+    - prefab: {fileID: 6210124809405925353, guid: 6a7dc208c94302e4493197661a7a6001, type: 3}
+      maxEnemies: 3
+      spawningCooldown: 5
+      timer: 0
     requiredDefeats: 15
-    maxEnemies: 6
-    spawningCooldown: 5
     spawningRadius: 12
     minimumSpawningDistance: 6
   animator: {fileID: 1246647109}
