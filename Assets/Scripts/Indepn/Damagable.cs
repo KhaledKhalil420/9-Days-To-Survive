@@ -9,6 +9,7 @@ public class Damagable : MonoBehaviour, IDamagable
 {
     public UnityEvent OnDamageEvent, OnDeathEvent;
     [SerializeField] private bool destroyOnDeath = true, scaleWithDifficulty = true, isEnemy = true, doNumberEffect = true, poolObject = false, doKnockback = false;
+    [SerializeField] private Vector3 numberEffectOffset = Vector3.zero;
     [SerializeField] private float MaxHealth = 5;
     [ReadOnly] private float currentHealth;
     private bool isDead = false;
@@ -31,7 +32,7 @@ public class Damagable : MonoBehaviour, IDamagable
     {
         currentHealth -= damage;
         OnDamageEvent.Invoke();
-        if(doNumberEffect) DamageNumber.Spawn(damage, transform.position);
+        if(doNumberEffect) DamageNumber.Spawn(damage, transform.position + numberEffectOffset);
 
         if(currentHealth <= 0 && !isDead)
         {

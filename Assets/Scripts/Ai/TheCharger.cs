@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public class TheCharger : GroundEnemy
 {
-    private enum ChargerState { Dashing, Backing }
+    private enum ChargerState { Dashing, Backing, Idle }
     [SerializeField] private ChargerState state = ChargerState.Backing;
 
     [Header("Charge Settings")]
@@ -12,6 +12,8 @@ public class TheCharger : GroundEnemy
     [SerializeField] private float chargeSpeed = 14f;
     [SerializeField] private float rotationSpeed = 5f;
     [SerializeField] private int attackDamage = 5;
+    [SerializeField] private float cooldown = 1;
+    private float coolDownTimer = 0;
 
     private Vector3 chargeDirection;
     private Animator animator;
@@ -20,6 +22,14 @@ public class TheCharger : GroundEnemy
     {
         animator = GetComponentInChildren<Animator>();
         refreshPath = false;
+        
+        //Set off backing start
+        initSpeed = backOffSpeed;
+        agent.updateRotation = false;
+        state = ChargerState.Backing;
+        FindBackingPosition();
+        animator.SetBool("Moving", true);
+        animator.SetBool("Charging", false);
     }
 
     public override void OnBehaviourTick()
@@ -28,6 +38,7 @@ public class TheCharger : GroundEnemy
         {
             case ChargerState.Dashing: TickDashing(); break;
             case ChargerState.Backing: TickBacking(); break;
+            case ChargerState.Idle: TickIdle(); break;
         }
     }
 
@@ -46,13 +57,33 @@ public class TheCharger : GroundEnemy
 
         if (!agent.pathPending && agent.remainingDistance < 1)
         {
+            //Transition to idle
+            state = ChargerState.Idle;
+            animator.SetBool("Moving", false);
+            animator.SetBool("Charging", false);
+        }
+    }
+
+    private void TickIdle()
+    {
+        coolDownTimer += Time.deltaTime;
+        if(coolDownTimer >= cooldown)
+        {
             GetTarget();
+            coolDownTimer = 0;
+
+            if(target == null) 
+                return;
+
+            //Transition to dashing
             distanation = target != null ? target.position : distanation;
             chargeDirection = (distanation - transform.position).normalized;
             chargeDirection.y = 0f;
             state = ChargerState.Dashing;
             agent.updateRotation = true;
             initSpeed = chargeSpeed;
+            animator.SetBool("Moving", true);
+            animator.SetBool("Charging", true);
         }
     }
 
@@ -65,10 +96,13 @@ public class TheCharger : GroundEnemy
             initSpeed = backOffSpeed;
             agent.updateRotation = false;
             state = ChargerState.Backing;
-            if(Vector3.Distance(transform.position, target.position) > 1) //it doesn't attack fix here thanks
+            if(Vector3.Distance(transform.position, target.position) < 3) //it doesn't attack fix here thanks
             Attack();
+            animator.SetTrigger("Attack");
             FindBackingPosition();
             GetTarget();
+            animator.SetBool("Moving", true);
+            animator.SetBool("Charging", false);
         }
     }
 
@@ -76,7 +110,9 @@ public class TheCharger : GroundEnemy
     {
         if (target == null) return;
         if (target.TryGetComponent(out IDamagable damagable))
+        {
             damagable.Damage(attackDamage);
+        }
     }
 
     private void FindBackingPosition()
@@ -87,10 +123,7 @@ public class TheCharger : GroundEnemy
     public override void OnSpawn()
     {
         base.OnSpawn();
-        refreshPath = false;
-        state = ChargerState.Backing;
-        initSpeed = backOffSpeed;
-        distanation = transform.position;
+        OnBehaviourStart();
     }
 
     public override void OnDespawn()
