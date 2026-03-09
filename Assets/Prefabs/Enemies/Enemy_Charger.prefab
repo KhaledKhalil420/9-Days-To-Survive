@@ -310,9 +310,9 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 4b579047e80153b45b6b87d138cd6ee3, type: 3}
+  m_Resource: {fileID: 8300000, guid: f86db2d4d70d1e941979f82eb3126001, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.15
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -321,9 +321,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 0.5
-  MaxDistance: 5
+  MaxDistance: 10
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -410,7 +410,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clipsOnAwake: []
   playClips:
-  - {fileID: 8300000, guid: 4e0d73f1cae77964e95c8ce71e9a759a, type: 3}
+  - {fileID: 8300000, guid: 12b4f1f1691333f47b5a7ae4ff9ab6b5, type: 3}
+  - {fileID: 8300000, guid: f86db2d4d70d1e941979f82eb3126001, type: 3}
+  - {fileID: 8300000, guid: 2f25260beb9b0774eb9918c456bc63ce, type: 3}
+  - {fileID: 8300000, guid: 86164478dc165ad47a404874e4dbd6d0, type: 3}
   type: 1
   fadeOnAwake: 0
   fadeLowPassOnAwake: 0

@@ -57,10 +57,13 @@ public class AdvancedAudioSource : MonoBehaviour
     public void Play() => audioSource.Play();
     public void Play(bool useMultipleClips)
     {
-        if(!useMultipleClips) return;
-
         audioSource.clip = playClips[UnityEngine.Random.Range(0, playClips.Length)];
         audioSource.Play();
+    }
+
+    public void PlayMultipleClips()
+    {
+        audioSource.PlayOneShot(playClips[UnityEngine.Random.Range(0, playClips.Length)]);
     }
 
     public void Play(bool useMultipleClips, float pitchMin, float pitchMax)

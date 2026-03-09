@@ -89,7 +89,7 @@ public class TheCharger : GroundEnemy, IInteruptable
             initSpeed = chargeSpeed;
             animator.SetBool("Moving", true);
             animator.SetBool("Charging", true);
-            source.PlayOneShot(bullCharge);
+            source.PlayOneShot(bullCharge, 0.45f);
         }
     }
 
@@ -97,12 +97,12 @@ public class TheCharger : GroundEnemy, IInteruptable
     {
         initSpeed = chargeSpeed;
 
-        if (!agent.pathPending && agent.remainingDistance < 1)
+        if (!agent.pathPending && agent.remainingDistance < 2.75f)
         {
             initSpeed = backOffSpeed;
             agent.updateRotation = false;
             state = ChargerState.Backing;
-            if(Vector3.Distance(transform.position, target.position) < 3) //it doesn't attack fix here thanks
+            if(Vector3.Distance(transform.position, target.position) < 3) 
             Attack();
             animator.SetTrigger("Attack");
             FindBackingPosition();
@@ -118,6 +118,12 @@ public class TheCharger : GroundEnemy, IInteruptable
         if (target.TryGetComponent(out IDamagable damagable))
         {
             damagable.Damage(attackDamage);
+
+            if(target.TryGetComponent(out Rigidbody rigidbody))
+            {
+                Vector3 knockback = chargeDirection * 80f + Vector3.up * 20f;
+                rigidbody.AddForce(knockback, ForceMode.Impulse);
+            }
         }
     }
 
