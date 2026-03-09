@@ -11,5 +11,12 @@ public class UpgradeBuildDamage : Upgrade
     void UpgradeStat()
     {
         BuildingManager.Instance.extraBuildingDamage += amount;
+
+        Building[] buildings = FindObjectsByType<Building>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+
+        foreach (var build in buildings)
+        {
+            build.extraDamage = BuildingManager.Instance.extraBuildingDamage;
+        }
     }
 }

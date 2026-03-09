@@ -11,5 +11,12 @@ public class UpgradeBuildHealth : Upgrade
     void UpgradeStat()
     {
         BuildingManager.Instance.extraBuildingHealth *= amount;
+
+        Building[] buildings = FindObjectsByType<Building>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+
+        foreach (var build in buildings)
+        {
+            build.currentHealth = build.initHealth + BuildingManager.Instance.extraBuildingHealth;
+        }
     }
 }
