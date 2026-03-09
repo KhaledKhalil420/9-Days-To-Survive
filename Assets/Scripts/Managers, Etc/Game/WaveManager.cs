@@ -78,6 +78,8 @@ public class WaveManager : MonoBehaviour
                     .OnComplete(() => Instantiate(upgradesPopup));
 
                 animator.SetTrigger("Survive");
+
+                BuildingManager.Instance.buildLimitPoints *= 1.5f;
             }
 
             return;
