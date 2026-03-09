@@ -24,7 +24,12 @@ public class ResinFloor : MonoBehaviour
             if (i < hitCount)
             {
                 if (hitBuffer[i].TryGetComponent(out GroundEnemy enemy))
+                {
                     enemy.speedModifier = slowMultiplier;
+                    
+                    if(hitBuffer[i].TryGetComponent(out IInteruptable interuptable))
+                        interuptable.Interupt();
+                }
             }
             else
             {

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class TheCharger : GroundEnemy
+public class TheCharger : GroundEnemy, IInteruptable
 {
     private enum ChargerState { Dashing, Backing, Idle }
     [SerializeField] private ChargerState state = ChargerState.Backing;
@@ -137,6 +137,15 @@ public class TheCharger : GroundEnemy
         initSpeed = backOffSpeed;
         agent.updateRotation = false;
         state = ChargerState.Backing;
+        animator.SetTrigger("Attack");
         FindBackingPosition();
+        GetTarget();
+        animator.SetBool("Moving", true);
+        animator.SetBool("Charging", false);
+    }
+
+    public void Interupt()
+    {
+        InterruptCharge();
     }
 }
