@@ -42,6 +42,8 @@ public class TheCharger : GroundEnemy, IInteruptable
             transform.rotation = Quaternion.LookRotation(dir);
 
         attackDamage *= Difficulty.DifficultyMultiplier;
+
+        coolDownTimer = cooldown / 2;
     }
 
     public override void OnBehaviourTick()
