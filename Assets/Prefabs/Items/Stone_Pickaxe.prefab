@@ -285,7 +285,7 @@ MonoBehaviour:
   type: 0
   animator: {fileID: 3186081879522739102}
   numberOfAnimations: 3
-  range: 2
+  range: 4
   cooldown: 0.8
   damage: 3
   minimumDamage: 2

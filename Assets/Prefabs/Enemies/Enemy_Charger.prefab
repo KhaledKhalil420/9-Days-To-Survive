@@ -224,7 +224,7 @@ MonoBehaviour:
   poolObject: 1
   doKnockback: 1
   numberEffectOffset: {x: 0, y: 1.5, z: 0}
-  MaxHealth: 4
+  MaxHealth: 20
 --- !u!114 &6210124809405925353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,7 +252,7 @@ MonoBehaviour:
   backUpDistance: 7
   chargeSpeed: 18
   rotationSpeed: 5
-  attackDamage: 5
+  attackDamage: 20
   cooldown: 0.25
   source: {fileID: 2332041660307114475}
   bullCharge: {fileID: 8300000, guid: 4b579047e80153b45b6b87d138cd6ee3, type: 3}
@@ -657,8 +657,8 @@ MonoBehaviour:
   boneShape: 1
   drawBones: 1
   drawTripods: 0
-  boneSize: 1
-  tripodSize: 1
+  boneSize: 1.5
+  tripodSize: 5
   boneColor: {r: 0, g: 0, b: 1, a: 0.5}
   m_Transforms:
   - {fileID: 6790324083058806437}

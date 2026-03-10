@@ -183,6 +183,7 @@ public class PlayerInventory : MonoBehaviour
         AudioManager.Instance.PlaySound(isBagOpen ? "BagOpen" : "BagClose");
         bagParent.interactable = isBagOpen;
         bagParent.alpha = isBagOpen ? 1 : 0;
+        bagParent.interactable = isBagOpen;
         UiManager.ToggleUi(isBagOpen);
         OnInventoryOpen?.Invoke(isBagOpen);
     }
@@ -192,6 +193,7 @@ public class PlayerInventory : MonoBehaviour
         isBagOpen = state;
         bagParent.interactable = state;
         bagParent.alpha = state ? 1 : 0;
+        bagParent.interactable = state;
         UiManager.ToggleUi(state);
         OnInventoryOpen?.Invoke(state);
     }
@@ -201,6 +203,7 @@ public class PlayerInventory : MonoBehaviour
         isBagOpen = state;
         bagParent.interactable = state;
         bagParent.alpha = state ? 1 : 0;
+        bagParent.interactable = state;
         UiManager.ToggleUi(state);
     }
 
@@ -209,6 +212,7 @@ public class PlayerInventory : MonoBehaviour
         isBagOpen = state;
         bagParent.interactable = state;
         bagParent.alpha = state ? 1 : 0;
+        bagParent.interactable = state;
     }
 
     private void HandlePickup()

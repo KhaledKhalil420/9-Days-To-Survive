@@ -35,6 +35,13 @@ public class TheCharger : GroundEnemy, IInteruptable
         FindBackingPosition();
         animator.SetBool("Moving", true);
         animator.SetBool("Charging", false);
+
+        Vector3 dir = (mainTarget.position - transform.position);
+        dir.y = 0f;
+        if (dir != Vector3.zero)
+            transform.rotation = Quaternion.LookRotation(dir);
+
+        attackDamage *= Difficulty.DifficultyMultiplier;
     }
 
     public override void OnBehaviourTick()
@@ -145,6 +152,9 @@ public class TheCharger : GroundEnemy, IInteruptable
 
     public void InterruptCharge()
     {
+        int roll = Random.Range(0, 2);
+
+        if(roll != 0) return;
         if (state != ChargerState.Dashing) return;
         initSpeed = backOffSpeed;
         agent.updateRotation = false;

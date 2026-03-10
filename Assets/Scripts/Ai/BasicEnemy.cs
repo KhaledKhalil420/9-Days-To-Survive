@@ -14,6 +14,8 @@ public class BasicEnemy : GroundEnemy
     public override void OnBehaviourStart()
     {
         animator = GetComponentInChildren<Animator>();
+
+        attackDamage *= Difficulty.DifficultyMultiplier;
     }
 
     public override void OnBehaviourTick()

@@ -110,7 +110,7 @@ MonoBehaviour:
   toughness: 1
   health: 15
   item: {fileID: 789964070537936751, guid: fe9c3c058d529bd40b6baf028d26f683, type: 3}
-  givenQuantityAverage: 5
+  givenQuantityAverage: 15
   destroyParticles: {fileID: 7301512366205885463, guid: e15eb7276d1a1cb4bb4aeea033137d4b, type: 3}
   destroySound: {fileID: 8300000, guid: a90b08a1f5592064096c21defd95e5c3, type: 3}
   audioSource: {fileID: 1068580448057627305}

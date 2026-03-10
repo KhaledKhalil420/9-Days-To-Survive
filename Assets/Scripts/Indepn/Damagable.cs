@@ -17,7 +17,8 @@ public class Damagable : MonoBehaviour, IDamagable
     void Start()
     {
         if(scaleWithDifficulty)
-        MaxHealth *= 1 + (Difficulty.DifficultyMultiplier - 1) * 0.2f;
+            MaxHealth *= Difficulty.DifficultyMultiplier;
+            
         currentHealth = MaxHealth;
     }
 

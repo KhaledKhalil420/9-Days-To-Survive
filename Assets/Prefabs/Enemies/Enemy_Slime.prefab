@@ -140,7 +140,7 @@ MonoBehaviour:
   onCatchMainTargetSpeedBoost: 1.75
   attackCooldown: 1
   attackRange: 3
-  attackDamage: 1
+  attackDamage: 5
 --- !u!114 &4414646486991394778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,6 +189,7 @@ MonoBehaviour:
   doNumberEffect: 1
   poolObject: 1
   doKnockback: 1
+  numberEffectOffset: {x: 0, y: 0, z: 0}
   MaxHealth: 4
 --- !u!65 &1169492533823969571
 BoxCollider:
