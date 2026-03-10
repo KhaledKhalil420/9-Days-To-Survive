@@ -110,6 +110,11 @@ public class DayNightCycleManager : MonoBehaviour
         Instance.ResolvePresetsForDay(Instance.DayCount);
 
         Instance.OnDayChange?.Invoke(isDay);
+
+        if(cycleState == CycleState.Night)
+        {
+            WorldGenerator.RequestNavMeshRebake();
+        }
     }
 
     private void ResolvePresetsForDay(int day)

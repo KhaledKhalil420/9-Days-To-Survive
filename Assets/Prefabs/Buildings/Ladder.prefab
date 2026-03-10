@@ -108,11 +108,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHealth: 15
   extraDamage: 0
+  currentDamage: 0
   ingredients:
   - item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
     quantity: 2
   data: {fileID: 11400000, guid: 5bd6a2164052f9f46a9ff09800f5419f, type: 2}
   dropResourcesOnDestory: 0
+  requireSnapping: 1
   usesPivots: 1
   affectedByGridSizePosition: 1
   pivots:

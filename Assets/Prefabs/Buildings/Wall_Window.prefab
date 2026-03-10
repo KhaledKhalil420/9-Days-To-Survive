@@ -116,6 +116,7 @@ MonoBehaviour:
     quantity: 3
   data: {fileID: 11400000, guid: 832883b9093506743b1394c7ea598b6a, type: 2}
   dropResourcesOnDestory: 0
+  requireSnapping: 1
   usesPivots: 1
   affectedByGridSizePosition: 1
   pivots:

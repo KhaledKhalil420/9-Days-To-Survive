@@ -21,7 +21,11 @@ public class Item : MonoBehaviour, IHighlightable
 
         GetComponent<Collider>().enabled = !isHolding;
         GetComponent<Rigidbody>().constraints = isHolding ? RigidbodyConstraints.FreezeAll : RigidbodyConstraints.None;
-        if(gameObject.TryGetComponent(out Animator animator)) animator.enabled = isHolding;
+        if(gameObject.TryGetComponent(out Animator animator)) 
+        {
+            animator.Rebind();
+            animator.enabled = isHolding;
+        }
         gameObject.layer = targetLayer;
 
         

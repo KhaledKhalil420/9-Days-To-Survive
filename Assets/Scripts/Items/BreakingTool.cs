@@ -35,7 +35,7 @@ public class BreakingTool : Item
         animator.SetInteger("Numb", randomAnimation);
         animator.SetTrigger("Trigger");
 
-        Invoke(nameof(ResetCoolDown), cooldown);
+        Invoke(nameof(ResetCoolDown), cooldown / heldby.GetComponent<PlayerInventory>().speedBonus);
     }
 
     public void ResetCoolDown()

@@ -2023,10 +2023,10 @@ MonoBehaviour:
     dayTracks:
     - {fileID: 8300000, guid: 5307f011f150dc542a863858b3ec0e95, type: 3}
     nightTracks:
-    - {fileID: 8300000, guid: a4e85a7a66b20f74c83dab3cbfd33935, type: 3}
+    - {fileID: 8300000, guid: 9aa5a7b0dd65d92499207312dc5fab54, type: 3}
   - dayToPlayIn: 1
     dayTracks:
-    - {fileID: 8300000, guid: 2171e6b7212e84b46b3345062f73c88b, type: 3}
+    - {fileID: 8300000, guid: 430a196f405b1e944aa1c3d5983f7de1, type: 3}
     nightTracks:
     - {fileID: 8300000, guid: 35118378d26d7bc41926c747a3c4ed53, type: 3}
   ambienceSource: {fileID: 217955938}
@@ -5319,19 +5319,19 @@ MonoBehaviour:
     minimumSpawningDistance: 6
   - enemies:
     - prefab: {fileID: 2246168851940632354, guid: ab1a0a91578b42a4b86807b608f32ae4, type: 3}
-      maxEnemies: 20
+      maxEnemies: 10
       spawningCooldown: 1
       threatLevel: 1
       timer: 0
     - prefab: {fileID: 6210124809405925353, guid: 6a7dc208c94302e4493197661a7a6001, type: 3}
-      maxEnemies: 3
+      maxEnemies: 4
       spawningCooldown: 5
       threatLevel: 2
       timer: 0
-    survivalDuration: 120
+    survivalDuration: 60
     waveThreatLevel: 2
-    maxSpeedBoost: 0.1
-    speedBoostPerKill: 0.005
+    maxSpeedBoost: 0.25
+    speedBoostPerKill: 0.015
     spawningRadius: 25
     minimumSpawningDistance: 15
   animator: {fileID: 1246647109}
@@ -15596,7 +15596,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health:
-    max: 10
+    max: 20
     current: 0
     modifyRate: 1
     canModifyRate: 1
@@ -21418,8 +21418,8 @@ MonoBehaviour:
   - spawnables:
     - distanceBetweenSpawnables: 30
       gameObject: {fileID: 7113273711803475367, guid: 5651103cb9342f84580f06b07dce21bd, type: 3}
-      minQuantity: 400
-      maxQuantity: 700
+      minQuantity: 200
+      maxQuantity: 400
     - distanceBetweenSpawnables: 30
       gameObject: {fileID: 3498483636202748412, guid: b9bebc8aac6482442aafed80acc1e97f, type: 3}
       minQuantity: 400

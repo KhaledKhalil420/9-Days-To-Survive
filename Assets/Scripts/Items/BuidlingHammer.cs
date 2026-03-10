@@ -230,13 +230,17 @@ public class BuildingHammer : Item
         ghostBuilding.SetActive(true);
 
         //Calculate position
-        Vector3 position = BuildUtilities.CalculatePosition(hit, currentBuilding, ghostMeshFilter, ghostBuilding, buildManager.gridSize, currentRotation, buildManager.snapDistance);
+        Vector3 position = BuildUtilities.CalculatePosition(hit, currentBuilding, ghostMeshFilter, ghostBuilding, buildManager.gridSize, currentRotation, buildManager.snapDistance, out bool isSnapped);
 
         //Apply transform
         lastValidPosition = position;
         ghostBuilding.transform.position = position;
 
         //Check if position is valid (not inside anything)
+        if(currentBuilding.requireSnapping)
+            canPlace = isSnapped;
+
+        else
         canPlace = BuildUtilities.IsPositionValid(ghostBuilding, currentBuilding, buildManager.gridSize);
         
         //Update visuals

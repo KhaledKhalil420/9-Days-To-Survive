@@ -17,6 +17,7 @@ public class Building : MonoBehaviour, IDamagable
     public bool dropResourcesOnDestory = false;
     
     [Header("Grid Settings")]
+    public bool requireSnapping = false; //Added this
     public bool usesPivots = true;
     public bool affectedByGridSizePosition = true;
     public List<Transform> pivots;

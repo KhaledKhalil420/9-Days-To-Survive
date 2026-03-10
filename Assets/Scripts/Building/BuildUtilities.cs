@@ -9,8 +9,10 @@ public static class BuildUtilities
         return Physics.SphereCast(camera.position, radius, camera.forward, out hit, maxDistance, layers);
     }
 
-    public static Vector3 CalculatePosition(RaycastHit hit, Building building, MeshFilter meshFilter, GameObject ghostObj, int gridSize, float rotation, float snapDistance)
+    public static Vector3 CalculatePosition(RaycastHit hit, Building building, MeshFilter meshFilter, GameObject ghostObj, int gridSize, float rotation, float snapDistance, out bool isSnap)
     {
+        isSnap = false;
+        
         if (building == null || !building.usesPivots)
             return hit.point;
 
@@ -27,7 +29,9 @@ public static class BuildUtilities
             return basePosition;
         
         //Find snap position
-        return FindSnapPosition(hit, building, target, ghostObj, rotation, gridSize, snapDistance);
+        Vector3 pos = FindSnapPosition(hit, building, target, ghostObj, rotation, gridSize, snapDistance, out bool snapped);
+        isSnap = snapped;
+        return pos;
     }
 
     public static bool IsPositionValid(GameObject ghostObj, Building building, float gridSize)
@@ -115,12 +119,13 @@ public static class BuildUtilities
         return isValid;
     }
 
-    private static Vector3 FindSnapPosition(RaycastHit hit, Building placing, Building target, GameObject ghostObj, float rotation, int gridSize, float snapDistance)
+    private static Vector3 FindSnapPosition(RaycastHit hit, Building placing, Building target, GameObject ghostObj, float rotation, int gridSize, float snapDistance, out bool snapped)
     {
         float closest = float.MaxValue;
         Vector3 best = hit.point;
         Vector3 bestOffset = Vector3.zero;
         float snapMultiplier = placing.affectedByGridSizePosition ? gridSize : 1f;
+        snapped = false;
 
         foreach (var targetPivot in target.pivots)
         {
@@ -143,10 +148,11 @@ public static class BuildUtilities
                     closest = d;
                     bestOffset = myWorldPivotPos - ghostObj.transform.position;
                     best = worldPivotPos;
+                    snapped = true;
                 }
             }
         }
-
+        
         return best + bestOffset;
     }
 
