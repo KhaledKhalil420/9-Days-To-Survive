@@ -140,7 +140,7 @@ MonoBehaviour:
   onCatchMainTargetSpeedBoost: 1.75
   attackCooldown: 1
   attackRange: 3
-  attackDamage: 1
+  attackDamage: 3
 --- !u!114 &4414646486991394778
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1840,14 +1840,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 0.36862746}
+  m_Color: {r: 0.16862746, g: 0.16862746, b: 0.16862746, a: 0.36862746}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d6b0ffcb95308194bac48cf19f410789, type: 3}
+  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1856,7 +1856,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 813.7
+  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &209752951
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4636,8 +4636,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 3254779904
-  m_fontColor: {r: 0, g: 0, b: 0, a: 0.7607843}
+    rgba: 3271557119
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0.7607843}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4882,14 +4882,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 0.36862746}
+  m_Color: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 0.36862746}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d6b0ffcb95308194bac48cf19f410789, type: 3}
+  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4898,7 +4898,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 26.82
+  m_PixelsPerUnitMultiplier: 2
 --- !u!222 &544890448
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5307,8 +5307,8 @@ MonoBehaviour:
   waves:
   - enemies:
     - prefab: {fileID: 2246168851940632354, guid: ab1a0a91578b42a4b86807b608f32ae4, type: 3}
-      maxEnemies: 3
-      spawningCooldown: 5
+      maxEnemies: 7
+      spawningCooldown: 3
       threatLevel: 1
       timer: 0
     survivalDuration: 30
@@ -5564,14 +5564,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3962264, g: 0.3962264, b: 0.3962264, a: 0.3254902}
+  m_Color: {r: 0.16037738, g: 0.16037738, b: 0.16037738, a: 0.3254902}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d6b0ffcb95308194bac48cf19f410789, type: 3}
+  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5580,7 +5580,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 11.51
+  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &641616583
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12775,8 +12775,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 3254779904
-  m_fontColor: {r: 0, g: 0, b: 0, a: 0.7607843}
+    rgba: 3271557119
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0.7607843}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -13684,6 +13684,7 @@ MonoBehaviour:
   buildInspectHealthSlider: {fileID: 1954426526}
   buildInspectbuildIcon: {fileID: 1464232648}
   buildInspectDamage: {fileID: 971138012}
+  buildInspectDamageText: {fileID: 1698457227}
 --- !u!1001 &1087954032
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19510,7 +19511,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d6b0ffcb95308194bac48cf19f410789, type: 3}
+  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -19519,7 +19520,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 170.9
+  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &1663015232
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -20005,8 +20006,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 3254779904
-  m_fontColor: {r: 0, g: 0, b: 0, a: 0.7607843}
+    rgba: 3271557119
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0.7607843}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -21886,10 +21887,10 @@ RectTransform:
   - {fileID: 1472297072}
   m_Father: {fileID: 101313426}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 107.38226, y: -79.11923}
-  m_SizeDelta: {x: 214.7645, y: 158.2385}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -131.79999, y: -79.11923}
+  m_SizeDelta: {x: 214.76453, y: 158.2385}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1958250703
 MonoBehaviour:
@@ -21919,14 +21920,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 0.65882355}
+  m_Color: {r: 0.09803922, g: 0.09803922, b: 0.09803922, a: 0.65882355}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d6b0ffcb95308194bac48cf19f410789, type: 3}
+  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -21935,7 +21936,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 170.9
+  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &1958250705
 CanvasRenderer:
   m_ObjectHideFlags: 0

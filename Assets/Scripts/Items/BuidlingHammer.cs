@@ -137,11 +137,14 @@ public class BuildingHammer : Item
     #endregion
 
     #region Inspect
-
+    
+    private bool reset = true;
     private void BuildingInspectRaycast()
     {
         if(dayNightCycle.currentState == DayNightCycleManager.CycleState.Night)
         {
+            buildManager?.ShowUI(false);
+
             if(Physics.Raycast(mainCamera.position, mainCamera.forward, out RaycastHit hit, 3))
             {
                 if(hit.transform.TryGetComponent(out Building building))
@@ -155,11 +158,18 @@ public class BuildingHammer : Item
                     buildManager.ShowInspectUI(false);
                 }
             }
+
+            reset = true;
         }
 
         else
         {
-            buildManager.ShowInspectUI(false);
+            if(reset)
+            {
+                reset = false;
+                buildManager.ShowInspectUI(false);
+                UpdateUiGhost();
+            }
         }
     }
 
@@ -399,7 +409,9 @@ public class BuildingHammer : Item
     {
         if(!isSelected || !isItemPickedUp) return;
         SpawnGhost();
-        BuildingManager.Instance.ShowUI(true);   
+
+        if(dayNightCycle.currentState == DayNightCycleManager.CycleState.Day)
+        buildManager.ShowUI(true);   
     }
 
     void OnDestroy()

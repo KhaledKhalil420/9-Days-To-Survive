@@ -33,6 +33,8 @@ public class EnemyBrain : MonoBehaviour
         agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
         pathRefreshTimer = Random.Range(0f, pathRefreshInterval);
 
+        distanation = mainTarget.transform.position;
+
         OnLogicalStart();
     }
 

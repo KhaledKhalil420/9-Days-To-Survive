@@ -49,10 +49,11 @@ public class BuildingManager : MonoBehaviour
 
     [Header("Building Property Ispecting")]
     [SerializeField] private Transform inspectCanvasParent;
-    [SerializeField] private TMP_Text buildInspectTitle; //use these
-    [SerializeField] private Slider buildInspectHealthSlider; //use these
-    [SerializeField] private Image buildInspectbuildIcon; //use these
-    [SerializeField] private TMP_Text buildInspectDamage; //use these
+    [SerializeField] private TMP_Text buildInspectTitle;
+    [SerializeField] private Slider buildInspectHealthSlider;
+    [SerializeField] private Image buildInspectbuildIcon;
+    [SerializeField] private TMP_Text buildInspectDamage;
+    [SerializeField] private TMP_Text buildInspectDamageText;
 
     // [Header("Animators")]
     private Animator animator;
@@ -105,7 +106,18 @@ public class BuildingManager : MonoBehaviour
     {
         buildInspectbuildIcon.sprite = building.data.sprite;
         buildInspectTitle.text = building.data.buildingName;
-        buildInspectDamage.text = building.currentDamage.ToString();
+
+        if(building.currentDamage <= 0)
+        {
+            buildInspectDamageText.text = "";
+            buildInspectDamage.text = "";
+        }
+
+        else
+        {
+            buildInspectDamageText.text = "Damage";
+            buildInspectDamage.text = building.currentDamage.ToString();
+        }
 
         buildInspectHealthSlider.maxValue = building.initHealth + extraBuildingHealth;
         buildInspectHealthSlider.value = building.currentHealth;
