@@ -147,6 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHealth: 20
   extraDamage: 0
+  currentDamage: 2
   ingredients:
   - item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
     quantity: 5
@@ -168,7 +169,6 @@ MonoBehaviour:
   source: {fileID: -3788880822596730553}
   onDestroySound: {fileID: 8300000, guid: e3e0644a4d59680439ef72e55ead6051, type: 3}
   onDamageSound: {fileID: 0}
-  damage: 2
   damageInterval: 1
   skinnedMesh: {fileID: 7730138191868455486}
   spikesSource: {fileID: 7868940230434456497}

@@ -9,6 +9,7 @@ public class Building : MonoBehaviour, IDamagable
     internal float initHealth;
     [SerializeField] internal float currentHealth = 5;
     [SerializeField] internal float extraDamage = 0;
+    [SerializeField] internal float currentDamage;
 
     [Header("Building Data")]
     public Ingredient[] ingredients = Array.Empty<Ingredient>();
@@ -151,7 +152,8 @@ public class Building : MonoBehaviour, IDamagable
     {
         if(!isDay)
         {
-            currentHealth = initHealth + BuildingManager.Instance.extraBuildingHealth;
+            initHealth += BuildingManager.Instance.extraBuildingHealth;
+            currentHealth = initHealth;
             extraDamage = BuildingManager.Instance.extraBuildingDamage;
             CheckUpgrades();
         }

@@ -9,6 +9,7 @@ public class BuildingHammer : Item
     private BuildingManager buildManager;
     private Transform mainCamera;
     private Animator animator;
+    private DayNightCycleManager dayNightCycle;
 
     [Header("Buildings")]
     [SerializeField, EditorChangeable] private List<Building> availableBuildings;
@@ -36,6 +37,7 @@ public class BuildingHammer : Item
     {
         //Cache refs
         buildManager = BuildingManager.Instance;
+        dayNightCycle = DayNightCycleManager.Instance;
         mainCamera = PlayerLook.mainCamera.transform;
         animator = GetComponent<Animator>();
 
@@ -51,6 +53,11 @@ public class BuildingHammer : Item
 
         HandleInput();
         UpdateGhost();
+    }
+
+    private void FixedUpdate()
+    {
+        BuildingInspectRaycast();
     }
 
     #endregion
@@ -125,6 +132,35 @@ public class BuildingHammer : Item
 
         //PlaySound
         AudioManager.Instance.PlaySound("Selecting_Build", 0.9f, 1.15f);
+    }
+
+    #endregion
+
+    #region Inspect
+
+    private void BuildingInspectRaycast()
+    {
+        if(dayNightCycle.currentState == DayNightCycleManager.CycleState.Night)
+        {
+            if(Physics.Raycast(mainCamera.position, mainCamera.forward, out RaycastHit hit, 3))
+            {
+                if(hit.transform.TryGetComponent(out Building building))
+                {
+                    buildManager.ShowInspectUI(true);
+                    buildManager.UpdateInspectUI(building);
+                }
+
+                else
+                {
+                    buildManager.ShowInspectUI(false);
+                }
+            }
+        }
+
+        else
+        {
+            buildManager.ShowInspectUI(false);
+        }
     }
 
     #endregion
@@ -382,6 +418,7 @@ public class BuildingHammer : Item
     {
         //Cleanup
         buildManager?.ShowUI(false);
+        buildManager?.ShowInspectUI(false);
         rotationTween?.Kill();
         Destroy(ghostBuilding);
         isChosingBuild = false;

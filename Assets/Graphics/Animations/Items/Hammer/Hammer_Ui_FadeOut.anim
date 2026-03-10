@@ -40,7 +40,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: SelectionUiParent
+    path: BuildingProperties
   m_FloatCurves:
   - serializedVersion: 2
     curve:
@@ -90,7 +90,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 526817857
+      path: 606482247
       attribute: 3
       script: {fileID: 0}
       typeID: 4
@@ -194,7 +194,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.x
-    path: SelectionUiParent
+    path: BuildingProperties
     classID: 224
     script: {fileID: 0}
     flags: 0
@@ -224,7 +224,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.y
-    path: SelectionUiParent
+    path: BuildingProperties
     classID: 224
     script: {fileID: 0}
     flags: 0
@@ -254,7 +254,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.z
-    path: SelectionUiParent
+    path: BuildingProperties
     classID: 224
     script: {fileID: 0}
     flags: 0

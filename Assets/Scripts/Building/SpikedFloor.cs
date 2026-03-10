@@ -3,7 +3,6 @@ using DG.Tweening;
 
 public class SpikedFloor : Building
 {
-    [SerializeField] private int damage;
     [SerializeField] private float damageInterval = 1f;
     [SerializeField] private SkinnedMeshRenderer skinnedMesh;
     [SerializeField] private AudioSource spikesSource;
@@ -36,7 +35,7 @@ public class SpikedFloor : Building
         if (hitCount > 0) 
         { 
             for (int i = 0; i < hitCount; i++)
-                if (hitBuffer[i].TryGetComponent(out IDamagable damagable)) damagable.Damage(damage + extraDamage);
+                if (hitBuffer[i].TryGetComponent(out IDamagable damagable)) damagable.Damage(currentDamage + extraDamage);
             
             Damage(1);
             isReady = false;
