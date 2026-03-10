@@ -40,7 +40,8 @@ public class ItemSway : MonoBehaviour
     {
         if(disableOnLook && PlayerLook.disableLook)
         {
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, initialRotation, Time.deltaTime * smoothness);
+            transform.localPosition = Vector3.Lerp(transform.localPosition, initialPosition, Time.deltaTime * smoothness * 1.5f);
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, initialRotation, Time.deltaTime * smoothness * 1.5f);
             return;
         }
 

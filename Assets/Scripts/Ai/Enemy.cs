@@ -67,7 +67,7 @@ public class GroundEnemy : EnemyBrain
         if (dayNightCycle != null && dayNightCycle.currentState == DayNightCycleManager.CycleState.Night)
         {
             PointsManager.Instance.GivePoints(pointsWorth);
-            WaveManager.Instance.OnEnemyDefeated();
+            WaveManager.Instance.OnEnemyDefeated(gameObject.name);
         }
     }
 

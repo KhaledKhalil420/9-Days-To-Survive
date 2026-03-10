@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using EZCameraShake;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class WaveManager : MonoBehaviour
 {
@@ -16,11 +16,15 @@ public class WaveManager : MonoBehaviour
     [Header("Waves Rounds")]
     [SerializeField] private List<Wave> waves;
     [SerializeField] private Animator animator;
-    [SerializeField] private TMP_Text text;
+    [SerializeField] private Slider timerSlider;
     [SerializeField] private CanvasGroup groupStats;
     private Wave selectedWave;
     private bool waveTriggered;
     public int enemiesDefeated;
+
+    private float elapsed;
+    private float currentSpeedBoost;
+    private int lastMilestoneTick;
 
     [Header("Points")]
     public GameObject upgradesPopup;
@@ -78,7 +82,6 @@ public class WaveManager : MonoBehaviour
                     .OnComplete(() => Instantiate(upgradesPopup));
 
                 animator.SetTrigger("Survive");
-
                 BuildingManager.Instance.buildLimitPoints *= 1.5f;
             }
 
@@ -89,24 +92,42 @@ public class WaveManager : MonoBehaviour
         groupStats.DOFade(1, 0.5f);
         waveTriggered = true;
         spawnPrize = true;
+        elapsed = 0f;
+        currentSpeedBoost = 0f;
+        lastMilestoneTick = 0;
 
         selectedWave = waves.Count > DayNightCycleManager.Instance.DayCount
             ? waves[DayNightCycleManager.Instance.DayCount]
             : waves[^1];
 
-        // Reset every enemy's spawn timer when the wave begins
         foreach (WaveEnemy waveEnemy in selectedWave.enemies)
-            waveEnemy.timer = waveEnemy.spawningCooldown; // Fire first spawn immediately
+            waveEnemy.timer = waveEnemy.spawningCooldown;
 
-        text.text = $"0/{selectedWave.requiredDefeats}";
+        timerSlider.value = 0f;
     }
 
-    public void OnEnemyDefeated()
+    public void OnEnemyDefeated(string enemyName = "")
     {
         AudioManager.Instance.PlaySound("EnemyKill", 0.9f, 1.1f);
         animator.SetTrigger("Trigger");
         enemiesDefeated++;
-        text.text = $"{enemiesDefeated}/{selectedWave.requiredDefeats}";
+
+        WaveEnemy match = selectedWave.enemies.FirstOrDefault(e => enemyName.Contains(e.prefab.name));
+        float threatRatio = match != null ? match.threatLevel / (float)selectedWave.waveThreatLevel : 1f;
+        currentSpeedBoost = Mathf.Min(currentSpeedBoost + selectedWave.speedBoostPerKill * threatRatio, selectedWave.maxSpeedBoost);
+
+        CheckSpeedMilestone();
+    }
+
+    private void CheckSpeedMilestone()
+    {
+        // Fires every 25% of the max speed boost reached
+        int tick = Mathf.FloorToInt((currentSpeedBoost / selectedWave.maxSpeedBoost) / 0.25f);
+        if (tick <= lastMilestoneTick) return;
+
+        lastMilestoneTick = tick;
+        AudioManager.Instance.PlaySound("Wave_SpeedUp");
+        animator.SetTrigger("SpeedUp");
     }
 
     private void SpawnEnemies()
@@ -117,13 +138,15 @@ public class WaveManager : MonoBehaviour
             return;
         }
 
+        elapsed += Time.deltaTime * (1f + currentSpeedBoost);
+        timerSlider.value = elapsed / selectedWave.survivalDuration;
+
         foreach (WaveEnemy waveEnemy in selectedWave.enemies)
         {
             waveEnemy.timer += Time.deltaTime;
 
             if (waveEnemy.timer < waveEnemy.spawningCooldown) continue;
 
-            // Count how many of this specific enemy type are currently alive
             int activeCount = AIManager.Instance.registeredEnemies
                 .Count(e => e != null && e.gameObject.name == waveEnemy.prefab.name + "(Clone)");
 
@@ -138,7 +161,7 @@ public class WaveManager : MonoBehaviour
             );
         }
 
-        if (enemiesDefeated >= selectedWave.requiredDefeats)
+        if (elapsed >= selectedWave.survivalDuration)
         {
             DayNightCycleManager.SetTime(DayNightCycleManager.CycleState.Day);
             waveTriggered = false;
@@ -158,6 +181,7 @@ public class WaveEnemy
     [Header("Per-Enemy Settings")]
     public int maxEnemies = 10;
     public float spawningCooldown = 2f;
+    public int threatLevel = 1;
 
     [HideInInspector] public float timer;
 }
@@ -167,8 +191,13 @@ public class Wave
 {
     public List<WaveEnemy> enemies = new();
 
-    [Header("Defeat Goal")]
-    public int requiredDefeats;
+    [Header("Survival Goal")]
+    public float survivalDuration = 120f;
+    public int waveThreatLevel = 1;
+
+    [Header("Speed Boost")]
+    public float maxSpeedBoost = 0.1f;
+    public float speedBoostPerKill = 0.005f;
 
     [Header("Shared Spawn Area")]
     public float spawningRadius;
