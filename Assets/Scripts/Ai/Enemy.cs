@@ -38,12 +38,12 @@ public class GroundEnemy : EnemyBrain
         if (distanation != Vector3.zero && (!agent.hasPath || agent.destination != distanation))
             agent.SetDestination(distanation);
 
-        // if (dayNightCycle != null && dayNightCycle.currentState == DayNightCycleManager.CycleState.Day)
-        // {
-        //     AIManager.UnRegister(this);
-        //     EnemyPool.Instance.Return(this);
-        //     return;
-        // }
+        if (dayNightCycle != null && dayNightCycle.currentState == DayNightCycleManager.CycleState.Day)
+        {
+            AIManager.UnRegister(this);
+            EnemyPool.Instance.Return(this);
+            return;
+        }
 
         OnBehaviourTick();
     }
