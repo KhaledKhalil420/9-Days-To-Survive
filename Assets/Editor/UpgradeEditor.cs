@@ -40,7 +40,7 @@ public class UpgradeEditor : EditorWindow
         if(GUILayout.Button("Create new upgrade data"))
         {
             //Creating Data
-            data.fullName = upgName;
+            data.Name = upgName;
             data.price = upgPrice;
             data.discription = upgDiscreption;
             data.sprite = upgSprite;

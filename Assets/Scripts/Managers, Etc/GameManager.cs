@@ -103,6 +103,8 @@ public class GameManager : MonoBehaviour
 
             BuildingManager.Instance.buildLimitPoints = 1000;
             BuildingManager.Instance.extraBuildingHealth = 1000;
+
+            PointsManager.Instance.GivePoints(10000000);
         }
         #endif
     }   

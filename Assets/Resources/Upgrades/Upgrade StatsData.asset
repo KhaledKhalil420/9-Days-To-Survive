@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f08eb16a3fa01684aa98afe10765a247, type: 3}
   m_Name: Upgrade StatsData
   m_EditorClassIdentifier: 
-  fullName: Upgrade Stats
+  Name: Muscle Up
   price: 50
   discription: Upgrade All Player Stats Hunger, Health, Stamina
   sprite: {fileID: 21300000, guid: 2cf7f886cb4b96c42854b0d9a9be7136, type: 3}

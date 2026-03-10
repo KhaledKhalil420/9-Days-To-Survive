@@ -23,40 +23,51 @@ public class TooltipInventory : MonoBehaviour, IPointerMoveHandler, IPointerExit
 
     public void OnPointerMove(PointerEventData eventData)
     {
-        if(DragSlot.Instance.isDragging)
+        if (DragSlot.Instance.isDragging)
             return;
 
-        if (eventData.pointerCurrentRaycast.gameObject != null && eventData.pointerCurrentRaycast.gameObject.TryGetComponent(out BaseSlot slot))
+        var hit = eventData.pointerCurrentRaycast.gameObject;
+        
+        if(hit != null)
         {
-            if (slot.HeldItem == null)
+            if (hit.TryGetComponent(out BaseSlot slot))
             {
-                isHovering = false;
-                CancelInvoke(nameof(UpdateUi));
-                UpdateUi();
+                if (slot.HeldItem == null)
+                {
+                    isHovering = false;
+                    CancelInvoke(nameof(UpdateUi));
+                    UpdateUi();
+                    return;
+                }
 
-                return;
+                textName.text = slot.HeldItem.data.Name;
+                textDiscription.text = slot.HeldItem.data.discription;
+
+                if (!isHovering)
+                {
+                    isHovering = true;
+                    Invoke(nameof(UpdateUi), 0.1f);
+                }
             }
-
-            ItemData itemData = slot.HeldItem.data;
-            textName.text = itemData.Name;
-            textDiscription.text = itemData.discription;
-
-            if (!isHovering)
+            else if (hit.TryGetComponent(out UpgradeUiElement upgradeUi)) //Here nothing appears man
             {
-                isHovering = true;
-                Invoke(nameof(UpdateUi), 0.25f);
-            }
+                textName.text = upgradeUi.Data.Name;
+                textDiscription.text = upgradeUi.Data.discription;
 
-        }
-        else
-        {
-            if (isHovering)
+                if (!isHovering)
+                {
+                    isHovering = true;
+                    UpdateUi();
+                }
+            }
+            else
             {
-                isHovering = false;
-                CancelInvoke(nameof(UpdateUi));
-                UpdateUi();
+                if (isHovering)
+                {
+                    isHovering = false;
+                    UpdateUi();
+                }
             }
-
         }
     }
 

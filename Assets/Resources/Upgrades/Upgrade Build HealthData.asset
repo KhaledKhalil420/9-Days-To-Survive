@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f08eb16a3fa01684aa98afe10765a247, type: 3}
   m_Name: Upgrade Build HealthData
   m_EditorClassIdentifier: 
-  fullName: Building Health
+  Name: Build Armor
   price: 100
   discription: 'Upgraded heatlh for builds. '
   sprite: {fileID: 21300000, guid: cda89e3c0c5107a4d9a93e2da41c9968, type: 3}

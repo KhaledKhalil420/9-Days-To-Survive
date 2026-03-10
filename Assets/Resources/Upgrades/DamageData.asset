@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f08eb16a3fa01684aa98afe10765a247, type: 3}
   m_Name: DamageData
   m_EditorClassIdentifier: 
-  fullName: Damage
+  Name: Strength
   price: 50
   discription: Increase Player Damage by 0.25x
   sprite: {fileID: 21300000, guid: 4ac651c013200f14e8a835ca6ab89010, type: 3}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f08eb16a3fa01684aa98afe10765a247, type: 3}
   m_Name: Remove Jumping StaminaData
   m_EditorClassIdentifier: 
-  fullName: Remove Jumping Stamina
+  Name: Strong Legs
   price: 200
   discription: Can jump without consuming stamina
   sprite: {fileID: 21300000, guid: 4ac651c013200f14e8a835ca6ab89010, type: 3}
