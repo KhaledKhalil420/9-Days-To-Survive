@@ -12,7 +12,7 @@
         "bloom": true,
         "motionBlur": false,
         "ambientOcclusion": true,
-        "grass": false
+        "grass": true
     },
     "sound": {
         "masterVolume": 0.056114472448825839,

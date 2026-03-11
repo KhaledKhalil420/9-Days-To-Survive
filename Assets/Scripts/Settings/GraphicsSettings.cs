@@ -99,7 +99,7 @@ public class GraphicsSettings : MonoBehaviour
         bloomToggle            = SpawnToggle(postFXParent, true,  "Bloom");
         motionBlurToggle       = SpawnToggle(postFXParent, false, "Motion Blur");
         ambientOcclusionToggle = SpawnToggle(postFXParent, true,  "Ambient Occlusion");
-        grassToggle = SpawnToggle(qualityParent, true,  "Ambient Occlusion");
+        grassToggle = SpawnToggle(qualityParent, true,  "Enable Grass");
 
         // Sliders save only when the user releases the handle
         AddSliderEndListener(fpsSlider);

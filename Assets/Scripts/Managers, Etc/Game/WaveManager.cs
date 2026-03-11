@@ -127,7 +127,7 @@ public class WaveManager : MonoBehaviour
 
         lastMilestoneTick = tick;
         AudioManager.Instance.PlaySound("Wave_SpeedUp");
-        animator.SetTrigger("SpeedUp");
+        animator.SetTrigger("Trigger");
     }
 
     private void SpawnEnemies()
