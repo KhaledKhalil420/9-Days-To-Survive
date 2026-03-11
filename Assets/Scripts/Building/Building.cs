@@ -245,7 +245,14 @@ public class Building : MonoBehaviour, IDamagable
     {
         if(UpgradeManager.Instance.IncreaseHealthOnEnemyDeath)
         {
-            currentHealth += (initHealth * 0.15f) * UpgradeManager.Instance.IncreaseHealthOnEnemyDeathMultiplier;
+            int chance = UnityEngine.Random.Range(0, 2);
+            if(chance == 0) 
+                return;
+
+            float percent = UnityEngine.Random.Range(0.025f, 0.05f);
+            float healAmount = initHealth * percent * UpgradeManager.Instance.IncreaseHealthOnEnemyDeathMultiplier;
+
+            currentHealth = Mathf.Min(currentHealth + healAmount, initHealth);        
         }
     }
 

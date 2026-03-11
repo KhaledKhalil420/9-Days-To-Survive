@@ -253,7 +253,7 @@ MonoBehaviour:
   chargeSpeed: 18
   rotationSpeed: 5
   attackDamage: 20
-  cooldown: 0.25
+  cooldown: 0.1
   source: {fileID: 2332041660307114475}
   bullCharge: {fileID: 8300000, guid: 4b579047e80153b45b6b87d138cd6ee3, type: 3}
 --- !u!65 &3147360309118710595

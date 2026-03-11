@@ -35,12 +35,22 @@ public class TheCharger : GroundEnemy, IInteruptable
         FindBackingPosition();
         animator.SetBool("Moving", true);
         animator.SetBool("Charging", false);
+        
+        Vector3 dir = new Vector3();
+        if(mainTarget != null)
+        {    
+            dir = mainTarget.position - transform.position;
+        }
 
-        Vector3 dir = (mainTarget.position - transform.position);
+        else
+        {
+            dir = GameObject.FindWithTag("Player").transform.position - transform.position;
+
+        }
+        
         dir.y = 0f;
         if (dir != Vector3.zero)
             transform.rotation = Quaternion.LookRotation(dir);
-
         attackDamage *= Difficulty.DifficultyMultiplier;
 
         coolDownTimer = cooldown / 2;
@@ -154,7 +164,7 @@ public class TheCharger : GroundEnemy, IInteruptable
 
     public void InterruptCharge()
     {
-        int roll = Random.Range(0, 2);
+        int roll = Random.Range(0, 4);
 
         if(roll != 0) return;
         if (state != ChargerState.Dashing) return;
