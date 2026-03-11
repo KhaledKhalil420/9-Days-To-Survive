@@ -106,6 +106,11 @@ public class GameManager : MonoBehaviour
 
             PointsManager.Instance.GivePoints(10000000);
         }
+        if(Input.GetKeyDown(KeyCode.F2))
+        {
+            DayNightCycleManager.SetTime(DayNightCycleManager.CycleState.Night);
+            DOVirtual.DelayedCall(0.001f, () => {DayNightCycleManager.SetTime(DayNightCycleManager.CycleState.Day);});
+        }
         #endif
     }   
 
