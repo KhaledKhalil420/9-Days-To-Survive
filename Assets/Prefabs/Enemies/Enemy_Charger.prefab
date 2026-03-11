@@ -224,7 +224,7 @@ MonoBehaviour:
   poolObject: 1
   doKnockback: 1
   numberEffectOffset: {x: 0, y: 1.5, z: 0}
-  MaxHealth: 15
+  MaxHealth: 8
 --- !u!114 &6210124809405925353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,8 +252,8 @@ MonoBehaviour:
   backUpDistance: 10
   chargeSpeed: 20
   rotationSpeed: 5
-  attackDamage: 30
-  cooldown: 0.1
+  attackDamage: 9
+  cooldown: 1
   source: {fileID: 2332041660307114475}
   bullCharge: {fileID: 8300000, guid: 4b579047e80153b45b6b87d138cd6ee3, type: 3}
   bullAttack: {fileID: 8300000, guid: 7368b94775dfa0a43b8ed255cbfe5bc7, type: 3}

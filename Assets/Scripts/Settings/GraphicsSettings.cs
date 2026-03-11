@@ -22,6 +22,7 @@ public class GraphicsSettingsData
     public bool  bloom;
     public bool  motionBlur;
     public bool  ambientOcclusion;
+    public bool grass;
 }
 
 public class GraphicsSettings : MonoBehaviour
@@ -56,6 +57,8 @@ public class GraphicsSettings : MonoBehaviour
     private Toggle bloomToggle;
     private Toggle motionBlurToggle;
     private Toggle ambientOcclusionToggle;
+    private Toggle grassToggle;
+    [SerializeField] private GrassComputeScript grassCompute;
 
     // URP / Post processing
     private UniversalRenderPipelineAsset urpAsset;
@@ -96,6 +99,7 @@ public class GraphicsSettings : MonoBehaviour
         bloomToggle            = SpawnToggle(postFXParent, true,  "Bloom");
         motionBlurToggle       = SpawnToggle(postFXParent, false, "Motion Blur");
         ambientOcclusionToggle = SpawnToggle(postFXParent, true,  "Ambient Occlusion");
+        grassToggle = SpawnToggle(qualityParent, true,  "Ambient Occlusion");
 
         // Sliders save only when the user releases the handle
         AddSliderEndListener(fpsSlider);
@@ -114,6 +118,7 @@ public class GraphicsSettings : MonoBehaviour
         shadowCascadesDropdown.onValueChanged.AddListener(delegate { SetShadowCascades(); });
         shadowTypeDropdown.onValueChanged.AddListener(delegate     { SetShadowType(); });
         bloomToggle.onValueChanged.AddListener(delegate            { SetBloom(); });
+        grassToggle.onValueChanged.AddListener(delegate            { SetGrass(); });
         motionBlurToggle.onValueChanged.AddListener(delegate       { SetMotionBlur(); });
         ambientOcclusionToggle.onValueChanged.AddListener(delegate { SetAmbientOcclusion(); });
     }
@@ -194,6 +199,14 @@ public class GraphicsSettings : MonoBehaviour
         SaveSettings();
     }
 
+
+    void SetGrass()
+    {
+        if (grassCompute != null) grassCompute.grassEnabled = grassToggle.isOn;
+        settingsData.grass = grassToggle.isOn;
+        SaveSettings();
+    }
+
     void SetMotionBlur()
     {
         if (motionBlurOverride != null) motionBlurOverride.active = motionBlurToggle.isOn;
@@ -242,6 +255,7 @@ public class GraphicsSettings : MonoBehaviour
         renderScaleSlider.SetValueWithoutNotify(settingsData.renderScale);
         antiAliasingDropdown.SetValueWithoutNotify(settingsData.antiAliasing);
         bloomToggle.SetIsOnWithoutNotify(settingsData.bloom);
+        grassToggle.SetIsOnWithoutNotify(settingsData.grass);
         motionBlurToggle.SetIsOnWithoutNotify(settingsData.motionBlur);
         ambientOcclusionToggle.SetIsOnWithoutNotify(settingsData.ambientOcclusion);
     }

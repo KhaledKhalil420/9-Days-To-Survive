@@ -70,7 +70,7 @@ public class BuildingHammer : Item
         if(Input.GetKeyDown(Keybinds.Key("SelectBuild"))) 
         {
             isChosingBuild = !isChosingBuild;
-            PlayerInventory.CanScroll = !isChosingBuild;
+            PlayerInventory.Instance.CanScroll = !isChosingBuild;
     
             float pitch = isChosingBuild ? 1.25f : 1;
             AudioManager.Instance.PlaySound("Start_Selecting_Build", pitch - 0.1f, pitch + 0.1f);
@@ -438,7 +438,7 @@ public class BuildingHammer : Item
         rotationTween?.Kill();
         Destroy(ghostBuilding);
         isChosingBuild = false;
-        PlayerInventory.CanScroll = true;
+        PlayerInventory.Instance.CanScroll = true;
     }
 
     #endregion

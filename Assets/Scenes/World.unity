@@ -742,7 +742,9 @@ MonoBehaviour:
   qualityParent: {fileID: 896424510}
   shadowsParent: {fileID: 987186450}
   postFXParent: {fileID: 896424510}
+  grassParent: {fileID: 0}
   postProcessVolume: {fileID: 1684127040}
+  grassCompute: {fileID: 1977557023}
 --- !u!114 &65771760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5324,7 +5326,7 @@ MonoBehaviour:
       threatLevel: 1
       timer: 0
     - prefab: {fileID: 6210124809405925353, guid: 6a7dc208c94302e4493197661a7a6001, type: 3}
-      maxEnemies: 4
+      maxEnemies: 3
       spawningCooldown: 5
       threatLevel: 2
       timer: 0
@@ -15468,6 +15470,7 @@ MonoBehaviour:
   pickedUpUIParent: {fileID: 1235553534}
   mainSlots: 7
   slotParent: {fileID: 790838104}
+  CanScroll: 1
   bagParent: {fileID: 1286026616}
   selectedSlotColor: {r: 0.8584906, g: 0.8584906, b: 0.8584906, a: 1}
   unselectedSlotColor: {r: 1, g: 1, b: 1, a: 1}
@@ -22038,6 +22041,7 @@ MonoBehaviour:
   topTint: {r: 1, g: 1, b: 1, a: 1}
   bottomTint: {r: 0.25490198, g: 0.6313726, b: 0.40044615, a: 1}
   ambientStrength: 0
+  grassEnabled: 1
   castShadow: 0
 --- !u!33 &1977557024
 MeshFilter:

@@ -7,7 +7,7 @@ public class GroundEnemy : EnemyBrain
 
     [Header("Points")]
     [SerializeField] private int pointsWorth = 1;
-    internal int EnemyPoints => pointsWorth * Difficulty.DifficultyMultiplier;
+    internal int EnemyPoints => pointsWorth * (int)Difficulty.DifficultyMultiplier;
 
     [Header("Behaviour")]
     [SerializeField] private bool speedUpWhenTargetingMain;

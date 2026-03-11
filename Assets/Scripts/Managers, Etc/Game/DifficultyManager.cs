@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Difficulty : MonoBehaviour
 {
-    public static int DifficultyMultiplier = 1;
+    public static float DifficultyMultiplier = 1;
 
     private void Awake()
     {
@@ -18,11 +18,11 @@ public class Difficulty : MonoBehaviour
     {
         if(!isDay)
         {
-            IncreaseDifficulty(1);
+            IncreaseDifficulty(0.25f);
         }
     }
 
-    public static void IncreaseDifficulty(int Difficulty)
+    public static void IncreaseDifficulty(float Difficulty)
     {
         DifficultyMultiplier += Difficulty;
     }

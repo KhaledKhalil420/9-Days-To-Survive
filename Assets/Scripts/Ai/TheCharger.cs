@@ -52,7 +52,7 @@ public class TheCharger : GroundEnemy, IInteruptable
         dir.y = 0f;
         if (dir != Vector3.zero)
             transform.rotation = Quaternion.LookRotation(dir);
-        attackDamage *= Difficulty.DifficultyMultiplier;
+        attackDamage *= (int)Difficulty.DifficultyMultiplier;
 
         coolDownTimer = cooldown / 2;
     }
@@ -166,7 +166,7 @@ public class TheCharger : GroundEnemy, IInteruptable
 
     public void InterruptCharge()
     {
-        int roll = Random.Range(0, 4);
+        int roll = Random.Range(0, 2);
 
         if(roll != 0) return;
         if (state != ChargerState.Dashing) return;

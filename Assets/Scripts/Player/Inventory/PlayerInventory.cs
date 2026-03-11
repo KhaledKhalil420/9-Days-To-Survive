@@ -34,7 +34,7 @@ public class PlayerInventory : MonoBehaviour
     [Header("HotBar")]
     [SerializeField] private int mainSlots = 7;
     [SerializeField] private Transform slotParent; //parent for hotbar
-    public static bool CanScroll = true;
+    public bool CanScroll = true;
 
     [Header("Bag")]
     [SerializeField] private CanvasGroup bagParent; //same as slot parent, remember ya ana
