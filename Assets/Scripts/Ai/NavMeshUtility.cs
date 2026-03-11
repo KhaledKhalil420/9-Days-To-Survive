@@ -6,9 +6,9 @@ public static class NavMeshUtility
 {
     private static readonly NavMeshPath path = new NavMeshPath();
     private static readonly NavMeshPath path2 = new NavMeshPath();
-    private static readonly Collider[] colliderBuffer = new Collider[15];
-    private static readonly List<Target> reachableTargets = new List<Target>(15);
-    private static readonly List<Target> topPriorityTargets = new List<Target>(15);
+    private static readonly Collider[] colliderBuffer = new Collider[30];
+    private static readonly List<Target> reachableTargets = new List<Target>(30);
+    private static readonly List<Target> topPriorityTargets = new List<Target>(30);
 
     public static Transform GetTarget(Transform seeker, Transform target, LayerMask targetLayers, float searchArea)
     {

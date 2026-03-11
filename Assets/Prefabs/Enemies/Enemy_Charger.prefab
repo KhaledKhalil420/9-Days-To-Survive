@@ -224,7 +224,7 @@ MonoBehaviour:
   poolObject: 1
   doKnockback: 1
   numberEffectOffset: {x: 0, y: 1.5, z: 0}
-  MaxHealth: 20
+  MaxHealth: 5
 --- !u!114 &6210124809405925353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,7 +239,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 6216086863778393710}
   TargetTag: Player
-  searchArea: 15
+  searchArea: 40
   loseInterestTime: 4
   pathRefreshInterval: 0.5
   mainTarget: {fileID: 0}
@@ -248,12 +248,12 @@ MonoBehaviour:
   speedUpWhenTargetingMain: 0
   onCatchMainTargetSpeedBoost: 2.5
   state: 1
-  backOffSpeed: 3
-  backUpDistance: 7
+  backOffSpeed: 6
+  backUpDistance: 4
   chargeSpeed: 18
   rotationSpeed: 5
-  attackDamage: 20
-  cooldown: 0.1
+  attackDamage: 30
+  cooldown: 0.05
   source: {fileID: 2332041660307114475}
   bullCharge: {fileID: 8300000, guid: 4b579047e80153b45b6b87d138cd6ee3, type: 3}
 --- !u!65 &3147360309118710595
