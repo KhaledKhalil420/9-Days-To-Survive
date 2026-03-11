@@ -18,6 +18,7 @@ public class TheCharger : GroundEnemy, IInteruptable
     [Header("Audio")]
     [SerializeField] private AudioSource source;
     [SerializeField] private AudioClip bullCharge;
+    [SerializeField] private AudioClip bullAttack;
 
 
     private Vector3 chargeDirection;
@@ -108,7 +109,7 @@ public class TheCharger : GroundEnemy, IInteruptable
             initSpeed = chargeSpeed;
             animator.SetBool("Moving", true);
             animator.SetBool("Charging", true);
-            source.PlayOneShot(bullCharge, 0.45f);
+            source.PlayOneShot(bullCharge, 0.25f);
         }
     }
 
@@ -137,6 +138,7 @@ public class TheCharger : GroundEnemy, IInteruptable
         if (target.TryGetComponent(out IDamagable damagable))
         {
             damagable.Damage(attackDamage);
+            source.PlayOneShot(bullAttack, 0.45f);
 
             if(target.TryGetComponent(out Rigidbody rigidbody))
             {

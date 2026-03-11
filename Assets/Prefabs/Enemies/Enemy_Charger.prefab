@@ -224,7 +224,7 @@ MonoBehaviour:
   poolObject: 1
   doKnockback: 1
   numberEffectOffset: {x: 0, y: 1.5, z: 0}
-  MaxHealth: 5
+  MaxHealth: 15
 --- !u!114 &6210124809405925353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,14 +248,15 @@ MonoBehaviour:
   speedUpWhenTargetingMain: 0
   onCatchMainTargetSpeedBoost: 2.5
   state: 1
-  backOffSpeed: 6
-  backUpDistance: 4
-  chargeSpeed: 18
+  backOffSpeed: 7
+  backUpDistance: 10
+  chargeSpeed: 20
   rotationSpeed: 5
   attackDamage: 30
-  cooldown: 0.05
+  cooldown: 0.1
   source: {fileID: 2332041660307114475}
   bullCharge: {fileID: 8300000, guid: 4b579047e80153b45b6b87d138cd6ee3, type: 3}
+  bullAttack: {fileID: 8300000, guid: 7368b94775dfa0a43b8ed255cbfe5bc7, type: 3}
 --- !u!65 &3147360309118710595
 BoxCollider:
   m_ObjectHideFlags: 0

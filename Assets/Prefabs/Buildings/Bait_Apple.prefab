@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c66d7b0a543924341978aa544ef271ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 20
+  currentHealth: 3
   extraDamage: 0
   currentDamage: 0
   ingredients:
@@ -153,6 +153,7 @@ MonoBehaviour:
     quantity: 3
   data: {fileID: 11400000, guid: f4b6b1db140aaf3408c5560663516c5c, type: 2}
   dropResourcesOnDestory: 0
+  requireSnapping: 0
   usesPivots: 0
   affectedByGridSizePosition: 0
   pivots: []
