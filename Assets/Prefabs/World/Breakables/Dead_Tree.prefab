@@ -237,9 +237,11 @@ MonoBehaviour:
   destroySound: {fileID: 8300000, guid: 9de36afeecc3c83428aead2f685abf23, type: 3}
   audioSource: {fileID: 3736474884592305914}
   damageMeshes: []
-  items: []
+  items:
+  - item: {fileID: 789964070537936751, guid: 579e2f28e3108d94eb9886af3095b868, type: 3}
+    minQuantity: 1
+    maxQuantity: 1
   updateColliderOnMesh: 0
-  mainItem: {fileID: 0}
 --- !u!82 &3736474884592305914
 AudioSource:
   m_ObjectHideFlags: 0
