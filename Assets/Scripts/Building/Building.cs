@@ -181,7 +181,7 @@ public class Building : MonoBehaviour, IDamagable
     {
         OnDeath();
 
-        if(dropResourcesOnDestory)
+        if(dropResourcesOnDestory || DayNightCycleManager.Instance.currentState == DayNightCycleManager.CycleState.Day)
         {
             foreach(Ingredient ingredient in ingredients)
             {

@@ -742,7 +742,6 @@ MonoBehaviour:
   qualityParent: {fileID: 896424510}
   shadowsParent: {fileID: 987186450}
   postFXParent: {fileID: 896424510}
-  grassParent: {fileID: 0}
   postProcessVolume: {fileID: 1684127040}
   grassCompute: {fileID: 1977557023}
 --- !u!114 &65771760
@@ -13663,7 +13662,7 @@ MonoBehaviour:
   maxBuildDistance: 6
   snapDistance: 1
   sphereCastRadius: 0.1
-  rotationAngle: 45.01
+  rotationAngle: 90.05
   PhysicsLayers:
     serializedVersion: 2
     m_Bits: 2689
