@@ -1,10 +1,18 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class PauseMenu : MonoBehaviour
 {
+    public static PauseMenu Instance;
+    public Action<bool> onPause;
     [SerializeField] private Transform parent;
-    private bool isPaused = false;
+    internal bool isPaused = false;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -22,6 +30,8 @@ public class PauseMenu : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
+            onPause?.Invoke(isPaused);
+            
             isPaused = !isPaused;
             UiManager.ToggleUi(isPaused, true);
             Time.timeScale = isPaused ? 0 : 1;

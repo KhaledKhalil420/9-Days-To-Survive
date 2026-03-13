@@ -45,7 +45,7 @@ public class Furnace : Building, IInteractable
         input.UpdateSlot();
         output.UpdateSlot();
 
-        //Slider setup
+        PauseMenu.Instance.onPause += ToggleUi;
     }
 
     private void Update()
@@ -138,12 +138,23 @@ public class Furnace : Building, IInteractable
 
     public void Interact(GameObject sender)
     {
-        OpenUi();
+        if(!PauseMenu.Instance.isPaused)
+            OpenUi();
     }
 
     public void CloseUi(bool state)
     {
         if (state) return;
+
+        PlayerInventory.Instance?.ToggleBagNoEvent(false);
+
+        if(canvas != null)
+            canvas.SetActive(false);
+    }
+
+    public void ToggleUi(bool state)
+    {
+        if (!state) return;
 
         PlayerInventory.Instance?.ToggleBagNoEvent(false);
 
@@ -163,6 +174,9 @@ public class Furnace : Building, IInteractable
     {
         if (PlayerInventory.Instance != null)
             PlayerInventory.Instance.OnInventoryOpen -= CloseUi;
+
+        if (PauseMenu.Instance != null)
+            PauseMenu.Instance.onPause += CloseUi;
     }
 
     #endregion
