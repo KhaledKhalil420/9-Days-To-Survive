@@ -1,3 +1,4 @@
+using EZCameraShake;
 using Sortify;
 using UnityEngine;
 
@@ -22,12 +23,20 @@ public class Bow : Item
     [Header("Arrow Pull")]
     [SerializeField] private float nockOffset = 0.3f;
     [SerializeField] private float chargeOffset = 0.2f;
+
+    [Header("Camera Shake")]
+    [SerializeField] private float drawShakeMagnitude = 0.3f;
+    [SerializeField] private float drawShakeRoughness = 2f;
+    [SerializeField] private float shootShakeMagnitude = 2f;
+    [SerializeField] private float shootShakeRoughness = 4f;
+    [SerializeField] private float shootShakeFadeOut = 0.5f;
     #endregion
 
     #region State
     [SerializeField, ReadOnly] private float holdTimer;
     [SerializeField, ReadOnly] private bool isHeld;
     private Vector3 arrowStartLocalPos;
+    private CameraShakeInstance drawShake;
     #endregion
 
     private void Start()
@@ -44,13 +53,19 @@ public class Bow : Item
         arrowPlaceHolder.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         arrowPlaceHolder.GetComponent<Collider>().isTrigger = true;
         arrowStartLocalPos = arrowPlaceHolder.transform.localPosition;
+
+        drawShake = CameraShaker.Instance.StartShake(drawShakeMagnitude, drawShakeRoughness, holdTime);
+        drawShake.ScaleMagnitude = 0;
     }
 
     public override void OnUsing()
     {
-        animator.speed = 1 / holdTime; 
         holdTimer += Time.deltaTime;
         animator.SetBool("Held", true);
+
+        float chargeRatio = Mathf.Clamp01(holdTimer / (holdTime + maxBonusHoldTime));
+        if (drawShake != null)
+            drawShake.ScaleMagnitude = chargeRatio;
 
         if (arrowPlaceHolder == null) return;
 
@@ -61,8 +76,8 @@ public class Bow : Item
         }
         else
         {
-            float chargeRatio = Mathf.Clamp01((holdTimer - holdTime) / maxBonusHoldTime);
-            arrowPlaceHolder.transform.localPosition = arrowStartLocalPos - new Vector3(0, 0, nockOffset + chargeRatio * chargeOffset);
+            float overchargeRatio = Mathf.Clamp01((holdTimer - holdTime) / maxBonusHoldTime);
+            arrowPlaceHolder.transform.localPosition = arrowStartLocalPos - new Vector3(0, 0, nockOffset + overchargeRatio * chargeOffset);
         }
     }
 
@@ -70,6 +85,9 @@ public class Bow : Item
     {
         if (holdTimer >= holdTime)
             ShootArrow();
+
+        drawShake?.StartFadeOut(0.15f);
+        drawShake = null;
 
         animator.speed = 1;
         animator.SetBool("Held", false);
@@ -82,13 +100,19 @@ public class Bow : Item
 
     void ShootArrow()
     {
+        float chargeRatio = Mathf.Clamp01((holdTimer - holdTime) / maxBonusHoldTime);
+
+        CameraShaker.Instance.ShakeOnce(
+            shootShakeMagnitude * (1 + chargeRatio),
+            shootShakeRoughness,
+            0f,
+            shootShakeFadeOut
+        );
+
         animator.SetTrigger("Shoot");
 
-        float chargeRatio = Mathf.Clamp01((holdTimer - holdTime) / maxBonusHoldTime);
         float speed = arrowSpeed + maxBonusSpeed * chargeRatio;
-
-        Vector3 spawnPoint = new Vector3(_cam.position.x, _cam.position.y, _cam.position.z);
-        GameObject obj = Instantiate(arrow, spawnPoint, _cam.rotation);
+        GameObject obj = Instantiate(arrow, _cam.position, _cam.rotation);
         obj.GetComponent<Rigidbody>().AddForce(_cam.forward * speed, ForceMode.Impulse);
         obj.GetComponent<Arrow>().damage = arrowDamage;
     }
