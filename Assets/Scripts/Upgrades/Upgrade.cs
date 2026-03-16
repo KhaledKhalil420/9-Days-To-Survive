@@ -5,7 +5,7 @@ public class Upgrade : MonoBehaviour
 {
     [Header("References")]
     [ReadOnly] public UpgradeManager UpgradeManager;
-    [ReadOnly] public UpgradeData data;
+    [SerializeField] public UpgradeData data;
 
     [Header("Logic")]
     public int Multiplier = 1;
