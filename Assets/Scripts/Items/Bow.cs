@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class Bow : Item
 {
-    #region References
     [Header("References")]
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject arrow;
     private Transform _cam;
     private GameObject arrowPlaceHolder;
-    #endregion
-
-    #region Settings
+ 
     [Header("Settings")]
     [SerializeField] private float holdTime;
     [SerializeField] private float arrowSpeed;
@@ -24,20 +21,22 @@ public class Bow : Item
     [SerializeField] private float nockOffset = 0.3f;
     [SerializeField] private float chargeOffset = 0.2f;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource source;
+    [SerializeField] private AudioClip drawSound;
+    [SerializeField] private AudioClip shootSound;
+
     [Header("Camera Shake")]
     [SerializeField] private float drawShakeMagnitude = 0.3f;
     [SerializeField] private float drawShakeRoughness = 2f;
     [SerializeField] private float shootShakeMagnitude = 2f;
     [SerializeField] private float shootShakeRoughness = 4f;
     [SerializeField] private float shootShakeFadeOut = 0.5f;
-    #endregion
 
-    #region State
     [SerializeField, ReadOnly] private float holdTimer;
     [SerializeField, ReadOnly] private bool isHeld;
     private Vector3 arrowStartLocalPos;
     private CameraShakeInstance drawShake;
-    #endregion
 
     private void Start()
     {
@@ -53,6 +52,8 @@ public class Bow : Item
         arrowPlaceHolder.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         arrowPlaceHolder.GetComponent<Collider>().isTrigger = true;
         arrowStartLocalPos = arrowPlaceHolder.transform.localPosition;
+        
+        source.PlayOneShot(drawSound);
 
         drawShake = CameraShaker.Instance.StartShake(drawShakeMagnitude, drawShakeRoughness, holdTime);
         drawShake.ScaleMagnitude = 0;
@@ -100,6 +101,8 @@ public class Bow : Item
 
     void ShootArrow()
     {
+        source.PlayOneShot(shootSound);
+
         float chargeRatio = Mathf.Clamp01((holdTimer - holdTime) / maxBonusHoldTime);
 
         CameraShaker.Instance.ShakeOnce(
@@ -115,5 +118,17 @@ public class Bow : Item
         GameObject obj = Instantiate(arrow, _cam.position, _cam.rotation);
         obj.GetComponent<Rigidbody>().AddForce(_cam.forward * speed, ForceMode.Impulse);
         obj.GetComponent<Arrow>().damage = arrowDamage;
+    }
+
+    public override void OnChangingItems()
+    {
+        drawShake?.StartFadeOut(0.15f);
+        drawShake = null;
+
+        if (arrowPlaceHolder == null) 
+            return;
+            
+        Destroy(arrowPlaceHolder);
+        arrowPlaceHolder = null;
     }
 }

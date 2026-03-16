@@ -2,25 +2,20 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
-    #region References
     internal Rigidbody rb;
-    #endregion
 
-    #region Settings
     [Header("Arrow Settings")]
     [SerializeField] private float pierceDepth = 0.2f;
     [SerializeField] private float disappearDelay = 10f;
-    #endregion
 
-    #region State
     internal float damage;
     private bool hasHit;
-    #endregion
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        Invoke(nameof(EnableCollider), 0.05f);
+        GetComponent<MeshRenderer>().enabled = false;
+        Invoke(nameof(EnableCollider), 0.015f);
     }
 
     private void Update()
@@ -32,6 +27,8 @@ public class Arrow : MonoBehaviour
 
     void EnableCollider()
     {
+        GetComponent<AudioSource>().enabled = true;
+        GetComponent<MeshRenderer>().enabled = true;
         GetComponent<TrailRenderer>().enabled = true;
         Collider col = GetComponent<Collider>();
         col.enabled = true;
@@ -46,7 +43,11 @@ public class Arrow : MonoBehaviour
 
         if (rb.linearVelocity.magnitude > 0.5f)
         {
-            collision.collider.GetComponent<IDamagable>()?.Damage(damage);
+            if(collision.collider.TryGetComponent(out Damagable damagable))
+            {
+                if(damagable.isEnemy)
+                damagable.Damage(damage);
+            }
         }
 
         Stick(collision.transform);
@@ -66,4 +67,11 @@ public class Arrow : MonoBehaviour
     }
 
     void Disappear() => Destroy(gameObject);
+
+    private void OnDisable()
+    {
+        if (!hasHit) return;
+        CancelInvoke();
+        Destroy(gameObject);
+    }
 }

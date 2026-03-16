@@ -8,7 +8,7 @@ using UnityEngine.Events;
 public class Damagable : MonoBehaviour, IDamagable
 {
     public UnityEvent OnDamageEvent, OnDeathEvent;
-    [SerializeField] private bool destroyOnDeath = true, scaleWithDifficulty = true, isEnemy = true, doNumberEffect = true, poolObject = false, doKnockback = false;
+    [SerializeField] internal bool destroyOnDeath = true, scaleWithDifficulty = true, isEnemy = true, doNumberEffect = true, poolObject = false, doKnockback = false;
     [SerializeField] private Vector3 numberEffectOffset = Vector3.zero;
     [SerializeField] private float MaxHealth = 5;
     [ReadOnly] private float currentHealth;

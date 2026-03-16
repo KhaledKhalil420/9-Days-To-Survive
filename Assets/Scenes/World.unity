@@ -23179,10 +23179,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4308972172480189669, guid: 29b7a84726fc33142858c802b311381c, type: 3}
-      propertyPath: shootShakeFadeOut
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8531490675611274726, guid: 29b7a84726fc33142858c802b311381c, type: 3}
       propertyPath: m_Name
       value: Bow
