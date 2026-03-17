@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using System;
 
 public class BuildingHammer : Item
 {
-    //References
+    //refs
     private BuildingManager buildManager;
     private Transform mainCamera;
     private Animator animator;
@@ -16,17 +15,16 @@ public class BuildingHammer : Item
     [SerializeField] private ParticleSystem spawnParticles;
     private bool isChosingBuild = false;
 
-    //Selection state
+    //selection
     private int selectedBuildingIndex;
     private float currentRotation;
 
-    //Ghost data
+    //ghost
     private GameObject ghostBuilding;
     private Building currentBuilding;
-    private MeshFilter ghostMeshFilter;
     private Renderer[] ghostRenderers;
 
-    //Placement state
+    //placement
     private bool canPlace;
     private Vector3 lastValidPosition;
     private Tween rotationTween;
@@ -35,15 +33,12 @@ public class BuildingHammer : Item
 
     private void Start()
     {
-        //Cache refs
         buildManager = BuildingManager.Instance;
         dayNightCycle = DayNightCycleManager.Instance;
         mainCamera = PlayerLook.mainCamera.transform;
         animator = GetComponent<Animator>();
 
-        //new line added
         buildManager.OnGridUpdated += UpdateUiGhost;
-
         SpawnGhost();
     }
 
@@ -66,110 +61,93 @@ public class BuildingHammer : Item
 
     private void HandleInput()
     {
-        //Scroll selection
-        if(Input.GetKeyDown(Keybinds.Key("SelectBuild"))) 
+        //toggle build selection scroll
+        if (Input.GetKeyDown(Keybinds.Key("SelectBuild")))
         {
             isChosingBuild = !isChosingBuild;
             PlayerInventory.Instance.CanScroll = !isChosingBuild;
-    
-            float pitch = isChosingBuild ? 1.25f : 1;
+
+            float pitch = isChosingBuild ? 1.25f : 1f;
             AudioManager.Instance.PlaySound("Start_Selecting_Build", pitch - 0.1f, pitch + 0.1f);
         }
 
-        if(isChosingBuild)
-            HandleSelection();
+        if (isChosingBuild) HandleSelection();
 
-        //Rotate
+        //rotate ghost
         if (Input.GetKeyDown(Keybinds.Key("Rotate")))
         {
             currentRotation -= buildManager.rotationAngle;
             rotationTween?.Kill();
 
-            if(ghostBuilding != null)
-            rotationTween = ghostBuilding.transform.DORotate(new Vector3(0f, currentRotation, 0f), 0.15f).SetEase(Ease.OutQuad);
+            if (ghostBuilding != null)
+                rotationTween = ghostBuilding.transform.DORotate(new Vector3(0f, currentRotation, 0f), 0.15f).SetEase(Ease.OutQuad);
 
-            //PlaySound
             AudioManager.Instance.PlaySound("Rotating_Build", 0.9f, 1.15f);
         }
     }
 
     public override void OnUse()
     {
-        if(!BuildingManager.CanBuild(currentBuilding.data.pointsWorth))
-            return;
+        if (!BuildingManager.CanBuild(currentBuilding.data.pointsWorth)) return;
 
         TryPlace();
         animator.SetTrigger("Place");
-
     }
 
     public override void OnUseAlt()
     {
         TryDemolish();
-        animator.SetTrigger("Demolish");       
+        animator.SetTrigger("Demolish");
     }
 
     private void HandleSelection()
     {
-        if(!BuildingManager.CanBuild())
-            return;
+        if (!BuildingManager.CanBuild()) return;
 
-        //Read scroll
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll == 0f) return;
 
-        //Update index
         selectedBuildingIndex += scroll < 0 ? 1 : -1;
 
-        //Wrap index
-        if (selectedBuildingIndex >= availableBuildings.Count)
-            selectedBuildingIndex = 0;
-        else if (selectedBuildingIndex < 0)
-            selectedBuildingIndex = availableBuildings.Count - 1;
+        //wrap around list
+        if (selectedBuildingIndex >= availableBuildings.Count) selectedBuildingIndex = 0;
+        else if (selectedBuildingIndex < 0) selectedBuildingIndex = availableBuildings.Count - 1;
 
-        //Refresh ghost + ui
         SpawnGhost();
-
-        //PlaySound
         AudioManager.Instance.PlaySound("Selecting_Build", 0.9f, 1.15f);
     }
 
     #endregion
 
     #region Inspect
-    
+
     private bool reset = true;
+
     private void BuildingInspectRaycast()
     {
-        if(dayNightCycle.currentState == DayNightCycleManager.CycleState.Night)
+        if (dayNightCycle.currentState == DayNightCycleManager.CycleState.Night)
         {
             buildManager?.ShowUI(false);
 
-            if(Physics.Raycast(mainCamera.position, mainCamera.forward, out RaycastHit hit, 3))
+            if (Physics.Raycast(mainCamera.position, mainCamera.forward, out RaycastHit hit, 3))
             {
-                if(hit.transform.TryGetComponent(out Building building))
+                if (hit.transform.TryGetComponent(out Building building))
                 {
                     buildManager.ShowInspectUI(true);
                     buildManager.UpdateInspectUI(building);
                 }
-
-                else
-                {
-                    buildManager.ShowInspectUI(false);
-                }
+                else buildManager.ShowInspectUI(false);
             }
 
             reset = true;
         }
-
         else
         {
-            if(reset)
-            {
-                reset = false;
-                buildManager.ShowInspectUI(false);
-                UpdateUiGhost();
-            }
+            if (!reset) return;
+
+            reset = false;
+            buildManager.ShowInspectUI(false);
+            UpdateUiGhost();
         }
     }
 
@@ -179,46 +157,33 @@ public class BuildingHammer : Item
 
     private void SpawnGhost()
     {
-        //Destroy old ghost
         if (ghostBuilding != null) Destroy(ghostBuilding);
 
-        //Spawn new ghost
         ghostBuilding = Instantiate(availableBuildings[selectedBuildingIndex].gameObject);
         ghostBuilding.tag = "Untagged";
 
-        //Cache components
         currentBuilding = ghostBuilding.GetComponent<Building>();
-        ghostMeshFilter = ghostBuilding.GetComponent<MeshFilter>();
         ghostRenderers = ghostBuilding.GetComponentsInChildren<Renderer>();
 
-        //Disable colliders
+        //disable so they don't mess with placement checks
         foreach (var col in ghostBuilding.GetComponentsInChildren<Collider>())
             col.enabled = false;
 
-        //Set transparency
         SetGhostAlpha(0.5f);
-
-        //Scale if using pivots
-        if (currentBuilding != null && currentBuilding.usesPivots)
-            ghostBuilding.transform.localScale = Vector3.one * BuildingManager.Instance.gridSize;
-
-        //Set initial rotation
         ghostBuilding.transform.rotation = Quaternion.Euler(0f, currentRotation, 0f);
     }
 
     private void UpdateGhost()
     {
-        if(!BuildingManager.CanBuild(currentBuilding.data.pointsWorth))
+        if (!BuildingManager.CanBuild(currentBuilding.data.pointsWorth))
         {
-            if(ghostBuilding != null)
-                Destroy(ghostBuilding);
+            if (ghostBuilding != null) Destroy(ghostBuilding);
             return;
         }
 
-        //Skip if missing
         if (ghostBuilding == null) return;
 
-        //Spherecast
+        //no surface? hide ghost
         if (!BuildUtilities.TryGetHit(mainCamera, buildManager.sphereCastRadius, buildManager.maxBuildDistance, buildManager.buildableLayers, out RaycastHit hit))
         {
             ghostBuilding.SetActive(false);
@@ -226,55 +191,45 @@ public class BuildingHammer : Item
             return;
         }
 
-        //Show ghost
         ghostBuilding.SetActive(true);
 
-        //Calculate position
-        Vector3 position = BuildUtilities.CalculatePosition(hit, currentBuilding, ghostMeshFilter, ghostBuilding, buildManager.gridSize, currentRotation, buildManager.snapDistance, out bool isSnapped);
+        Vector3 position = BuildUtilities.CalculatePosition(hit, currentBuilding, ghostBuilding, currentRotation, buildManager.snapDistance, out bool isSnapped);
 
-        //Apply transform
         lastValidPosition = position;
         ghostBuilding.transform.position = position;
 
-        //Check if position is valid (not inside anything)
-        if(currentBuilding.requireSnapping)
-            canPlace = isSnapped;
+        canPlace = currentBuilding.requireSnapping
+            ? isSnapped
+            : BuildUtilities.IsPositionValid(ghostBuilding, currentBuilding);
 
-        else
-        canPlace = BuildUtilities.IsPositionValid(ghostBuilding, currentBuilding, buildManager.gridSize);
-        
-        //Update visuals
         UpdateGhostColor();
     }
 
     private void UpdateGhostColor()
     {
-        //Apply color
         Color color = canPlace ? Color.green : Color.red;
         color.a = 0.5f;
 
         foreach (var r in ghostRenderers)
         {
             Material[] mats = r.materials;
-            for (int i = 0; i < mats.Length; i++)
-                mats[i].color = color;
+            for (int i = 0; i < mats.Length; i++) mats[i].color = color;
             r.materials = mats;
         }
     }
 
     private void SetGhostAlpha(float alpha)
     {
-        //Set ghost alpha
         foreach (var r in ghostRenderers)
         {
             Material[] mats = r.materials;
             for (int i = 0; i < mats.Length; i++)
             {
-                Material newMat = new Material(mats[i]);
-                Color c = newMat.color;
+                Material mat = new Material(mats[i]);
+                Color c = mat.color;
                 c.a = alpha;
-                newMat.color = c;
-                mats[i] = newMat;
+                mat.color = c;
+                mats[i] = mat;
             }
             r.materials = mats;
         }
@@ -286,23 +241,18 @@ public class BuildingHammer : Item
 
     private void TryPlace()
     {
-        //Verify
         if (!canPlace || ghostBuilding == null) return;
         if (!TakeResources()) return;
 
-        //Spawn building
-        GameObject placed = Instantiate(availableBuildings[selectedBuildingIndex].gameObject, lastValidPosition, Quaternion.Euler(0f, Mathf.Round(currentRotation), 0f));
+        GameObject placed = Instantiate(
+            availableBuildings[selectedBuildingIndex].gameObject,
+            lastValidPosition,
+            Quaternion.Euler(0f, Mathf.Round(currentRotation), 0f));
 
-        //Scale if needed
-        if (availableBuildings[selectedBuildingIndex].usesPivots)
-            placed.transform.localScale = Vector3.one * buildManager.gridSize;
-
-        //Finalize build
         placed.tag = "Build";
 
-        //Restore material alpha
-        Renderer[] renderers = placed.GetComponentsInChildren<Renderer>();
-        foreach (var r in renderers)
+        //restore full alpha
+        foreach (var r in placed.GetComponentsInChildren<Renderer>())
         {
             Material[] mats = r.materials;
             for (int i = 0; i < mats.Length; i++)
@@ -316,36 +266,22 @@ public class BuildingHammer : Item
 
         placed.GetComponent<Building>()?.OnPlace(buildManager.extraBuildingHealth, buildManager.extraBuildingDamage);
 
-        //Particles
-        if(placed.TryGetComponent(out Renderer renderer))
-        {
+        if (placed.TryGetComponent(out Renderer renderer))
             ParticleSpawner.SpawnWithBounds(spawnParticles, placed.transform.position, placed.transform.rotation, renderer.bounds);
-        }
 
-        //Sound
         AudioManager.Instance?.PlaySound("Build", 0.9f, 1.25f);
     }
 
     private void TryDemolish()
     {
-        //Check if there's a hit
         if (!BuildUtilities.TryGetHit(mainCamera, buildManager.sphereCastRadius, buildManager.maxBuildDistance, buildManager.demolishLayers, out RaycastHit hit)) return;
-
-        //Double check if it's a build
         if (!hit.collider.CompareTag("Build")) return;
 
-        //Check for building component (or parent)
-        Building building = hit.collider.GetComponent<Building>();
-        if (building == null)
-        {
-            building = hit.collider.GetComponentInParent<Building>();
-            if (building == null) return;
-        }
+        Building building = hit.collider.GetComponent<Building>() ?? hit.collider.GetComponentInParent<Building>();
+        if (building == null) return;
+        if (!RefundResources(building)) return;
 
-        //Refund and destroy
-        if (!RefundResources(hit.transform.GetComponent<Building>())) return;
         building.OnDemolish();
-
         Destroy(building.gameObject);
         AudioManager.Instance?.PlaySound("Demolish", 0.9f, 1.25f);
     }
@@ -354,40 +290,31 @@ public class BuildingHammer : Item
 
     #region Resources
 
-    bool TakeResources()
+    private bool TakeResources()
     {
-        //Inventory
         PlayerInventory inventory = heldby.GetComponent<PlayerInventory>();
 
-        //Check cost
+        //check first, take after
         foreach (var ing in availableBuildings[selectedBuildingIndex].ingredients)
-            if (!inventory.HasItem(ing.item, ing.quantity))
-                return false;
+            if (!inventory.HasItem(ing.item, ing.quantity)) return false;
 
-        //Take
         foreach (var ing in availableBuildings[selectedBuildingIndex].ingredients)
             inventory.TakeItem(ing.item, ing.quantity, out _);
 
         return true;
     }
 
-    bool RefundResources(Building building)
+    private bool RefundResources(Building building)
     {
-        //Inventory
         PlayerInventory inventory = heldby.GetComponent<PlayerInventory>();
 
-        //Refund items
         foreach (var ing in building.ingredients)
         {
             Item item = Instantiate(ing.item).GetComponent<Item>();
             item.HeldQuantity = ing.quantity;
 
             inventory.GiveItem(item, out bool taken);
-            if (!taken)
-            {
-                Destroy(item);
-                return false;
-            }
+            if (!taken) { Destroy(item); return false; }
         }
 
         return true;
@@ -397,32 +324,21 @@ public class BuildingHammer : Item
 
     #region Item Overrides
 
-    public override void OnSelectOnce()
-    {
-        UpdateUiGhost();
-    }
-
+    public override void OnSelectOnce() => UpdateUiGhost();
 
     public override void OnPick()
     {
-        if(!isSelected) return;
+        if (!isSelected) return;
         UpdateUiGhost();
     }
 
     public void UpdateUiGhost()
     {
-        if(!isSelected || !isItemPickedUp) return;
+        if (!isSelected || !isItemPickedUp) return;
         SpawnGhost();
 
-        if(dayNightCycle.currentState == DayNightCycleManager.CycleState.Day)
-        buildManager.ShowUI(true);   
-    }
-
-    void OnDestroy()
-    {
-        //new line added
-        if(buildManager)
-        buildManager.OnGridUpdated -= UpdateUiGhost;
+        if (dayNightCycle.currentState == DayNightCycleManager.CycleState.Day)
+            buildManager.ShowUI(true);
     }
 
     public override void OnSelect()
@@ -432,13 +348,17 @@ public class BuildingHammer : Item
 
     public override void OnChangingItems()
     {
-        //Cleanup
         buildManager?.ShowUI(false);
         buildManager?.ShowInspectUI(false);
         rotationTween?.Kill();
         Destroy(ghostBuilding);
         isChosingBuild = false;
         PlayerInventory.Instance.CanScroll = true;
+    }
+
+    private void OnDestroy()
+    {
+        if (buildManager) buildManager.OnGridUpdated -= UpdateUiGhost;
     }
 
     #endregion

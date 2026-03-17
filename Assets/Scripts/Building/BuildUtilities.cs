@@ -2,164 +2,90 @@ using UnityEngine;
 
 public static class BuildUtilities
 {
-    private const float BUILDING_TOUCH_THRESHOLD = 0.1f;
-
+    //spherecast from camera to find a surface
     public static bool TryGetHit(Transform camera, float radius, float maxDistance, LayerMask layers, out RaycastHit hit)
     {
         return Physics.SphereCast(camera.position, radius, camera.forward, out hit, maxDistance, layers);
     }
 
-    public static Vector3 CalculatePosition(RaycastHit hit, Building building, MeshFilter meshFilter, GameObject ghostObj, int gridSize, float rotation, float snapDistance, out bool isSnap)
+    //figure out where the ghost should go
+    public static Vector3 CalculatePosition(RaycastHit hit, Building building, GameObject ghostObj, float rotation, float snapDistance, out bool isSnapped)
     {
-        isSnap = false;
-        
+        isSnapped = false;
+
         if (building == null || !building.usesPivots)
             return hit.point;
 
-        //Get scale and extents
-        float scale = building.affectedByGridSizePosition ? gridSize : 1f;
-        Vector3 extents = meshFilter.mesh.bounds.extents * scale;
+        //sit building on top of the ground using its collider height
+        BoxCollider col = building.GetComponent<BoxCollider>();
+        float halfHeight = col != null ? col.size.y * 0.5f : 0.5f;
+        Vector3 groundPos = hit.point + Vector3.up * halfHeight;
 
-        //Base position
-        Vector3 basePosition = hit.point + Vector3.up * (extents.y - meshFilter.mesh.bounds.center.y);
-    
-        //Check target building
+        //not hitting a placed building? stay on ground
         Building target = hit.collider.GetComponent<Building>();
         if (target == null || target.pivots.Count == 0)
-            return basePosition;
-        
-        //Find snap position
-        Vector3 pos = FindSnapPosition(hit, building, target, ghostObj, rotation, gridSize, snapDistance, out bool snapped);
-        isSnap = snapped;
-        return pos;
+            return groundPos;
+
+        //try snapping pivots together
+        Vector3 snapped = FindSnapPosition(building, target, ghostObj, rotation, snapDistance, hit.point, out bool didSnap);
+        isSnapped = didSnap;
+        return didSnap ? snapped : groundPos;
     }
 
-    public static bool IsPositionValid(GameObject ghostObj, Building building, float gridSize)
+    //simple overlap check — all buildings are squares so one box is enough
+    public static bool IsPositionValid(GameObject ghostObj, Building building)
     {
-        // Get all colliders in the ghost building
-        Collider[] ghostColliders = ghostObj.GetComponentsInChildren<Collider>();
-        if (ghostColliders.Length == 0) return true;
-    
-        // Enable colliders temporarily for the check
-        foreach (var col in ghostColliders)
-            col.enabled = true;
-    
-        bool isValid = true;
-    
-        // Check each collider for overlaps
-        foreach (var col in ghostColliders)
+        BoxCollider col = building.GetComponent<BoxCollider>();
+        if (col == null) return true;
+
+        Vector3 center = ghostObj.transform.TransformPoint(col.center);
+
+        //shrink slightly so perfectly touching buildings don't count as blocked
+        Vector3 halfExtents = col.size * 0.5f - Vector3.one * 0.05f;
+
+        Collider[] hits = Physics.OverlapBox(center, halfExtents, ghostObj.transform.rotation, ~0, QueryTriggerInteraction.Ignore);
+
+        foreach (var hit in hits)
         {
-            Collider[] overlaps = null;
-    
-            if (col is BoxCollider box)
-            {
-                Vector3 center = col.transform.TransformPoint(box.center);
-                Vector3 halfExtents = Vector3.Scale(box.size / 2f, col.transform.lossyScale);
-                overlaps = Physics.OverlapBox(center, halfExtents, col.transform.rotation, ~0, QueryTriggerInteraction.Ignore);
-            }
-            else if (col is SphereCollider sphere)
-            {
-                Vector3 center = col.transform.TransformPoint(sphere.center);
-                float radius = sphere.radius * Mathf.Max(col.transform.lossyScale.x, col.transform.lossyScale.y, col.transform.lossyScale.z);
-                overlaps = Physics.OverlapSphere(center, radius, ~0, QueryTriggerInteraction.Ignore);
-            }
-            else if (col is CapsuleCollider capsule)
-            {
-                Vector3 center = col.transform.TransformPoint(capsule.center);
-                float radius = capsule.radius * Mathf.Max(col.transform.lossyScale.x, col.transform.lossyScale.z);
-                float height = capsule.height * col.transform.lossyScale.y;
-                overlaps = Physics.OverlapCapsule(center + Vector3.up * (height / 2f - radius), center - Vector3.up * (height / 2f - radius), radius, ~0, QueryTriggerInteraction.Ignore);
-            }
-    
-            if (overlaps != null)
-            {
-                foreach (var overlap in overlaps)
-                {
-                    // Ignore self colliders
-                    if (overlap.transform.IsChildOf(ghostObj.transform)) continue;
-    
-                    // Allow touching GROUND layer
-                    if (overlap.gameObject.layer == LayerMask.NameToLayer("Ground")) continue;
-    
-                    // Allow touching other buildings with threshold (SCALED BY GRID SIZE)
-                    if (overlap.CompareTag("Build"))
-                    {
-                        // Check if colliders are actually penetrating each other
-                        if (Physics.ComputePenetration(
-                            col, col.transform.position, col.transform.rotation,
-                            overlap, overlap.transform.position, overlap.transform.rotation,
-                            out Vector3 direction, out float penetrationDepth))
-                        {
-                            // They ARE penetrating - only allow if penetration is tiny (just touching)
-                            float scaledThreshold = BUILDING_TOUCH_THRESHOLD * gridSize;
-                            if (penetrationDepth <= scaledThreshold) continue;
-                            
-                            // Too much penetration - block it
-                            isValid = false;
-                            break;
-                        }
-                        
-                        // No penetration at all - they're separated, allow it
-                        continue;
-                    }
-    
-                    // Found a collision with something else - can't place
-                    isValid = false;
-                    break;
-                }
-            }
-    
-            if (!isValid) break;
+            if (hit.transform.IsChildOf(ghostObj.transform)) continue;
+            if (hit.gameObject.layer == LayerMask.NameToLayer("Ground")) continue;
+            if (hit.CompareTag("Build")) continue; //touching other buildings is fine
+
+            return false;
         }
-    
-        // Disable colliders again
-        foreach (var col in ghostColliders)
-            col.enabled = false;
-    
-        return isValid;
+
+        return true;
     }
 
-    private static Vector3 FindSnapPosition(RaycastHit hit, Building placing, Building target, GameObject ghostObj, float rotation, int gridSize, float snapDistance, out bool snapped)
+    //move ghost so MY closest pivot lands on TARGET closest pivot
+    private static Vector3 FindSnapPosition(Building placing, Building target, GameObject ghostObj, float rotation, float snapDistance, Vector3 hitPoint, out bool snapped)
     {
-        float closest = float.MaxValue;
-        Vector3 best = hit.point;
-        Vector3 bestOffset = Vector3.zero;
-        float snapMultiplier = placing.affectedByGridSizePosition ? gridSize : 1f;
         snapped = false;
+        Vector3 best = hitPoint;
+        float closestDist = float.MaxValue;
 
-        foreach (var targetPivot in target.pivots)
+        Quaternion ghostRot = Quaternion.Euler(0, rotation, 0);
+
+        foreach (Transform targetPivot in target.pivots)
         {
-            Vector3 worldPivotPos = GetRotatedPivotPosition(targetPivot.position, hit.collider.transform.position, hit.collider.transform.eulerAngles.y);
-            Vector3 direction = (worldPivotPos - hit.collider.transform.position).normalized;
-            direction = (direction + hit.normal).normalized * snapMultiplier / 2f;
+            //too far from where we're aiming? skip
+            if (Vector3.Distance(hitPoint, targetPivot.position) > snapDistance) continue;
 
-            float distToPivot = Vector3.Distance(hit.point, worldPivotPos);
-            if (distToPivot > snapDistance) continue;
-
-            ghostObj.transform.position = worldPivotPos;
-
-            foreach (var myPivot in placing.pivots)
+            foreach (Transform myPivot in placing.pivots)
             {
-                Vector3 myWorldPivotPos = GetRotatedPivotPosition(myPivot.position, ghostObj.transform.position, rotation);
-                float d = Vector3.Distance(myWorldPivotPos - direction, worldPivotPos);
+                //where my pivot would land if ghost sits at current position
+                Vector3 myPivotOffset = ghostRot * myPivot.localPosition;
+                float dist = Vector3.Distance(ghostObj.transform.position + myPivotOffset, targetPivot.position);
 
-                if (d < closest)
-                {
-                    closest = d;
-                    bestOffset = myWorldPivotPos - ghostObj.transform.position;
-                    best = worldPivotPos;
-                    snapped = true;
-                }
+                if (dist >= closestDist) continue;
+
+                closestDist = dist;
+                //offset ghost so my pivot sits exactly on the target pivot
+                best = targetPivot.position - myPivotOffset;
+                snapped = true;
             }
         }
-        
-        return best + bestOffset;
-    }
 
-    private static Vector3 GetRotatedPivotPosition(Vector3 pivotPos, Vector3 centerPos, float yRotation)
-    {
-        Vector3 direction = pivotPos - centerPos;
-        direction = Quaternion.Euler(0f, yRotation, 0f) * direction;
-        return direction + centerPos;
+        return best;
     }
 }

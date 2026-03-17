@@ -16,16 +16,14 @@ public class BuildingManager : MonoBehaviour
     public float extraBuildingHealth = 1;
     public float extraBuildingDamage = 1;
 
-    [Header("Building Effects")]
+    [Header("Effects")]
     public ParticleSystem smoke;
 
     [Header("Build Settings")]
     internal bool IsDay = true;
-    public static bool CanBuild(float points) { return Instance.IsDay && Instance.currentBuilds + points <= Instance.buildLimitPoints;}
-    public static bool CanBuild() { return Instance.IsDay && Instance.currentBuilds <= Instance.buildLimitPoints;}
-    
-    
-    public int gridSize = 2;
+    public static bool CanBuild(float points) => Instance.IsDay && Instance.currentBuilds + points <= Instance.buildLimitPoints;
+    public static bool CanBuild() => Instance.IsDay && Instance.currentBuilds <= Instance.buildLimitPoints;
+
     public float maxBuildDistance = 12f;
     public float snapDistance = 5f;
     public float sphereCastRadius = 1.5f;
@@ -36,8 +34,7 @@ public class BuildingManager : MonoBehaviour
     public LayerMask buildableLayers;
     public LayerMask demolishLayers;
 
-    [Header("UI")]
-    [Header("Building")]
+    [Header("UI - Building")]
     [SerializeField] private TMP_Text buildsQuantityText;
     [SerializeField] private Transform canvasParent;
     [SerializeField] private Image buildIcon;
@@ -47,7 +44,7 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private Transform recipeParent;
     [SerializeField] private Image recipePrefab;
 
-    [Header("Building Property Ispecting")]
+    [Header("UI - Inspect")]
     [SerializeField] private Transform inspectCanvasParent;
     [SerializeField] private TMP_Text buildInspectTitle;
     [SerializeField] private Slider buildInspectHealthSlider;
@@ -55,11 +52,9 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private TMP_Text buildInspectDamage;
     [SerializeField] private TMP_Text buildInspectDamageText;
 
-    // [Header("Animators")]
     private Animator animator;
     private Animator animatorInspect;
-
-    List<GameObject> recipeInstances = new();
+    private List<GameObject> recipeInstances = new();
 
     private void Awake()
     {
@@ -70,35 +65,28 @@ public class BuildingManager : MonoBehaviour
     {
         animator = canvasParent.GetComponent<Animator>();
         animatorInspect = inspectCanvasParent.GetComponent<Animator>();
-
         DayNightCycleManager.Instance.OnDayChange += UpdateBuildingStatus;
     }
 
-    private void UpdateBuildingStatus(bool value)
-    {
-        IsDay = value;
-    }
+    private void UpdateBuildingStatus(bool value) => IsDay = value;
 
-    public void ShowUI(bool state)
-    {
-        animator.SetBool("Using", state);
-    }
+    #region UI
 
-    public void ShowInspectUI(bool state)
-    {
-        animatorInspect.SetBool("Using", state);
-    }
+    public void ShowUI(bool state) => animator.SetBool("Using", state);
+    public void ShowInspectUI(bool state) => animatorInspect.SetBool("Using", state);
 
     public void UpdateBuildUI(Building building, bool selectionMode)
     {
         buildIcon.sprite = building.data.sprite;
         buildTitle.text = building.data.buildingName;
         buildPriceText.text = building.data.pointsWorth.ToString();
-        string currentQuantity = currentBuilds > buildLimitPoints ? "<color=red>" + currentBuilds.ToString() + "</color>" : currentBuilds.ToString();
-        buildsQuantityText.text = currentQuantity + "/" + buildLimitPoints.ToString();
+
+        string count = currentBuilds > buildLimitPoints
+            ? "<color=red>" + currentBuilds + "</color>"
+            : currentBuilds.ToString();
+        buildsQuantityText.text = count + "/" + buildLimitPoints;
 
         selectionModeImage.gameObject.SetActive(selectionMode);
-
         UpdateRecipe(building.ingredients.ToList());
     }
 
@@ -107,12 +95,11 @@ public class BuildingManager : MonoBehaviour
         buildInspectbuildIcon.sprite = building.data.sprite;
         buildInspectTitle.text = building.data.buildingName;
 
-        if(building.currentDamage <= 0)
+        if (building.currentDamage <= 0)
         {
             buildInspectDamageText.text = "";
             buildInspectDamage.text = "";
         }
-
         else
         {
             buildInspectDamageText.text = "Damage";
@@ -123,24 +110,21 @@ public class BuildingManager : MonoBehaviour
         buildInspectHealthSlider.value = building.currentHealth;
     }
 
-    void UpdateRecipe(List<Ingredient> ingredients)
+    private void UpdateRecipe(List<Ingredient> ingredients)
     {
-        // Add more UI elements if needed
+        //add slots if needed
         while (recipeInstances.Count < ingredients.Count)
-        {
-            Image img = Instantiate(recipePrefab, recipeParent);
-            recipeInstances.Add(img.gameObject);
-        }
+            recipeInstances.Add(Instantiate(recipePrefab, recipeParent).gameObject);
 
-        // Remove excess UI elements if needed
+        //remove excess slots
         while (recipeInstances.Count > ingredients.Count)
         {
-            int lastIndex = recipeInstances.Count - 1;
-            Destroy(recipeInstances[lastIndex]);
-            recipeInstances.RemoveAt(lastIndex);
+            int last = recipeInstances.Count - 1;
+            Destroy(recipeInstances[last]);
+            recipeInstances.RemoveAt(last);
         }
 
-        // Update existing UI elements (reuse them!)
+        //fill slots
         for (int i = 0; i < ingredients.Count; i++)
         {
             Image img = recipeInstances[i].GetComponent<Image>();
@@ -149,27 +133,20 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Grid
+
     public void UpdateGrid()
     {
         OnGridUpdated?.Invoke();
-
         currentBuilds = 0;
-        
-        GameObject[] builds = GameObject.FindGameObjectsWithTag("Build");
-        for (int i = 0; i < builds.Length; i++)
-        {
-            currentBuilds += builds[i].GetComponent<Building>().data.pointsWorth;
-        };
+
+        foreach (var build in GameObject.FindGameObjectsWithTag("Build"))
+            currentBuilds += build.GetComponent<Building>().data.pointsWorth;
     }
 
-    void ClearRecipe()
-    {
-        recipeInstances.ForEach(Destroy);
-        recipeInstances.Clear();
-    }
+    #endregion
 
-    void OnValidate()
-    {
-        Instance = this;
-    }
+    void OnValidate() => Instance = this;
 }

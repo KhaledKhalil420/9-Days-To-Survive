@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.AI;
 using System;
+using UnityEngine.AI;
 
 public class Building : MonoBehaviour, IDamagable
 {
@@ -15,17 +15,15 @@ public class Building : MonoBehaviour, IDamagable
     public Ingredient[] ingredients = Array.Empty<Ingredient>();
     public BuildingData data;
     public bool dropResourcesOnDestory = false;
-    
-    [Header("Grid Settings")]
-    public bool requireSnapping = false; //Added this
+
+    [Header("Snapping")]
+    public bool requireSnapping = false;
     public bool usesPivots = true;
-    public bool affectedByGridSizePosition = true;
     public List<Transform> pivots;
     public List<Transform> pivotsOnBuild;
     public List<Transform> pivotsOnBuildDisable;
 
-    
-    [Header("Physics Settings")]
+    [Header("Physics")]
     [SerializeField] private float supportCheckScale = 1.15f;
     private LayerMask buildingLayers;
 
@@ -34,30 +32,27 @@ public class Building : MonoBehaviour, IDamagable
     [SerializeField] private AudioClip onDestroySound;
     [SerializeField] private AudioClip onDamageSound;
 
-
     internal bool isPlaced = false;
     private BoxCollider buildingCollider;
     private NavMeshObstacle obstacle;
-    private static HashSet<Building> checkingBuildings = new HashSet<Building>(); 
+    private static HashSet<Building> checkingBuildings = new();
 
     private void Awake()
     {
         buildingCollider = GetComponent<BoxCollider>();
         buildingLayers = BuildingManager.Instance.PhysicsLayers;
 
-        //Setup obstacle
-        if(TryGetComponent(out obstacle))
+        if (TryGetComponent(out obstacle))
         {
             obstacle.carving = true;
             obstacle.carveOnlyStationary = false;
             obstacle.shape = NavMeshObstacleShape.Box;
             obstacle.center = buildingCollider.center;
-            obstacle.size = buildingCollider.size;
-            obstacle.size += Vector3.one * 0.2f;
+            obstacle.size = buildingCollider.size + Vector3.one * 0.2f;
         }
-        
+
         source = GetComponent<AudioSource>();
-        if(source == null) source = gameObject.AddComponent<AudioSource>();
+        if (source == null) source = gameObject.AddComponent<AudioSource>();
 
         initHealth = currentHealth;
     }
@@ -67,7 +62,7 @@ public class Building : MonoBehaviour, IDamagable
         Upgrades();
     }
 
-    #region Self destruction
+    #region Support
 
     private bool isPendingDestroy = false;
 
@@ -87,35 +82,26 @@ public class Building : MonoBehaviour, IDamagable
 
     private bool HasGroundSupport()
     {
-        if (checkingBuildings.Contains(this))
-            return false;
-
+        //avoid infinite loops from circular support chains
+        if (checkingBuildings.Contains(this)) return false;
         checkingBuildings.Add(this);
 
         try
         {
             if (buildingCollider == null)
-            {
-                buildingCollider = gameObject.GetComponent<BoxCollider>();
-                if (buildingCollider == null)
-                    buildingCollider = gameObject.AddComponent<BoxCollider>();
-            }
+                buildingCollider = GetComponent<BoxCollider>() ?? gameObject.AddComponent<BoxCollider>();
 
-            Bounds bounds = buildingCollider.bounds;
-            Collider[] hits = Physics.OverlapBox(bounds.center, bounds.extents * supportCheckScale, transform.rotation, buildingLayers, QueryTriggerInteraction.Ignore);
+            Collider[] hits = Physics.OverlapBox(
+                buildingCollider.bounds.center,
+                buildingCollider.bounds.extents * supportCheckScale,
+                transform.rotation, buildingLayers, QueryTriggerInteraction.Ignore);
 
             foreach (var hit in hits)
             {
                 if (hit == buildingCollider) continue;
-
-                if (hit.CompareTag("Ground"))
-                    return true;
-
-                if (hit.CompareTag("Build") && hit.TryGetComponent(out Building supportingBuilding))
-                {
-                    if (supportingBuilding.isPlaced && supportingBuilding.HasGroundSupport())
-                        return true;
-                }
+                if (hit.CompareTag("Ground")) return true;
+                if (hit.CompareTag("Build") && hit.TryGetComponent(out Building b))
+                    if (b.isPlaced && b.HasGroundSupport()) return true;
             }
 
             return false;
@@ -128,142 +114,139 @@ public class Building : MonoBehaviour, IDamagable
 
     #endregion
 
+    #region Placement
+
     public void OnPlace(float extraHealth, float _extraDamage)
     {
-        if (isPlaced) 
-            return;
-        
-        isPlaced = true;
+        if (isPlaced) return;
 
+        isPlaced = true;
         currentHealth += (int)extraHealth;
         extraDamage += _extraDamage;
-        
+
         pivots.AddRange(pivotsOnBuild);
         BuildingManager.Instance.OnGridUpdated += UpdateBuilding;
         BuildingManager.Instance.UpdateGrid();
         DayNightCycleManager.Instance.OnDayChange += ResetHealth;
 
-        foreach(Transform pivot in pivotsOnBuildDisable) Destroy(pivot.gameObject);
-        
+        foreach (Transform p in pivotsOnBuildDisable) Destroy(p.gameObject);
+
         RebakeNav();
         OnPlaced();
     }
 
     private void ResetHealth(bool isDay)
     {
-        if(!isDay)
-        {
-            initHealth += BuildingManager.Instance.extraBuildingHealth;
-            currentHealth = initHealth;
-            extraDamage = BuildingManager.Instance.extraBuildingDamage;
-            CheckUpgrades();
-        }
+        if (isDay) return;
+
+        initHealth += BuildingManager.Instance.extraBuildingHealth;
+        currentHealth = initHealth;
+        extraDamage = BuildingManager.Instance.extraBuildingDamage;
+        CheckUpgrades();
     }
 
     private void RebakeNav()
     {
         if (DayNightCycleManager.Instance?.currentState == DayNightCycleManager.CycleState.Night)
-        {
             WorldGenerator.RequestNavMeshRebake();
-        }
     }
+
+    #endregion
 
     #region Virtuals
 
     public virtual void OnPlaced() { }
     public virtual void OnDamage() { }
     public virtual void OnDeath() { }
-    public virtual void OnDemolish(){ }
+    public virtual void OnDemolish() { }
 
     #endregion
 
-    private void DestroyBuilding()
-    {
-        OnDeath();
-
-        if(dropResourcesOnDestory || DayNightCycleManager.Instance.currentState == DayNightCycleManager.CycleState.Day)
-        {
-            foreach(Ingredient ingredient in ingredients)
-            {
-                Item item = Instantiate(ingredient.item, transform.position, transform.rotation).GetComponent<Item>();
-                item.HeldQuantity = ingredient.quantity;
-            }
-        }
-        
-        if(TryGetComponent(out Renderer renderer)) ParticleSpawner.SpawnWithBounds(BuildingManager.Instance.smoke, transform.position, transform.rotation, renderer.bounds);
-
-        Destroy(gameObject);
-    }
-
-    private void OnDestroy()
-    {
-        if(!isPlaced) 
-            return; 
-        RebakeNav();
-
-        if(DayNightCycleManager.Instance == null || BuildingManager.Instance == null) 
-            return;
-
-        DayNightCycleManager.Instance.OnDayChange -= ResetHealth;
-        BuildingManager.Instance.OnGridUpdated -= UpdateBuilding;
-        BuildingManager.Instance.UpdateGrid();
-    }
+    #region Damage & Death
 
     public void Damage(float damage)
     {
         currentHealth -= (int)damage;
         OnDamage();
 
-        if(onDamageSound != null)
-            source?.PlayOneShot(onDamageSound, 0.8f);
-        
-        if (currentHealth <= 0)
-        {
-            DestroyBuilding();
-        }
+        if (onDamageSound != null) source?.PlayOneShot(onDamageSound, 0.8f);
+        if (currentHealth <= 0) DestroyBuilding();
     }
 
-    #region Upgrades
-    
-    public void CheckUpgrades()
+    private void DestroyBuilding()
     {
-        Upgrades();
+        OnDeath();
+
+        if (dropResourcesOnDestory || DayNightCycleManager.Instance.currentState == DayNightCycleManager.CycleState.Day)
+        {
+            foreach (Ingredient ing in ingredients)
+            {
+                Item item = Instantiate(ing.item, transform.position, transform.rotation).GetComponent<Item>();
+                item.HeldQuantity = ing.quantity;
+            }
+        }
+
+        if (TryGetComponent(out Renderer renderer))
+            ParticleSpawner.SpawnWithBounds(BuildingManager.Instance.smoke, transform.position, transform.rotation, renderer.bounds);
+
+        Destroy(gameObject);
     }
+
+    private void OnDestroy()
+    {
+        if (!isPlaced) return;
+
+        RebakeNav();
+
+        if (DayNightCycleManager.Instance == null || BuildingManager.Instance == null) return;
+
+        DayNightCycleManager.Instance.OnDayChange -= ResetHealth;
+        BuildingManager.Instance.OnGridUpdated -= UpdateBuilding;
+        BuildingManager.Instance.UpdateGrid();
+    }
+
+    #endregion
+
+    #region Upgrades
+
+    public void CheckUpgrades() => Upgrades();
+
+    private bool isHealthOnEnemyDeath = false;
 
     private void Upgrades()
     {
-        //Do here
-        if(!isHealthOnEnemyDeath && UpgradeManager.Instance.IncreaseHealthOnEnemyDeath)
+        if (!isHealthOnEnemyDeath && UpgradeManager.Instance.IncreaseHealthOnEnemyDeath)
         {
             UpgradeManager.Instance.OnEnemyDeath += IncreaseHealthOnEnemyDeath;
             isHealthOnEnemyDeath = true;
         }
     }
 
-    private bool isHealthOnEnemyDeath = false;
     public void IncreaseHealthOnEnemyDeath()
     {
-        if(UpgradeManager.Instance.IncreaseHealthOnEnemyDeath)
-        {
-            int chance = UnityEngine.Random.Range(0, 2);
-            if(chance == 0) 
-                return;
+        if (!UpgradeManager.Instance.IncreaseHealthOnEnemyDeath) return;
 
-            float percent = UnityEngine.Random.Range(0.025f, 0.05f);
-            float healAmount = initHealth * percent * UpgradeManager.Instance.IncreaseHealthOnEnemyDeathMultiplier;
+        //50% chance to heal
+        if (UnityEngine.Random.Range(0, 2) == 0) return;
 
-            currentHealth = Mathf.Min(currentHealth + healAmount, initHealth);        
-        }
+        float percent = UnityEngine.Random.Range(0.025f, 0.05f);
+        float heal = initHealth * percent * UpgradeManager.Instance.IncreaseHealthOnEnemyDeathMultiplier;
+        currentHealth = Mathf.Min(currentHealth + heal, initHealth);
     }
+
+    #endregion
+
+    #region Editor
 
     private void OnDrawGizmosSelected()
     {
         BoxCollider col = buildingCollider != null ? buildingCollider : GetComponent<BoxCollider>();
         if (col == null) return;
-    
+
         Gizmos.color = new Color(0f, 1f, 0f, 0.3f);
         Gizmos.matrix = Matrix4x4.TRS(col.bounds.center, transform.rotation, Vector3.one);
         Gizmos.DrawWireCube(Vector3.zero, col.bounds.extents * supportCheckScale * 2);
     }
+
     #endregion
 }
