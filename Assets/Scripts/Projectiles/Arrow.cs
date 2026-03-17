@@ -1,18 +1,20 @@
 using UnityEngine;
 
-public class Arrow : MonoBehaviour
+public class Arrow : Item
 {
     internal Rigidbody rb;
 
     [Header("Arrow Settings")]
+    [SerializeField] internal bool asItem = true;
     [SerializeField] private float pierceDepth = 0.2f;
     [SerializeField] private float disappearDelay = 10f;
 
     internal float damage;
-    private bool hasHit;
+    private bool hasHit = false;
 
     private void Start()
     {
+        if(asItem) return;
         rb = GetComponent<Rigidbody>();
         GetComponent<MeshRenderer>().enabled = false;
         Invoke(nameof(EnableCollider), 0.015f);
@@ -20,12 +22,16 @@ public class Arrow : MonoBehaviour
 
     private void Update()
     {
-        if (hasHit) return;
+        if(asItem) return;
+        if (hasHit)
+        {
+            return;
+        }
         if (rb.linearVelocity.sqrMagnitude > 0.01f)
             transform.forward = rb.linearVelocity.normalized;
     }
 
-    void EnableCollider()
+    private void EnableCollider()
     {
         GetComponent<AudioSource>().enabled = true;
         GetComponent<MeshRenderer>().enabled = true;
@@ -35,7 +41,7 @@ public class Arrow : MonoBehaviour
         col.isTrigger = false;
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("Player") || hasHit) return;
 
@@ -53,20 +59,20 @@ public class Arrow : MonoBehaviour
         Stick(collision.transform);
     }
 
-    void Stick(Transform hitTransform)
+    private void Stick(Transform hitTransform) 
     {
         transform.position += transform.forward * pierceDepth;
-        transform.SetParent(hitTransform);
 
-        rb.linearVelocity = Vector3.zero;
-        rb.constraints = RigidbodyConstraints.FreezeAll;
+        Destroy(rb);
+        Destroy(GetComponent<Collider>());
+        Destroy(GetComponent<TrailRenderer>());
 
-        GetComponent<Collider>().isTrigger = true;
+        transform.SetParent(hitTransform, true);
 
         Invoke(nameof(Disappear), disappearDelay);
     }
 
-    void Disappear() => Destroy(gameObject);
+    private void Disappear() => Destroy(gameObject);
 
     private void OnDisable()
     {

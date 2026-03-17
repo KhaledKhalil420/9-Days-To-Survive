@@ -1724,6 +1724,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 92f0cec7716554c489b3f2d6a745c2f6, type: 2}
   - {fileID: 11400000, guid: e852869cfb4d799488b0e26ab1260f92, type: 2}
   - {fileID: 11400000, guid: 3e66ae3e62920f740afee504c410e361, type: 2}
+  - {fileID: 11400000, guid: c053e4c686c2583478917d16ee57a14d, type: 2}
   uiHolder: {fileID: 8385736257927671490}
   recipeIcon_Image: {fileID: 2935601502420707642}
   recipeName_Text: {fileID: 5577177748774976853}
@@ -1744,11 +1745,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHealth: 5
   extraDamage: 0
+  currentDamage: 0
   ingredients:
   - item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
     quantity: 15
   data: {fileID: 11400000, guid: 1974f81039fa0814286a9d06f3958b50, type: 2}
   dropResourcesOnDestory: 1
+  requireSnapping: 0
   usesPivots: 0
   affectedByGridSizePosition: 1
   pivots: []
