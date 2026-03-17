@@ -2,7 +2,6 @@ using UnityEngine;
 
 public static class BuildUtilities
 {
-    private const float BUILDING_TOUCH_THRESHOLD = 0.1f;
 
     public static bool TryGetHit(Transform camera, float radius, float maxDistance, LayerMask layers, out RaycastHit hit)
     {
@@ -34,89 +33,26 @@ public static class BuildUtilities
         return pos;
     }
 
-    public static bool IsPositionValid(GameObject ghostObj, Building building, float gridSize)
+    public static bool IsPositionValid(GameObject ghostObj, Building building)
     {
-        // Get all colliders in the ghost building
-        Collider[] ghostColliders = ghostObj.GetComponentsInChildren<Collider>();
-        if (ghostColliders.Length == 0) return true;
+        MeshRenderer renderer = building.GetComponent<MeshRenderer>();
+        if (renderer == null) return true;
     
-        // Enable colliders temporarily for the check
-        foreach (var col in ghostColliders)
-            col.enabled = true;
+        //use renderer bounds for the box shape
+        Vector3 center = ghostObj.transform.position + renderer.localBounds.center;
+        Vector3 halfExtents = renderer.localBounds.extents - Vector3.one * 0.05f;
     
-        bool isValid = true;
+        Collider[] overlaps = Physics.OverlapBox(center, halfExtents, ghostObj.transform.rotation, ~0, QueryTriggerInteraction.Ignore);
     
-        // Check each collider for overlaps
-        foreach (var col in ghostColliders)
+        foreach (var overlap in overlaps)
         {
-            Collider[] overlaps = null;
+            if (overlap.transform.IsChildOf(ghostObj.transform)) continue;
+            if (overlap.gameObject.layer == LayerMask.NameToLayer("Ground")) continue;
     
-            if (col is BoxCollider box)
-            {
-                Vector3 center = col.transform.TransformPoint(box.center);
-                Vector3 halfExtents = Vector3.Scale(box.size / 2f, col.transform.lossyScale);
-                overlaps = Physics.OverlapBox(center, halfExtents, col.transform.rotation, ~0, QueryTriggerInteraction.Ignore);
-            }
-            else if (col is SphereCollider sphere)
-            {
-                Vector3 center = col.transform.TransformPoint(sphere.center);
-                float radius = sphere.radius * Mathf.Max(col.transform.lossyScale.x, col.transform.lossyScale.y, col.transform.lossyScale.z);
-                overlaps = Physics.OverlapSphere(center, radius, ~0, QueryTriggerInteraction.Ignore);
-            }
-            else if (col is CapsuleCollider capsule)
-            {
-                Vector3 center = col.transform.TransformPoint(capsule.center);
-                float radius = capsule.radius * Mathf.Max(col.transform.lossyScale.x, col.transform.lossyScale.z);
-                float height = capsule.height * col.transform.lossyScale.y;
-                overlaps = Physics.OverlapCapsule(center + Vector3.up * (height / 2f - radius), center - Vector3.up * (height / 2f - radius), radius, ~0, QueryTriggerInteraction.Ignore);
-            }
-    
-            if (overlaps != null)
-            {
-                foreach (var overlap in overlaps)
-                {
-                    // Ignore self colliders
-                    if (overlap.transform.IsChildOf(ghostObj.transform)) continue;
-    
-                    // Allow touching GROUND layer
-                    if (overlap.gameObject.layer == LayerMask.NameToLayer("Ground")) continue;
-    
-                    // Allow touching other buildings with threshold (SCALED BY GRID SIZE)
-                    if (overlap.CompareTag("Build"))
-                    {
-                        // Check if colliders are actually penetrating each other
-                        if (Physics.ComputePenetration(
-                            col, col.transform.position, col.transform.rotation,
-                            overlap, overlap.transform.position, overlap.transform.rotation,
-                            out Vector3 direction, out float penetrationDepth))
-                        {
-                            // They ARE penetrating - only allow if penetration is tiny (just touching)
-                            float scaledThreshold = BUILDING_TOUCH_THRESHOLD * gridSize;
-                            if (penetrationDepth <= scaledThreshold) continue;
-                            
-                            // Too much penetration - block it
-                            isValid = false;
-                            break;
-                        }
-                        
-                        // No penetration at all - they're separated, allow it
-                        continue;
-                    }
-    
-                    // Found a collision with something else - can't place
-                    isValid = false;
-                    break;
-                }
-            }
-    
-            if (!isValid) break;
+            return false;
         }
     
-        // Disable colliders again
-        foreach (var col in ghostColliders)
-            col.enabled = false;
-    
-        return isValid;
+        return true;
     }
 
     private static Vector3 FindSnapPosition(RaycastHit hit, Building placing, Building target, GameObject ghostObj, float rotation, int gridSize, float snapDistance, out bool snapped)

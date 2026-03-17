@@ -241,7 +241,7 @@ public class BuildingHammer : Item
             canPlace = isSnapped;
 
         else
-        canPlace = BuildUtilities.IsPositionValid(ghostBuilding, currentBuilding, buildManager.gridSize);
+        canPlace = BuildUtilities.IsPositionValid(ghostBuilding, currentBuilding);
         
         //Update visuals
         UpdateGhostColor();
