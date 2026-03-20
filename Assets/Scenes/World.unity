@@ -2030,17 +2030,18 @@ MonoBehaviour:
     dayTracks:
     - {fileID: 8300000, guid: c294658cbd25c47488e682f37687286c, type: 3}
     nightTracks:
-    - {fileID: 8300000, guid: 9aa5a7b0dd65d92499207312dc5fab54, type: 3}
+    - {fileID: 8300000, guid: b270d6fd2a7f08945bd3dfbc2af916d9, type: 3}
   - dayToPlayIn: 1
     dayTracks:
     - {fileID: 8300000, guid: 5307f011f150dc542a863858b3ec0e95, type: 3}
     nightTracks:
-    - {fileID: 8300000, guid: 9aa5a7b0dd65d92499207312dc5fab54, type: 3}
+    - {fileID: 8300000, guid: b270d6fd2a7f08945bd3dfbc2af916d9, type: 3}
   - dayToPlayIn: 1
     dayTracks:
     - {fileID: 8300000, guid: 430a196f405b1e944aa1c3d5983f7de1, type: 3}
     nightTracks:
     - {fileID: 8300000, guid: 35118378d26d7bc41926c747a3c4ed53, type: 3}
+    - {fileID: 8300000, guid: b270d6fd2a7f08945bd3dfbc2af916d9, type: 3}
   ambienceSource: {fileID: 217955938}
 --- !u!82 &217955937
 AudioSource:
@@ -10796,6 +10797,7 @@ MonoBehaviour:
   - {fileID: 1801142247}
   - {fileID: 1120478805}
   - {fileID: 1101085726}
+  - {fileID: 1278475162}
   volume: {fileID: 1602036673}
   group: {fileID: 695288925}
 --- !u!1 &734876215
@@ -16183,6 +16185,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 317bce9e9af5a4840af88897321e82f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1278475162 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6652138995973166193, guid: af76cb0676d5a2943a60282828deaa0e, type: 3}
+  m_PrefabInstance: {fileID: 1870169798}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5715e92957527e4e99540e96de77021, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1286026613
 GameObject:
   m_ObjectHideFlags: 0
@@ -18459,6 +18472,7 @@ Transform:
   - {fileID: 1441722281}
   - {fileID: 636588301}
   - {fileID: 294861414}
+  - {fileID: 2124274576}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1562770186
@@ -22868,6 +22882,51 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!1 &2124274575
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2124274576}
+  - component: {fileID: 2124274577}
+  m_Layer: 0
+  m_Name: UiManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2124274576
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124274575}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1562540754}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2124274577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124274575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b075942987257fa4282056fb4557bdd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WorldMessage_Ui: {fileID: 5234163657860213902, guid: d0acd3f4183b0ae409bbff221ce792c5, type: 3}
 --- !u!1001 &2126618535
 PrefabInstance:
   m_ObjectHideFlags: 0

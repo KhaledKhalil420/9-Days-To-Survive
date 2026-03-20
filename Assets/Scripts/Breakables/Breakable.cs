@@ -6,8 +6,8 @@ public enum BreakableType {Pickaxe, Axe, Else, Buildings}
 public class Breakable : MonoBehaviour, IBreakable
 {
     [SerializeField] protected AdvancedAudioSource source;
-    [SerializeField] private BreakableType requiredTool;
-    [SerializeField] protected float toughness, health;
+    [SerializeField] internal BreakableType requiredTool;
+    [SerializeField] internal float toughness, health;
     protected float fullHealth;
     [SerializeField] protected Item item;
     private GameObject sender;

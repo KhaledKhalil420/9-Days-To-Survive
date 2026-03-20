@@ -73,9 +73,23 @@ public class BreakingTool : Item
         Material sourceMat = sourceRenderer != null && sourceRenderer.sharedMaterial != null ? sourceRenderer.sharedMaterial : null;
         float calculatedDamage = damage * Random.Range(minimumDamage, maximumDamage) * heldby.GetComponent<PlayerInventory>().damageBonus;
 
-        if (hit.transform.TryGetComponent<IBreakable>(out var breakable))
+        if (hit.transform.TryGetComponent<Breakable>(out var breakable))
         {
             breakable.Damage(heldby, calculatedDamage, type, toughness);
+            
+            if(breakable.requiredTool != type)
+            {
+                Instantiate(UiManager.Instance.SpawnMessage("Wrong Tool", cam), hit.point, cam.transform.rotation);
+                AudioManager.Instance.PlaySound("Error", 0.9f, 1.1f);
+            }
+            else if(breakable.toughness > toughness)
+            {
+                Instantiate(UiManager.Instance.SpawnMessage("Too Hard", cam), hit.point, cam.transform.rotation);
+            }
+            else
+            {
+                Instantiate(UiManager.Instance.SpawnMessage(calculatedDamage.ToString(), cam), hit.point, cam.transform.rotation);
+            }
 
             if (hitParticlesPrefab != null)
                 SpawnHitParticles(hit.point, hit.normal, sourceMat);

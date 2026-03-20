@@ -15,4 +15,4 @@ MonoBehaviour:
   Name: Flint Arrow
   sprite: {fileID: 21300000, guid: c9e77eef05dfad34cab1ebd499869161, type: 3}
   prefab: {fileID: 9013070751777835439, guid: af76cb0676d5a2943a60282828deaa0e, type: 3}
-  discription: an apple a day keeps the doctor away
+  discription: 'Piecres '

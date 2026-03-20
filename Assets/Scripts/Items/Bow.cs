@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using EZCameraShake;
 using Sortify;
@@ -45,16 +46,19 @@ public class Bow : Item
     private CameraShakeInstance drawShake;
     private Tweener volumeTween;
 
+    public override void OnPick()
+    {
+        heldby.TryGetComponent(out inventory);
+    }
+
     private void Start()
     {
         _cam = PlayerLook.mainCamera.transform;
-        
-        heldby.TryGetComponent(out inventory);
     }
 
     public override void OnUse()
     {
-        if(!inventory.HasItem(arrow)) 
+        if(!inventory.HasItem(arrow, 1)) 
             return;
         
         canUse = true;
@@ -146,7 +150,7 @@ public class Bow : Item
         animator.SetTrigger("Shoot");
 
         float speed = arrowSpeed + maxBonusSpeed * chargeRatio;
-        GameObject obj = Instantiate(arrow.gameObject, _cam.position, _cam.rotation);
+        GameObject obj = Instantiate(arrow.gameObject, _cam.position - new Vector3(0, 0.2f, 0), _cam.rotation);
         obj.GetComponent<Arrow>().asItem = false;
         obj.GetComponent<Rigidbody>().AddForce(_cam.forward * speed, ForceMode.Impulse);
         obj.GetComponent<Arrow>().damage = arrowDamage;

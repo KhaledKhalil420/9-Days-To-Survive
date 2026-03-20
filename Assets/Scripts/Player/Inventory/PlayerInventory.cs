@@ -467,20 +467,7 @@ public class PlayerInventory : MonoBehaviour
         return null;
     }
 
-    public bool HasItem(Item item)
-    {
-        foreach (var slot in SlotHolders)
-        {
-            if (slot.HeldItem != null ? slot.HeldItem.data : null == item.data)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public bool HasItem(Item item, int quantity)
+    public bool HasItem(Item item, int quantity = 1)
     {
         UpdateSlots();
 
