@@ -58,6 +58,8 @@ public class Bow : Item
 
     public override void OnUse()
     {
+        arrowDamage = arrowDamage + ((arrowDamage * inventory.damageBonus) / 2);
+        
         if(!inventory.HasItem(arrow, 1)) 
             return;
         

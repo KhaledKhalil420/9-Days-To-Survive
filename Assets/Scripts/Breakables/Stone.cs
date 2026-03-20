@@ -22,7 +22,7 @@ public class Stone : Breakable
         CameraShaker.Instance?.ShakeOnce(6, 3, 0f, 1f);
     }
 
-    public override void OnDestroyed(GameObject sender)
+    public override void OnDestroyed(GameObject sender, int toughness)
     {
         Destroy(gameObject);
     }

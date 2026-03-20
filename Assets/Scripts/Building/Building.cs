@@ -17,14 +17,13 @@ public class Building : MonoBehaviour, IDamagable
     public bool dropResourcesOnDestory = false;
     
     [Header("Grid Settings")]
-    public bool requireSnapping = false; //Added this
+    public bool requireSnapping = false;
     public bool usesPivots = true;
     public bool affectedByGridSizePosition = true;
     public List<Transform> pivots;
     public List<Transform> pivotsOnBuild;
     public List<Transform> pivotsOnBuildDisable;
 
-    
     [Header("Physics Settings")]
     [SerializeField] private float supportCheckScale = 1.15f;
     private LayerMask buildingLayers;
@@ -34,19 +33,18 @@ public class Building : MonoBehaviour, IDamagable
     [SerializeField] private AudioClip onDestroySound;
     [SerializeField] private AudioClip onDamageSound;
 
-
     internal bool isPlaced = false;
+    internal bool isPendingDestroy = false;
     private BoxCollider buildingCollider;
     private NavMeshObstacle obstacle;
-    private static HashSet<Building> checkingBuildings = new HashSet<Building>(); 
+    private static HashSet<Building> checkingBuildings = new HashSet<Building>();
 
     private void Awake()
     {
         buildingCollider = GetComponent<BoxCollider>();
         buildingLayers = BuildingManager.Instance.PhysicsLayers;
 
-        //Setup obstacle
-        if(TryGetComponent(out obstacle))
+        if (TryGetComponent(out obstacle))
         {
             obstacle.carving = true;
             obstacle.carveOnlyStationary = false;
@@ -55,9 +53,9 @@ public class Building : MonoBehaviour, IDamagable
             obstacle.size = buildingCollider.size;
             obstacle.size += Vector3.one * 0.2f;
         }
-        
+
         source = GetComponent<AudioSource>();
-        if(source == null) source = gameObject.AddComponent<AudioSource>();
+        if (source == null) source = gameObject.AddComponent<AudioSource>();
 
         initHealth = currentHealth;
     }
@@ -67,9 +65,7 @@ public class Building : MonoBehaviour, IDamagable
         Upgrades();
     }
 
-    #region Self destruction
-
-    private bool isPendingDestroy = false;
+    #region Self Destruction
 
     public void UpdateBuilding()
     {
@@ -107,15 +103,9 @@ public class Building : MonoBehaviour, IDamagable
             foreach (var hit in hits)
             {
                 if (hit == buildingCollider) continue;
-
-                if (hit.CompareTag("Ground"))
-                    return true;
-
+                if (hit.CompareTag("Ground")) return true;
                 if (hit.CompareTag("Build") && hit.TryGetComponent(out Building supportingBuilding))
-                {
-                    if (supportingBuilding.isPlaced && supportingBuilding.HasGroundSupport())
-                        return true;
-                }
+                    if (supportingBuilding.isPlaced && supportingBuilding.HasGroundSupport()) return true;
             }
 
             return false;
@@ -130,28 +120,27 @@ public class Building : MonoBehaviour, IDamagable
 
     public void OnPlace(float extraHealth, float _extraDamage)
     {
-        if (isPlaced) 
-            return;
-        
+        if (isPlaced) return;
+
         isPlaced = true;
 
         currentHealth += (int)extraHealth;
         extraDamage += _extraDamage;
-        
+
         pivots.AddRange(pivotsOnBuild);
         BuildingManager.Instance.OnGridUpdated += UpdateBuilding;
         BuildingManager.Instance.UpdateGrid();
         DayNightCycleManager.Instance.OnDayChange += ResetHealth;
 
-        foreach(Transform pivot in pivotsOnBuildDisable) Destroy(pivot.gameObject);
-        
+        foreach (Transform pivot in pivotsOnBuildDisable) Destroy(pivot.gameObject);
+
         RebakeNav();
         OnPlaced();
     }
 
     private void ResetHealth(bool isDay)
     {
-        if(!isDay)
+        if (!isDay)
         {
             initHealth += BuildingManager.Instance.extraBuildingHealth;
             currentHealth = initHealth;
@@ -163,9 +152,7 @@ public class Building : MonoBehaviour, IDamagable
     private void RebakeNav()
     {
         if (DayNightCycleManager.Instance?.currentState == DayNightCycleManager.CycleState.Night)
-        {
             WorldGenerator.RequestNavMeshRebake();
-        }
     }
 
     #region Virtuals
@@ -173,36 +160,44 @@ public class Building : MonoBehaviour, IDamagable
     public virtual void OnPlaced() { }
     public virtual void OnDamage() { }
     public virtual void OnDeath() { }
-    public virtual void OnDemolish(){ }
+    public virtual void OnDemolish() { }
 
     #endregion
 
-    private void DestroyBuilding()
+    private void DestroyBuilding(bool byDamage = false)
     {
         OnDeath();
 
-        if(dropResourcesOnDestory || DayNightCycleManager.Instance.currentState == DayNightCycleManager.CycleState.Day)
+        bool isNight = DayNightCycleManager.Instance.currentState == DayNightCycleManager.CycleState.Night;
+
+        if (byDamage && isNight)
         {
-            foreach(Ingredient ingredient in ingredients)
+            BuildingManager.Instance.RegisterDisabled(this);
+            gameObject.SetActive(false);
+            return;
+        }
+
+        if (dropResourcesOnDestory || !isNight)
+        {
+            foreach (Ingredient ingredient in ingredients)
             {
                 Item item = Instantiate(ingredient.item, transform.position, transform.rotation).GetComponent<Item>();
                 item.HeldQuantity = ingredient.quantity;
             }
         }
-        
-        if(TryGetComponent(out Renderer renderer)) ParticleSpawner.SpawnWithBounds(BuildingManager.Instance.smoke, transform.position, transform.rotation, renderer.bounds);
+
+        if (TryGetComponent(out Renderer renderer))
+            ParticleSpawner.SpawnWithBounds(BuildingManager.Instance.smoke, transform.position, transform.rotation, renderer.bounds);
 
         Destroy(gameObject);
     }
 
     private void OnDestroy()
     {
-        if(!isPlaced) 
-            return; 
+        if (!isPlaced) return;
         RebakeNav();
 
-        if(DayNightCycleManager.Instance == null || BuildingManager.Instance == null) 
-            return;
+        if (DayNightCycleManager.Instance == null || BuildingManager.Instance == null) return;
 
         DayNightCycleManager.Instance.OnDayChange -= ResetHealth;
         BuildingManager.Instance.OnGridUpdated -= UpdateBuilding;
@@ -214,17 +209,15 @@ public class Building : MonoBehaviour, IDamagable
         currentHealth -= (int)damage;
         OnDamage();
 
-        if(onDamageSound != null)
+        if (onDamageSound != null)
             source?.PlayOneShot(onDamageSound, 0.8f);
-        
+
         if (currentHealth <= 0)
-        {
-            DestroyBuilding();
-        }
+            DestroyBuilding(true);
     }
 
     #region Upgrades
-    
+
     public void CheckUpgrades()
     {
         Upgrades();
@@ -232,8 +225,7 @@ public class Building : MonoBehaviour, IDamagable
 
     private void Upgrades()
     {
-        //Do here
-        if(!isHealthOnEnemyDeath && UpgradeManager.Instance.IncreaseHealthOnEnemyDeath)
+        if (!isHealthOnEnemyDeath && UpgradeManager.Instance.IncreaseHealthOnEnemyDeath)
         {
             UpgradeManager.Instance.OnEnemyDeath += IncreaseHealthOnEnemyDeath;
             isHealthOnEnemyDeath = true;
@@ -243,16 +235,14 @@ public class Building : MonoBehaviour, IDamagable
     private bool isHealthOnEnemyDeath = false;
     public void IncreaseHealthOnEnemyDeath()
     {
-        if(UpgradeManager.Instance.IncreaseHealthOnEnemyDeath)
+        if (UpgradeManager.Instance.IncreaseHealthOnEnemyDeath)
         {
             int chance = UnityEngine.Random.Range(0, 2);
-            if(chance == 0) 
-                return;
+            if (chance == 0) return;
 
             float percent = UnityEngine.Random.Range(0.025f, 0.05f);
             float healAmount = initHealth * percent * UpgradeManager.Instance.IncreaseHealthOnEnemyDeathMultiplier;
-
-            currentHealth = Mathf.Min(currentHealth + healAmount, initHealth);        
+            currentHealth = Mathf.Min(currentHealth + healAmount, initHealth);
         }
     }
 
@@ -260,10 +250,11 @@ public class Building : MonoBehaviour, IDamagable
     {
         BoxCollider col = buildingCollider != null ? buildingCollider : GetComponent<BoxCollider>();
         if (col == null) return;
-    
+
         Gizmos.color = new Color(0f, 1f, 0f, 0.3f);
         Gizmos.matrix = Matrix4x4.TRS(col.bounds.center, transform.rotation, Vector3.one);
         Gizmos.DrawWireCube(Vector3.zero, col.bounds.extents * supportCheckScale * 2);
     }
+
     #endregion
 }
