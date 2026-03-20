@@ -40,7 +40,7 @@ public class Breakable : MonoBehaviour, IBreakable
         
     }
 
-    public virtual void OnDestroyed(GameObject sender)
+    public virtual void OnDestroyed(GameObject senderm, int toughness = 0)
     {
         
     }

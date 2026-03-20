@@ -196,9 +196,9 @@ MonoBehaviour:
   arrow: {fileID: 6652138995973166193, guid: af76cb0676d5a2943a60282828deaa0e, type: 3}
   volume: {fileID: 6547334049072395346}
   holdTime: 0.5
-  arrowSpeed: 5
-  maxBonusSpeed: 30
-  maxBonusHoldTime: 1.5
+  arrowSpeed: 15
+  maxBonusSpeed: 50
+  maxBonusHoldTime: 1
   arrowDamage: 1
   nockOffset: 0.2
   chargeOffset: 0.2
@@ -208,7 +208,7 @@ MonoBehaviour:
   drawShakeMagnitude: 0.3
   drawShakeRoughness: 2
   shootShakeMagnitude: 2
-  shootShakeRoughness: 4
+  shootShakeRoughness: 3
   shootShakeFadeOut: 1
   holdTimer: 0
   isHeld: 0

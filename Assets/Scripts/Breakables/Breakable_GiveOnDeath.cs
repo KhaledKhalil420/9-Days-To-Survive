@@ -66,7 +66,7 @@ public class Breakable_GiveOnDeath : Breakable
         }
     }
 
-    public override void OnDestroyed(GameObject sender)
+    public override void OnDestroyed(GameObject sender, int toughness)
     {
         PlayerInventory playerInventory = sender.GetComponent<PlayerInventory>();
 
@@ -79,7 +79,7 @@ public class Breakable_GiveOnDeath : Breakable
             if (!wasGiven) givenItem.transform.position = transform.position;
         }
 
-        GiveItems(playerInventory);
+        GiveItems(playerInventory, toughness);
 
         audioSource.PlayOneShot(destroySound);
 
@@ -91,12 +91,17 @@ public class Breakable_GiveOnDeath : Breakable
         DOVirtual.DelayedCall(destroySound.length, () => Destroy(gameObject));
     }
 
-    private void GiveItems(PlayerInventory playerInventory)
+    private void GiveItems(PlayerInventory playerInventory, int _toughness)
     {
+        float bonus = 0;
+        int quantity = 0;
+
         foreach (var item in items)
         {
+            quantity = UnityEngine.Random.Range(item.minQuantity, item.maxQuantity);
+            bonus = (_toughness - toughness) * quantity / 2;
             Item givenItem = Instantiate(item.item.gameObject).GetComponent<Item>();
-            givenItem.HeldQuantity = UnityEngine.Random.Range(item.minQuantity, item.maxQuantity);
+            givenItem.HeldQuantity = quantity + Mathf.RoundToInt(bonus);
 
             playerInventory.GiveItem(givenItem, out bool wasGiven);
             if (!wasGiven) givenItem.transform.position = transform.position;

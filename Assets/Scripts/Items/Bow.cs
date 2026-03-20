@@ -150,7 +150,7 @@ public class Bow : Item
         animator.SetTrigger("Shoot");
 
         float speed = arrowSpeed + maxBonusSpeed * chargeRatio;
-        GameObject obj = Instantiate(arrow.gameObject, _cam.position - new Vector3(0, 0.2f, 0), _cam.rotation);
+        GameObject obj = Instantiate(arrow.gameObject, _cam.position, _cam.rotation);
         obj.GetComponent<Arrow>().asItem = false;
         obj.GetComponent<Rigidbody>().AddForce(_cam.forward * speed, ForceMode.Impulse);
         obj.GetComponent<Arrow>().damage = arrowDamage;

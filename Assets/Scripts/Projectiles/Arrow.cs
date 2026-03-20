@@ -20,6 +20,11 @@ public class Arrow : Item
         
         gameObject.layer = 0;
         rb = GetComponent<Rigidbody>();
+        GetComponent<AudioSource>().enabled = false;
+        GetComponent<MeshRenderer>().enabled = false;
+        GetComponent<TrailRenderer>().enabled = false;
+        Collider col = GetComponent<Collider>();
+        col.isTrigger = true;
         GetComponent<MeshRenderer>().enabled = false;
         Invoke(nameof(EnableCollider), 0.015f);
     }
@@ -35,21 +40,21 @@ public class Arrow : Item
     }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collider)
     {
         if(asItem) return;
-        if (collision.collider.CompareTag("Player") || hasHit) return;
+        if (collider.CompareTag("Player") || hasHit) return;
 
         hasHit = true;
         
-        if(collision.collider.TryGetComponent(out Damagable damagable))
+        if(collider.TryGetComponent(out Damagable damagable))
         {
             if(damagable.isEnemy)
             damagable.Damage(damage);
         }
         
 
-        Stick(collision.transform);
+        Stick(collider.transform);
     }
 
     private void Stick(Transform hitTransform) 
@@ -72,7 +77,6 @@ public class Arrow : Item
         GetComponent<TrailRenderer>().enabled = true;
         Collider col = GetComponent<Collider>();
         col.enabled = true;
-        col.isTrigger = false;
     }
 
     private void Disappear() => Destroy(gameObject);
