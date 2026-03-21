@@ -3,10 +3,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum SlotContext { Hotbar, Bag, External }
+
 public class BaseSlot : MonoBehaviour
 {
     public Item HeldItem;
     public int HeldQuantity;
+    public SlotContext slotContext;
     internal InventoryHolder heldBy;
 
     [SerializeField] internal Image _itemIconImage;
@@ -19,7 +22,6 @@ public class BaseSlot : MonoBehaviour
     {
         if (HeldQuantity <= 0 && HeldItem != null)
         {
-
             _itemQuantityText.text = "";
             HeldItem.OnChangingItems();
             Destroy(HeldItem.gameObject);
@@ -28,28 +30,19 @@ public class BaseSlot : MonoBehaviour
 
         if (HeldItem != null)
         {
-            HeldItem.parentSlot = this; 
+            HeldItem.parentSlot = this;
             HeldItem.HeldQuantity = HeldQuantity;
         }
 
-        _itemQuantityText.text = HeldItem != null ? HeldQuantity.ToString() : "";
         _itemQuantityText.text = HeldQuantity > 1 ? HeldQuantity.ToString() : "";
-
         _itemIconImage.sprite = HeldItem != null ? HeldItem.data.sprite : _empty;
 
         Visuals();
         OnUpdateSlot();
     }
 
-    public virtual void Visuals()
-    {
-        
-    }
-
-    public virtual void OnUpdateSlot()
-    {
-        
-    }
+    public virtual void Visuals() { }
+    public virtual void OnUpdateSlot() { }
 
     public void CreateItem(ItemData data)
     {
@@ -58,9 +51,7 @@ public class BaseSlot : MonoBehaviour
         item.SetItemParent(heldBy.hand);
         item.HeldQuantity = HeldQuantity;
 
-        _itemQuantityText.text = HeldItem != null ? HeldQuantity.ToString() : "";
         _itemQuantityText.text = HeldQuantity > 1 ? HeldQuantity.ToString() : "";
-
         _itemIconImage.sprite = HeldItem != null ? HeldItem.data.sprite : _empty;
         HeldItem = item;
     }
@@ -73,13 +64,6 @@ public class BaseSlot : MonoBehaviour
         UpdateSlot();
     }
 
-    public void RemoveSlotSprite()
-    {
-        _itemIconImage.sprite = _empty;
-    }
-
-    public void ResetSlotSprite()
-    {
-        _itemIconImage.sprite = HeldItem.data.sprite;
-    }
+    public void RemoveSlotSprite() => _itemIconImage.sprite = _empty;
+    public void ResetSlotSprite() => _itemIconImage.sprite = HeldItem.data.sprite;
 }

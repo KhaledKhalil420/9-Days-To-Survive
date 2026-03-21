@@ -60,9 +60,10 @@ public class PlayerInventory : MonoBehaviour
         interact = GetComponent<PlayerInteract>();
         InvokeRepeating(nameof(UpdateSlots), 0.0001f, 0.0001f);
 
-        foreach (SlotHolder slot in SlotHolders)
+        for (int i = 0; i < SlotHolders.Count; i++)
         {
-            slot.heldBy = holder;
+            SlotHolders[i].heldBy = holder;
+            SlotHolders[i].slotContext = i < mainSlots ? SlotContext.Hotbar : SlotContext.Bag;
         }
     }
 
@@ -237,7 +238,7 @@ public class PlayerInventory : MonoBehaviour
 
     private void HandleThrowing()
     {
-        if (Input.GetKeyDown(Keybinds.Key("Throw")))
+        if (Input.GetKeyDown(Keybinds.Key("Throw")) && !isBagOpen)
         {
             ThrowItem(_currentSlotIndex);
         }
@@ -247,6 +248,7 @@ public class PlayerInventory : MonoBehaviour
     {
         SlotHolder selectedSlot = SlotHolders[throwAt];
         Item heldItem = selectedSlot.HeldItem;
+        heldItem.gameObject.SetActive(true);
 
         if (heldItem != null)
         {
@@ -408,6 +410,23 @@ public class PlayerInventory : MonoBehaviour
     #endregion
 
     #region Slots Handling
+
+    /// <summary>
+    /// Find First Available Slot
+    /// </summary>
+    /// <param name="hotbar"></param>
+    /// <returns></returns>
+    public BaseSlot FindFirstAvailable(bool hotbar)
+    {
+        int start = hotbar ? 0 : mainSlots;
+        int end = hotbar ? mainSlots : SlotHolders.Count;
+    
+        for (int i = start; i < end; i++)
+            if (SlotHolders[i].HeldItem == null) return SlotHolders[i];
+    
+        return null;
+    }
+
     /// <summary>
     /// Returns Nearest Empty Slot
     /// </summary>

@@ -13,59 +13,52 @@ public class DragSlot : MonoBehaviour
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private Image iconPrefab;
     [SerializeField] private Animator animator;
-
-    private RectTransform dragIcon;
     [SerializeField] private float smoothness = 15f;
 
+    private RectTransform dragIcon;
     private BaseSlot fromSlot;
     private int heldQuantity;
     internal bool isDragging;
+    internal BaseSlot hoveredSlot;
 
-    void Awake()
-    {
-        Instance = this;
-    }
+    void Awake() => Instance = this;
 
     void Start()
     {
-        PlayerInventory.Instance.OnInventoryOpen += UpdateDragState;
+        PlayerInventory.Instance.OnInventoryOpen += state => { if (!state) StopDrag(); };
     }
 
     void Update()
     {
-        if (!isDragging || dragIcon == null)
-            return;
-
-        dragIcon.position = Vector3.Lerp(dragIcon.position, Input.mousePosition, smoothness * Time.deltaTime);
-
-        if(Input.GetMouseButtonDown(2))
+        if (isDragging && dragIcon != null)
         {
-            StopDrag();
+            dragIcon.position = Vector3.Lerp(dragIcon.position, Input.mousePosition, smoothness * Time.deltaTime);
+
+            if (Input.GetMouseButtonDown(2))
+                StopDrag();
         }
-    }
 
-    public void UpdateDragState(bool state)
-    {
-        if(!state)
+        if (!isDragging && hoveredSlot != null && Input.GetKeyDown(Keybinds.Key("Throw")))
         {
-            StopDrag();
+            if (hoveredSlot is SlotHolder slotHolder)
+            {
+                int idx = Player.inventory.SlotHolders.IndexOf(slotHolder);
+                if (idx >= 0) Player.inventory.ThrowItem(idx);
+            }
         }
     }
 
     public void StartDrag(BaseSlot from, int quantity)
     {
-        if (from.HeldItem == null)
-            return;
+        if (from.HeldItem == null) return;
 
-        if(isDragging)
+        if (isDragging)
         {
-            if(fromSlot == from && from.HeldQuantity > heldQuantity)
+            if (fromSlot == from && from.HeldQuantity > heldQuantity)
             {
                 heldQuantity++;
-                dragIcon.GetComponent<Animator>().SetTrigger("Trigger");
-                dragIcon.GetComponentInChildren<TMP_Text>().text = "x" + heldQuantity.ToString();
+                UpdateIcon();
             }
-
             return;
         }
 
@@ -78,40 +71,55 @@ public class DragSlot : MonoBehaviour
         onDrag?.Invoke();
     }
 
-    public void TryDrop(BaseSlot target, PointerEventData eventData)
+    public void TryDrop(BaseSlot target)
     {
-        if (!isDragging || target == fromSlot)
-            return;
+        if (!isDragging || target == fromSlot) return;
 
-        int qty = heldQuantity;
+        bool moved = SlotUtility.TryMove(fromSlot, target, heldQuantity);
+        if (!moved) return;
 
-        bool moved = SlotUtility.TryMove(fromSlot, target, qty);
+        fromSlot.HeldItem?.OnChangingItems();
+        target.HeldItem?.OnPick();
+        AudioManager.Instance.PlaySound("BagPlace");
+        DOVirtual.DelayedCall(0.001f, StopDrag);
+    }
 
-        if (moved)
-        {
-            fromSlot.HeldItem?.OnChangingItems();
-            target.HeldItem?.OnPick();
-            AudioManager.Instance.PlaySound("BagPlace");
-            DOVirtual.DelayedCall(0.001f, () => StopDrag());
-        }
+    public void TryDropOne(BaseSlot target)
+    {
+        if (!isDragging || target == fromSlot || heldQuantity <= 0) return;
+
+        bool moved = SlotUtility.TryMove(fromSlot, target, 1);
+        if (!moved) return;
+
+        heldQuantity--;
+        target.HeldItem?.OnPick();
+        AudioManager.Instance.PlaySound("BagPlace");
+
+        if (heldQuantity <= 0) { StopDrag(); return; }
+
+        UpdateIcon();
+    }
+
+    void UpdateIcon()
+    {
+        dragIcon.GetComponent<Animator>().SetTrigger("Trigger");
+        dragIcon.GetComponentInChildren<TMP_Text>().text = "x" + heldQuantity;
     }
 
     void StopDrag()
     {
-        if (dragIcon != null)
-            Destroy(dragIcon.gameObject);
+        if (dragIcon != null) Destroy(dragIcon.gameObject);
 
         isDragging = false;
         fromSlot = null;
         heldQuantity = 0;
         onDrag?.Invoke();
-
     }
 
     void CreateIcon(Sprite sprite, int quantity)
     {
         dragIcon = Instantiate(iconPrefab, canvasGroup.transform).rectTransform;
         dragIcon.GetComponent<Image>().sprite = sprite;
-        dragIcon.GetComponentInChildren<TMP_Text>().text = "x" + quantity.ToString();
+        dragIcon.GetComponentInChildren<TMP_Text>().text = "x" + quantity;
     }
 }
