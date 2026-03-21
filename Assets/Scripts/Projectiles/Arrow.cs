@@ -11,7 +11,7 @@ public class Arrow : Item
     [SerializeField] private float alignSpeed = 13;
 
     internal float damage;
-    private bool hasHit = false;
+    internal bool hasHit = false;
 
     private void Start()
     {
@@ -41,11 +41,12 @@ public class Arrow : Item
     }
     }
 
-    private void OnTriggerEnter(Collider collider)
+    private void OnTriggerStay(Collider collider)
     {
         if(asItem) return;
         if (collider.CompareTag("Player") || hasHit) return;
 
+        rb.linearVelocity = Vector3.zero;
         hasHit = true;
         
         if(collider.TryGetComponent(out Damagable damagable))
@@ -58,7 +59,7 @@ public class Arrow : Item
         Stick(collider.transform);
     }
 
-    private void Stick(Transform hitTransform) 
+    public void Stick(Transform hitTransform) 
     {
         transform.position += transform.forward * pierceDepth;
 

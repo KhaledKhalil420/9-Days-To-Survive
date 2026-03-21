@@ -10,7 +10,7 @@ public class Bow : Item
 {
     [Header("References")]
     [SerializeField] private Animator animator;
-    [SerializeField] private Item arrow;
+    private Arrow arrow;
     [SerializeField] private Volume volume;
     private Transform _cam;
     private PlayerInventory inventory;
@@ -57,9 +57,12 @@ public class Bow : Item
     }
 
     public override void OnUse()
-    {        
-        if(!inventory.HasItem(arrow, 1)) 
-            return;
+    {       
+            Arrow foundArrow = inventory.FindItemByType(typeof(Arrow), out BaseSlot outSlider) as Arrow;
+            if (foundArrow == null) return;
+
+            arrow = foundArrow.data.prefab.GetComponent<Arrow>();
+            if (!inventory.HasItemType(typeof(Arrow), 1)) return;
         
         canUse = true;
         arrowPlaceHolder = Instantiate(arrow.gameObject, transform);
@@ -67,7 +70,7 @@ public class Bow : Item
         arrowPlaceHolder.GetComponent<Arrow>().asItem = false;
         arrowPlaceHolder.GetComponent<Arrow>().enabled = false;
         arrowPlaceHolder.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-        arrowPlaceHolder.GetComponent<Collider>().isTrigger = true;
+        arrowPlaceHolder.GetComponent<Collider>().enabled = false;
         arrowPlaceHolder.transform.localPosition = Vector3.zero;
         arrowPlaceHolder.transform.localRotation = Quaternion.identity;
 

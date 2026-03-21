@@ -49,7 +49,10 @@ public class GameManager : MonoBehaviour
     {
         #if UNITY_EDITOR
         foreach(Item item in starterItems)
+        {
             player.GetComponent<PlayerInventory>().GiveItem(item);
+            item.OnPick();
+        }
 
         #else 
         
@@ -90,6 +93,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        //Cheats
         #if UNITY_EDITOR
         if(Input.GetKeyDown(KeyCode.F1))
         {
@@ -99,7 +103,7 @@ public class GameManager : MonoBehaviour
             Player.stats.stamina.max = 10000;
             Player.stats.stamina.modifyRate = 10000;
 
-            Player.inventory.speedBonus *= 1.5f;
+            Player.inventory.speedBonus *= 2;
 
             BuildingManager.Instance.buildLimitPoints = 1000;
             BuildingManager.Instance.extraBuildingHealth = 1000;
