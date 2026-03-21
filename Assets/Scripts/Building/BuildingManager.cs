@@ -176,7 +176,6 @@ public class BuildingManager : MonoBehaviour
         buildInspectHealthSlider.value = building.currentHealth;
     }
 
-    //Fix this.. just add the ingredient variable nothing more thanks!
     void UpdateRecipe(List<Ingredient> ingredients)
     {
         while (recipeInstances.Count < ingredients.Count)

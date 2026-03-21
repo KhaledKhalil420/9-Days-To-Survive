@@ -10,6 +10,7 @@ public class IngredientUi : MonoBehaviour
     public TMP_Text text;
     public Ingredient ingredient;
     private PlayerInventory inventory;
+    public string additionalText, beforeText;
 
     private void Start()
     {
@@ -20,26 +21,12 @@ public class IngredientUi : MonoBehaviour
     private void UpdateRecipe()
     {
         image.sprite = ingredient.item.data.sprite;
-        
-        if(inventory.HasItem(ingredient.item, ingredient.quantity))
-        {
-            text.color = Color.white;
-        }
-        else
-        {
-            inventory.FindSlotWithItem(ingredient.item, out SlotHolder slotHolder);
-            text.color = Color.red;
+        inventory.FindSlotWithItem(ingredient.item, out SlotHolder slotHolder);
+        bool hasEnough = inventory.HasItem(ingredient.item, ingredient.quantity);
+        int held = slotHolder != null ? slotHolder.HeldQuantity : 0;
 
-            if(slotHolder != null)
-            {
-                text.text = slotHolder.HeldQuantity + " / " + ingredient.quantity;
-            }
-
-            else
-            {
-                text.text = ingredient.quantity.ToString();
-            }
-        }
+        text.color = hasEnough ? Color.white : Color.red;
+        text.text = beforeText + (hasEnough ? ingredient.quantity : held + "/" + ingredient.quantity) + " " + additionalText;
     }
 
     void OnDestroy()

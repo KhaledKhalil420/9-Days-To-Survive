@@ -15,10 +15,9 @@ public class CraftSlot : MonoBehaviour, IPointerDownHandler
         image.sprite = recipe.itemToGive.data.sprite;
         foreach (Ingredient ingredient in recipe.ingredients)
         {
-            ingredientUi.image.sprite = ingredient.item.data.sprite;
-            ingredientUi.ingredient = ingredient;
-
-            Instantiate(ingredientUi, parent).gameObject.SetActive(true);
+            IngredientUi ingredientUiSpawned = Instantiate(ingredientUi, parent);
+            ingredientUiSpawned.ingredient = ingredient;
+            ingredientUiSpawned.gameObject.SetActive(true);
         }
     }
 

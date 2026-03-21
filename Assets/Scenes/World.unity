@@ -153,8 +153,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 20.187302}
-  m_SizeDelta: {x: 0, y: -40.3746}
+  m_AnchoredPosition: {x: 0, y: 10.389999}
+  m_SizeDelta: {x: -35.68, y: -118.44}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &23854188
 PrefabInstance:
@@ -3452,7 +3452,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -45.7}
+  m_AnchoredPosition: {x: 0, y: 8.299999}
   m_SizeDelta: {x: 186.1339, y: 15.6628}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &360109502
@@ -5613,7 +5613,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -25.0716, y: -71.1708}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &641616581
 MonoBehaviour:
@@ -11715,7 +11715,7 @@ GameObject:
   - component: {fileID: 845746122}
   - component: {fileID: 845746121}
   m_Layer: 0
-  m_Name: Background (3)
+  m_Name: DayCount_Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11791,7 +11791,7 @@ GameObject:
   - component: {fileID: 847790107}
   - component: {fileID: 847790106}
   m_Layer: 0
-  m_Name: Background (1)
+  m_Name: HammerRec_Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17322,7 +17322,7 @@ GameObject:
   - component: {fileID: 1430592097}
   - component: {fileID: 1430592096}
   m_Layer: 0
-  m_Name: Background (2)
+  m_Name: AxeRec_Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

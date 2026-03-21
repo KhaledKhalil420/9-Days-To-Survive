@@ -68,9 +68,10 @@ public class CraftingStation : MonoBehaviour
         //Add ingrediets
         foreach(Ingredient ingredient in availableRecipes[currentRecipe].ingredients)
         {
-            
             IngredientUi ingredientUi = Instantiate(ingredientPrefab, uiHolder).GetComponent<IngredientUi>();
             ingredientUi.ingredient = ingredient;
+            ingredientUi.additionalText = ingredient.item.data.Name;
+            ingredientUi.beforeText = "x";
 
             tempUI.Add(ingredientUi.gameObject);
         }
