@@ -13,13 +13,13 @@ GameObject:
   - component: {fileID: 3632022626931413507}
   - component: {fileID: 4665394818438867688}
   - component: {fileID: 8600795170125070529}
-  - component: {fileID: 6000399468047723372}
   - component: {fileID: 5001882438895416503}
   - component: {fileID: 4938049547273849873}
   - component: {fileID: 7780246304290404494}
   - component: {fileID: 3418622622474066706}
+  - component: {fileID: 2516282848813724362}
   m_Layer: 0
-  m_Name: HardWood_tree
+  m_Name: Hardwood_Tree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,6 +73,7 @@ MeshRenderer:
   m_Materials:
   - {fileID: 2100000, guid: 6f9767a69ccf6644fabe530362590519, type: 2}
   - {fileID: 2100000, guid: c778abcd2f8b5d34c8c20e620d40245d, type: 2}
+  - {fileID: 2100000, guid: 2a840e93dfdef9940a90f2b44de51c81, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -212,35 +213,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.7707707, y: 15.251876, z: 1.7895684}
   m_Center: {x: -0.04511881, y: 7.625938, z: -0.0338701}
---- !u!114 &6000399468047723372
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2621881267046490361}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c39f4b5d890dc8b4b810304f65463ee5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  source: {fileID: 5001882438895416503}
-  requiredTool: 1
-  toughness: 2
-  health: 30
-  item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
-  givenQuantityAverage: 15
-  destroyParticles: {fileID: 7301512366205885463, guid: e15eb7276d1a1cb4bb4aeea033137d4b, type: 3}
-  destroySound: {fileID: 8300000, guid: 9de36afeecc3c83428aead2f685abf23, type: 3}
-  audioSource: {fileID: 4665394818438867688}
-  damageMeshes:
-  - healthPercentage: 75
-    damageMesh: {fileID: -7756936179729379599, guid: 3552b378c2b2b1845bfc55271d9efdbe, type: 3}
-  - healthPercentage: 15
-    damageMesh: {fileID: -6065377185004637842, guid: 3552b378c2b2b1845bfc55271d9efdbe, type: 3}
-  items: []
-  updateColliderOnMesh: 0
-  hitEffect: 0.25
 --- !u!114 &5001882438895416503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,3 +299,34 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 0}
   m_BuildHeightMesh: 0
+--- !u!114 &2516282848813724362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2621881267046490361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd514fa13480f044a88379a93d79c82c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitable: 0
+  notHitableReason: Resin needs to melt
+  source: {fileID: 5001882438895416503}
+  requiredTool: 1
+  toughness: 2
+  health: 30
+  item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}
+  givenQuantityAverage: 15
+  destroyParticles: {fileID: 7301512366205885463, guid: e15eb7276d1a1cb4bb4aeea033137d4b, type: 3}
+  destroySound: {fileID: 8300000, guid: 9de36afeecc3c83428aead2f685abf23, type: 3}
+  audioSource: {fileID: 4665394818438867688}
+  damageMeshes:
+  - healthPercentage: 75
+    damageMesh: {fileID: -7756936179729379599, guid: 3552b378c2b2b1845bfc55271d9efdbe, type: 3}
+  - healthPercentage: 15
+    damageMesh: {fileID: -6065377185004637842, guid: 3552b378c2b2b1845bfc55271d9efdbe, type: 3}
+  items: []
+  updateColliderOnMesh: 0
+  hitEffect: 0.25

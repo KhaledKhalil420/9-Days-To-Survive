@@ -486,10 +486,38 @@ public class PlayerInventory : MonoBehaviour
         return null;
     }
 
-    public bool HasItem(Item item, int quantity = 1)
+
+    public Item FindItemByType(Type item, out BaseSlot outSlider)
+    {
+        foreach (var slot in SlotHolders)
+        {
+            if (slot?.HeldItem != null && item.IsAssignableFrom(slot.HeldItem.GetType()))
+            {
+                outSlider = slot;
+                return slot.HeldItem;
+            }
+        }
+
+        outSlider = null;
+        return null;
+    }
+
+
+    public bool HasItemType(Type itemType, int quantity = 1)
     {
         UpdateSlots();
 
+        foreach (var slot in SlotHolders)
+        {
+            if (slot.HeldItem != null && itemType.IsAssignableFrom(slot.HeldItem.GetType()) && slot.HeldQuantity >= quantity)
+                return true;
+        }
+
+        return false;
+    }
+
+    public bool HasItem(Item item, int quantity = 1)
+    {
         foreach (var slot in SlotHolders)
         {
             if(slot.HeldItem != null)

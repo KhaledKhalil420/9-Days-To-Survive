@@ -5,6 +5,8 @@ using UnityEngine.AI;
 public enum BreakableType {Pickaxe, Axe, Else, Buildings}
 public class Breakable : MonoBehaviour, IBreakable
 {
+    [SerializeField] internal bool hitable = true;
+    [SerializeField] internal string notHitableReason;
     [SerializeField] protected AdvancedAudioSource source;
     [SerializeField] internal BreakableType requiredTool;
     [SerializeField] internal float toughness, health;

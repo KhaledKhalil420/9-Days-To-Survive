@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 956742531772615639}
   - component: {fileID: 7637770417545952018}
   m_Layer: 0
-  m_Name: Tree_3_BIG
+  m_Name: Resin_Tree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -77,7 +77,12 @@ public class BreakingTool : Item
         {
             breakable.Damage(heldby, calculatedDamage, type, toughness);
             
-            if(breakable.requiredTool != type)
+            if(!breakable.hitable)
+            {
+                Instantiate(UiManager.Instance.SpawnMessage(breakable.notHitableReason, cam), hit.point, cam.transform.rotation);
+            }
+
+            else if(breakable.requiredTool != type)
             {
                 Instantiate(UiManager.Instance.SpawnMessage("Wrong Tool", cam), hit.point, cam.transform.rotation);
                 AudioManager.Instance.PlaySound("Error", 0.9f, 1.1f);

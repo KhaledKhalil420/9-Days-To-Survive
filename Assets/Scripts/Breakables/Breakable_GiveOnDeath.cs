@@ -74,7 +74,7 @@ public class Breakable_GiveOnDeath : Breakable
         if (item != null)
         {
             Item givenItem = Instantiate(item.gameObject).GetComponent<Item>();
-            float factor = Mathf.Clamp(((_toughness + 1f) - toughness), 0.2f, 1f);
+            float factor = Mathf.Clamp(((_toughness + 1f) - toughness), 0.2f, 5f);
             
             givenItem.HeldQuantity = Mathf.RoundToInt(factor * UnityEngine.Random.Range(givenQuantityAverage / 2f, givenQuantityAverage));
 
@@ -104,7 +104,7 @@ public class Breakable_GiveOnDeath : Breakable
             quantity = UnityEngine.Random.Range(item.minQuantity, item.maxQuantity);
             bonus = (_toughness - toughness) * quantity / 2;
             Item givenItem = Instantiate(item.item.gameObject).GetComponent<Item>();
-            givenItem.HeldQuantity = quantity + Mathf.RoundToInt(bonus);
+            givenItem.HeldQuantity = quantity + Mathf.Abs((int)bonus);
 
             playerInventory.GiveItem(givenItem, out bool wasGiven);
             if (!wasGiven) givenItem.transform.position = transform.position;
