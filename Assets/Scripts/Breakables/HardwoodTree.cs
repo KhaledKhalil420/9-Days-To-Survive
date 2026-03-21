@@ -1,9 +1,9 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class HardwoodTree : Breakable_GiveOnDeath
+public class HardwoodTree : Breakable_GiveOnDeath, IBurnable
 {
-    public void BreakBarier()
+    public void Burn()
     {
         GetComponent<Renderer>().materials[2].DOFade(0, 0.25f);
         hitable = true;

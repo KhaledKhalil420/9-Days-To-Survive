@@ -17,9 +17,9 @@ public class FireArrow : Arrow
             damagable.Damage(damage);
         }
 
-        if(collider.TryGetComponent(out HardwoodTree hardwoodTree))
+        if(collider.TryGetComponent(out IBurnable burnable))
         {
-            hardwoodTree.BreakBarier();
+            burnable.Burn();
         }
         
 
