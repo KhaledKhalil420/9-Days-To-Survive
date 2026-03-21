@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -30,6 +31,9 @@ public class BuildingManager : MonoBehaviour
     public float sphereCastRadius = 1.5f;
     public float rotationAngle = 45f;
 
+    [Header("Respawn")]
+    [SerializeField] private float respawnTotalDuration = 2f;
+
     [Header("Layers")]
     public LayerMask PhysicsLayers;
     public LayerMask buildableLayers;
@@ -43,8 +47,9 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private Image selectionModeImage;
     [SerializeField] private TMP_Text buildPriceText;
     [SerializeField] private TMP_Text buildTitle;
+    [SerializeField] private TMP_Text buildDescription;
     [SerializeField] private Transform recipeParent;
-    [SerializeField] private Image recipePrefab;
+    [SerializeField] private IngredientUi recipePrefab;
 
     [Header("Building Property Inspecting")]
     [SerializeField] private Transform inspectCanvasParent;
@@ -60,6 +65,8 @@ public class BuildingManager : MonoBehaviour
     private List<GameObject> recipeInstances = new();
     private List<Building> nightDisabledBuildings = new();
 
+    #region Unity
+
     private void Awake()
     {
         Instance = this;
@@ -73,11 +80,22 @@ public class BuildingManager : MonoBehaviour
         DayNightCycleManager.Instance.OnDayChange += UpdateBuildingStatus;
     }
 
+    void OnValidate()
+    {
+        Instance = this;
+    }
+
+    #endregion
+
+    #region Day / Night
+
     private void UpdateBuildingStatus(bool isDay)
     {
         IsDay = isDay;
-        if (isDay) RespawnNightDisabledBuildings();
+        if (isDay) StartCoroutine(RespawnSequence());
     }
+
+    #endregion
 
     #region Night Disabled Buildings
 
@@ -86,20 +104,33 @@ public class BuildingManager : MonoBehaviour
         nightDisabledBuildings.Add(building);
     }
 
-    private void RespawnNightDisabledBuildings()
+    private IEnumerator RespawnSequence()
     {
-        foreach (Building building in nightDisabledBuildings)
+        AudioManager.Instance.PlaySound("Reconstructing");
+
+        float delay = nightDisabledBuildings.Count > 1 ? respawnTotalDuration / (nightDisabledBuildings.Count - 1) : 0f;
+
+        for (int i = 0; i < nightDisabledBuildings.Count; i++)
         {
+            Building building = nightDisabledBuildings[i];
             if (building == null) continue;
+
             building.currentHealth = building.initHealth;
             building.isPendingDestroy = false;
             building.gameObject.SetActive(true);
+
+            if (smoke != null)
+                Instantiate(smoke, building.transform.position, Quaternion.identity);
+
+            yield return new WaitForSeconds(delay);
         }
 
         nightDisabledBuildings.Clear();
     }
 
     #endregion
+
+    #region UI
 
     public void ShowUI(bool state)
     {
@@ -116,8 +147,9 @@ public class BuildingManager : MonoBehaviour
         buildIcon.sprite = building.data.sprite;
         buildTitle.text = building.data.buildingName;
         buildPriceText.text = building.data.pointsWorth.ToString();
-        string currentQuantity = currentBuilds > buildLimitPoints ? "<color=red>" + currentBuilds.ToString() + "</color>" : currentBuilds.ToString();
+        string currentQuantity = "Build Limit " + (currentBuilds > buildLimitPoints ? "<color=red>" + currentBuilds.ToString() + "</color>" : currentBuilds.ToString());
         buildsQuantityText.text = currentQuantity + "/" + buildLimitPoints.ToString();
+        buildDescription.text = building.data.buildingDescription;
 
         selectionModeImage.gameObject.SetActive(selectionMode);
 
@@ -144,11 +176,13 @@ public class BuildingManager : MonoBehaviour
         buildInspectHealthSlider.value = building.currentHealth;
     }
 
+    //Fix this.. just add the ingredient variable nothing more thanks!
     void UpdateRecipe(List<Ingredient> ingredients)
     {
         while (recipeInstances.Count < ingredients.Count)
         {
-            Image img = Instantiate(recipePrefab, recipeParent);
+            IngredientUi img = Instantiate(recipePrefab.gameObject, recipeParent).GetComponent<IngredientUi>();
+            img.ingredient = ingredients[recipeInstances.Count];
             recipeInstances.Add(img.gameObject);
         }
 
@@ -161,11 +195,20 @@ public class BuildingManager : MonoBehaviour
 
         for (int i = 0; i < ingredients.Count; i++)
         {
-            Image img = recipeInstances[i].GetComponent<Image>();
-            img.sprite = ingredients[i].item.data.sprite;
-            img.GetComponentInChildren<TMP_Text>().text = ingredients[i].quantity.ToString();
+            IngredientUi img = recipeInstances[i].GetComponent<IngredientUi>();
+            img.ingredient = ingredients[i];
         }
     }
+
+    void ClearRecipe()
+    {
+        recipeInstances.ForEach(Destroy);
+        recipeInstances.Clear();
+    }
+
+    #endregion
+
+    #region Grid
 
     public void UpdateGrid()
     {
@@ -178,14 +221,5 @@ public class BuildingManager : MonoBehaviour
             currentBuilds += builds[i].GetComponent<Building>().data.pointsWorth;
     }
 
-    void ClearRecipe()
-    {
-        recipeInstances.ForEach(Destroy);
-        recipeInstances.Clear();
-    }
-
-    void OnValidate()
-    {
-        Instance = this;
-    }
+    #endregion
 }

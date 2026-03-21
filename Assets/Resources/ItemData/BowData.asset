@@ -15,4 +15,4 @@ MonoBehaviour:
   Name: Bow
   sprite: {fileID: 21300000, guid: f3d2e91a2440220408121924c750f2ff, type: 3}
   prefab: {fileID: 8531490675611274726, guid: 29b7a84726fc33142858c802b311381c, type: 3}
-  discription: Shoots
+  discription: Pull, aim, hope.

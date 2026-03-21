@@ -57,9 +57,7 @@ public class Bow : Item
     }
 
     public override void OnUse()
-    {
-        arrowDamage = arrowDamage + ((arrowDamage * inventory.damageBonus) / 2);
-        
+    {        
         if(!inventory.HasItem(arrow, 1)) 
             return;
         
@@ -155,7 +153,7 @@ public class Bow : Item
         GameObject obj = Instantiate(arrow.gameObject, _cam.position, _cam.rotation);
         obj.GetComponent<Arrow>().asItem = false;
         obj.GetComponent<Rigidbody>().AddForce(_cam.forward * speed, ForceMode.Impulse);
-        obj.GetComponent<Arrow>().damage = arrowDamage;
+        obj.GetComponent<Arrow>().damage = arrowDamage + ((arrowDamage * inventory.damageBonus) / 2);;
     }
 
     public override void OnChangingItems()

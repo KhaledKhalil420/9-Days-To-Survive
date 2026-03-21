@@ -124,7 +124,7 @@ MonoBehaviour:
     Pitch: 1
     Source: {fileID: 0}
     Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
-    Clip: {fileID: 8300000, guid: 4d98dff55af45b14988eb4fcdadd1c3a, type: 3}
+    Clip: {fileID: 8300000, guid: 2240d74e15fb8b744ba9d173281fc320, type: 3}
   - SoundName: EnemyKill
     Loop: 0
     PlayOnAwake: 0
@@ -173,3 +173,11 @@ MonoBehaviour:
     Source: {fileID: 0}
     Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
     Clip: {fileID: 8300000, guid: 6da24e54525e07643adb6543e1480d52, type: 3}
+  - SoundName: Reconstructing
+    Loop: 0
+    PlayOnAwake: 0
+    Volume: 0.7
+    Pitch: 1
+    Source: {fileID: 0}
+    Mixer: {fileID: -6338590216130946673, guid: 56474aeaaab531c489bc26bda99b5413, type: 2}
+    Clip: {fileID: 8300000, guid: 5e2d64099922c8449af05650772311b0, type: 3}

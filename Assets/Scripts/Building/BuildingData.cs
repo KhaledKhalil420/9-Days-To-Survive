@@ -7,5 +7,6 @@ public class BuildingData : ScriptableObject
 {
     public Sprite sprite;
     public string buildingName;
+    public string buildingDescription;
     public float pointsWorth;
 }

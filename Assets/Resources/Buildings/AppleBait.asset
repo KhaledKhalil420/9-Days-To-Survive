@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: d6b0ffcb95308194bac48cf19f410789, type: 3}
   buildingName: Apple Bait
+  buildingDescription: More Likely to get tageted by enemies
   pointsWorth: 15

@@ -24,6 +24,7 @@ public class Arrow : Item
         GetComponent<MeshRenderer>().enabled = false;
         GetComponent<TrailRenderer>().enabled = false;
         Collider col = GetComponent<Collider>();
+        col.enabled = false;
         col.isTrigger = true;
         GetComponent<MeshRenderer>().enabled = false;
         Invoke(nameof(EnableCollider), 0.015f);
