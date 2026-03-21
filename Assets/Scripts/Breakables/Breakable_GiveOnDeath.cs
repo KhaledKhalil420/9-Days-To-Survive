@@ -27,6 +27,7 @@ public class Breakable_GiveOnDeath : Breakable
     [SerializeField] private List<DamageMeshes> damageMeshes;
     [SerializeField] private List<ItemLoot> items;
     [SerializeField] private bool updateColliderOnMesh = false;
+    [SerializeField] private float hitEffect = 1;
 
     public override void OnDamage(float damage, GameObject sender)
     {
@@ -34,7 +35,7 @@ public class Breakable_GiveOnDeath : Breakable
             UpdateVisualMesh();
 
         CameraShaker.Instance?.ShakeOnce(3, 3, 0f, 1f);
-        transform.DOShakeRotation(0.5f, 5, 2);
+        transform.DOShakeRotation(0.5f, 5 * hitEffect, 2);
     }
 
     private void UpdateVisualMesh()
@@ -66,20 +67,22 @@ public class Breakable_GiveOnDeath : Breakable
         }
     }
 
-    public override void OnDestroyed(GameObject sender, int toughness)
+    public override void OnDestroyed(GameObject sender, int _toughness)
     {
         PlayerInventory playerInventory = sender.GetComponent<PlayerInventory>();
 
         if (item != null)
         {
             Item givenItem = Instantiate(item.gameObject).GetComponent<Item>();
-            givenItem.HeldQuantity = UnityEngine.Random.Range(givenQuantityAverage / 2, givenQuantityAverage);
+            float factor = Mathf.Clamp(((_toughness + 1f) - toughness), 0.2f, 1f);
+            
+            givenItem.HeldQuantity = Mathf.RoundToInt(factor * UnityEngine.Random.Range(givenQuantityAverage / 2f, givenQuantityAverage));
 
             playerInventory.GiveItem(givenItem, out bool wasGiven);
             if (!wasGiven) givenItem.transform.position = transform.position;
         }
 
-        GiveItems(playerInventory, toughness);
+        GiveItems(playerInventory, _toughness);
 
         audioSource.PlayOneShot(destroySound);
 

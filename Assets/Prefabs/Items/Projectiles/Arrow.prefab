@@ -109,7 +109,7 @@ MonoBehaviour:
   HeldQuantity: 150
   isSingleQuantityItem: 0
   asItem: 1
-  pierceDepth: 0.65
+  pierceDepth: -0.05
   disappearDelay: 10
   alignSpeed: 1
 --- !u!65 &1002763412697424734

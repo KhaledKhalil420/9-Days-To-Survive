@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ef833ba548351d4f8c141687209bf97, type: 3}
   m_Name: FlintArrowRecipe
   m_EditorClassIdentifier: 
-  itemToGive: {fileID: 587339472304030985, guid: bafec94af81c97045b5d06849c7a8aee, type: 3}
+  itemToGive: {fileID: 6652138995973166193, guid: af76cb0676d5a2943a60282828deaa0e, type: 3}
   givenQuantity: 1
   ingredients:
   - item: {fileID: 789964070537936751, guid: e72f08cf1f7d57344a3b37184aca29fe, type: 3}

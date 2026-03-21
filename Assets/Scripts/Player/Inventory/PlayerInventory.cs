@@ -248,7 +248,7 @@ public class PlayerInventory : MonoBehaviour
     {
         SlotHolder selectedSlot = SlotHolders[throwAt];
         Item heldItem = selectedSlot.HeldItem;
-        heldItem.gameObject.SetActive(true);
+        heldItem?.gameObject.SetActive(true);
 
         if (heldItem != null)
         {
