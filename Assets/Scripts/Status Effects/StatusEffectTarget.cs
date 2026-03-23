@@ -10,9 +10,9 @@ public class StatusEffectTarget : MonoBehaviour
         //Increase effect duration if this already has it
         foreach (StatusEffect status in statusEffects)
         {
-            if(status.GetType() == statusEffect.GetType())
+            if(status.data == statusEffect.data)
             {
-                statusEffect.InitializeStatus(true);
+                status.InitializeStatus(true);
                 return;
             }
         }
@@ -27,7 +27,7 @@ public class StatusEffectTarget : MonoBehaviour
     {
         foreach (StatusEffect status in statusEffects)
         {
-            status.UpdateStatus();
+            status?.UpdateStatus();
         }
     }
 }

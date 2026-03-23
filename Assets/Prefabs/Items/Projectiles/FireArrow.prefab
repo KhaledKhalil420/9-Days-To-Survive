@@ -10068,4 +10068,4 @@ MonoBehaviour:
   pierceDepth: -0.05
   disappearDelay: 10
   alignSpeed: 1
-  fireStatusEffect: {fileID: 6948516658317188990, guid: e402780710f843b40977e66a59293b19, type: 3}
+  fireStatusEffect: {fileID: 2960177646437975044, guid: 6cf5f5d2f0b6b7c4b8c1175b44974728, type: 3}

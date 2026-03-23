@@ -42,14 +42,21 @@ public class StatusEffect : MonoBehaviour
         effectTimer = 1000;
         target.statusEffects.Remove(this);
         Destroy(gameObject);
+
+        OnExpire();
     }
 
-    protected virtual void InitializeEffect()
+    protected virtual void InitializeEffect(bool addedTo = false)
     {
         
     }
 
     protected virtual void UpdateEffect()
+    {
+        
+    }
+
+    protected virtual void OnExpire()
     {
         
     }

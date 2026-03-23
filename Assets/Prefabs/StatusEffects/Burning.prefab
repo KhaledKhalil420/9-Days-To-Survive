@@ -46,10 +46,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: cddd3fe0da7312b48b9ada19b0da6a52, type: 2}
   target: {fileID: 0}
-  effectTime: 1
-  effectMaxTime: 3
+  effectTime: 15
+  effectMaxTime: 15
   effectTimer: 0
   effectStrength: 1
-  fireDamage: 0
-  fireIntreval: 0
-  fireParticles: {fileID: 0}
+  fireDamage: 1
+  fireIntreval: 1
+  fireParticles: {fileID: 2530212865873432873, guid: 15753483f48324e45b4836fb4b3ef25a, type: 3}
