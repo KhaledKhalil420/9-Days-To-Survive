@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class FireArrow : Arrow
 {
+    [SerializeField] private StatusEffect fireStatusEffect;
+
     //Overrinng the on trigger stay here..
     private void OnTriggerStay(Collider collider)
     {
@@ -19,7 +21,15 @@ public class FireArrow : Arrow
 
         if(collider.TryGetComponent(out IBurnable burnable))
         {
-            burnable.Burn();
+            if(collider.TryGetComponent(out StatusEffectTarget target))
+            {
+                target.AddStatusEffect(fireStatusEffect);
+            }
+            else
+            {
+                
+                burnable.Burn();
+            }
         }
         
 

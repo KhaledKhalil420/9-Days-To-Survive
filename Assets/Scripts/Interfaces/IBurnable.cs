@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IBurnable
 {
-    void Burn();
+    void Burn(float damage = 0);
 }

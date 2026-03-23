@@ -5,7 +5,7 @@ using UnityEngine.Events;
 /// <summary>
 /// Reusable Damagable Component
 /// </summary>
-public class Damagable : MonoBehaviour, IDamagable
+public class Damagable : MonoBehaviour, IDamagable, IBurnable
 {
     public UnityEvent OnDamageEvent, OnDeathEvent;
     [SerializeField] internal bool destroyOnDeath = true, scaleWithDifficulty = true, isEnemy = true, doNumberEffect = true, poolObject = false, doKnockback = false;
@@ -57,5 +57,10 @@ public class Damagable : MonoBehaviour, IDamagable
                 }
             }
         }
+    }
+
+    public void Burn(float damage)
+    {
+        Damage(damage);
     }
 }
