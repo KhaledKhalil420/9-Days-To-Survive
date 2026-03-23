@@ -6,8 +6,8 @@ public class StatusEffect : MonoBehaviour
     public StatusEffectData data;
     [ReadOnly] public StatusEffectTarget target;
 
-    public float effectTime = 1;
-    public float effectMaxTime = 3;
+    [EditorChangeable] public float effectTime = 1;
+    [EditorChangeable] public float effectMaxTime = 3;
     [SerializeField, ReadOnly] private float effectTimer = 0; 
 
     public int effectStrength = 1;
