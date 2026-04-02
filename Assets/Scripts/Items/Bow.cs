@@ -2,7 +2,6 @@ using System.Collections;
 using DG.Tweening;
 using EZCameraShake;
 using Sortify;
-using UnityEditor.Searcher;
 using UnityEngine;
 using UnityEngine.Rendering;
 

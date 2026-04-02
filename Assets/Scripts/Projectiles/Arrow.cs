@@ -51,6 +51,11 @@ public class Arrow : Item
         
         if(collider.TryGetComponent(out Damagable damagable))
         {
+            if(damagable.TryGetComponent(out IInteruptable interuptable))
+            {
+                interuptable.Interupt();
+            }
+            
             if(damagable.isEnemy)
             damagable.Damage(damage);
         }
