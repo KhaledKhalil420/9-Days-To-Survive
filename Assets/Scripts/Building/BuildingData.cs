@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public enum BuildType {Structure, Weapons, Unlimited}
@@ -9,4 +10,13 @@ public class BuildingData : ScriptableObject
     public string buildingName;
     public string buildingDescription;
     public float pointsWorth;
+
+    [Header("Pivoting data")]
+    public bool requireSnapping = false;
+    public bool usesPivots = true;
+    public bool affectedByGridSizePosition = true;
+
+    [Header("Ingrediets")]
+    public Ingredient[] ingredients = Array.Empty<Ingredient>();
+    public bool dropResourcesOnDestory = false;
 }

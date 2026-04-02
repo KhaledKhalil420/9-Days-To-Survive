@@ -153,7 +153,7 @@ public class BuildingManager : MonoBehaviour
 
         selectionModeImage.gameObject.SetActive(selectionMode);
 
-        UpdateRecipe(building.ingredients.ToList());
+        UpdateRecipe(building.data.ingredients.ToList());
     }
 
     public void UpdateInspectUI(Building building)

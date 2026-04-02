@@ -12,14 +12,9 @@ public class Building : MonoBehaviour, IDamagable
     [SerializeField] internal float currentDamage;
 
     [Header("Building Data")]
-    public Ingredient[] ingredients = Array.Empty<Ingredient>();
     public BuildingData data;
-    public bool dropResourcesOnDestory = false;
     
     [Header("Grid Settings")]
-    public bool requireSnapping = false;
-    public bool usesPivots = true;
-    public bool affectedByGridSizePosition = true;
     public List<Transform> pivots;
     public List<Transform> pivotsOnBuild;
     public List<Transform> pivotsOnBuildDisable;
@@ -177,9 +172,9 @@ public class Building : MonoBehaviour, IDamagable
             return;
         }
 
-        if (dropResourcesOnDestory || !isNight)
+        if (data.dropResourcesOnDestory || !isNight)
         {
-            foreach (Ingredient ingredient in ingredients)
+            foreach (Ingredient ingredient in data.ingredients)
             {
                 Item item = Instantiate(ingredient.item, transform.position, transform.rotation).GetComponent<Item>();
                 item.HeldQuantity = ingredient.quantity;
