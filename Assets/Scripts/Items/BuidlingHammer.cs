@@ -1,304 +1,445 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class BuildingHammer : Item
 {
-    private BuildingManager buildingManager;
-    private DayNightCycleManager dayNightManager;
-    private Transform cam;
+    //References
+    private BuildingManager buildManager;
+    private Transform mainCamera;
     private Animator animator;
+    private DayNightCycleManager dayNightCycle;
 
     [Header("Buildings")]
-    [SerializeField] private List<Building> availableBuildings;
+    [SerializeField, EditorChangeable] private List<Building> availableBuildings;
     [SerializeField] private ParticleSystem spawnParticles;
-    private SnappingPoint snappedTo;
+    private bool isChosingBuild = false;
 
-    private bool choosing, canPlace, reset = true;
-    private int index;
-    private float rotation;
+    //Selection state
+    private int selectedBuildingIndex;
+    private float currentRotation;
 
-    private GameObject ghost;
+    //Ghost data
+    private GameObject ghostBuilding;
     private Building currentBuilding;
-    private MeshFilter meshFilter;
-    private Vector3 lastPos;
-    private Tween rotTween;
+    private MeshFilter ghostMeshFilter;
+    private Renderer[] ghostRenderers;
 
-    void Start()
+    //Placement state
+    private bool canPlace;
+    private Vector3 lastValidPosition;
+    private Tween rotationTween;
+
+    #region Unity
+
+    private void Start()
     {
-        //Cache Refs
-        buildingManager = BuildingManager.Instance;
-        dayNightManager = DayNightCycleManager.Instance;
-        cam = PlayerLook.mainCamera.transform;
+        //Cache refs
+        buildManager = BuildingManager.Instance;
+        dayNightCycle = DayNightCycleManager.Instance;
+        mainCamera = PlayerLook.mainCamera.transform;
         animator = GetComponent<Animator>();
-        
-        //Spawn ghost and sub
-        buildingManager.OnGridUpdated += UpdateUiGhost;
+
+        //new line added
+        buildManager.OnGridUpdated += UpdateUiGhost;
+
         SpawnGhost();
     }
 
-    void LateUpdate()
+    private void LateUpdate()
     {
         if (!isItemPickedUp) return;
+
         HandleInput();
         UpdateGhost();
     }
 
-    void FixedUpdate() => Inspect();
-
-    void HandleInput()
+    private void FixedUpdate()
     {
-        if (Input.GetKeyDown(Keybinds.Key("SelectBuild")))
+        BuildingInspectRaycast();
+    }
+
+    #endregion
+
+    #region Input
+
+    private void HandleInput()
+    {
+        //Scroll selection
+        if(Input.GetKeyDown(Keybinds.Key("SelectBuild"))) 
         {
-            choosing = !choosing;
-            PlayerInventory.Instance.CanScroll = !choosing;
-            float p = choosing ? 1.25f : 1;
-            AudioManager.Instance.PlaySound("Start_Selecting_Build", p - .1f, p + .1f);
+            isChosingBuild = !isChosingBuild;
+            PlayerInventory.Instance.CanScroll = !isChosingBuild;
+    
+            float pitch = isChosingBuild ? 1.25f : 1;
+            AudioManager.Instance.PlaySound("Start_Selecting_Build", pitch - 0.1f, pitch + 0.1f);
         }
 
-        if (choosing) Select();
+        if(isChosingBuild)
+            HandleSelection();
 
+        //Rotate
         if (Input.GetKeyDown(Keybinds.Key("Rotate")))
         {
-            rotation -= buildingManager.rotationAngle;
-            rotTween?.Kill();
-            if (ghost)
-                rotTween = ghost.transform.DORotate(new Vector3(0, rotation, 0), .15f).SetEase(Ease.OutQuad);
-            AudioManager.Instance.PlaySound("Rotating_Build", .9f, 1.15f);
+            currentRotation -= buildManager.rotationAngle;
+            rotationTween?.Kill();
+
+            if(ghostBuilding != null)
+            rotationTween = ghostBuilding.transform.DORotate(new Vector3(0f, currentRotation, 0f), 0.15f).SetEase(Ease.OutQuad);
+
+            //PlaySound
+            AudioManager.Instance.PlaySound("Rotating_Build", 0.9f, 1.15f);
         }
     }
 
     public override void OnUse()
     {
-        if (!BuildingManager.CanBuild(currentBuilding.data.pointsWorth)) return;
+        if(!BuildingManager.CanBuild(currentBuilding.data.pointsWorth))
+            return;
+
         TryPlace();
         animator.SetTrigger("Place");
+
     }
 
     public override void OnUseAlt()
     {
         TryDemolish();
-        animator.SetTrigger("Demolish");
+        animator.SetTrigger("Demolish");       
     }
 
-    void Select()
+    private void HandleSelection()
     {
-        if (!BuildingManager.CanBuild()) return;
+        if(!BuildingManager.CanBuild())
+            return;
 
-        float s = Input.GetAxis("Mouse ScrollWheel");
-        if (s == 0) return;
+        //Read scroll
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        if (scroll == 0f) return;
 
-        index = (index + (s < 0 ? 1 : -1) + availableBuildings.Count) % availableBuildings.Count;
+        //Update index
+        selectedBuildingIndex += scroll < 0 ? 1 : -1;
+
+        //Wrap index
+        if (selectedBuildingIndex >= availableBuildings.Count)
+            selectedBuildingIndex = 0;
+        else if (selectedBuildingIndex < 0)
+            selectedBuildingIndex = availableBuildings.Count - 1;
+
+        //Refresh ghost + ui
         SpawnGhost();
-        AudioManager.Instance.PlaySound("Selecting_Build", .9f, 1.15f);
+
+        //PlaySound
+        AudioManager.Instance.PlaySound("Selecting_Build", 0.9f, 1.15f);
     }
 
-    private void Inspect()
+    #endregion
+
+    #region Inspect
+    
+    private bool reset = true;
+    private void BuildingInspectRaycast()
     {
-        if (dayNightManager.currentState == DayNightCycleManager.CycleState.Night)
+        if(dayNightCycle.currentState == DayNightCycleManager.CycleState.Night)
         {
-            buildingManager?.ShowUI(false);
+            buildManager?.ShowUI(false);
 
-            if (Physics.Raycast(cam.position, cam.forward, out var hit, 3) && hit.transform.TryGetComponent(out Building b))
+            if(Physics.Raycast(mainCamera.position, mainCamera.forward, out RaycastHit hit, 3))
             {
-                buildingManager.ShowInspectUI(true);
-                buildingManager.UpdateInspectUI(b);
-            }
+                if(hit.transform.TryGetComponent(out Building building))
+                {
+                    buildManager.ShowInspectUI(true);
+                    buildManager.UpdateInspectUI(building);
+                }
 
-            else 
-            {
-                buildingManager.ShowInspectUI(false);
+                else
+                {
+                    buildManager.ShowInspectUI(false);
+                }
             }
 
             reset = true;
         }
-        else if (reset)
+
+        else
         {
-            reset = false;
-            buildingManager.ShowInspectUI(false);
-            UpdateUiGhost();
+            if(reset)
+            {
+                reset = false;
+                buildManager.ShowInspectUI(false);
+                UpdateUiGhost();
+            }
         }
     }
 
-    void SpawnGhost()
+    #endregion
+
+    #region Ghost
+
+    private void SpawnGhost()
     {
-        if (ghost) Destroy(ghost);
+        //Destroy old ghost
+        if (ghostBuilding != null) Destroy(ghostBuilding);
 
-        ghost = Instantiate(availableBuildings[index].gameObject);
-        ghost.tag = "Untagged";
+        //Spawn new ghost
+        ghostBuilding = Instantiate(availableBuildings[selectedBuildingIndex].gameObject);
+        ghostBuilding.tag = "Untagged";
 
-        currentBuilding = ghost.GetComponent<Building>();
-        meshFilter = ghost.GetComponent<MeshFilter>();
+        //Cache components
+        currentBuilding = ghostBuilding.GetComponent<Building>();
+        ghostMeshFilter = ghostBuilding.GetComponent<MeshFilter>();
+        ghostRenderers = ghostBuilding.GetComponentsInChildren<Renderer>();
 
-        foreach (var c in ghost.GetComponentsInChildren<Collider>())
-            c.enabled = false;
+        //Disable colliders
+        foreach (var col in ghostBuilding.GetComponentsInChildren<Collider>())
+            col.enabled = false;
 
-        SetAlpha(.5f, ghost);
+        //Set transparency
+        SetGhostAlpha(0.5f);
 
-        if (currentBuilding && currentBuilding.data.usesPivots)
-            ghost.transform.localScale = Vector3.one * buildingManager.gridSize;
+        //Scale if using pivots
+        if (currentBuilding != null && currentBuilding.usesPivots)
+            ghostBuilding.transform.localScale = Vector3.one * BuildingManager.Instance.gridSize;
 
-        ghost.transform.rotation = Quaternion.Euler(0, rotation, 0);
+        //Set initial rotation
+        ghostBuilding.transform.rotation = Quaternion.Euler(0f, currentRotation, 0f);
     }
 
-    void UpdateGhost()
+    private void UpdateGhost()
     {
-        if (!BuildingManager.CanBuild(currentBuilding.data.pointsWorth))
+        if(!BuildingManager.CanBuild(currentBuilding.data.pointsWorth))
         {
-            if (ghost) Destroy(ghost);
+            if(ghostBuilding != null)
+                Destroy(ghostBuilding);
             return;
         }
 
-        if (!ghost) return;
+        //Skip if missing
+        if (ghostBuilding == null) return;
 
-        if (!BuildUtilities.TryGetHit(cam, buildingManager.sphereCastRadius, buildingManager.maxBuildDistance, buildingManager.buildableLayers, out var hit))
+        //Spherecast
+        if (!BuildUtilities.TryGetHit(mainCamera, buildManager.sphereCastRadius, buildManager.maxBuildDistance, buildManager.buildableLayers, out RaycastHit hit))
         {
-            ghost.SetActive(false);
+            ghostBuilding.SetActive(false);
             canPlace = false;
             return;
         }
 
-        ghost.SetActive(true);
+        //Show ghost
+        ghostBuilding.SetActive(true);
 
-        Vector3 pos = BuildUtilities.CalculatePosition
-        (
-            hit, currentBuilding, meshFilter, ghost, 
-            buildingManager.gridSize, rotation, buildingManager.snapDistance, 
-            out bool snap, out SnappingPoint snapPoint
-        );
+        //Calculate position
+        Vector3 position = BuildUtilities.CalculatePosition(hit, currentBuilding, ghostMeshFilter, ghostBuilding, buildManager.gridSize, currentRotation, buildManager.snapDistance, out bool isSnapped);
 
-        snappedTo = snapPoint;
+        //Apply transform
+        lastValidPosition = position;
+        ghostBuilding.transform.position = position;
 
-        lastPos = pos;
-        ghost.transform.position = pos;
+        //Check if position is valid (not inside anything)
+        if(currentBuilding.requireSnapping)
+            canPlace = isSnapped;
 
-        canPlace = currentBuilding.data.requireSnapping ? snap : BuildUtilities.IsPositionValid(ghost.transform, currentBuilding);
-        SetColor(ghost, canPlace ? Color.green : Color.red);
+        else
+        canPlace = BuildUtilities.IsPositionValid(ghostBuilding, currentBuilding);
+        
+        //Update visuals
+        UpdateGhostColor();
     }
 
-    void SetColor(GameObject o, Color c)
+    private void UpdateGhostColor()
     {
-        c.a = .5f;
-        foreach (var r in o.GetComponentsInChildren<Renderer>())
+        //Apply color
+        Color color = canPlace ? Color.green : Color.red;
+        color.a = 0.5f;
+
+        foreach (var r in ghostRenderers)
         {
-            var mats = r.materials;
-            for (int i = 0; i < mats.Length; i++) mats[i].color = c;
+            Material[] mats = r.materials;
+            for (int i = 0; i < mats.Length; i++)
+                mats[i].color = color;
             r.materials = mats;
         }
     }
 
-    void SetAlpha(float a, GameObject o)
+    private void SetGhostAlpha(float alpha)
     {
-        foreach (var r in o.GetComponentsInChildren<Renderer>())
+        //Set ghost alpha
+        foreach (var r in ghostRenderers)
         {
-            var mats = r.materials;
+            Material[] mats = r.materials;
             for (int i = 0; i < mats.Length; i++)
             {
-                var c = mats[i].color; c.a = a;
-                mats[i].color = c;
+                Material newMat = new Material(mats[i]);
+                Color c = newMat.color;
+                c.a = alpha;
+                newMat.color = c;
+                mats[i] = newMat;
             }
             r.materials = mats;
         }
     }
 
-    void TryPlace()
+    #endregion
+
+    #region Placement
+
+    private void TryPlace()
     {
-        if (!canPlace || !ghost || !TakeResources()) return;
+        //Verify
+        if (!canPlace || ghostBuilding == null) return;
+        if (!TakeResources()) return;
 
-        var placed = Instantiate(availableBuildings[index].gameObject, lastPos, Quaternion.Euler(0, Mathf.Round(rotation), 0));
+        //Spawn building
+        GameObject placed = Instantiate(availableBuildings[selectedBuildingIndex].gameObject, lastValidPosition, Quaternion.Euler(0f, Mathf.Round(currentRotation), 0f));
 
-        if (availableBuildings[index].data.usesPivots)
-            placed.transform.localScale = Vector3.one * buildingManager.gridSize;
+        //Scale if needed
+        if (availableBuildings[selectedBuildingIndex].usesPivots)
+            placed.transform.localScale = Vector3.one * buildManager.gridSize;
 
+        //Finalize build
         placed.tag = "Build";
-        SetAlpha(1, placed);
-        
-        if(snappedTo != null)
-        snappedTo.snappedTo = placed.GetComponent<Building>();
-        placed.GetComponent<Building>()?.OnPlace(buildingManager.extraBuildingHealth, buildingManager.extraBuildingDamage);
 
-        if (placed.TryGetComponent(out Renderer r))
-            ParticleSpawner.SpawnWithBounds(spawnParticles, placed.transform.position, placed.transform.rotation, r.bounds);
+        //Restore material alpha
+        Renderer[] renderers = placed.GetComponentsInChildren<Renderer>();
+        foreach (var r in renderers)
+        {
+            Material[] mats = r.materials;
+            for (int i = 0; i < mats.Length; i++)
+            {
+                Color c = mats[i].color;
+                c.a = 1f;
+                mats[i].color = c;
+            }
+            r.materials = mats;
+        }
 
-        AudioManager.Instance?.PlaySound("Build", .9f, 1.25f);
+        placed.GetComponent<Building>()?.OnPlace(buildManager.extraBuildingHealth, buildManager.extraBuildingDamage);
+
+        //Particles
+        if(placed.TryGetComponent(out Renderer renderer))
+        {
+            ParticleSpawner.SpawnWithBounds(spawnParticles, placed.transform.position, placed.transform.rotation, renderer.bounds);
+        }
+
+        //Sound
+        AudioManager.Instance?.PlaySound("Build", 0.9f, 1.25f);
     }
 
-    void TryDemolish()
+    private void TryDemolish()
     {
-        if (!BuildUtilities.TryGetHit(cam, buildingManager.sphereCastRadius, buildingManager.maxBuildDistance, buildingManager.demolishLayers, out var hit) ||
-            !hit.collider.CompareTag("Build")) return;
+        //Check if there's a hit
+        if (!BuildUtilities.TryGetHit(mainCamera, buildManager.sphereCastRadius, buildManager.maxBuildDistance, buildManager.demolishLayers, out RaycastHit hit)) return;
 
-        var b = hit.collider.GetComponent<Building>() ?? hit.collider.GetComponentInParent<Building>();
-        if (!b || !RefundResources(b)) return;
+        //Double check if it's a build
+        if (!hit.collider.CompareTag("Build")) return;
 
-        b.OnDemolish();
-        Destroy(b.gameObject);
-        AudioManager.Instance?.PlaySound("Demolish", .9f, 1.25f);
+        //Check for building component (or parent)
+        Building building = hit.collider.GetComponent<Building>();
+        if (building == null)
+        {
+            building = hit.collider.GetComponentInParent<Building>();
+            if (building == null) return;
+        }
+
+        //Refund and destroy
+        if (!RefundResources(hit.transform.GetComponent<Building>())) return;
+        building.OnDemolish();
+
+        Destroy(building.gameObject);
+        AudioManager.Instance?.PlaySound("Demolish", 0.9f, 1.25f);
     }
+
+    #endregion
+
+    #region Resources
 
     bool TakeResources()
     {
-        var inv = heldby.GetComponent<PlayerInventory>();
+        //Inventory
+        PlayerInventory inventory = heldby.GetComponent<PlayerInventory>();
 
-        foreach (var i in availableBuildings[index].data.ingredients)
-            if (!inv.HasItem(i.item, i.quantity)) return false;
+        //Check cost
+        foreach (var ing in availableBuildings[selectedBuildingIndex].ingredients)
+            if (!inventory.HasItem(ing.item, ing.quantity))
+                return false;
 
-        foreach (var i in availableBuildings[index].data.ingredients)
-            inv.TakeItem(i.item, i.quantity, out _);
+        //Take
+        foreach (var ing in availableBuildings[selectedBuildingIndex].ingredients)
+            inventory.TakeItem(ing.item, ing.quantity, out _);
 
         return true;
     }
 
-    bool RefundResources(Building b)
+    bool RefundResources(Building building)
     {
-        var inv = heldby.GetComponent<PlayerInventory>();
+        //Inventory
+        PlayerInventory inventory = heldby.GetComponent<PlayerInventory>();
 
-        foreach (var i in b.data.ingredients)
+        //Refund items
+        foreach (var ing in building.ingredients)
         {
-            var item = Instantiate(i.item).GetComponent<Item>();
-            item.HeldQuantity = i.quantity;
+            Item item = Instantiate(ing.item).GetComponent<Item>();
+            item.HeldQuantity = ing.quantity;
 
-            inv.GiveItem(item, out bool taken);
-
+            inventory.GiveItem(item, out bool taken);
             if (!taken)
             {
                 Destroy(item);
                 return false;
             }
         }
+
         return true;
     }
 
-    public override void OnSelectOnce() => UpdateUiGhost();
+    #endregion
+
+    #region Item Overrides
+
+    public override void OnSelectOnce()
+    {
+        UpdateUiGhost();
+    }
+
 
     public override void OnPick()
     {
-        if (isSelected) UpdateUiGhost();
+        if(!isSelected) return;
+        UpdateUiGhost();
     }
 
     public void UpdateUiGhost()
     {
-        if (!isSelected || !isItemPickedUp) return;
+        if(!isSelected || !isItemPickedUp) return;
         SpawnGhost();
-        if (dayNightManager.currentState == DayNightCycleManager.CycleState.Day)
-            buildingManager.ShowUI(true);
+
+        if(dayNightCycle.currentState == DayNightCycleManager.CycleState.Day)
+        buildManager.ShowUI(true);   
     }
 
     void OnDestroy()
     {
-        if (buildingManager) buildingManager.OnGridUpdated -= UpdateUiGhost;
+        //new line added
+        if(buildManager)
+        buildManager.OnGridUpdated -= UpdateUiGhost;
     }
 
-    public override void OnSelect() =>
-        buildingManager?.UpdateBuildUI(availableBuildings[index], choosing);
+    public override void OnSelect()
+    {
+        buildManager?.UpdateBuildUI(availableBuildings[selectedBuildingIndex], isChosingBuild);
+    }
 
     public override void OnChangingItems()
     {
-        buildingManager?.ShowUI(false);
-        buildingManager?.ShowInspectUI(false);
-        rotTween?.Kill();
-        Destroy(ghost);
-        choosing = false;
+        //Cleanup
+        buildManager?.ShowUI(false);
+        buildManager?.ShowInspectUI(false);
+        rotationTween?.Kill();
+        Destroy(ghostBuilding);
+        isChosingBuild = false;
         PlayerInventory.Instance.CanScroll = true;
     }
+
+    #endregion
 }
